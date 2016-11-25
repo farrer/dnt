@@ -1,0 +1,3 @@
+name = gettext("Functional Neutral")
+description = gettext("   Functional Neutral creatures don't have a solid position on software licenses. They are adepts of software that works correctly (and this concept is very vague).")
+image = alignment/images/canivete.png

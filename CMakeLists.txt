@@ -116,8 +116,11 @@ endif(NOT ${LIBINTL_LIB_FOUND})
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(${PROJECT_SOURCE_DIR})
 
+include_directories(${CMAKE_BINARY_DIR}/src)
+
 # Include the sources
 include(sources.cmake)
+configure_file("./src/dntconfig.h.in" "./src/dntconfig.h")
 
 # Make Libraries
 add_library(dntlib ${DNT_LIB_SOURCES} ${DNT_LIB_HEADERS} )

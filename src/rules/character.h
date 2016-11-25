@@ -29,6 +29,7 @@ class Character : public Thing
       virtual bool doCharacterSpecializationParse(Ogre::String key, 
             Ogre::String value) = 0;
 
+   private:
 
       bool dead; /**< If the character is actually dead (just a corpse). */
 };

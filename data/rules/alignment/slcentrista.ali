@@ -1,0 +1,3 @@
+name = gettext("Center Free-Software Adept")
+description = gettext("   Center Free-Software Adepts also believe in the free circulation of knowledge, but that freedom is actually only relative and not so free as in the Public Domain. Here the software is restricted to being free, or, in point of fact, just as free - or not - as it originally was. Usually they are only adepts of GPL licences.")
+image = alignment/images/gnu.png

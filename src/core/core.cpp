@@ -1,7 +1,9 @@
 
+#include <farso/controller.h>
+#include <farso/font.h>
+
 #include "core.h"
-#include "../farso/controller.h"
-#include "../farso/font.h"
+#include "../rules/alignment.h"
 
 #include <OGRE/Terrain/OgreTerrainMaterialGenerator.h>
 
@@ -29,6 +31,8 @@ Core::~Core()
    {
       delete terrainGroup;
    }
+
+   Alignments::finish();
    Farso::Controller::finish();
 }
 
@@ -125,12 +129,18 @@ bool Core::doInit()
 
    terrainGroup->freeTemporaryResources();
 #endif
+   /* Init Farso */
    Farso::Controller::init(Farso::RENDERER_TYPE_OGRE3D, DEFAULT_WINDOW_WIDTH,
        DEFAULT_WINDOW_HEIGHT, 32, "", getSceneManager());
    Farso::FontManager::setDefaultFont("LiberationSans-Regular.ttf");
    Farso::Controller::loadSkin("skins/moderna.skin");
    Farso::Controller::setCursor("cursor/sel.png");
 
+   /* Init our alignments */
+   Alignments::init();
+
+   /* Load a map to test. FIXME: remove from here when reimplemented our
+    * initial window. */
    map = new DNT::Map(ogreSceneManager);
    if(!map->load("tyrol/house1.map"))
    {
@@ -181,10 +191,10 @@ void Core::getDataDirectories(Ogre::String** dataDirectories,
       Ogre::String** dataGroups, int& total)
 {
    static Ogre::String dirs[] = {"gui", "terrain", "textures", "maps",
-      "models", "fonts"};
+      "models", "fonts", "rules"};
    (*dataDirectories) = &dirs[0];
    (*dataGroups) = &dirs[0];
-   total = 6;
+   total = 7;
 }
 
 void Core::doLowMemoryClean()

@@ -1,0 +1,3 @@
+name = gettext("Center Neutral")
+description = gettext("   They are the fence-sitters of the DNT universe, having tendency to be favorable to what people near them are.")
+image = alignment/images/muro.png

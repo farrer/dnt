@@ -18,28 +18,30 @@
   along with DNT.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _dnt_translate_h
-#define _dnt_translate_h
+#ifndef _dnt_config_h
+#define _dnt_config_h
 
-#include "dntconfig.h"
+#define DNT_PACKAGE "@PACKAGE@"
+#define DNT_VERSION "@VERSION@"
 
-#if ENABLE_NLS == 1
-   #include <libintl.h>
+#if (defined __MINGW32__ || defined _WIN32)
+   /* Always use ../data for Windows */
+   #define DNT_LOCALEDIR "./share/locale/"
+   #define DNT_DATADIR "./share/"
 #else
-   #ifndef _gettext_func_
-      #define _gettext_func_
-      /* Define a gettext ignore function */
-      inline char* gettext(const char* s){return((char*)s);};
-   #endif
+   #define DNT_LOCALEDIR "@LOCALEDIR@"
+   #define DNT_DATADIR "@DATADIR@"
 #endif
 
-#include <OGRE/OgreString.h>
+#cmakedefine01 DEBUG_ASTAR
+#cmakedefine01 DNT_DEBUG_PENDING_ACTION
+#cmakedefine01 DNT_DEBUG_SCRIPTS
 
-/*! Translate a data string readed from a data file.
- * \param dataString -> translatable data string readed from a data file 
- * \return -> translated string for the input data. */
-Ogre::String translateDataString(Ogre::String dataString);
-
+#if defined (__amigaos4__)
+   #define ENABLE_NLS  0
+#else
+   #define ENABLE_NLS @ENABLE_NLS@
+#endif
 
 #endif
 

@@ -1,0 +1,3 @@
+name = gettext("Chaotic Free-Software Adept")
+description = gettext("   Chaotic Free-Software adepts are more permissive about software license, since it is without charge and allows full access to the source code.")
+image = alignment/images/beastie.png

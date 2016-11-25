@@ -19,6 +19,7 @@ src/map/indoortexturemesh.h
 src/map/map.h
 )
 set(RULES_SOURCES
+src/rules/alignment.cpp
 src/rules/bonusandsaves.cpp
 src/rules/dices.cpp
 src/rules/door.cpp
@@ -27,6 +28,7 @@ src/rules/object.cpp
 src/rules/scenery.cpp
 )
 set(RULES_HEADERS
+src/rules/alignment.h
 src/rules/bonusandsaves.h
 src/rules/dices.h
 src/rules/door.h
