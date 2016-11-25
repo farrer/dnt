@@ -1,0 +1,3 @@
+name = gettext("Healing")
+description = gettext("The organism with points in this skill is capable of healing wounds and illnesses in completely ordinary ways: He may stop hemorrhaging or cure a disease.")
+baseAttribute = 4

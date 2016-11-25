@@ -1,0 +1,4 @@
+name = gettext("Intelligence")
+description = gettext("Measures how smart or dumb the creature is. Organisms with a lot of intelligence can take 80 in OC2 (Computer Organization 2, more than 80 is only for Claudionor Disciples). Creatures too dumb only comunicate by gestures and grunts.||Ameiva: Intelligence 6|Ratazana: Intelligence 2|Ente: Intelligence 16")
+baseAttribute = 3
+isAttribute = true

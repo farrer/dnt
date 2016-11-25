@@ -1,0 +1,3 @@
+name = gettext("Bluff")
+description = gettext("The organism that has mastered this skill is capable of fooling the most expert teacher.")
+baseAttribute = 5

@@ -1,0 +1,3 @@
+name = gettext("Appraisal")
+description = gettext("Usually used to estimate the price of that 486 processor sold by that smuggler or of those poisoned chips given to your beloved teacher.")
+baseAttribute = 3

@@ -1,0 +1,3 @@
+name = gettext("Play Instrument")
+description = gettext("Is the capacity to play a musical instrument. The instrument is anything that can produce at last 7 distinct notes.")
+baseAttribute = 1

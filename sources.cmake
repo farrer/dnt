@@ -23,9 +23,11 @@ src/rules/alignment.cpp
 src/rules/bonusandsaves.cpp
 src/rules/dices.cpp
 src/rules/door.cpp
-src/rules/thing.cpp
 src/rules/object.cpp
+src/rules/ruledef.cpp
 src/rules/scenery.cpp
+src/rules/skills.cpp
+src/rules/thing.cpp
 )
 set(RULES_HEADERS
 src/rules/alignment.h
@@ -37,7 +39,9 @@ src/rules/item.h
 src/rules/nonplayablecharacter.h
 src/rules/object.h
 src/rules/playablecharacter.h
+src/rules/ruledef.h
 src/rules/scenery.h
+src/rules/skills.h
 src/rules/thing.h
 )
 set(LANG_SOURCES

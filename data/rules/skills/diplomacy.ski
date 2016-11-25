@@ -1,0 +1,3 @@
+name = gettext("Diplomacy")
+description = gettext("It is the organism's capacity to solve a lot of problems with other organisms. Includes eloquence, gentlemanly behavior, and knowing how to use the correct words at correct times, in other words, all those boring social things.")
+baseAttribute = 5

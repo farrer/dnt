@@ -1,0 +1,3 @@
+name = gettext("Prestidigitation")
+description = gettext("Is the skill used to steal little objects on someone's person, or in a place observed by a lot of people.")
+baseAttribute = 1

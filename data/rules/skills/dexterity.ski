@@ -1,0 +1,4 @@
+name = gettext("Dexterity")
+description = gettext("It's how skillful, agile, supple, among other similar adjectives, the creature is. An organism with much dexterity is able juggle with knives and easily avoid bullets. A creature with little dexterity constantly trips over its own legs and can't set a stone in the wall of a granary.||Ameiva: Dexterity 8|Ratazana: Dexterity 12|Ente: Dexterity 2")
+baseAttribute = 1
+isAttribute = true

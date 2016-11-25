@@ -21,56 +21,22 @@
 #ifndef _dnt_alignment_h
 #define _dnt_alignment_h
 
-#include <kobold/kstring.h>
+#include "ruledef.h"
+
 #include <kobold/list.h>
-#include <farso/controller.h>
 
 namespace DNT
 {
 
 /*! Single Alignment definition. */
-class Alignment: public Kobold::ListElement
+class Alignment: public Kobold::ListElement, public DNT::RuleDefinition
 {
    public:
-
       /*! Constructor */
       Alignment(int id, Kobold::String strId);
       /*! Destructor */
       ~Alignment();
 
-      /*! \return Alignment's integer identifier */
-      int getId();
-
-      /*! \return Alignment's String identifier */
-      Kobold::String getStringId();
-
-      /*! Load Alignment's image.
-       * \param imageFilename filename of the image to load 
-       * \note should be only called once. */
-      void loadImage(Kobold::String imageFilename);
-      /*! \return Alignment's image */
-      Farso::Surface* getImage();
-
-      /*! Set Alignment's name.
-       * \param name name to set */
-      void setName(Kobold::String name);
-      /*! \return Alignment's name */
-      Kobold::String getName();
-
-      /*! Set Alignment's Description.
-       * \param desc desctiption to set */
-      void setDescription(Kobold::String desc);
-      /*! \return Alignment's description */
-      Kobold::String getDescription();
-
-   private:
-
-      int intID;              /**< Integer Identifier of the Alignmentment */
-      Kobold::String strID;   /**< String Identifier of the Alignmentment */
-      Farso::Surface* image;  /**< Image of the Alignment */
-
-      Kobold::String name;            /**< Name of the Alignment */
-      Kobold::String description;     /**< Description of the Alignment */
 };
 
 /**! The Static List of Alignments */

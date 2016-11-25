@@ -33,10 +33,8 @@ using namespace DNT;
  *                            Constructor                         *
  ******************************************************************/
 Alignment::Alignment(int id, Kobold::String strId)
+          :RuleDefinition(id, strId)
 {
-   this->image = NULL;
-   this->intID = id;
-   this->strID = strId;
 }
 
 /******************************************************************
@@ -44,75 +42,6 @@ Alignment::Alignment(int id, Kobold::String strId)
  ******************************************************************/
 Alignment::~Alignment()
 {
-   if(image != NULL)
-   {
-      delete image;
-   }
-}
-
-/******************************************************************
- *                               getId                            *
- ******************************************************************/
-int Alignment::getId()
-{
-   return intID;
-}
-
-/******************************************************************
- *                            getStringId                         *
- ******************************************************************/
-Kobold::String Alignment::getStringId()
-{
-   return strID;
-}
-
-/******************************************************************
- *                            loadImage                           *
- ******************************************************************/
-void Alignment::loadImage(Kobold::String imageFilename)
-{
-   assert(image == NULL);
-   image = Farso::Controller::loadImageToSurface(imageFilename);
-}
-
-/******************************************************************
- *                             getImage                           *
- ******************************************************************/
-Farso::Surface* Alignment::getImage()
-{
-   return image;
-}
-
-/******************************************************************
- *                              setName                           *
- ******************************************************************/
-void Alignment::setName(Kobold::String name)
-{
-   this->name = name;
-}
-
-/******************************************************************
- *                              getName                           *
- ******************************************************************/
-Kobold::String Alignment::getName()
-{
-   return name;
-}
-
-/******************************************************************
- *                          setDescription                        *
- ******************************************************************/
-void Alignment::setDescription(Kobold::String desc)
-{
-   this->description = desc;
-}
-
-/******************************************************************
- *                          getDescription                        *
- ******************************************************************/
-Kobold::String Alignment::getDescription()
-{
-   return description;
 }
 
 /******************************************************************
@@ -164,6 +93,9 @@ void Alignments::insertAlign(Kobold::String filename, Kobold::String idString,
    Kobold::String key="", value="";
    Alignment* ins;
 
+   Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
+         "   Loading '%s'", filename.c_str());
+   
    if(!def.load("alignment/" + filename))
    {
       Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 

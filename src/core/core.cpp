@@ -4,6 +4,7 @@
 
 #include "core.h"
 #include "../rules/alignment.h"
+#include "../rules/skills.h"
 
 #include <OGRE/Terrain/OgreTerrainMaterialGenerator.h>
 
@@ -33,6 +34,7 @@ Core::~Core()
    }
 
    Alignments::finish();
+   SkillsDefinitions::finish();
    Farso::Controller::finish();
 }
 
@@ -136,8 +138,9 @@ bool Core::doInit()
    Farso::Controller::loadSkin("skins/moderna.skin");
    Farso::Controller::setCursor("cursor/sel.png");
 
-   /* Init our alignments */
+   /* Init our rules */
    Alignments::init();
+   SkillsDefinitions::init();
 
    /* Load a map to test. FIXME: remove from here when reimplemented our
     * initial window. */
