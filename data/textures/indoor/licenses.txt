@@ -1,0 +1,79 @@
+All Textures used in DNT are free (as in free speech).
+
+Here are the licenses for those at the current directory.
+
+===========================================================================
+DNTeam GPLv3 Textures
+
+ametista.png, carpete.png, steel1.png, steel3.png, stone2.png, 
+stone_diag.png, stone.png, wood5.png
+
+===========================================================================
+
+OpenFrag and Lemog3D CC-BY Textures
+
+burl.png, corrosive.png, gold.png, gold2.png, mosaic1.png, mosaic2.png,
+steel2.png, steel3.png, stonetile.png, wood.png, wood3.png, wood6.png, 
+wood7.png oldwood1.png oldwood2.png oldwood3.png
+
+===========================================================================
+
+Gimp Public Domain Textures (from patterns)
+
+wood2.png, wood4.png
+
+===========================================================================
+
+Blender-CD Public Domain Textures
+
+tile1_1.png, tile1_2.png, tile2.png
+
+===========================================================================
+
+wall_crete03b.png
+  Author: TRaK <http://trak.mercenariesguild.net>
+  License: GPLv2+, CC-BY-SAv3+
+  Source: http://trak.mercenariesguild.net/node/3 (TRaK2 Texture Set)
+
+tile3.png
+  Author: Dim <http://www.brandonphoenixart.com/>
+  License: CC-BYv3+
+  Source: http://opengameart.org/node/8136
+  Note: color-corrected by qubodup (Iwan Gabovitch) <qubodup@gmail.com>
+
+concrete6.png
+plaster3c.png
+plaster3c_2.png
+wood1.png1
+  Author: TRaK <http://trak.mercenariesguild.net>
+  License: MIT
+  Source: http://trak.mercenariesguild.net/node/3 (TRaK4 Texture Set)
+  
+plaster2.jpg
+painted1.jpg
+  Author 2011: TRaK <http://trak.mercenariesguild.net>
+  Author 2012: Iwan 'qubodup' Gabovitch <qubodup@gmail.com>
+  Changes: layered plaster2 with painted2, changed color values, layer positions and alpha values of layers
+  License: MIT
+  Source: http://opengameart.org/content/grey-plastered-wall-trak-remix
+
+wall8.jpg
+  Author: TRaK <http://trak.mercenariesguild.net>
+  License: GPLv2+, CC-BY-SAv3+
+  Source: http://trak.mercenariesguild.net/node/3 (Babel Texture Set)
+
+wood_agf81.png
+   Author: AGF81
+   License: CC-BY 3.0
+   Source: http://agf81.deviantart.com/gallery/31629552?offset=0#/d2t36ow
+
+siding2.png
+   Author: Dim
+   License: CC-BY 3.0
+   Source: http://opengameart.org/node/8137
+
+upper_wall.png
+  Author: qubodup (Iwan Gabovitch) <qubodup@gmail.com>
+  License: CC0/Public Domain
+  Note: Based on a PD texture from Burningwell.org
+

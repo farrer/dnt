@@ -1,0 +1,19 @@
+cadeira.png, bookshelf.png, estante.png, pia.png
+   author: Estrada Real Digital (ERD)
+   license: GPLv2
+   source: http://sourceforge.net/projects/erd/
+
+letto.png:
+   author: Tiziana aka TiZeta
+   license: CC-BY 2.0
+   source: http://www.unbruco.it/offcircle/index.html
+
+microwave.png, oven.png
+   author: UFO-AI
+   license: GPLv2 or later
+   source: http://ufoai.sf.net
+
+dinner_char.png, dinner_table.png, sofa.png, wardrobe.png:
+   author: Scopia Visual Interfaces
+   license: CC-BY 2.5
+   source: www.scopia.es

@@ -1,0 +1,5 @@
+name = gettext("Sink")
+description = gettext("This is the most common kitchen sink ever.")
+model = furniture/pia.mesh
+walkable = false
+

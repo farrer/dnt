@@ -1,0 +1,29 @@
+zipclick-press.ogg
+zipclick-release.ogg
+   license: CC0/Public Domain
+   source: http://opengameart.org/content/zippo-click-sound
+   author: dawith <dawith AT t-2 DOT net>
+
+cloth-inventory.ogg
+turn_page.ogg
+   license: GPLv3
+   source: http://opengameart.org/content/inventory-sound-effects
+   author: artisticdude
+
+scroll-step.ogg
+simple-gui-click.ogg
+   author: qubodup
+   license: CC0
+   sources: http://www.freesound.org/people/qubodup/sounds/159698
+            http://www.freesound.org/people/qubodup/sounds/159697
+
+close.ogg
+   author: DJ Chronos
+   license: CC-BY 3.0
+   source: http://www.freesound.org/people/DJ%20Chronos/sounds/29929/
+
+console.ogg
+   author: DJ Chronos http://www.freesound.org/people/DJ%20Chronos/
+   license: CC-BY 3.0
+   source: http://www.freesound.org/people/DJ%20Chronos/sounds/123094/
+   note: edited (150% speedup) by qubodup (Iwan Gabovitch) <qubodup@gmail.com

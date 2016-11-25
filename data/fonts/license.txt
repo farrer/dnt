@@ -1,0 +1,5 @@
+
+Liberation-fonts (LiberationSans* and LiberationSerif*) 
+   source: https://fedorahosted.org/liberation-fonts/
+   license: SIL Open Font License, Version 1.1
+

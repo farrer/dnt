@@ -1,0 +1,45 @@
+musica1.ogg
+musica2.ogg
+musica3.ogg
+musica4.ogg
+musica5.ogg
+musica6.ogg
+musica7.ogg
+musica8.ogg
+musica9.ogg
+musica10.ogg
+musica11.ogg
+musica12.ogg
+musica13.ogg
+   Author: DNTeam
+   License: GPLv3 or later
+
+caravan.ogg
+emptycity.ogg
+   Author: yd
+   License: CC0 (Public Domain)
+   References: http://opengameart.org/content/desert-theme
+               http://opengameart.org/content/emptycity-background-music
+
+cavesofsorrow.ogg
+   Author: Alexander Zhelanov
+   License: CC-BY 3.0
+   References: 
+      http://opengameart.org/content/caves-of-sorrow-from-flare-project
+
+death_game.ogg
+   Author: Tobias "Sum-1" Peterson
+   License: CC-BY 3.0
+   Reference:
+   http://opengameart.org/content/weird-death-game-over-loop-15s-cut-of-alien-phone-sex-by-sum-1
+
+discordance.ogg
+   Author: tenach
+   License: CC-BY-SA 3.0
+   References: http://opengameart.org/content/discordance
+
+main_menu.ogg
+   Author: brandon75689
+   License: CC-BY 3.0
+   Reference: http://opengameart.org/content/tragic-ambient-main-menu
+

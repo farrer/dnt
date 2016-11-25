@@ -1,0 +1,254 @@
+material wardrobe
+{
+   technique
+   {
+      pass
+      {
+         ambient 0.500000 0.500000 0.500000 1.000000
+         diffuse 0.640000 0.640000 0.640000 1.000000
+         specular 0.500000 0.500000 0.500000 1.000000 12.500000
+         emissive 0.300000 0.300000 0.300000 1.000000
+         texture_unit
+         {
+            texture furniture/wardrobe.png
+            tex_address_mode wrap
+            filtering trilinear
+         }
+         rtshader_system
+         {
+         }
+      }
+   }
+}
+
+material letto
+{
+   technique
+   {
+      pass
+      {
+         ambient 0.500000 0.500000 0.500000 1.000000
+         diffuse 0.640000 0.640000 0.640000 1.000000
+         specular 0.500000 0.500000 0.500000 1.000000 12.500000
+         emissive 0.300000 0.300000 0.300000 1.000000
+         texture_unit
+         {
+            texture furniture/letto.png
+            tex_address_mode wrap
+            filtering trilinear
+         }
+         rtshader_system
+         {
+         }
+      }
+   }
+}
+
+material sofa
+{
+   technique
+   {
+      pass
+      {
+         ambient 0.500000 0.500000 0.500000 1.000000
+         diffuse 0.640000 0.640000 0.640000 1.000000
+         specular 0.500000 0.500000 0.500000 1.000000 12.500000
+         emissive 0.300000 0.300000 0.300000 1.000000
+         texture_unit
+         {
+            texture furniture/sofa.png
+            tex_address_mode wrap
+            filtering trilinear
+         }
+         rtshader_system
+         {
+         }
+      }
+   }
+}
+
+material cadeira
+{
+   technique
+   {
+      pass
+      {
+         ambient 0.500000 0.500000 0.500000 1.000000
+         diffuse 0.640000 0.640000 0.640000 1.000000
+         specular 0.500000 0.500000 0.500000 1.000000 12.500000
+         emissive 0.300000 0.300000 0.300000 1.000000
+         texture_unit
+         {
+            texture furniture/cadeira.png
+            tex_address_mode wrap
+            filtering trilinear
+         }
+         rtshader_system
+         {
+         }
+      }
+   }
+}
+
+material bookshelf
+{
+   technique
+   {
+      pass
+      {
+         ambient 0.500000 0.500000 0.500000 1.000000
+         diffuse 0.640000 0.640000 0.640000 1.000000
+         specular 0.500000 0.500000 0.500000 1.000000 12.500000
+         emissive 0.300000 0.300000 0.300000 1.000000
+         texture_unit
+         {
+            texture furniture/bookshelf.png
+            tex_address_mode wrap
+            filtering trilinear
+         }
+         rtshader_system
+         {
+         }
+      }
+   }
+}
+
+material dinner_table
+{
+   technique
+   {
+      pass
+      {
+         ambient 0.500000 0.500000 0.500000 1.000000
+         diffuse 0.640000 0.640000 0.640000 1.000000
+         specular 0.500000 0.500000 0.500000 1.000000 12.500000
+         emissive 0.300000 0.300000 0.300000 1.000000
+         texture_unit
+         {
+            texture furniture/dinner_table.png
+            tex_address_mode wrap
+            filtering trilinear
+         }
+         rtshader_system
+         {
+         }
+      }
+   }
+}
+
+material dinner_chair
+{
+   technique
+   {
+      pass
+      {
+         ambient 0.500000 0.500000 0.500000 1.000000
+         diffuse 0.640000 0.640000 0.640000 1.000000
+         specular 0.500000 0.500000 0.500000 1.000000 12.500000
+         emissive 0.300000 0.300000 0.300000 1.000000
+         texture_unit
+         {
+            texture furniture/dinner_chair.png
+            tex_address_mode wrap
+            filtering trilinear
+         }
+         rtshader_system
+         {
+         }
+      }
+   }
+}
+
+
+material estante
+{
+   technique
+   {
+      pass
+      {
+         ambient 0.500000 0.500000 0.500000 1.000000
+         diffuse 0.640000 0.640000 0.640000 1.000000
+         specular 0.500000 0.500000 0.500000 1.000000 12.500000
+         emissive 0.300000 0.300000 0.300000 1.000000
+         texture_unit
+         {
+            texture furniture/estante.png
+            tex_address_mode wrap
+            filtering trilinear
+         }
+         rtshader_system
+         {
+         }
+      }
+   }
+}
+
+material oven
+{
+   technique
+   {
+      pass
+      {
+         ambient 0.500000 0.500000 0.500000 1.000000
+         diffuse 0.640000 0.640000 0.640000 1.000000
+         specular 0.500000 0.500000 0.500000 1.000000 12.500000
+         emissive 0.300000 0.300000 0.300000 1.000000
+         texture_unit
+         {
+            texture furniture/oven.png
+            tex_address_mode wrap
+            filtering trilinear
+         }
+         rtshader_system
+         {
+         }
+      }
+   }
+}
+
+material pia
+{
+   technique
+   {
+      pass
+      {
+         ambient 0.500000 0.500000 0.500000 1.000000
+         diffuse 0.640000 0.640000 0.640000 1.000000
+         specular 0.500000 0.500000 0.500000 1.000000 12.500000
+         emissive 0.300000 0.300000 0.300000 1.000000
+         texture_unit
+         {
+            texture furniture/pia.png
+            tex_address_mode wrap
+            filtering trilinear
+         }
+         rtshader_system
+         {
+         }
+      }
+   }
+}
+
+material microwave
+{
+   technique
+   {
+      pass
+      {
+         ambient 0.500000 0.500000 0.500000 1.000000
+         diffuse 0.640000 0.640000 0.640000 1.000000
+         specular 0.500000 0.500000 0.500000 1.000000 12.500000
+         emissive 0.300000 0.300000 0.300000 1.000000
+         texture_unit
+         {
+            texture furniture/microwave.png
+            tex_address_mode wrap
+            filtering trilinear
+         }
+         rtshader_system
+         {
+         }
+      }
+   }
+}
+

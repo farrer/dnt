@@ -1,0 +1,5 @@
+rifle_1.ogg 
+rifle_2.ogg 
+rifle.ogg
+   Author: DNTeam (using timidity-freepats and rosegarden)
+   License: GPLv2 or later

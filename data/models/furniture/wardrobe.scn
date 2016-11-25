@@ -1,0 +1,5 @@
+name = gettext("Wardrobe")
+description = gettext("A wardrobe. Full of unneeded things, seems empty.")
+model = furniture/wardrobe.mesh
+walkable = false
+

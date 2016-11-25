@@ -1,0 +1,30 @@
+
+cluck*
+   author: dobroide
+   license: CC-BY 3.0
+   source: http://www.freesound.org/people/dobroide/sounds/120583/
+           http://www.freesound.org/people/dobroide/sounds/120584/
+
+galinha_agitada.ogg
+galinha_tranquila.ogg
+   author: Estrada Real Digital
+   license: GPLv2
+   source: http://erd.cvs.sourceforge.net/viewvc/erd/EstradaReal/sons/sfx/
+
+gecko/*
+   author: vollkornbrot
+   license: CC0/PD
+   source: http://www.freesound.org/people/vollkornbrot/sounds/149924/
+
+mudchuteanimals/*
+   author: Secretlondon <http://commons.wikimedia.org/wiki/User:Secretlondon>
+   license: CC-BY-SA 3.0 or later
+   source: http://opengameart.org/content/farm-animals
+
+rat/*
+   author: qubodup (Iwan Gabovitch) <qubodup@gmail.com>
+   license: CC-BY 3.0 or later
+   source: http://www.freesound.org/people/qubodup/sounds/160365/
+   attribution: digifishmusic <http://www.freesound.org/people/digifishmusic/>
+   attribution: Brandon Morris <http://opengameart.org/users/haeldb>
+   note: rat-small based on 'rat' sounds with `sox rat-death.ogg IN OUT pitch 800 tempo 1.3`

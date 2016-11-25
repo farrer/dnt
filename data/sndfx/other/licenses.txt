@@ -1,0 +1,32 @@
+battleMode.ogg
+battleMode-end.ogg
+battleMode-yourTurn.ogg
+   author: DNTeam
+   license: GPLv3 or later;
+
+waterfall.ogg
+   author: dikolson <http://www.freesound.org/people/dikolson/>
+   license: CC0/Public Domain
+   source: http://www.freesound.org/people/dikolson/sounds/130232/
+   note: cut by qubodup (Iwan Gabovitch) <qubodup@gmail.com>
+
+computer-positive.ogg
+computer-negative.ogg
+   author: DJ Chronos <http://www.freesound.org/people/DJ%20Chronos/>
+   license: CC-BY 3.0
+   source: http://www.freesound.org/people/DJ%20Chronos/sounds/123102/
+           http://www.freesound.org/people/DJ%20Chronos/sounds/123100/
+
+fire.ogg
+   author: PhreaKsAccount <http://www.freesound.org/people/PhreaKsAccount/>
+   license: CC-BY 3.0
+   source: http://www.freesound.org/people/PhreaKsAccount/sounds/46272/
+
+levelup.ogg
+   author: qubodup
+   license: CC-BY 3.0
+   source: http://www.freesound.org/people/qubodup/sounds/161653/
+   Based on:
+      http://www.freesound.org/people/spt3125/sounds/24810/ by spt3125
+      http://www.freesound.org/people/Benboncan/sounds/66922/ by Benboncan
+

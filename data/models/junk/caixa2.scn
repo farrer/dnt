@@ -1,0 +1,5 @@
+name = gettext("Box")
+description = gettext("A paper box.")
+model = junk/caixa2.mesh
+walkable = false
+

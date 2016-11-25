@@ -1,0 +1,34 @@
+door_close.ogg  
+door_open.ogg  
+   Author: FreqMan
+   License: CC-BY 3.0
+   Source: http://www.freesound.org/people/FreqMan/sounds/23168/
+   Note: Edited by DNTeam.
+
+drop_item.ogg  
+et.ogg  
+take_item.ogg
+   Author: DNTeam
+   License: GPLv3 or later
+
+door_break.ogg
+   Author: qubodup (Iwan Gabovitch) <qubodup@gmail.com>
+   License: GPLv3+, CC-BY-SAv3+
+   Source: http://www.freesound.org/people/qubodup/sounds/160213/
+
+door_unlock.ogg
+   Author: qubodup (Iwan Gabovitch) <qubodup@gmail.com>
+   License: GPLv3+, CC-BY-SAv3+
+   Source: http://www.freesound.org/people/qubodup/sounds/160215/
+
+door_pick_lock.ogg
+   author: dobroide
+   license: CC-BY 3.0
+   source: http://www.freesound.org/people/dobroide/sounds/93664/
+
+refmachine/*
+   author: cmusounddesign
+   license: CC-BY 3.0
+   source: http://www.freesound.org/people/cmusounddesign/sounds/84710/
+
+

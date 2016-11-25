@@ -1,0 +1,5 @@
+name = gettext("Dinner Table")
+description = gettext("A table used to eat some meals.")
+model = furniture/dinner_table.mesh
+walkable = false
+

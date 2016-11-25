@@ -1,0 +1,5 @@
+name = gettext("Oven")
+description = gettext("Heat your meals and beware of explosions.")
+model = furniture/oven.mesh
+walkable = false
+

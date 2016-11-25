@@ -1,0 +1,5 @@
+name = gettext("Hospital Bed")
+description = gettext("A not so old hospital bed.")
+model = furniture/letto.mesh
+walkable = false
+

@@ -1,0 +1,5 @@
+name = gettext("Microwave")
+description = gettext("Put your cellphone inside to avoid NSA.")
+model = furniture/microwave.mesh
+walkable = false
+

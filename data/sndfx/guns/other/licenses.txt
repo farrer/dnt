@@ -1,0 +1,6 @@
+sharp_swosh.ogg
+sharp_swosh2.ogg
+   Author: qubodup
+   License: CC0 / PD
+   Reference: http://www.freesound.org/people/qubodup/sounds/60005/
+   Note: sharp_swosh2 is the first one pitched from B up to F in Audacity.
