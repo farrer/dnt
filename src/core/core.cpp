@@ -129,6 +129,7 @@ bool Core::doInit()
        DEFAULT_WINDOW_HEIGHT, 32, "", getSceneManager());
    Farso::FontManager::setDefaultFont("LiberationSans-Regular.ttf");
    Farso::Controller::loadSkin("skins/moderna.skin");
+   Farso::Controller::setCursor("cursor/sel.png");
 
    map = new DNT::Map(ogreSceneManager);
    if(!map->load("tyrol/house1.map"))
