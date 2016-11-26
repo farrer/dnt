@@ -90,9 +90,9 @@ void AttackBonus::clear()
 /***********************************************************************
  *                                toString                             *
  ***********************************************************************/
-Ogre::String AttackBonus::toString()
+Kobold::String AttackBonus::toString()
 {
-   Ogre::String res = "";
+   Kobold::String res = "";
    char val[16];
    int i;
 
@@ -197,6 +197,28 @@ BonusAndSaves::~BonusAndSaves()
 }
 
 /***********************************************************************
+ *                                 parse                               *
+ ***********************************************************************/
+bool BonusAndSaves::parse(Kobold::String value)
+{
+   Ogre::vector<Ogre::String>::type res = Ogre::StringUtil::split(value, ",/");
+   if(res.size() != 5)
+   {
+      return false;
+   }
+
+   sscanf(res[0].c_str(), "%d", &level);
+   int tmpBonus = 0;
+   sscanf(res[1].c_str(), "%d", &tmpBonus);
+   baseAttackBonus = AttackBonus(tmpBonus);
+   sscanf(res[2].c_str(), "%d", &fortitude);
+   sscanf(res[3].c_str(), "%d", &reflexes);
+   sscanf(res[4].c_str(), "%d", &iAmNotAFool);
+
+   return true;
+}
+
+/***********************************************************************
  *                                 clear                               *
  ***********************************************************************/
 void BonusAndSaves::clear()
@@ -239,7 +261,7 @@ BonusAndSaves& BonusAndSaves::operator=(const BonusAndSaves& b)
 /***********************************************************************
  *                              getValue                               *
  ***********************************************************************/
-int BonusAndSaves::getValue(Ogre::String state)
+int BonusAndSaves::getValue(Kobold::String state)
 {
    if(state == DNT_BS_LEVEL)
    {
@@ -265,14 +287,14 @@ int BonusAndSaves::getValue(Ogre::String state)
 /***********************************************************************
  *                               doCheck                               *
  ***********************************************************************/
-bool BonusAndSaves::doCheck(Ogre::String stateToCheck, int difficulty,
+bool BonusAndSaves::doCheck(Kobold::String stateToCheck, int difficulty,
       bool* couldCheck)
 {
    bool canCheck = false;
    bool checkRes = false;
    int value = 0;
    CheckType checkType = CHECK_ROLL;
-   Ogre::String stateName = "";
+   Kobold::String stateName = "";
    //TODO: Briefing brief;
    Dice d20(Dice::DICE_TYPE_D20);
 

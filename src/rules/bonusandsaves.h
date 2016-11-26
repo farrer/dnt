@@ -21,7 +21,7 @@
 #ifndef _dnt_bonus_and_saves_h
 #define _dnt_bonus_and_saves_h
 
-#include <OGRE/OgreString.h>
+#include <kobold/kstring.h>
 
 namespace DNT
 {
@@ -59,7 +59,7 @@ class AttackBonus
       AttackBonus& operator=(const AttackBonus& atBonus);
 
       /*! \return -> string representing the attack bonus */
-      Ogre::String toString();
+      Kobold::String toString();
 
       /*! Convert the attack bonus to a representative integer
        * \return -> int with the attack bonus */
@@ -103,6 +103,9 @@ class BonusAndSaves
       /*! Destructor */
       ~BonusAndSaves();
 
+      /*! Parse value from definition string of type "%d,%d,%d/%d/%d" */
+      bool parse(Kobold::String value);
+
       /*! Clear Values */
       void clear();
 
@@ -112,12 +115,12 @@ class BonusAndSaves
        * \param couldCheck -> will be true if the stateToCheck is valid here,
        *                      or false if it is invalid (not a bonus or a save)
        * \return true if success, false if failed. */
-      bool doCheck(Ogre::String stateToCheck, int difficulty,
+      bool doCheck(Kobold::String stateToCheck, int difficulty,
                    bool* couldCheck=NULL);
       /*! Get the value of a bonus or save
        * \param state -> bonus or save to get value 
        * \return bonus or save value */
-      int getValue(Ogre::String state);
+      int getValue(Kobold::String state);
 
       /*! = Operator */
       BonusAndSaves& operator=(const BonusAndSaves& b);

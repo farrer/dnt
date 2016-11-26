@@ -25,6 +25,7 @@
 #include "../rules/alignment.h"
 #include "../rules/feats.h"
 #include "../rules/race.h"
+#include "../rules/classes.h"
 #include "../rules/skills.h"
 
 #include <OGRE/Terrain/OgreTerrainMaterialGenerator.h>
@@ -57,6 +58,7 @@ Core::~Core()
    Alignments::finish();
    SkillsDefinitions::finish();
    Races::finish();
+   Classes::finish();
    FeatsList::finish();
    Farso::Controller::finish();
 }
@@ -166,6 +168,7 @@ bool Core::doInit()
    SkillsDefinitions::init();
    FeatsList::init("feats/", "feats.ftl");
    Races::init();
+   Classes::init();
 
 
    /* Load a map to test. FIXME: remove from here when reimplemented our

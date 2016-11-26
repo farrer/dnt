@@ -34,6 +34,7 @@ set(RULES_SOURCES
 src/rules/actions.cpp
 src/rules/alignment.cpp
 src/rules/bonusandsaves.cpp
+src/rules/classes.cpp
 src/rules/dices.cpp
 src/rules/feats.cpp
 src/rules/modifier.cpp
@@ -46,6 +47,7 @@ set(RULES_HEADERS
 src/rules/actions.h
 src/rules/alignment.h
 src/rules/bonusandsaves.h
+src/rules/classes.h
 src/rules/dices.h
 src/rules/feats.h
 src/rules/modifier.cpp

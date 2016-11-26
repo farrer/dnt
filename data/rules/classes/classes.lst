@@ -1,0 +1,10 @@
+BIOLOGY = 0 biology.cls classes/images/biologia.png
+COMP = 1 compsci.cls classes/images/dcc.png
+LAW = 2 lawner.cls classes/images/direito.png
+PHYSICAL_EDUCATION = 3 physicaled.cls classes/images/edfisica.png
+ME = 4 mechanic.cls classes/images/engmecanica.png
+PHILOSOPHY = 5 philosophy.cls classes/images/filosofia.png
+PHYSIOTERAPHY = 6 physiotherapy.cls classes/images/fisioterapia.png
+JOURNALISM = 7 journalism.cls classes/images/jornalismo.png
+MEDICAL =  8 medician.cls classes/images/medicina.png
+MUSIC = 9 music.cls classes/images/musica.png
