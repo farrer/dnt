@@ -18,31 +18,25 @@
   along with DNT.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _dnt_object_h
-#define _dnt_object_h
+#ifndef _dnt_scenery_h
+#define _dnt_scenery_h
 
-#include "thing.h"
+#include "object.h"
 
 namespace DNT
 {
 
-/*! The Object is a non living Thing. It's the base for interactive items,
- * static sceneries, weapons and any other non-living thing. */
-class Object : public Thing
+/*! The Scenery is an static not living Thing. Just compose the ambience,
+ * but usually couldn't do anything more to it than that. */
+class Scenery : public Object
 {
    public:
-      Object();
-      virtual ~Object();
+      Scenery();
+      ~Scenery();
 
    protected:
 
-      /*! Parse common Object key/values pairs. */
-      bool doSpecificParse(Ogre::String key, Ogre::String value);
-
-      /*! Must implement the parse of key/values related to the specialized
-       * class (not threated by the Object itself). */
-      virtual bool doObjectSpecializationParse(Ogre::String key, 
-            Ogre::String value) = 0;
+      bool doObjectSpecializationParse(Ogre::String key, Ogre::String value);
 
 };
 

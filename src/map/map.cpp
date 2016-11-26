@@ -22,7 +22,7 @@
 #include "map.h"
 
 #include "../rules/thing.h"
-#include "../rules/scenery.h"
+#include "../core/scenery.h"
 
 #include <kobold/defparser.h>
 #include <OGRE/OgreLogManager.h>
