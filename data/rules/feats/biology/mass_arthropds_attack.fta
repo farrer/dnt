@@ -1,0 +1,22 @@
+title = gettext("Mass Arthropds Attack")
+description = gettext("The more the graduation passes, the more the Biology Students live together with animals, so they can invoque, 2 times per day, a small arthropds horde to attack their enemies in a 10 meters radius, inflicting 2d8 + 1d6 per Biology Student Level greater than 10.")
+
+
+id = MASS_ARTHROPDS_ATTACK
+type = FEAT_TYPE_ON_AREA
+action = ACT_ATTACK
+icon = feats/images/mass_arthropds_attack.png
+
+required = CLASS BIOLOGY 10
+
+range = 35
+radius = 10
+
+quantity = 2
+costToUse = 1
+aditionalQuantity = BIOLOGY 0 0 1
+
+powerLevel = 10
+script = feats/biology/mass_arthropds_attack.dsl
+
+

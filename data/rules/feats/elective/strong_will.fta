@@ -1,0 +1,17 @@
+# Strong Will Elective Talent
+
+title = gettext("Strong Will")
+description = gettext("The creature has a will practically unshakeable, being extremally difficult to affect his mentality status. System: The creature receives +3 on all his I Am Not A Fool tests.")
+
+id = STRONG_WILL
+
+type = FEAT_TYPE_PERMANENT
+
+action = ACT_FREE
+icon = feats/images/strong_will.png
+
+# Pre-requisites
+required = ATTRIBUTE WISDOM 10
+
+script = feats/elective/strong_will.dsl
+

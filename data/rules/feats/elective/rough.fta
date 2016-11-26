@@ -1,0 +1,17 @@
+# Rough Elective Talent
+
+title = gettext("Rough")
+description = gettext("The creature is extremally resistent, being able to bear easily stressfull tasks. System: The creature receives +3 on all his Fortitude tests.")
+
+id = ROUGH
+
+type = FEAT_TYPE_PERMANENT
+
+action = ACT_FREE
+icon = feats/images/rough.png
+
+# Pre-requisites
+required = ATTRIBUTE CONSTITUTION 10
+
+script = feats/elective/rough.dsl
+

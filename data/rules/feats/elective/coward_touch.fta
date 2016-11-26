@@ -1,0 +1,19 @@
+title = gettext("Coward Touch")
+description = gettext("The creature with Coward Touch can do, 3 times per day, an attack that do not follow clean-fight rules, inflicting 1d3+character level points of damage.")
+
+# The ID
+id = COWARD_TOUCH
+type = FEAT_TYPE_ON_TARGET
+action = ACT_ATTACK
+icon = feats/images/coward_touch.png
+
+range = 8
+
+# Quantities
+quantity = 3
+costToUse = 1
+
+powerLevel = 2
+script = feats/elective/coward_touch.dsl
+
+

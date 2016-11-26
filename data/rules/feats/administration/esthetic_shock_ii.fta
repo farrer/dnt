@@ -1,0 +1,22 @@
+title = gettext("Esthetic Shock II")
+description = gettext("Due to the cerebral damages made by its graduation, the Administration Student upgrade its capacity to esthetic shock people, causing 1d6 damage, without resistances. The use of this feat consumes one Esthetic Shock I")
+
+# The ID
+id = ESTHETIC_SHOCK_II
+type = FEAT_TYPE_ON_TARGET
+action = ACT_ATTACK
+icon = feats/images/esthetic_shock_ii.png
+
+# Pre-requisites
+required = CLASS ADM 5
+
+range = 30
+
+# Quantities
+quantity = 1
+costToUse = 1
+aditionalQuantity = ADM 5 1 2
+
+powerLevel = 4
+script = feats/administration/esthetic_shock_ii.dsl
+

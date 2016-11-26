@@ -1,0 +1,16 @@
+# Supreme Bluff 13th level Law Talent
+
+title = gettext("Supreme Bluff")
+description = gettext("At this level, the creature is so hardened in the art of lie or hide information, that is capable to convince his own mother that he isn't his son. Thus all Bluff tests of the Law Students have a +10 bonus")
+
+id = SUPREME_BLUFF
+
+type = FEAT_TYPE_PERMANENT
+
+action = ACT_FREE
+icon = feats/images/supreme_bluff.png
+
+required = CLASS LAW 13
+
+script = feats/law/supreme_bluff.dsl
+

@@ -1,0 +1,14 @@
+# Bolivian Blood Talent
+
+title = gettext("Bolivian Blood")
+description = gettext("The creature has the blood as if he lives in the bolivian's mountains, receiving +10 Life Points")
+
+id = BOLIVIAN_BLOOD
+
+type = FEAT_TYPE_PERMANENT
+
+action = ACT_FREE
+icon = feats/images/bolivian_blood.png
+
+script = feats/elective/bolivian_blood.dsl
+

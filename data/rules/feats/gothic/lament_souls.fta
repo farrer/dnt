@@ -1,0 +1,17 @@
+title = gettext("Laments of One Thousand Souls")
+description = gettext("Being adepts of the Romantic Poetry Second Generation, the Gothics are master on depressive art: they can end the day of the happiest 'Care Bear'. Making use of a full round action, the Gothic creature do a test of Bluff against the aim's I Am Not A Fool. In case of success, the aim will be on deep depression for the next 24 hours, receiving -5 on all Social Tests.")
+
+# The Pre-Requisite
+race = GOTHIC
+
+# The ID
+id = LAMENTS_OF_ONE_THOUSAND_SOULS
+
+# The base attribute to bonus the d20 roll and the Counter too!
+attribute = BLUFF
+counterAttribute = I_AM_NOT_A_FOOL
+
+# The Effect/Range Info
+range = 5
+affect = TARGET
+effect = 24h -5 SOCIAL_TESTS

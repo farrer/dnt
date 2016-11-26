@@ -1,0 +1,18 @@
+title = gettext("Night Adoration")
+description = gettext("One time they are typically noturn creatures, Gothics receive some bonuses when far from the Sun's light: +2 in Intimidate for frighting children and oldies, +4 in Disguises, du to nobody percept that the stupid guy of other day is the huge and imponent Gothic of the Night, and +2 on all Combat relative rolls, since they know the benefities of shades and nocturnal whispers.")
+
+# The Pre-Requisite
+race = GOTHIC
+
+# The ID
+id = NIGHT_ADORATION
+
+# The check
+timeCheck = NIGHT
+
+# The Bonuses
+effect = 0s +2 INTIMIDATE
+effect = 0s +4 DISGUISES
+effect = 0s +2 ATTACK_BONUS
+effect = 0s +2 INITIATIVE
+

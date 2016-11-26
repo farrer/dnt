@@ -1,0 +1,17 @@
+# Hasty Elective Talent
+
+title = gettext("Hasty")
+description = gettext("The creature has an abnormal velocity, being able to run quickly. System: The creature can walk and run at a proportion 20 percent higher than its base displacement.")
+
+id = HASTY
+
+type = FEAT_TYPE_PERMANENT
+
+action = ACT_FREE
+icon = feats/images/hasty.png
+
+# Pre-requisites
+required = ATTRIBUTE CONSTITUTION 12
+
+script = feats/elective/hasty.dsl
+

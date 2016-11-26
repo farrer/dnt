@@ -1,0 +1,70 @@
+# *.fta: Feat definition file
+
+##########################################################################
+#                            Titles and IDs                              #
+##########################################################################
+
+# Title of the feat 
+# title = gettext("Feat Title")
+
+# Feat description
+# descripton = gettext("This is the feat's description")
+
+# Feat identifier
+# id = UNIQUE_STRING_ID
+
+# Feats type ( FEAT_TYPE_PERMANENT for all "effects-type" feats 
+#              or FEAT_TYPE_ON_TARGET for "target-type" feats
+#              or FEAT_TYPE_ON_AREA for "area-target" ones)
+# type = FEAT_TYPE_ON_TARGET
+
+# Feat action (as described at src/classes/actions.h
+# action = ACT_ATTACK
+
+# Feat icon (image representing the feat)
+# icon = feat_icon.png
+
+##########################################################################
+#                            Pre-requisites                              #
+##########################################################################
+
+# Use as many pre-requisites as you like, in a list of
+# required = TYPE TYPE_ID LEVEL
+#
+# for example:
+# 
+# required = CLASS PHISICAL_EDUCATION 15
+# required = ATTRIBUTE STRENGHT 14
+
+##########################################################################
+#                           General Infos                                #
+##########################################################################
+
+# Feat's range (in dnters), if applyes
+# range = 60
+
+# Feat quantity per day
+# quantity = 10
+
+# Cost at the quantity  to use the feat
+# costToUse = 1
+
+# Feat aditional quantity
+# aditionalQuantity = CLASS_ID QUANTITY CLASS_BASE_LEVEL DIV_FACTOR
+#
+# for example, 1 aditional each 2 levels beyond 15 on PHYSICAL EDUCATION
+# aditionalQuantity = PHYSICAL_EDUCATION 1 15 2
+
+# Feat Power Level (used to measure powerfull feats, etc)
+# powerLevel = 4
+
+# Feat script file (with the feat application in-fact)
+# script = feat_script.dsl
+
+##########################################################################
+#                          Dependents Feats                              #
+##########################################################################
+
+# List of dependent feats as
+# depFeat = FEAT_ID REASON example:
+# depFeat = ESTHETIC_SHOCK_I 1

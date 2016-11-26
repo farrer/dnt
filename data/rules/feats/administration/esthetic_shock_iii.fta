@@ -1,0 +1,21 @@
+title = gettext("Esthetic Shock III")
+description = gettext("After lot of time, the cerebral damage is at unimaginable levels. Now the Administration Student Esthetic Shock inflicts 2d6 of damage. The use of this feat consumes 2 Esthetic Shocks I")
+
+# The ID
+id = ESTHETIC_SHOCK_III
+type = FEAT_TYPE_ON_TARGET
+action = ACT_ATTACK
+icon = feats/images/esthetic_shock_iii.png
+
+# Pre-requisites
+required = CLASS ADM 7
+
+range = 30
+
+# Quantities
+quantity = 1
+costToUse = 1
+aditionalQuantity = ADM 15 1 2
+
+powerLevel = 7
+script = feats/administration/esthetic_shock_iii.dsl

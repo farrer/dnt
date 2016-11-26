@@ -1,0 +1,13 @@
+title = gettext("Webdesign")
+description = gettext("(`What??? Yours graduation haven't web-design class?? What do you learn than??' Élis Régina talking to CS Students.) Administration Students, after 5 semesters, do not have any more things to do on their classes, so they start to learn not related things with simplist complexity, like Web-Design. So, in other words, this feat is useless, don't having any more benifits than giving +4 bonus on Mental Castration.")
+
+# The ID
+id = WEB_DESIGN
+type = FEAT_TYPE_PERMANENT
+action = ACT_FREE
+icon = feats/images/webdesign.png
+
+# Pre-requisites
+required = CLASS ADM 10
+
+script = feats/administration/webdesign.dsl

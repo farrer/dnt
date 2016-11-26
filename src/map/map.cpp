@@ -84,7 +84,7 @@ void Map::update()
    Thing* thing = (Thing*) things->getFirst();
    for(int i = 0; i < things->getTotal(); i++)
    {
-      Goblin::Model3d* model = thing->getModel3d();
+      Goblin::Model3d* model = thing->getModel();
       if(model)
       {
          model->update();
@@ -255,7 +255,7 @@ bool Map::load(Ogre::String mapFileName)
          {
             Ogre::Real pX=0.0f, pY=0.0f, pZ=0.0f;
             sscanf(value.c_str(), "%f,%f,%f", &pX, &pY, &pZ);
-            last->getModel3d()->setPosition(pX, pY, pZ);
+            last->getModel()->setPosition(pX, pY, pZ);
          }
       }
       else if(key == MAP_TOKEN_THING_ORIENTATION)
@@ -265,7 +265,7 @@ bool Map::load(Ogre::String mapFileName)
          {
             Ogre::Real oX=0.0f, oY=0.0f, oZ=0.0f;
             sscanf(value.c_str(), "%f,%f,%f", &oX, &oY, &oZ);
-            last->getModel3d()->setOrientation(oX, oY, oZ);
+            last->getModel()->setOrientation(oX, oY, oZ);
          }
       }
       else if(key == MAP_TOKEN_THING_WALKABLE)

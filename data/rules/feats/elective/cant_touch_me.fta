@@ -1,0 +1,17 @@
+# Can't touch me Elective Talent
+
+title = gettext("Can't Touch Me")
+description = gettext("The creature is clever than the others, being able to avoid more easily from attacks. System: The creature will receive +2 in his Armature Class all the times that Dexterity is used to avoid hits.")
+
+id = CANT_TOUCH_ME
+
+type = FEAT_TYPE_PERMANENT
+
+action = ACT_FREE
+icon = feats/images/cant_touch_me.png
+
+# Pre-requisites
+required = ATTRIBUTE DEXTERITY 12
+
+script = feats/elective/cant_touch_me.dsl
+

@@ -1,0 +1,20 @@
+title = gettext("I am Wrong")
+description = gettext("At the fourth level, the Law Students is so unbearable at his try to take advantages of someone else's innocence, that arrives to his first great miss act: He's fired from his voluntary period of training. After this sad mark, the students voice is so shrill and loudness that cause, when he scream, 1d4 points of damage, being able to stun the target for 1d6 turns. Rolls a fortitude test of all targets in a 30 meters radius against a difficulty of 10 + Law Student Level to avoid being stunned and reduce the damage to a half.")
+
+# ID
+id = I_AM_WRONG
+type = FEAT_TYPE_ON_AREA
+action = ACT_ATTACK
+icon = feats/images/i_am_wrong.png
+
+required = CLASS LAW 4
+
+range = 50
+radius = 30
+
+quantity = 1
+costToUse = 1
+aditionalQuantity = LAW 0 0 1
+
+powerLevel = 7
+script = feats/law/i_am_wrong.dsl

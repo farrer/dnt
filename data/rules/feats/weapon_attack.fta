@@ -1,0 +1,17 @@
+title = gettext("Common Attack")
+description = gettext("Character's common attack.")
+
+id = WEAPON_ATTACK
+type = FEAT_TYPE_ON_TARGET
+action = ACT_ATTACK
+icon = feats/images/melee_attack.png
+
+range = 15
+quantity = 1
+costToUse = 0
+powerLevel = 1
+
+script = feats/weapon_attack.dsl
+
+
+

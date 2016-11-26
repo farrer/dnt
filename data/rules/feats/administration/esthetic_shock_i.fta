@@ -1,0 +1,23 @@
+title = gettext("Esthetic Shock I")
+description = gettext("At his first level, the Administration Student can charge Esthetic Shocks, one time per day, causing 1d4 points of damage, since the target creature fails at an I Am Not A Fool test against the -Charisma roll . For each 2 levels, the character can use this feat for one more time per day.")
+
+# The ID
+id = ESTHETIC_SHOCK_I
+type = FEAT_TYPE_ON_TARGET
+action = ACT_ATTACK
+icon = feats/images/esthetic_shock_i.png
+
+# Pre-requisites
+required = CLASS ADM 1
+
+range = 30
+
+# Quantities
+quantity = 1
+costToUse = 1
+aditionalQuantity = ADM 1 1 2
+
+powerLevel = 3
+script = feats/administration/esthetic_shock_i.dsl
+
+

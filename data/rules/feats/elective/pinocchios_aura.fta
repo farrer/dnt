@@ -1,0 +1,17 @@
+# Pinocchio's Aura Talent
+
+title = gettext("Pinocchio's Aura")
+description = gettext("Watching too much Pinocchio on its childhood - but sleeping every time before the movie's end -, the creature has an easy way to tell lies, receiving +2 in Bluff.")
+
+id = PINOCCHIOS_AURA
+
+type = FEAT_TYPE_PERMANENT
+
+action = ACT_FREE
+icon = feats/images/pinocchios_aura.png
+
+# Pre-requisites
+required = SKILL BLUFF 1
+
+script = feats/elective/pinocchios_aura.dsl
+

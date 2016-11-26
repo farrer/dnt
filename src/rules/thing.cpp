@@ -45,6 +45,8 @@ Thing::Thing()
    model3d = NULL;
    state = 0;
    walkable = false;
+   currentEnemy = NULL;
+   psychoState = PSYCHO_NEUTRAL;
 }
 
 /**************************************************************************
@@ -154,7 +156,7 @@ bool Thing::load(Ogre::SceneManager* sceneManager, Ogre::String fileName,
 /**************************************************************************
  *                             getModel3d                                 *
  **************************************************************************/
-Goblin::Model3d* Thing::getModel3d()
+Goblin::Model3d* Thing::getModel()
 {
    return model3d;
 }
@@ -192,6 +194,20 @@ int Thing::getLifePoints()
 }
 
 /**************************************************************************
+ *                               addLifePoints                            *
+ **************************************************************************/
+void Thing::addLifePoints(int value)
+{
+   lifePoints += value;
+   if(lifePoints > maxLifePoints)
+   {
+      lifePoints = maxLifePoints;
+   }
+   //TODO: updateHealthBar!:w
+   //
+}
+
+/**************************************************************************
  *                             getMaxLifePoints                           *
  **************************************************************************/
 int Thing::getMaxLifePoints()
@@ -214,6 +230,39 @@ void Thing::setWalkable(bool canWalkThrough)
 {
    walkable = canWalkThrough;
 }
+
+/**************************************************************************
+ *                             getCurrentEnemy                            *
+ **************************************************************************/
+Thing* Thing::getCurrentEnemy()
+{
+   return currentEnemy;
+}
+
+/**************************************************************************
+ *                             setCurrentEnemy                            *
+ **************************************************************************/
+void Thing::setCurrentEnemy(Thing* target)
+{
+   this->currentEnemy = target;
+}
+
+/**************************************************************************
+ *                             getPsychoState                             *
+ **************************************************************************/
+Thing::PsychoState Thing::getPsychoState()
+{
+   return psychoState;
+}
+
+/**************************************************************************
+ *                             setPsychoState                             *
+ **************************************************************************/
+void Thing::setPsychoState(PsychoState state)
+{
+   psychoState = state;
+}
+
 
 /**************************************************************************
  *                            getConversationFile                         *

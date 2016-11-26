@@ -1,0 +1,14 @@
+# Quick Thought Elective Talent
+
+title = gettext("Quick Thought")
+description = gettext("With this feat, the creature can react quickly to the danger. System: At the initiative tests, the creature receives +5 to his result.")
+
+id = QUICK_THOUGHT
+
+type = FEAT_TYPE_PERMANENT
+
+action = ACT_FREE
+icon = feats/images/quick_thought.png
+
+script = feats/elective/quick_thought.dsl
+

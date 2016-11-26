@@ -1,0 +1,17 @@
+# Feline Elective Talent
+
+title = gettext("Feline")
+description = gettext("The creature has reflexes like a cat, being able to deviate instinctively. System: The creature receives +3 on all his Reflexes tests.")
+
+id = FELINE
+
+type = FEAT_TYPE_PERMANENT
+
+action = ACT_FREE
+icon = feats/images/feline.png
+
+# Pre-requisites
+required = ATTRIBUTE DEXTERITY 10
+
+script = feats/elective/feline.dsl
+

@@ -1,0 +1,20 @@
+title = gettext("Arc Impulse")
+description = gettext("At this time, the Biology Student can two times per day do a great combo with his Ameiva and a Formica, this way: The formica goes up to the ameiva's tail, and when the ameiva strikes the enemy with its tail, throws the little insect directly to enemy's eyes (a Fortitude test is needed to avoid confusion, with a difficulty of 1d6+ Biology Student Level), followed by an incredible Biology Student's strike. This feat will cause 1d6 + Biology Student Level points of damage.")
+
+
+id = ARC_IMPULSE
+type = FEAT_TYPE_ON_TARGET
+action = ACT_ATTACK
+#icon = feats/images/arc_impulse.png
+
+required = CLASS BIOLOGY 7
+
+range = 8
+
+quantity = 2
+costToUse = 1
+aditionalQuantity = BIOLOGY 0 0 1
+
+powerLevel = 5
+script = feats/biology/arc_impulse.dsl
+

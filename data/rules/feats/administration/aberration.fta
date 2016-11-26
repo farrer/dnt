@@ -1,0 +1,13 @@
+title = gettext("Aberration")
+description = gettext("The Administration Student's Taylorism is at its maximum capacity after those years of graduation. The student became a natural aberration, a biped ox. It'll receive +2 points on Constitution and on Strenght, -2 on Charisma, -4 on Intelligence and -4 on I Am Not A Fool. ")
+
+# The ID
+id = ABERRATION
+type = FEAT_TYPE_PERMANENT
+action = ACT_FREE
+icon = feats/images/aberration.png
+
+# Pre-requisites
+required = CLASS ADM 20
+
+script = feats/administration/aberration.dsl

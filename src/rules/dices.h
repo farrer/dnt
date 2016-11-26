@@ -38,7 +38,8 @@ class Dice
         DICE_TYPE_D8  =  8,     /**< Eight Faces Dice */
         DICE_TYPE_D10 = 10,     /**< Ten Faces Dice */
         DICE_TYPE_D12 = 12,     /**< Twelve Faces Dice */
-        DICE_TYPE_D20 = 20      /**< Twenty Faces Dice */
+        DICE_TYPE_D20 = 20,     /**< Twenty Faces Dice */
+        DICE_TYPE_D100 = 100    /**< Hundred Faces Dice */
       };
 
       /*! Constructor: Create a dice of the type

@@ -1,0 +1,21 @@
+title = gettext("Powerful Esophagus")
+description = gettext("Once a day, and because his muscles have invaded his internal organs, the Physical Education Student is able to expel a sphere of fire that causes 6d6 (plus 2d6, for each level above 15) in Damage.")
+
+# The Pre-Requisite
+requerided = CLASS PHYSICAL_EDUCATION
+reqValue = 15
+
+# The ID
+id = POWERFUL_ESOPHAGUS
+
+# The base attribute to bonus the d20 roll
+bonus = ATTRIBUTE CONSTITUTION
+
+# The Damage/Range Info
+range = 7
+affect = ALL ALL
+damage = 6*d6+0
+aditionalDice = 2d6+0
+quantityPerDay = 1
+aditionalQuantity = 0
+aditionalLevels = 1

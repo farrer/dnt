@@ -1,0 +1,17 @@
+# World Conception 9th CS level Talent
+
+title = gettext("World Conception")
+description = gettext("For knowing its profession is called 'the future', Computer Science Students received +2 in I Am Not A Fool.")
+
+id = WORLD_CONCEPTION
+
+type = FEAT_TYPE_PERMANENT
+
+action = ACT_FREE
+icon = feats/images/world_conception.png
+
+
+required = CLASS COMP 9
+
+script = feats/compsci/world_conception.dsl
+

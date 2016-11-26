@@ -1,0 +1,17 @@
+title = gettext("Sun Weakness")
+description = gettext("Sun is a star that brings joy to Common Humans and a debilitation weakness to Gothics, because it dazes their makeups and reveals their butt faces. When affected by the Sun's light, Gothics receive -8 on all their Social Tests and -1 on all Combat relative rolls. They can't use Lament of One Thousand Souls and any Social Test agains't children will result in an automatic failure, because the children will think they are clows that want to play with them.")
+
+# The Pre-Requisite
+race = GOTHIC
+
+# The ID
+id = SUN_WEAKNESS
+
+# The check
+timeCheck = DAY
+
+# The Bonuses
+effect = 0s -8 SOCIAL_TESTS
+effect = 0s -1 ATTACK_BONUS
+effect = 0s -1 INITIATIVE
+

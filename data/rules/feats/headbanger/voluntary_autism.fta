@@ -1,0 +1,17 @@
+# Headbanger's Voluntary Autism Talent
+title = gettext("Voluntary Autism")
+description = gettext("Headbangers can ignore the world only imagining and thinking they are playing their loved music. So, they receive +1 in I Am Not A Fool.")
+
+id = VOLUNTARY_AUTISM
+
+type = FEAT_TYPE_PERMANENT
+
+action = ACT_FREE
+icon = feats/images/voluntary_autism.png
+
+# PRe Requisites
+required = RACE HEADBANGER 1
+
+script = feats/headbanger/voluntary_autism.dsl
+
+

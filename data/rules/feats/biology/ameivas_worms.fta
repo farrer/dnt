@@ -1,0 +1,19 @@
+title = gettext("Ameiva's Worms")
+description = gettext("The Biology Student can thrown its bottle of worms collected from ameiva's bowels, one time per day added by one more time for each level after the 4th, inflicting 1d6+Biology Student Level points of damage.")
+
+id = AMEIVAS_WORMS
+type = FEAT_TYPE_ON_TARGET
+action = ACT_ATTACK
+icon = feats/images/ameivas_worms.png
+
+required = CLASS BIOLOGY 4
+
+range = 15
+
+quantity = 1
+costToUse = 1
+aditionalQuantity = BIOLOGY 1 4 2
+
+powerLevel = 4
+script = feats/biology/ameivas_worms.dsl
+

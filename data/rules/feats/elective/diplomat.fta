@@ -1,0 +1,17 @@
+# Diplomat Elective Talent
+
+title = gettext("Diplomat")
+description = gettext("After reading a Jerry Davila book, the creature know all the secrets and deturpations used by the Brazilian Foreign Affairs before the world collapse, being ready to use them on his own interests, receiving +3 in Diplomacy.")
+
+id = DIPLOMAT
+
+type = FEAT_TYPE_PERMANENT
+
+action = ACT_FREE
+icon = feats/images/diplomat.png
+
+# Pre-requisites
+required = ATTRIBUTE CHARISMA 10
+
+script = feats/elective/diplomat.dsl
+

@@ -1,0 +1,17 @@
+# M. J. Friends Killer
+
+title = gettext("M. J. Friends Killer")
+description = gettext("The character is known by the nasty habit of killing children, being deplored by most people.")
+
+id = MJ_FRIENDS_KILLER
+
+# You can't select it, as it is assigned when kill a child
+selectable = false
+
+type = FEAT_TYPE_PERMANENT
+
+action = ACT_FREE
+icon = feats/images/mj_friends_killer.png
+
+script = feats/received/mj_friends_killer.dsl
+

@@ -1,0 +1,17 @@
+gettext("Rookie")
+gettext("Every rookie is know by its big ego, its make-new-friends desire and by its stupid questions.")
+1
+ALL ALL
+ATTRIBUTE STRENGTH
+NONE NONE
+ALL ALL
+0*d0+0
+0*d0+0
+0,0,0
+0 ACT_TYPE_NORMAL_ACTION ACT_ATTACK
+0
+NONE 0.0,0
+NONE 0.0,0
+NONE 0.0,0
+NONE 0.0,0
+NONE 0.0,0

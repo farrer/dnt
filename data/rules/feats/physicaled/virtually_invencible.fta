@@ -1,0 +1,14 @@
+title = gettext("Virtually Invencible")
+description = gettext("Thanks to their constant physical work, the Physical Education Students receive +5 on Natural Armor and a Damage Resistance of 8/-")
+
+# The Pre-Requisite
+class = PHYSICAL_EDUCATION
+level = 7
+
+# The ID
+id = VIRTUALLY_INVENCIBLE
+
+# The Bonuses
+effect = 0s +5 NATURAL_ARMOR
+effect = 0s +5 DAMAGE_RESISTANCE
+

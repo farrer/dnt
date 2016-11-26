@@ -1,0 +1,13 @@
+title = gettext("I'm a little Conan")
+description = gettext("Physical Education Students, due to their frequency at the gym, gets +1 Strength permamently.")
+
+# The Pre-Requisite
+class = PHYSICAL_EDUCATION
+level = 10
+
+# The ID
+id = I_AM_A_LITTLE_CONAN
+
+# The Bonuses
+effect = 0s +1 STRENGTH
+

@@ -30,10 +30,21 @@
 namespace DNT
 {
 
+#define THING_ARMATURE_CLASS    "ARMATURE_CLASS"
+
 /*! Base RPG class for characters (PCs and NPCs) and objects */
 class Thing : public Kobold::ListElement
 {
    public:
+
+      /*i! Thing's State to Playable Characters */
+      enum PsychoState
+      {
+         PSYCHO_HOSTILE,
+         PSYCHO_NEUTRAL,
+         PSYCHO_FRIENDLY
+      };
+
       /*! Constructor */
       Thing();
       /*! Destructor */
@@ -48,7 +59,7 @@ class Thing : public Kobold::ListElement
             bool fullPath=false);
 
       /*! \return 3d representation of the thing, if any, or NULL. */
-      Goblin::Model3d* getModel3d();
+      Goblin::Model3d* getModel();
 
       /*! \return #name */
       Ogre::String getName();
@@ -65,12 +76,28 @@ class Thing : public Kobold::ListElement
       /*! \return #maxLifePoints */
       int getMaxLifePoints();
 
+      /*! Add value to life points */
+      void addLifePoints(int value);
+
       /*! \return if Characters could walk over or not */
       bool isWalkable();
       
       /*! Set if Characters could walk through the thing or not.
        * \param canWalkThrough true to able characters to walk over it. */
       void setWalkable(bool canWalkThrough);
+
+
+      /*! \return Pointer to current target enemy, if any */
+      Thing* getCurrentEnemy();
+      /*! Set current target enemy
+       * \param target pointher to current target Thing */
+      void setCurrentEnemy(Thing* target);
+
+      /*! \return Thing's PsychoState */
+      PsychoState getPsychoState();
+      /*! Define Thing's state to PlayableCharacters
+       * \param state new PsychoState */
+      void setPsychoState(PsychoState state);
 
       /*! \return filename of the conversation owned */
       Ogre::String getConversationFile();
@@ -110,6 +137,9 @@ class Thing : public Kobold::ListElement
       Goblin::Model3d* model3d; /**< The 3d model representing the thing */
 
       Ogre::String conversationFile; /**< Conversation file, if any. */
+
+      Thing* currentEnemy; /**< Pointer to current target enemy, if any */
+      PsychoState psychoState; /**< State to Playable Characters */
 
       /*! Map to avoid name's clash with multiple intances of the same 
        * thing model */

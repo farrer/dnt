@@ -1,0 +1,17 @@
+# Fugitive Talent
+
+title = gettext("Fugitive")
+description = gettext("The fugitive creature can escape more easily of captivity situations, receiving +2 in Art of the Escape")
+
+id = FUGITIVE
+
+type = FEAT_TYPE_PERMANENT
+
+action = ACT_FREE
+icon = feats/images/fugitive.png
+
+# Pre-requisites
+required = SKILL ACROBATS 1
+
+script = feats/elective/fugitive.dsl
+
