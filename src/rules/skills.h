@@ -87,6 +87,10 @@ class Skill
        * \param mod 'total points' cost to add a single point on this skill */
       void setModifier(int mod);
 
+      /*! Get base attribute bonus (ie: (points - 10) / 2), if is an Attribute
+       * definition, or 0 if just a skill. */
+      int getAttributeBonus();
+
    private:
 
       int points;             /**< Total Skill points */

@@ -23,6 +23,7 @@ src/rules/alignment.cpp
 src/rules/bonusandsaves.cpp
 src/rules/dices.cpp
 src/rules/door.cpp
+src/rules/modifier.cpp
 src/rules/object.cpp
 src/rules/ruledef.cpp
 src/rules/scenery.cpp
@@ -37,6 +38,7 @@ src/rules/door.h
 src/rules/character.h
 src/rules/item.h
 src/rules/nonplayablecharacter.h
+src/rules/modifier.cpp
 src/rules/object.h
 src/rules/playablecharacter.h
 src/rules/ruledef.h

@@ -173,6 +173,19 @@ void Skill::setModifier(int mod)
    this->mod = mod;
 }
 
+/*************************************************************************
+ *                          getAttributeBonus                            *
+ *************************************************************************/
+int Skill::getAttributeBonus()
+{
+   if(definition->isAttribute())
+   {
+      return Ogre::Math::Floor((points - 10) / 2.0f);
+   }
+
+   return 0;
+}
+
 ///////////////////////////////////////////////////////////////////////////
 //                                                                       //
 //                         SkillsDefinitions                             //
