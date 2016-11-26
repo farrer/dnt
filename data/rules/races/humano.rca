@@ -1,0 +1,3 @@
+name = gettext("Common Human")
+epigraph = gettext("'Satana sum et nihil humanum a me alienum puto'|(Demon talking to Ivan Karamazov)")
+description = gettext("Also known as Homo Sapiens Sapiens. A human is a human is a human! Find out the rest in your D&D book cause I'm too busy to write normal things here. We really hope that nobody owns the patent to the name 'human' and we have to use another term for this race because of copyright violations.|The Common Human is so normal and so common that he has neither any extraordinary qualities nor any extraordinary defects.")

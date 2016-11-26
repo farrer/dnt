@@ -1,0 +1,8 @@
+name = gettext("Mutant Human Cricket")
+epigraph = gettext("'A tasty Cricket, please!'|(Logan in a barbecue restaurant)")
+description = gettext("No one knows why, but mutants have started to attend Icex. With their diet based on crickets or small hopping bugs, the Human Crickets have some cannibalistic habits and, for this, aren't welcome in bug colonies. The habitat of the Human Cricket is the famous Tyrol, near Barreiro, where they live happily among their relatives.")
+totalModifiers = 2
+modifier = -6 SOCIAL_TESTS ALL RACE COMPATIBLE
+modifierText = gettext("Since they eat Crickets, Human Crickets receive -4 on all social tests when dealing with someone of their race or insects.")
+modifier = 4 SKILL PRESTIDIGITATION ALL ALL
+modifierText = gettext("By its incredible jumps, the Human Cricket receive +4 of Prestidigitation.")

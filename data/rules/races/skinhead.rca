@@ -1,0 +1,12 @@
+name = gettext("Skinhead Maniac")
+epigraph = gettext("- It's 'cause ther'are some peopl'in front of my house that puts a ghetto blaster at high volume on the weekends...|- There is, so? Give me R$500,00 and I'll give you a fragmentation granade to throw there and end their party for good!'|(Corrente, Skinhead Maniac, answering Gordo, frustrated Mechanical Engineering Student)")
+description = gettext("Skinhead Maniacs are a rare race on the campus. Without any common sense, these creatures don't lose time in reaching their goals in the most direct way possible. Alone in the world, they aren't able to make friends with any other race and they always want to put a definite end to those they dislike.")
+totalModifiers = 1
+modifier = 1 RESTRICTION TENDENCY PROPERTY ALL
+modifierText = gettext("Since they don't have common sense, Skinhead Maniacs have to be of Alignment / Tendency Capitalist Proprietary Software or Chaotic Proprietary Software")
+totalTalents = 2
+talent = INSANE_FURY
+talent = CALL_HORDES
+totalSkills = 1
+skill = INTIMIDATE
+skillText = gettext("Since they have friends in the army, Skinhead Maniacs can get all kinds of heavy guns and walk around freely with them. Their class skill is obviously Intimidate.")

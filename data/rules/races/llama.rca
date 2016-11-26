@@ -1,0 +1,11 @@
+name = gettext("Human Lama")
+epigraph = gettext("'Is he insane??'|(Oktober Fest Queen, while looking at a human lama)")
+description = gettext("Human lamas are humans that earnestly believe they are descendants of the Andes lamas. Usually they walk wearing a Bolivian poncho, drink a lot of water and think exactly like a lama.")
+totalModifiers = 2
+modifier = -4 SOCIAL_TESTS ALL ALL ALL
+modifierText = gettext("For having sociopathic tendencies, the Human Lammas receive -4 on all social tests.")
+modifier = 2 ATTRIBUTE INTELLIGENCE ALL ALL
+modifierText = gettext("Human lamas receive +2 of Intelligence.")
+totalTalents = 2
+talent = NEED_WATER
+talent = I_DISLIKE_YOU

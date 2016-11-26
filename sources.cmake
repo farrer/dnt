@@ -37,6 +37,7 @@ src/rules/bonusandsaves.cpp
 src/rules/dices.cpp
 src/rules/feats.cpp
 src/rules/modifier.cpp
+src/rules/race.cpp
 src/rules/ruledef.cpp
 src/rules/skills.cpp
 src/rules/thing.cpp
@@ -48,6 +49,7 @@ src/rules/bonusandsaves.h
 src/rules/dices.h
 src/rules/feats.h
 src/rules/modifier.cpp
+src/rules/race.h
 src/rules/ruledef.h
 src/rules/skills.h
 src/rules/thing.h
