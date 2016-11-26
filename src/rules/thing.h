@@ -24,13 +24,23 @@
 #include <goblin/model3d.h>
 #include <kobold/list.h>
 #include <OGRE/OgreSceneManager.h>
+
+#include "modifier.h"
+#include "skills.h"
+#include "bonusandsaves.h"
+
 #include <map>
 
 
 namespace DNT
 {
 
+#define WALK_PER_MOVE_ACTION  60 /**< Distance that can be walked per move */
+
 #define THING_ARMATURE_CLASS    "ARMATURE_CLASS"
+#define THING_INITIATIVE_BONUS  "INITIATIVE"
+#define THING_DISPLACEMENT      "DISPLACEMENT"
+#define THING_MAX_LIFE_POINTS   "MAX_LIFE_POINTS"
 
 /*! Base RPG class for characters (PCs and NPCs) and objects */
 class Thing : public Kobold::ListElement
@@ -86,7 +96,6 @@ class Thing : public Kobold::ListElement
        * \param canWalkThrough true to able characters to walk over it. */
       void setWalkable(bool canWalkThrough);
 
-
       /*! \return Pointer to current target enemy, if any */
       Thing* getCurrentEnemy();
       /*! Set current target enemy
@@ -98,6 +107,19 @@ class Thing : public Kobold::ListElement
       /*! Define Thing's state to PlayableCharacters
        * \param state new PsychoState */
       void setPsychoState(PsychoState state);
+
+      /*! Get the bonus Value (modifier or not).
+       *  \param something -> number of the definition.
+       *  \return bonus. */
+      int getBonusValue(Factor& something);
+
+      /*! Get a factor value
+       * \param something -> factor info
+       * \return its value */
+      int getFactorValue(Factor& something);
+
+      /*! \return current bonus and saves */
+      BonusAndSaves* getCurBonusAndSaves();
 
       /*! \return filename of the conversation owned */
       Ogre::String getConversationFile();
@@ -140,6 +162,14 @@ class Thing : public Kobold::ListElement
 
       Thing* currentEnemy; /**< Pointer to current target enemy, if any */
       PsychoState psychoState; /**< State to Playable Characters */
+
+      Skills sk;             /**< skills without images and descriptions */
+
+      int armatureClass; /**< Armature class protection value */
+      BonusAndSaves curBonusAndSaves; /**< Thing's bonus and saves */
+      int displacement;       /**< Thing's Displacement (in meters) */
+      int initiativeBonus;    /**< Thing's initiative bonus value */
+
 
       /*! Map to avoid name's clash with multiple intances of the same 
        * thing model */

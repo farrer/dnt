@@ -137,6 +137,9 @@ class BonusAndSaves
       /*! Set the base attack value */
       void setBaseAttack(int i);
 
+      /*! \return base attack bonus pointer */
+      AttackBonus* getBaseAttackBonus();
+
    protected:
 
       int level;  /**< Class Level when this BonusAndSaves are valid. */

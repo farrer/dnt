@@ -52,6 +52,8 @@ class SkillDefinition : public RuleDefinition
       bool isAttr;     /**< True if the Skill is an attribute */
 };
 
+class Skills;
+
 /*! The individual Skill representation (used to store current Thing's points
  * on a skill, it's modifier, etc.) */
 class Skill
@@ -90,6 +92,9 @@ class Skill
       /*! Get base attribute bonus (ie: (points - 10) / 2), if is an Attribute
        * definition, or 0 if just a skill. */
       int getAttributeBonus();
+
+      /*! \return skill bonus (attribute bonus + points). */
+      int getBonus(Skills* sk);
 
    private:
 

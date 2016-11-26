@@ -382,4 +382,10 @@ void BonusAndSaves::setBaseAttack(int i)
    }
 }
 
-
+/***********************************************************************
+ *                             getBaseAttack                           *
+ ***********************************************************************/
+AttackBonus* BonusAndSaves::getBaseAttackBonus()
+{
+   return &baseAttackBonus;
+}

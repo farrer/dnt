@@ -202,26 +202,17 @@ bool Action::doHealOrAttack(Thing* actor, Thing* target,
    //TODO verify if can use or not based on target thing
 #endif
 
-   /* TODO: Apply Bonuses */
-#if 0
-   //FIXME get from the relative attack, not always of the first!
-   bonus = actor->sizeModifier + 
-      actor->curBonusAndSaves.baseAttackBonus.getBonus(1);
-   if(conceptBonus)
-   { 
-      bonus += actor->getBonusValue(*conceptBonus);
-   }
-#endif
+   /* Apply Bonuses */
+   //FIXME get from the relative attack, not always from the first!
+   bonus = actor->getCurBonusAndSaves()->getBaseAttackBonus()->getBonus(1);
+   bonus += actor->getBonusValue(conceptBonus);
 
    Dice d20;
    diceValue = d20.roll();
 
-   //TODO: bonus and against!
-#if 0 
    //TODO apply reflexes bonus, esquive bonus, etc, to target,
    //depending of the attack type!
-   targetValue = target->getBonusValue(*conceptAgainst);
-#endif
+   targetValue = target->getBonusValue(conceptAgainst);
 
    /* Define heal against as half difficult */
    if(heal)
@@ -320,8 +311,7 @@ bool Action::doHealOrAttack(Thing* actor, Thing* target,
    damage += diceInfo.baseDice.roll(criticalHit);
 
    /* Apply Damage/Heal modifiers bonus */
-   //TODO
-   // damage += actor->getBonusValue(conceptBonus);
+   damage += actor->getBonusValue(conceptBonus);
 
    /* Make sure damage value is at last 1 */
    if(damage <= 0)
@@ -352,7 +342,7 @@ bool Action::doHealOrAttack(Thing* actor, Thing* target,
       target->addLifePoints(-damage);
 
       /* Call onHit or OnDeath sound if defined */
-      //TODO
+      //TODO death and hit sound.
 #if 0      
       if( (target->getLifePoints() < 0) && (!target->onDeathSound.empty()) )
       {

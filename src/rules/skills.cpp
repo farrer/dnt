@@ -186,6 +186,30 @@ int Skill::getAttributeBonus()
    return 0;
 }
 
+/*************************************************************************
+ *                               getBonus                                *
+ *************************************************************************/
+int Skill::getBonus(Skills* sk)
+{
+   if(definition->isAttribute())
+   {
+      /* Just use as attribute bonus, as it is an attribute */
+      return getAttributeBonus();
+   }
+   else
+   {
+      int value = 0;
+      Skill* batt = sk->getSkillByInt(definition->getBaseAttributeId());
+      if(batt)
+      {
+         value += batt->getAttributeBonus();
+      }
+      value += points;
+
+      return value;
+   }
+}
+
 ///////////////////////////////////////////////////////////////////////////
 //                                                                       //
 //                         SkillsDefinitions                             //

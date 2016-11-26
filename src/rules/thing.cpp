@@ -22,7 +22,7 @@
 #include "thing.h"
 #include "../lang/translate.h"
 #include <kobold/defparser.h>
-#include <OGRE/OgreLogManager.h>
+#include <kobold/log.h>
 
 using namespace DNT;
 
@@ -42,6 +42,9 @@ Thing::Thing()
 {
    maxLifePoints = 0;
    lifePoints = 0;
+   armatureClass = 0;
+   initiativeBonus = 0;
+   displacement =  WALK_PER_MOVE_ACTION;;
    model3d = NULL;
    state = 0;
    walkable = false;
@@ -143,9 +146,9 @@ bool Thing::load(Ogre::SceneManager* sceneManager, Ogre::String fileName,
          if(!doSpecificParse(key, value))
          {
             /* Got an unknow key. File definition should be fixed. */
-            Ogre::LogManager::getSingleton().getDefaultLog()->stream()
-                  << "WARN: Unknow key '" << key << "' at thing's file '" 
-                  << fileName << "'";
+            Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+                  "Warning: unknow key '%s' at thing's file '%s'",
+                  key.c_str(), fileName.c_str());
          }
       }
    }
@@ -263,6 +266,114 @@ void Thing::setPsychoState(PsychoState state)
    psychoState = state;
 }
 
+/**************************************************************************
+ *                             getBonusValue                              *
+ **************************************************************************/
+int Thing::getBonusValue(Factor& something)
+{
+   Skill* s = NULL;
+
+   if(something.getType() == MOD_TYPE_ATT)
+   {
+      s = sk.getSkillByString(something.getId());
+      if(s)
+      {
+         return s->getAttributeBonus();
+      }
+      else
+      {
+         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+             "Unknow Attribute (Skill): ", something.getId().c_str());
+         return -1;
+      }
+   }
+   else if(something.getType() == MOD_TYPE_SKILL)
+   {
+      s = sk.getSkillByString(something.getId());
+      if(s)
+      {
+         return s->getBonus(&sk);
+      }
+      else
+      {
+         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+               "Unknow Skill: '%s'", something.getId().c_str());
+         return -1;
+      }
+   }
+
+   return getFactorValue(something);
+}
+
+/**************************************************************************
+ *                       getFactorValuePointer                            *
+ **************************************************************************/
+int Thing::getFactorValue(Factor& something)
+{
+   Skill* s = NULL;
+
+   if( (something.getType() == MOD_TYPE_ATT) ||
+       (something.getType() == MOD_TYPE_SKILL) )
+   {
+      s = sk.getSkillByString(something.getId());
+      if(s)
+      {
+         return s->getPoints();
+      }
+      else
+      {
+         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+               "Warning: Unknow skill '%s'", something.getId().c_str());
+      }
+   }
+   else if(something.getType() == MOD_TYPE_THING)
+   {
+      if(something.getId() == THING_ARMATURE_CLASS)
+      {
+         return armatureClass;
+      }
+      else if(something.getId() == THING_INITIATIVE_BONUS)
+      {
+         return initiativeBonus;
+      }
+      else if(something.getId() == THING_DISPLACEMENT)
+      {
+         return displacement;
+      }
+      else if(something.getId() == THING_MAX_LIFE_POINTS)
+      {
+         return maxLifePoints;
+      }
+      else if((something.getId() == DNT_BS_LEVEL) ||
+              (something.getId() == DNT_BS_FORTITUDE) ||
+              (something.getId() == DNT_BS_REFLEXES) ||
+              (something.getId() == DNT_BS_I_AM_NOT_A_FOOL) ||
+              (something.getId() == DNT_BS_WILL) )
+      {
+         return curBonusAndSaves.getValue(something.getId());
+      }
+      else
+      {
+         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+               "Warning: Unknow factor '%s'", something.getId().c_str());
+      }
+   }
+   else
+   {
+      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+            "Warning: Unknow factor type: ", something.getType().c_str());
+   }
+
+   return -1;
+}
+
+/**************************************************************************
+ *                            getCurBonusAndSaves                         *
+ **************************************************************************/
+BonusAndSaves* Thing::getCurBonusAndSaves()
+{
+   return &curBonusAndSaves;
+}
 
 /**************************************************************************
  *                            getConversationFile                         *
