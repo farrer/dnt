@@ -22,8 +22,10 @@
 
 #include <kobold/log.h>
 #include <kobold/defparser.h>
+
 #include "../lang/translate.h"
 #include "../core/util.h"
+#include "../gui/briefing.h"
 
 using namespace DNT;
 
@@ -514,7 +516,7 @@ bool Feats::canUse(int featNumber)
    /* Verify if the Feat is valid */
    if( (featNumber < 0) || (featNumber >= totalFeats) )
    {
-      //TODO: brief.addText(gettext("Invalid Talent"), 255, 0, 0);
+      Briefing::addWarning(gettext("Invalid Talent"));
       return false;
    }
 
@@ -534,7 +536,7 @@ bool Feats::canUse(Feat* f)
    else
    {
       /* Can't use due to points! */
-      //TODO: brief.addText(gettext("Not enought points to use!"), 255, 10, 10);
+      Briefing::addWarning(gettext("Not enought points to use!"));
    }
 
    return false;
@@ -564,7 +566,7 @@ bool Feats::useFeatAtTarget(Thing* actor, int featNumber, Thing* target)
       /* Show Feature name */
       if(featNumber != FEAT_WEAPON_ATTACK)
       {
-         //TODO: brief.addText(feats[featNumber]->getInfo()->getName()); 
+         Briefing::addText(feats[featNumber].getInfo()->getName()); 
       }
 
       /* Verify range */
@@ -573,8 +575,7 @@ bool Feats::useFeatAtTarget(Thing* actor, int featNumber, Thing* target)
       if(!Action::isInRange(actorPos, targetPos,
                feats[featNumber].getInfo()->getRange()))
       {
-         //TODO: 
-         //brief.addText(gettext("Too far away for action!"), 225, 20, 20);
+         Briefing::addWarning(gettext("Too far away for action!"));
          return false;
       }
 
@@ -612,16 +613,13 @@ bool Feats::useFeatAtTarget(Thing* actor, int featNumber, Thing* target)
 bool Feats::useFeatAtArea(Thing* actor, int featNumber, 
              float x, float y, float z)
 {
-   char texto[255];
-
    if( (canUse(featNumber)) && 
        (!feats[featNumber].getInfo()->getScriptFile().empty()))
    {
       /* Show Feature name */
       if(featNumber != FEAT_WEAPON_ATTACK)
       {
-         sprintf(texto,"%s ",feats[featNumber].getInfo()->getName().c_str());
-         //TODO: brief.addText(texto); 
+         Briefing::addText(feats[featNumber].getInfo()->getName());
       }
 
       /* Verify range */
@@ -629,8 +627,7 @@ bool Feats::useFeatAtArea(Thing* actor, int featNumber,
                Ogre::Vector3(x, 0.0f, z), 
                feats[featNumber].getInfo()->getRange()))
       {
-         //TODO: 
-         //brief.addText(gettext("Too far away for action!"), 225, 20, 20);
+         Briefing::addWarning(gettext("Too far away for action!"));
          return false;
       }
      

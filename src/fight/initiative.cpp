@@ -21,6 +21,8 @@
 #include "initiative.h"
 #include "../rules/dices.h"
 
+#include "../gui/briefing.h"
+
 #include <kobold/kstring.h>
 
 using namespace DNT;
@@ -98,19 +100,19 @@ InitiativeInfo* Initiative::getFirstLesser(int value)
  ***************************************************************/
 void Initiative::insertCharacter(Character* pers)
 {
-   char buffer[1024];
    Dice d20;
    Factor attDex = Factor(MOD_TYPE_ATT, "DEXTERITY");
    Factor initiative = Factor(MOD_TYPE_THING, THING_ARMATURE_CLASS);
 
+   /* Roll its initiative value */
    int value = d20.roll() + pers->getBonusValue(attDex) +
       pers->getBonusValue(initiative);
 
-
-   sprintf(buffer, gettext("%s rolls initiative: %d."), 
+   /* Show user what it is */
+   Briefing::addText(gettext("%s rolls initiative: %d."), 
          pers->getName().c_str(), value); 
-   //TODO: brief.addText(buffer);
 
+   /* Check where and insert at list */
    InitiativeInfo* lesser = getFirstLesser(value);
    if(lesser == NULL)
    {

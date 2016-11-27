@@ -21,6 +21,8 @@
 #include "actions.h"
 #include "../core/util.h"
 
+#include "../gui/briefing.h"
+
 #include <kosound/sound.h>
 
 using namespace DNT;
@@ -131,9 +133,6 @@ bool Action::doHealOrAttack(Thing* actor, Thing* target,
    bool criticalHit = false;
    bool criticalMiss = false;
    bool miss = false;
-   char texto[1024];
-   
-   Kobold::String diceText;
    
    /* Define Actor orientation
     * TODO -> call rotate animation! */
@@ -161,20 +160,19 @@ bool Action::doHealOrAttack(Thing* actor, Thing* target,
    /* Show try brief */
    if(!heal)
    {
-      sprintf(texto, gettext("%s tries to attack %s"), 
+      Briefing::addText(gettext("%s tries to attack %s"), 
             actor->getName().c_str(), target->getName().c_str());
    }
    else
    {
-      sprintf(texto, gettext("%s tries to heal %s"), 
+      Briefing::addText(gettext("%s tries to heal %s"), 
             actor->getName().c_str(), target->getName().c_str());
    }
-   //TODO: brief.addText(texto);
 
    /* Verify Action Range */
    if( (range != 0) && (!isInRange(actorPos, targetPos, range)))
    {
-      //TODO: brief.addText(gettext("Too far away for action!"), 225, 20, 20);
+      Briefing::addWarning(gettext("Too far away for action!"));
       return false;
    }
 
@@ -185,8 +183,8 @@ bool Action::doHealOrAttack(Thing* actor, Thing* target,
    {
       if(!colDet.characterAtSight((Character*)actor, (Character*)target))
       {
-         brief.addText(gettext("Enemy out of sight!"), 255, 20, 20);
-         return(false);
+         Briefing::addWarning(gettext("Enemy out of sight!"));
+         return false;
       }
    }
 
@@ -256,14 +254,13 @@ bool Action::doHealOrAttack(Thing* actor, Thing* target,
 
    if(criticalRoll != -1)
    {
-      sprintf(texto,"%d(%s) & (%d%s) x %d : ",diceValue,txtBonus,
+      Briefing::addText("%d(%s) & (%d%s) x %d", diceValue, txtBonus,
             criticalRoll, txtBonus, targetValue);
    }
    else
    {
-      sprintf(texto,"%d(%s) x %d : ",diceValue,txtBonus,targetValue);
+      Briefing::addText("%d(%s) x %d", diceValue, txtBonus, targetValue);
    }
-   diceText = texto;
 
    //apply bonus (skill bonus)
    diceValue += bonus;
@@ -273,12 +270,12 @@ bool Action::doHealOrAttack(Thing* actor, Thing* target,
    if( ( (diceValue - targetValue <= 0) || (criticalMiss) || (miss) ) &&
          (!criticalHit) )
    {
-      //TODO: brief.addText(diceText + gettext("Miss."));
+      Briefing::addText(gettext("Miss."));
       if( criticalMiss )
       {
-         //TODO: brief and message3d.
+         Briefing::addWarning(gettext("Critical Miss!"));
+         //TODO: message3d.
 #if 0
-         brief.addText(gettext("Critical Miss!"), 220, 0, 0);
          controller.addMessage(actor->scNode->getPosX(),
                actor->scNode->getPosY() + actor->scNode->getBoundingBox().max.y,
                actor->scNode->getPosZ(),
@@ -323,13 +320,12 @@ bool Action::doHealOrAttack(Thing* actor, Thing* target,
 
    if(heal)
    {
-      sprintf(texto,gettext("Healed %d points."),damage);
+      Briefing::addText(gettext("Healed %d points."), damage);
    }
    else
    {
-      sprintf(texto,gettext("Hit for %d points."),damage);
+      Briefing::addText(gettext("Hit for %d points."), damage);
    }
-   //TODO: brief.addText(diceText + texto);
 
    if(heal)
    {
@@ -358,29 +354,34 @@ bool Action::doHealOrAttack(Thing* actor, Thing* target,
 #endif
    }
    
-   //TODO: messages and particles!
-#if 0
    if(criticalHit)
    {
       if(heal)
       {
-         brief.addText(gettext("Critical Heal!"), 12, 10, 128);
+         Briefing::addText(12, 10, 128, gettext("Critical Heal!"));
+#if 0
          controller.addMessage(actor->scNode->getPosX(),
                actor->scNode->getPosY()+actor->scNode->getBoundingBox().max.y,
                actor->scNode->getPosZ(),gettext("Critical Heal!"),
                0.06,0.24,0.86);
+#endif
       }
       else
       {
-         brief.addText(gettext("Critical Hit!"), 12, 10, 128);
+         Briefing::addText(12, 10, 128, gettext("Critical Hit!"));
+#if 0
          /* Show critical hit */
          controller.addMessage(actor->scNode->getPosX(),
                actor->scNode->getPosY()+actor->scNode->getBoundingBox().max.y,
                actor->scNode->getPosZ(),gettext("Critical Hit!"),
                0.84,0.2,0.01);
+#endif
       }
 
    }
+
+   //TODO: messages and particles!
+#if 0
    /* Show Damage */
    sprintf(texto,"%d",damage);
    if(heal)

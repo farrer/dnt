@@ -19,7 +19,7 @@
 */
 
 #include "bonusandsaves.h"
-//#include "../engine/briefing.h"
+#include "../gui/briefing.h"
 #include "../lang/translate.h"
 #include "dices.h"
 using namespace DNT;
@@ -118,7 +118,7 @@ Kobold::String AttackBonus::toString()
       res = "0";
    }
 
-   return(res);
+   return res;
 }
 
 /***********************************************************************
@@ -126,7 +126,7 @@ Kobold::String AttackBonus::toString()
  ***********************************************************************/
 int AttackBonus::toInt()
 {
-   return(bonus[0]);
+   return bonus[0];
 }
 
 /***********************************************************************
@@ -136,10 +136,10 @@ int AttackBonus::getBonus(int attackNumber)
 {
    if( (attackNumber > 0) && (attackNumber <= MAX_ATTACKS))
    {
-      return(bonus[attackNumber-1]);
+      return bonus[attackNumber-1];
    }
 
-   return(0);
+   return 0;
 }
 
 /***********************************************************************
@@ -172,7 +172,7 @@ AttackBonus& AttackBonus::operator=(const AttackBonus& atBonus)
       bonus[i] = atBonus.bonus[i];
    }
 
-   return(*this);
+   return *this;
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -242,7 +242,7 @@ BonusAndSaves BonusAndSaves::operator+(const BonusAndSaves& b)
    res.fortitude = fortitude + b.fortitude;
    res.baseAttackBonus = baseAttackBonus + b.baseAttackBonus;
 
-   return(res);
+   return res;
 }
 
 /***********************************************************************
@@ -255,7 +255,7 @@ BonusAndSaves& BonusAndSaves::operator=(const BonusAndSaves& b)
    reflexes = b.reflexes;
    fortitude = b.fortitude;
    baseAttackBonus = b.baseAttackBonus;
-   return(*this);
+   return *this;
 }
 
 /***********************************************************************
@@ -265,23 +265,23 @@ int BonusAndSaves::getValue(Kobold::String state)
 {
    if(state == DNT_BS_LEVEL)
    {
-      return(level);
+      return level;
    }
    else if(state == DNT_BS_FORTITUDE)
    {
-      return(fortitude);
+      return fortitude;
    }
    else if(state == DNT_BS_REFLEXES)
    {
-      return(reflexes);
+      return reflexes;
    }
    else if( (state == DNT_BS_I_AM_NOT_A_FOOL) ||
             (state == DNT_BS_WILL))
    {
-      return(iAmNotAFool);
+      return iAmNotAFool;
    }
 
-   return(0);
+   return 0;
 }
 
 /***********************************************************************
@@ -295,7 +295,6 @@ bool BonusAndSaves::doCheck(Kobold::String stateToCheck, int difficulty,
    int value = 0;
    CheckType checkType = CHECK_ROLL;
    Kobold::String stateName = "";
-   //TODO: Briefing brief;
    Dice d20(Dice::DICE_TYPE_D20);
 
    /* Let's get the state (if defined) */
@@ -333,7 +332,7 @@ bool BonusAndSaves::doCheck(Kobold::String stateToCheck, int difficulty,
       {
          value += d20.roll();
       }
-      //TODO: brief.addCheckText(stateName, value, difficulty);
+      Briefing::addCheckText(stateName, value, difficulty);
       checkRes = (value >= difficulty);
    }
 
@@ -389,3 +388,4 @@ AttackBonus* BonusAndSaves::getBaseAttackBonus()
 {
    return &baseAttackBonus;
 }
+

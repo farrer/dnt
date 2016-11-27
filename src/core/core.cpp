@@ -22,11 +22,14 @@
 #include <farso/font.h>
 
 #include "core.h"
+
 #include "../rules/alignment.h"
 #include "../rules/feats.h"
 #include "../rules/race.h"
 #include "../rules/classes.h"
 #include "../rules/skills.h"
+
+#include "../gui/briefing.h"
 
 #include <OGRE/Terrain/OgreTerrainMaterialGenerator.h>
 
@@ -60,6 +63,7 @@ Core::~Core()
    Races::finish();
    Classes::finish();
    FeatsList::finish();
+   Briefing::finish();
    Farso::Controller::finish();
 }
 
@@ -162,6 +166,9 @@ bool Core::doInit()
    Farso::FontManager::setDefaultFont("LiberationSans-Regular.ttf");
    Farso::Controller::loadSkin("skins/moderna.skin");
    Farso::Controller::setCursor("cursor/sel.png");
+
+   /* Init our widgets */
+   Briefing::init();
 
    /* Init our rules */
    Alignments::init();

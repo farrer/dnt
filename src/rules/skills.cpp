@@ -25,6 +25,7 @@
 #include <kobold/log.h>
 
 #include "../lang/translate.h"
+#include "../gui/briefing.h"
 
 #include <OGRE/OgreMath.h>
 
@@ -499,8 +500,7 @@ bool Skills::doSkillCheck(Skill* sk, int difficulty)
    res = (value >= difficulty);
 
    /* Brief the result */
-   //TODO: brief.addCheckText(sk->getDefinition()->getName(), value, 
-   //difficulty);
+   Briefing::addCheckText(sk->getDefinition()->getName(), value, difficulty);
 
    /* Done */
    return res;
