@@ -117,6 +117,11 @@ class Thing : public Kobold::ListElement
        * \param something -> factor info
        * \return its value */
       int getFactorValue(Factor& something);
+     
+      /*! Increment a factor value by 'inc'
+       * \param something factor to increment
+       * \param inc value of the increment */
+      void incFactorValue(Factor& something, int inc);
 
       /*! \return current bonus and saves */
       BonusAndSaves* getCurBonusAndSaves();
@@ -130,6 +135,9 @@ class Thing : public Kobold::ListElement
       /*! Set conversation file.
        * \param fileName name of the conversation file */
       void setConversationFile(Ogre::String fileName);
+
+      /*! \return thing's skills */
+      Skills* getSkills();
 
       /*! Function that implements the normal interaction (not on batle) 
        * between a PlayableCharacter and the Thing. */

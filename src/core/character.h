@@ -22,19 +22,40 @@
 #define _dnt_character_h
 
 #include "../rules/thing.h"
+#include "../rules/modeffect.h"
 
 namespace DNT
 {
 
-/*! A Character is a living Thing. Coulb be playable by human 
- * (PlayableCharacter, or PC) or by the AI (NonPlayableCharacter, aka NPC). */
-class Character : public Thing
-{
-   public:
-      /*! Constructor */
-      Character();
-      /*! Destructor */
-      virtual ~Character();
+   /*! A Character is a living Thing. Coulb be playable by human 
+    * (PlayableCharacter, or PC) or by the AI (NonPlayableCharacter, aka NPC). */
+   class Character : public Thing
+   {
+      public:
+         /*! Constructor */
+         Character();
+         /*! Destructor */
+         virtual ~Character();
+
+         /*! Add a modEffect to the Character
+          * \param mod -> modifier value
+          * \param time -> time to expire (0 == forever)
+          * \param periodicTime -> time to apply the modEffect again 
+          *                        (0 to not re-apply)
+          * \param factorId -> id of the target factor
+          * \param factorType -> type of the target factor */
+         void addModEffect(int mod, int time, int periodicTime,
+               Kobold::String factorId, Kobold::String factorType);
+
+         /*! Remove all modEffects from the Character */
+         void removeAllModEffects();
+
+         /*! Get the modEffectList pointer
+          * \return pointer to the modEffectList */
+         ModEffectList* getEffects();
+
+         /*! Update all effects affecting the Character */
+         void updateEffects();
 
    protected:
 
@@ -51,6 +72,7 @@ class Character : public Thing
    private:
 
       bool dead; /**< If the character is actually dead (just a corpse). */
+      ModEffectList* effects;     /**< Current Character effects */
 };
 
 }

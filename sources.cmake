@@ -37,6 +37,7 @@ src/rules/bonusandsaves.cpp
 src/rules/classes.cpp
 src/rules/dices.cpp
 src/rules/feats.cpp
+src/rules/modeffect.cpp
 src/rules/modifier.cpp
 src/rules/race.cpp
 src/rules/ruledef.cpp
@@ -50,7 +51,8 @@ src/rules/bonusandsaves.h
 src/rules/classes.h
 src/rules/dices.h
 src/rules/feats.h
-src/rules/modifier.cpp
+src/rules/modeffect.h
+src/rules/modifier.h
 src/rules/race.h
 src/rules/ruledef.h
 src/rules/skills.h

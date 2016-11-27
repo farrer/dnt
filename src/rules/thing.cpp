@@ -368,6 +368,79 @@ int Thing::getFactorValue(Factor& something)
 }
 
 /**************************************************************************
+ *                           incFactorValue                               *
+ **************************************************************************/
+void Thing::incFactorValue(Factor& something, int inc)
+{
+   Skill* s = NULL;
+
+   if( (something.getType() == MOD_TYPE_ATT) ||
+       (something.getType() == MOD_TYPE_SKILL) )
+   {
+      s = sk.getSkillByString(something.getId());
+      if(s)
+      {
+         s->setPoints(inc + s->getPoints());
+      }
+      else
+      {
+         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+               "Warning: Unknow skill '%s'", something.getId().c_str());
+      }
+   }
+   else if(something.getType() == MOD_TYPE_THING)
+   {
+      if(something.getId() == THING_ARMATURE_CLASS)
+      {
+         armatureClass += inc;
+      }
+      else if(something.getId() == THING_INITIATIVE_BONUS)
+      {
+         initiativeBonus += inc;
+      }
+      else if(something.getId() == THING_DISPLACEMENT)
+      {
+         displacement += inc;
+      }
+      else if(something.getId() == THING_MAX_LIFE_POINTS)
+      {
+         maxLifePoints += inc;
+      }
+      else if((something.getId() == DNT_BS_LEVEL) ||
+              (something.getId() == DNT_BS_FORTITUDE) ||
+              (something.getId() == DNT_BS_REFLEXES) ||
+              (something.getId() == DNT_BS_I_AM_NOT_A_FOOL) ||
+              (something.getId() == DNT_BS_WILL) )
+      {
+         int v = curBonusAndSaves.getValue(something.getId());
+
+         if(something.getId() == DNT_BS_FORTITUDE)
+         {
+            curBonusAndSaves.setFortitude(v + inc);
+         }
+         else if(something.getId() == DNT_BS_REFLEXES)
+         {
+         }
+         else if((something.getId() == DNT_BS_I_AM_NOT_A_FOOL) ||
+                 (something.getId() == DNT_BS_WILL))
+         {
+            curBonusAndSaves.setIAmNotAFool(v + inc);
+         }
+      }
+      else
+      {
+         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+               "Warning: Unknow factor '%s'", something.getId().c_str());
+      }
+   }
+   else
+   {
+      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+            "Warning: Unknow factor type: ", something.getType().c_str());
+   }
+}
+
+/**************************************************************************
  *                            getCurBonusAndSaves                         *
  **************************************************************************/
 BonusAndSaves* Thing::getCurBonusAndSaves()
@@ -397,6 +470,14 @@ bool Thing::hasConversationFile()
 void Thing::setConversationFile(Ogre::String fileName)
 {
    conversationFile = fileName;
+}
+
+/**************************************************************************
+ *                                  getSkills                             *
+ **************************************************************************/
+Skills* Thing::getSkills()
+{
+   return &sk;
 }
 
 /**************************************************************************
