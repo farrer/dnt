@@ -58,6 +58,12 @@ src/rules/ruledef.h
 src/rules/skills.h
 src/rules/thing.h
 )
+set(FIGHT_SOURCES
+src/fight/initiative.cpp
+)
+set(FIGHT_HEADERS
+src/fight/initiative.h
+)
 set(LANG_SOURCES
 src/lang/translate.cpp
 )
@@ -81,6 +87,7 @@ set(DNT_LIB_HEADERS
 ${CORE_HEADERS}
 ${MAP_HEADERS}
 ${RULES_HEADERS}
+${FIGHT_HEADERS}
 ${LANG_HEADERS}
 ${APPLE_CONFIG_HEADERS}
 )
@@ -89,6 +96,7 @@ set(DNT_LIB_SOURCES
 ${CORE_SOURCES}
 ${MAP_SOURCES}
 ${RULES_SOURCES}
+${FIGHT_SOURCES}
 ${LANG_SOURCES}
 ${APPLE_CONFIG_SOURCES}
 )
