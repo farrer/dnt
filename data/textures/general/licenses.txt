@@ -1,0 +1,10 @@
+brief.png  
+   author: farrer (DNTeam)
+   license: GPLv3
+
+lock.png
+   author: yd
+   license: CC0
+   source: http://opengameart.org/content/pointers
+
+
