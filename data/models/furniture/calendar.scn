@@ -1,0 +1,5 @@
+name = gettext("Calendar")
+description = gettext("A way to check days passing by.")
+model = furniture/calendar.mesh
+walkable = false
+

@@ -1,4 +1,9 @@
 caixa1.png, caixa2.png
-   Author: DNTeam
-   License: GPLv3
+   author: DNTeam
+   license: GPLv3
+
+apple_crate.png
+   author: Clint Bellanger
+   license: CC-BY 3.0
+   source: http://opengameart.org/content/wood-apple-crate
 
