@@ -1,0 +1,5 @@
+name = gettext("Anatomy Poster")
+description = gettext("Learn about the anatomy of Homo-DNTpiens.")
+model = furniture/poster.mesh
+walkable = false
+

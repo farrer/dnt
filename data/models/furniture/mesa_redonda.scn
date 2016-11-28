@@ -1,0 +1,5 @@
+name = gettext("Rounded Table")
+description = gettext("A table probably used by knights.")
+model = furniture/mesa_redonda.mesh
+walkable = false
+

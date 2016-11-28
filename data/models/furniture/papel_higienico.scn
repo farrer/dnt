@@ -1,0 +1,5 @@
+name = gettext("Toilet Paper")
+description = gettext("Must have one at hand sometimes.")
+model = furniture/papel_higienico.mesh
+walkable = false
+

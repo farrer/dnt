@@ -1,0 +1,5 @@
+name = gettext("Toilet")
+description = gettext("Please, flush it after use.")
+model = furniture/privada.mesh
+walkable = false
+

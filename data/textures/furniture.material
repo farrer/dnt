@@ -368,3 +368,118 @@ material pc_chair
    }
 }
 
+material mesa_redonda
+{
+   technique
+   {
+      pass
+      {
+         ambient 0.500000 0.500000 0.500000 1.000000
+         diffuse 0.640000 0.640000 0.640000 1.000000
+         specular 0.500000 0.500000 0.500000 1.000000 12.500000
+         emissive 0.300000 0.300000 0.300000 1.000000
+         texture_unit
+         {
+            texture furniture/mesa_redonda.png
+            tex_address_mode wrap
+            filtering trilinear
+         }
+         rtshader_system
+         {
+         }
+      }
+   }
+}
+
+material meuble
+{
+   technique
+   {
+      pass
+      {
+         ambient 0.500000 0.500000 0.500000 1.000000
+         diffuse 0.640000 0.640000 0.640000 1.000000
+         specular 0.500000 0.500000 0.500000 1.000000 12.500000
+         emissive 0.300000 0.300000 0.300000 1.000000
+         texture_unit
+         {
+            texture furniture/meuble.png
+            tex_address_mode wrap
+            filtering trilinear
+         }
+         rtshader_system
+         {
+         }
+      }
+   }
+}
+
+material privada
+{
+   technique
+   {
+      pass
+      {
+         ambient 0.500000 0.500000 0.500000 1.000000
+         diffuse 0.640000 0.640000 0.640000 1.000000
+         specular 0.500000 0.500000 0.500000 1.000000 12.500000
+         emissive 0.300000 0.300000 0.300000 1.000000
+         texture_unit
+         {
+            texture furniture/privada.png
+            tex_address_mode wrap
+            filtering trilinear
+         }
+         rtshader_system
+         {
+         }
+      }
+   }
+}
+
+material papel_higienico
+{
+   technique
+   {
+      pass
+      {
+         ambient 0.500000 0.500000 0.500000 1.000000
+         diffuse 0.640000 0.640000 0.640000 1.000000
+         specular 0.500000 0.500000 0.500000 1.000000 12.500000
+         emissive 0.300000 0.300000 0.300000 1.000000
+         texture_unit
+         {
+            texture furniture/papel_higienico.png
+            tex_address_mode wrap
+            filtering trilinear
+         }
+         rtshader_system
+         {
+         }
+      }
+   }
+}
+
+material poster
+{
+   technique
+   {
+      pass
+      {
+         ambient 0.500000 0.500000 0.500000 1.000000
+         diffuse 0.640000 0.640000 0.640000 1.000000
+         specular 0.500000 0.500000 0.500000 1.000000 12.500000
+         emissive 0.300000 0.300000 0.300000 1.000000
+         texture_unit
+         {
+            texture furniture/poster.png
+            tex_address_mode wrap
+            filtering trilinear
+         }
+         rtshader_system
+         {
+         }
+      }
+   }
+}
+

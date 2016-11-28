@@ -1,4 +1,5 @@
-cadeira.png, bookshelf.png, estante.png, pia.png, pc_char.png pc_table.png
+cadeira.png bookshelf.png estante.png papel_higienico pia.png
+pc_char.png pc_table.png:
    author: Estrada Real Digital (ERD)
    license: GPLv2
    source: http://sourceforge.net/projects/erd/
