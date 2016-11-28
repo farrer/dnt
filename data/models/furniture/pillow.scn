@@ -1,0 +1,5 @@
+name = gettext("Pillow")
+description = gettext("A place where your cats love to sit and calm down.")
+model = furniture/pillow.mesh
+walkable = false
+
