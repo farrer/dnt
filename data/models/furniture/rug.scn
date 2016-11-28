@@ -1,0 +1,5 @@
+name = gettext("Rug")
+description = gettext("Put your feet or just sleep on it.")
+model = furniture/rug.mesh
+walkable = true
+

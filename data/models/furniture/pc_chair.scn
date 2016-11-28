@@ -1,0 +1,5 @@
+name = gettext("Chair")
+description = gettext("A place to sit while using a computer.")
+model = furniture/pc_chair.mesh
+walkable = false
+

@@ -1,0 +1,5 @@
+name = gettext("Table")
+description = gettext("A place where you can put some computer on.")
+model = furniture/pc_table.mesh
+walkable = false
+
