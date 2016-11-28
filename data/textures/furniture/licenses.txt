@@ -3,6 +3,12 @@ cadeira.png, bookshelf.png, estante.png, pia.png
    license: GPLv2
    source: http://sourceforge.net/projects/erd/
 
+fridge.png
+   author: Andrew Kator & Jennifer Legaz
+           Some modifications by farrer (DNTeam).
+   license: CC-BY 3.0
+   source: http://www.katorlegaz.com/3d_models/transport_sidewalks/0206
+
 letto.png:
    author: Tiziana aka TiZeta
    license: CC-BY 2.0

@@ -44,6 +44,11 @@ class Object : public Thing
       virtual bool doObjectSpecializationParse(Ogre::String key, 
             Ogre::String value) = 0;
 
+   private:
+     
+      Ogre::Vector2 inventorySize;
+      Farso::Surface* inventoryImage;
+
 };
 
 }

@@ -1,0 +1,5 @@
+name = gettext("Fridge")
+description = gettext("When plugged to eletricity, kept cool inside.")
+model = furniture/fridge.mesh
+walkable = false
+
