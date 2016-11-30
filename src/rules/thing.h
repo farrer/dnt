@@ -42,6 +42,8 @@ namespace DNT
 #define THING_DISPLACEMENT      "DISPLACEMENT"
 #define THING_MAX_LIFE_POINTS   "MAX_LIFE_POINTS"
 
+#define THING_UNKNOWN_VALUE  -100
+
 /*! Base RPG class for characters (PCs and NPCs) and objects */
 class Thing : public Kobold::ListElement
 {
@@ -80,6 +82,10 @@ class Thing : public Kobold::ListElement
       /*! \return #state */
       int getState();
 
+      /*! Set thing's internal state.
+       * \param state state value */
+      void setState(int state);
+
       /*! \return #lifePoints */
       int getLifePoints();
 
@@ -110,12 +116,12 @@ class Thing : public Kobold::ListElement
 
       /*! Get the bonus Value (modifier or not).
        *  \param something -> number of the definition.
-       *  \return bonus. */
+       *  \return bonus (or THING_UNKNOWN_VALUE if not found). */
       int getBonusValue(Factor& something);
 
       /*! Get a factor value
        * \param something -> factor info
-       * \return its value */
+       * \return its value (or THING_UNKNWOWN_VALUE if not found) */
       int getFactorValue(Factor& something);
      
       /*! Increment a factor value by 'inc'
@@ -138,6 +144,11 @@ class Thing : public Kobold::ListElement
 
       /*! \return thing's skills */
       Skills* getSkills();
+
+      /*! Do a check (skill, saves, etc) against the difficulty.
+       * \param difficulty -> Difficulty of the check
+       * \return true if succed, false if failed. */
+      bool doCheck(Kobold::String stateToCheck, int difficulty);
 
       /*! Function that implements the normal interaction (not on batle) 
        * between a PlayableCharacter and the Thing. */

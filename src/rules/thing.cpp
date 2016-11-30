@@ -189,6 +189,14 @@ int Thing::getState()
 }
 
 /**************************************************************************
+ *                               setState                                 *
+ **************************************************************************/
+void Thing::setState(int state)
+{
+   this->state = state;
+}
+
+/**************************************************************************
  *                               getLifePoints                            *
  **************************************************************************/
 int Thing::getLifePoints()
@@ -284,7 +292,7 @@ int Thing::getBonusValue(Factor& something)
       {
          Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
              "Unknow Attribute (Skill): ", something.getId().c_str());
-         return -1;
+         return THING_UNKNOWN_VALUE;
       }
    }
    else if(something.getType() == MOD_TYPE_SKILL)
@@ -298,7 +306,7 @@ int Thing::getBonusValue(Factor& something)
       {
          Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
                "Unknow Skill: '%s'", something.getId().c_str());
-         return -1;
+         return THING_UNKNOWN_VALUE;
       }
    }
 
@@ -364,7 +372,7 @@ int Thing::getFactorValue(Factor& something)
             "Warning: Unknow factor type: ", something.getType().c_str());
    }
 
-   return -1;
+   return THING_UNKNOWN_VALUE;
 }
 
 /**************************************************************************
@@ -478,6 +486,36 @@ void Thing::setConversationFile(Ogre::String fileName)
 Skills* Thing::getSkills()
 {
    return &sk;
+}
+
+/**************************************************************************
+ *                                   doCheck                              *
+ **************************************************************************/
+bool Thing::doCheck(Kobold::String stateToCheck, int difficulty)
+{
+   Skill* skl;
+   bool couldCheck = false;
+   bool res;
+
+   /* First, let's test as skill */
+   skl = sk.getSkillByString(stateToCheck);
+   if(skl != NULL)
+   {
+      return sk.doSkillCheck(skl, difficulty);
+   }
+
+   /* Nope, so let's test as a bonus and Save */
+   res = curBonusAndSaves.doCheck(stateToCheck, difficulty, &couldCheck);
+   if(couldCheck)
+   {
+      return res;
+   }
+
+   /* Unknow! */
+   Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+         "Warning: thing::doCheck - Unknown state to check: '%s'",
+         stateToCheck.c_str());
+   return false;
 }
 
 /**************************************************************************

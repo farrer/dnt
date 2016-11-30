@@ -20,7 +20,7 @@
 
 #include "modeffect.h"
 #include "skills.h"
-#include "../core/character.h"
+#include "character.h"
 
 #include <kobold/log.h>
 

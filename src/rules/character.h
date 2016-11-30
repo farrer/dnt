@@ -57,6 +57,13 @@ namespace DNT
          /*! Update all effects affecting the Character */
          void updateEffects();
 
+         /*! Verify if the Character alignment is of type represented by al
+          * \param al -> string with align type
+          * \return -> true if the align string identifier have the string al
+          *            in it, false otherwise. 
+          * \note -> a common use is, for example: isAlignOf("FREE_SOFTWARE") */
+         bool isAlignOf(Kobold::String al);
+
    protected:
 
       /*! Parse key/value pairs specific to the character thing's 

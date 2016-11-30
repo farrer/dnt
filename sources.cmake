@@ -6,14 +6,15 @@
 ########################################################################
 set(CORE_SOURCES
 src/core/core.cpp
+src/core/dialog.cpp
 src/core/door.cpp
 src/core/object.cpp
 src/core/scenery.cpp
 src/core/util.cpp
 )
 set(CORE_HEADERS
-src/core/character.h
 src/core/core.h
+src/core/dialog.h
 src/core/door.h
 src/core/item.h
 src/core/nonplayablecharacter.h
@@ -34,6 +35,7 @@ set(RULES_SOURCES
 src/rules/actions.cpp
 src/rules/alignment.cpp
 src/rules/bonusandsaves.cpp
+src/rules/character.cpp
 src/rules/classes.cpp
 src/rules/dices.cpp
 src/rules/feats.cpp
@@ -48,6 +50,7 @@ set(RULES_HEADERS
 src/rules/actions.h
 src/rules/alignment.h
 src/rules/bonusandsaves.h
+src/rules/character.h
 src/rules/classes.h
 src/rules/dices.h
 src/rules/feats.h

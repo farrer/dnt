@@ -23,7 +23,7 @@
 
 #include <kobold/list.h>
 
-#include "../core/character.h"
+#include "../rules/character.h"
 
 namespace DNT
 {
