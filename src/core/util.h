@@ -24,6 +24,8 @@
 #ifndef _dnt_util_h
 #define _dnt_util_h
 
+#include "dntconfig.h"
+
 namespace DNT
 {
 

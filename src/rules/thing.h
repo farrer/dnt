@@ -21,13 +21,14 @@
 #ifndef dnt_thing_h
 #define dnt_thing_h
 
+#include "dntconfig.h"
+
+#include "bonusandsaves.h"
+#include "skills.h"
+
 #include <goblin/model3d.h>
 #include <kobold/list.h>
 #include <OGRE/OgreSceneManager.h>
-
-#include "modifier.h"
-#include "skills.h"
-#include "bonusandsaves.h"
 
 #include <map>
 

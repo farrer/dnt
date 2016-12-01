@@ -21,6 +21,8 @@
 #ifndef _dnt_map_h
 #define _dnt_map_h
 
+#include "dntconfig.h"
+
 #include "indoortexturemesh.h"
 #include <kobold/list.h>
 

@@ -21,6 +21,7 @@
 #ifndef _dnt_skills_h
 #define _dnt_skills_h
 
+#include "dntconfig.h"
 #include "ruledef.h"
 
 namespace DNT
@@ -51,8 +52,6 @@ class SkillDefinition : public RuleDefinition
       int baseAttribute;    /**< Base Attibute */
       bool isAttr;     /**< True if the Skill is an attribute */
 };
-
-class Skills;
 
 /*! The individual Skill representation (used to store current Thing's points
  * on a skill, it's modifier, etc.) */

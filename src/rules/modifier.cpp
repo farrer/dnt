@@ -20,6 +20,8 @@
 
 #include "modifier.h"
 
+#include "skills.h"
+
 #include <kobold/log.h>
 #include <OGRE/OgreString.h>
 #include <stdio.h>

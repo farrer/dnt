@@ -22,6 +22,7 @@
 #ifndef _dnt_playable_character_h
 #define _dnt_playable_character_h
 
+#include "dntconfig.h"
 #include "../rules/character.h"
 
 namespace DNT

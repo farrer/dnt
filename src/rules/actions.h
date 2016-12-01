@@ -21,12 +21,11 @@
 #ifndef _dnt_actions_h
 #define _dnt_actions_h
 
+#include "dntconfig.h"
+
 #include <kobold/kstring.h>
 #include <OGRE/OgrePrerequisites.h>
 
-#include "thing.h"
-#include "dices.h"
-#include "modifier.h"
 
 #define ACT_STR_OPEN                 "ACT_OPEN"
 #define ACT_STR_ATTACK               "ACT_ATTACK"

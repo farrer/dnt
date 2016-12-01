@@ -21,6 +21,8 @@
 #ifndef _dnt_bonus_and_saves_h
 #define _dnt_bonus_and_saves_h
 
+#include "dntconfig.h"
+
 #include <kobold/kstring.h>
 
 namespace DNT

@@ -21,8 +21,9 @@
 #ifndef _dnt_modifier_h
 #define _dnt_modifier_h
 
+#include "dntconfig.h"
+
 #include <kobold/kstring.h>
-#include "skills.h"
 
 namespace DNT
 {

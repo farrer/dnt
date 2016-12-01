@@ -21,16 +21,15 @@
 #ifndef _dnt_modeffect_h
 #define _dnt_modeffect_h
 
+#include "dntconfig.h"
+
 #include <kobold/kstring.h>
 #include <kobold/list.h>
 #include <kobold/timer.h>
 
-#include "modifier.h"
 
 namespace DNT
 {
-
-class Character;
 
 /*! Status modifier effect - A temporally effect to some status that affects
  * characters. */

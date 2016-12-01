@@ -21,6 +21,7 @@
 #ifndef _dnt_scenery_h
 #define _dnt_scenery_h
 
+#include "dntconfig.h"
 #include "object.h"
 
 namespace DNT

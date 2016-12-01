@@ -20,7 +20,13 @@
 
 
 #include "thing.h"
+
+#include "modifier.h"
+#include "skills.h"
+#include "bonusandsaves.h"
+
 #include "../lang/translate.h"
+
 #include <kobold/defparser.h>
 #include <kobold/log.h>
 

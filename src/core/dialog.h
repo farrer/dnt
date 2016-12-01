@@ -21,12 +21,10 @@
 #ifndef _dnt_core_dialog_h
 #define _dnt_core_dialog_h
 
+#include "dntconfig.h"
+
 #include <kobold/list.h>
 #include <kobold/kstring.h>
-
-#include "../rules/thing.h"
-#include "playablecharacter.h"
-
 
 /*! \file dialog.h Define Conversations options.*/
 

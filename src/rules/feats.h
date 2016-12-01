@@ -21,15 +21,14 @@
 #ifndef _dnt_feats_h
 #define _dnt_feats_h
 
-#include <kobold/kstring.h>
-#include <kobold/list.h>
+#include "dntconfig.h"
 
-#include "actions.h"
 #include "ruledef.h"
-#include "thing.h"
+#include "actions.h"
 #include "modifier.h"
 
-#include "../lang/translate.h"
+#include <kobold/kstring.h>
+#include <kobold/list.h>
 
 namespace DNT
 {
@@ -149,8 +148,6 @@ class FeatDescription : public RuleDefinition
       Kobold::List reqFactors;     /**< List of required Factors */
       Kobold::List depFeats;       /**< Feat Dependency list */
 };
-
-class Feats;
 
 /*! The Feat is the internal Feat definition per characters,
  * with only the requerided fields to avoid loss memory with

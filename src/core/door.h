@@ -21,6 +21,7 @@
 #ifndef _dnt_door_h
 #define _dnt_door_h
 
+#include "dntconfig.h"
 #include "object.h"
 
 namespace DNT

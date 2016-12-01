@@ -21,6 +21,8 @@
 #ifndef _dnt_dices_h
 #define _dnt_dices_h
 
+#include "dntconfig.h"
+
 namespace DNT
 {
 

@@ -23,6 +23,8 @@
 
 #include "core.h"
 
+#include "../map/map.h"
+
 #include "../rules/alignment.h"
 #include "../rules/feats.h"
 #include "../rules/race.h"

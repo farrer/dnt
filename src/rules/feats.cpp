@@ -23,6 +23,11 @@
 #include <kobold/log.h>
 #include <kobold/defparser.h>
 
+#include "actions.h"
+#include "ruledef.h"
+#include "thing.h"
+#include "modifier.h"
+
 #include "../lang/translate.h"
 #include "../core/util.h"
 #include "../gui/briefing.h"

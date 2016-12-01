@@ -21,11 +21,11 @@
 #ifndef _dnt_classes_h
 #define _dnt_classes_h
 
+#include "dntconfig.h"
+
 #include "ruledef.h"
-#include "skills.h"
-#include "feats.h"
-#include "modifier.h"
 #include "bonusandsaves.h"
+#include "modifier.h"
 
 namespace DNT
 {

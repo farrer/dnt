@@ -19,6 +19,13 @@
 */
 
 #include "race.h"
+
+#include "modifier.h"
+#include "feats.h"
+#include "skills.h"
+
+#include "../lang/translate.h"
+
 #include <kobold/defparser.h>
 #include <kobold/log.h>
 using namespace DNT;

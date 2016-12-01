@@ -21,6 +21,7 @@
 #ifndef _dnt_item_h
 #define _dnt_item_h
 
+#include "dntconfig.h"
 #include "object.h"
 
 namespace DNT

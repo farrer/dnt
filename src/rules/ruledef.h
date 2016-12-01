@@ -21,6 +21,8 @@
 #ifndef _dnt_ruledef_h
 #define _dnt_ruledef_h
 
+#include "dntconfig.h"
+
 #include <kobold/kstring.h>
 #include <farso/controller.h>
 

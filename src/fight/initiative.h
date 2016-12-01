@@ -21,9 +21,8 @@
 #ifndef _dnt_initiative_h
 #define _dnt_initiative_h
 
+#include "dntconfig.h"
 #include <kobold/list.h>
-
-#include "../rules/character.h"
 
 namespace DNT
 {

@@ -22,10 +22,10 @@
 #ifndef _dnt_core_h_
 #define _dnt_core_h
 
+#include "dntconfig.h"
 #include <goblin/baseapp.h>
 #include <OGRE/Terrain/OgreTerrain.h>
 #include <OGRE/Terrain/OgreTerrainGroup.h>
-#include "../map/map.h"
 
 namespace DNT
 {

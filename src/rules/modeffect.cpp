@@ -19,6 +19,8 @@
 */
 
 #include "modeffect.h"
+
+#include "modifier.h"
 #include "skills.h"
 #include "character.h"
 

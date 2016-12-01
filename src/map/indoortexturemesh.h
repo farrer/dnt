@@ -23,6 +23,8 @@
 #ifndef _dnt_indoor_texture_mesh_h
 #define _dnt_indoor_texture_mesh_h
 
+#include "dntconfig.h"
+
 #include <kobold/list.h>
 #include <OGRE/OgreManualObject.h>
 #include <OGRE/OgreSceneManager.h>

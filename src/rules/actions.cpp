@@ -19,8 +19,12 @@
 */
 
 #include "actions.h"
-#include "../core/util.h"
 
+#include "thing.h"
+#include "dices.h"
+#include "modifier.h"
+
+#include "../core/util.h"
 #include "../gui/briefing.h"
 
 #include <kosound/sound.h>

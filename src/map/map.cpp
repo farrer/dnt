@@ -21,6 +21,8 @@
 
 #include "map.h"
 
+#include "indoortexturemesh.h"
+
 #include "../rules/thing.h"
 #include "../core/scenery.h"
 

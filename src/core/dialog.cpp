@@ -19,7 +19,12 @@
 */
 
 #include "dialog.h"
+#include "playablecharacter.h"
+
+#include "../rules/thing.h"
 #include "../lang/translate.h"
+
+#include "../rules/modifier.h"
 
 #include <kobold/log.h>
 #include <kosound/sound.h>

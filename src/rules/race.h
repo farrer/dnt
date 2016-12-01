@@ -21,10 +21,9 @@
 #ifndef _dnt_race_h
 #define _dnt_race_h
 
+#include "dntconfig.h"
+
 #include "ruledef.h"
-#include "modifier.h"
-#include "feats.h"
-#include "skills.h"
 
 namespace DNT
 {

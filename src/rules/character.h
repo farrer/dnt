@@ -21,8 +21,9 @@
 #ifndef _dnt_character_h
 #define _dnt_character_h
 
-#include "../rules/thing.h"
-#include "../rules/modeffect.h"
+#include "dntconfig.h"
+
+#include "thing.h"
 
 namespace DNT
 {

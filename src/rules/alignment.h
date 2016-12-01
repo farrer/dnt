@@ -21,6 +21,8 @@
 #ifndef _dnt_alignment_h
 #define _dnt_alignment_h
 
+#include "dntconfig.h"
+
 #include "ruledef.h"
 
 #include <kobold/list.h>

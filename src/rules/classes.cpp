@@ -20,7 +20,14 @@
 
 #include "classes.h"
 
+#include "ruledef.h"
+#include "skills.h"
+#include "feats.h"
+#include "modifier.h"
+#include "bonusandsaves.h"
+
 #include "../lang/translate.h"
+
 #include <kobold/log.h>
 #include <kobold/defparser.h>
 
