@@ -98,6 +98,9 @@ namespace DNT
          void applyBonusAndSaves();
 
    protected:
+      /*! Get first available empty class index on character classes vector
+       * \return index first empty index or -1 if full. */
+      int getEmptyClassIndex();
 
       /*! Insert all default needed feats for a character. This function will
        * insert, for example, base weapon attack feat, which is indispensable

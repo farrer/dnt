@@ -26,6 +26,8 @@
 #include "feats.h"
 #include "modeffect.h"
 
+#include <kobold/log.h>
+
 #include <assert.h>
 
 using namespace DNT;
@@ -130,11 +132,101 @@ bool Character::isAlignOf(Kobold::String al)
 }
 
 /***********************************************************************
+ *                           getEmptyClassIndex                        *
+ ***********************************************************************/
+int Character::getEmptyClassIndex()
+{
+   for(int i = 0; i < CHARACTER_MAX_DISTINCT_CLASSES; i++)
+   {
+      if(classes[i] == NULL)
+      {
+         return i;
+      }
+   }
+   return -1;
+}
+
+#define CHARACTER_KEY_PORTRAIT "portrait"
+#define CHARACTER_KEY_WALK_INTERVAL "walk_interval"
+#define CHARACTER_KEY_BLOOD_POSITION "bloodPosition"
+#define CHARACTER_KEY_BLOOD_PARTICLE "bloodParticle"
+#define CHARACTER_KEY_RACE "race"
+#define CHARACTER_KEY_CLASS "class"
+#define CHARACTER_KEY_ALIGNMENT "align"
+
+/***********************************************************************
  *                           doSpecificParse                           *
  ***********************************************************************/
 bool Character::doSpecificParse(Ogre::String key, Ogre::String value)
 {
-   //TODO
+   /* Portrait */
+   if(key == CHARACTER_KEY_PORTRAIT)
+   {
+      //TODO: load portrait
+      return true;
+   }
+   /* Walk Interval */
+   else if(key == CHARACTER_KEY_WALK_INTERVAL)
+   {
+      //TODO
+      return true;
+   }
+   /* Blood position */
+   else if(key == CHARACTER_KEY_BLOOD_POSITION)
+   {
+      //TODO: particles
+      return true;
+   }
+   /* Blood particle */
+   else if(key == CHARACTER_KEY_BLOOD_PARTICLE)
+   {
+      //TODO: particles
+      return true;
+   }
+   /* Race */
+   else if(key == CHARACTER_KEY_RACE)
+   {
+      race = Races::getRaceByString(value);
+      if(race == NULL)
+      {
+         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+               "Error: Unknown race '%s' for character!", value.c_str());
+      }
+      return true;
+   }
+   /* Alignment */
+   else if(key == CHARACTER_KEY_ALIGNMENT)
+   {
+      curAlign = Alignments::getAlignmentByString(value);
+      if(curAlign == NULL)
+      {
+         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+               "Error: Unknown alignment '%s' for character!", value.c_str());
+      }
+      return true;
+   }
+   /* Class */
+   else if(key == CHARACTER_KEY_CLASS)
+   {
+      int cindex = getEmptyClassIndex();
+      if(cindex != -1)
+      {
+         /* Parse class name and level */
+         char buf[128];
+         int lvl = 0;
+         sscanf(value.c_str(), "%s %d", &buf[0], &lvl);
+         /* Set it */
+         classes[cindex] = Classes::getClassByString(buf);
+         classLevel[cindex] = lvl;
+      }
+      else
+      {
+         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+               "Error: class overflow for character with value '%s'",
+               value.c_str());
+      }
+   }
+
    return doCharacterSpecializationParse(key, value);
 }
 

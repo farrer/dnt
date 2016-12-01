@@ -49,8 +49,6 @@ class NonPlayableCharacter : public Character
       PsychoState psychoState; /**< Psycho state of the thing relative to
                                     current PCs */
 
-      //Conversation* conversation; /**< NPC possible conversation */
-
 };
 
 }

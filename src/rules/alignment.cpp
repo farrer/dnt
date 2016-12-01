@@ -133,7 +133,7 @@ void Alignments::insertAlign(Kobold::String filename, Kobold::String idString,
 /******************************************************************
  *                         getAlignByInteger                      *
  ******************************************************************/
-Alignment* Alignments::getAlignByInteger(int id)
+Alignment* Alignments::getAlignmentByInteger(int id)
 {
    Alignment* ret = (Alignment*) list.getFirst();
    
@@ -152,7 +152,7 @@ Alignment* Alignments::getAlignByInteger(int id)
 /******************************************************************
  *                          getAlignByString                      *
  ******************************************************************/
-Alignment* Alignments::getAlignByString(Kobold::String id)
+Alignment* Alignments::getAlignmentByString(Kobold::String id)
 {
    Alignment* ret = (Alignment*)list.getFirst();
    

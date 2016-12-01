@@ -53,12 +53,12 @@ class Alignments
       /*! Get an Alignment from list
        * \param id -> integer ID of the Alignmentment
        * \return aligment found, if found one. */
-      static Alignment* getAlignByInteger(int id);
+      static Alignment* getAlignmentByInteger(int id);
 
       /*! Get an Alignment from list 
        * \param id -> string ID of the Alignmentment
        * \return aligment found, if found one. */
-      static Alignment* getAlignByString(Kobold::String id);
+      static Alignment* getAlignmentByString(Kobold::String id);
       
    private:
       static Kobold::List list;

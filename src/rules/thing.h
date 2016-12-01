@@ -166,7 +166,8 @@ class Thing : public Kobold::ListElement
    protected:
 
       /*! Parse specifc key/value pair readed from definition's file that
-       * doesn't belong to the generic thing specification. */
+       * doesn't belong to the generic thing specification.
+       * \return if treated key/value pair or not. */
       virtual bool doSpecificParse(Ogre::String key, Ogre::String value) = 0;
 
       Ogre::String name; /**< Name of the thing */
