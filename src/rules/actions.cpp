@@ -308,8 +308,8 @@ bool Action::doHealOrAttack(Thing* actor, Thing* target,
       return true;
    }
 
-   /* Apply Base Damage Dices */
-   damage += diceInfo.baseDice.roll(criticalHit);
+   /* Apply Damage Dices */
+   damage += diceInfo.roll(criticalHit);
 
    /* Apply Damage/Heal modifiers bonus */
    damage += actor->getBonusValue(conceptBonus);

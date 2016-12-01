@@ -21,6 +21,9 @@
 #include "character.h"
 
 #include "alignment.h"
+#include "classes.h"
+#include "race.h"
+#include "feats.h"
 #include "modeffect.h"
 
 using namespace DNT;
@@ -30,9 +33,28 @@ using namespace DNT;
  ***********************************************************************/
 Character::Character()
 {
+   /* Default: alive */
    this->dead = false;
+
+   /* Set ModEffects owner */
    this->effects.setOwner(this);
+
+   /* Nullify things */
    this->curAlign = NULL;
+   for(int i = 0; i < CHARACTER_MAX_DISTINCT_CLASSES; i++)
+   {
+      this->classes[i] = NULL;
+      this->classLevel[i] = 0;
+   }
+   this->race = NULL;
+
+   /* Create Feats list and define needed Feats */
+   feats = new Feats();
+   insertDefaultNeededFeats();
+
+   /* Define default bare hands damage dice */
+   bareHandsDice.setBaseDice(Dice(Dice::DICE_TYPE_D2));
+   bareHandsDice.setInitialLevel(1);
 }
 
 /***********************************************************************
@@ -40,6 +62,18 @@ Character::Character()
  ***********************************************************************/
 Character::~Character()
 {
+   if(feats)
+   {
+      delete feats;
+   }
+}
+
+/***********************************************************************
+ *                        insertDefaultNeededFeats                     *
+ ***********************************************************************/
+void Character::insertDefaultNeededFeats()
+{
+   feats->insert(FeatsList::getFeatByNumber(FEAT_WEAPON_ATTACK));
 }
 
 /***********************************************************************
@@ -99,7 +133,7 @@ bool Character::isAlignOf(Kobold::String al)
 bool Character::doSpecificParse(Ogre::String key, Ogre::String value)
 {
    //TODO
-   return false;
+   return doCharacterSpecializationParse(key, value);
 }
 
 

@@ -25,9 +25,13 @@
 
 #include "thing.h"
 #include "modeffect.h"
+#include "dices.h"
 
 namespace DNT
 {
+
+/*! How many classes a character can have at the same time (multiclass) */
+#define CHARACTER_MAX_DISTINCT_CLASSES  3
 
    /*! A Character is a living Thing. Coulb be playable by human 
     * (PlayableCharacter, or PC) or by the AI (NonPlayableCharacter, aka NPC). */
@@ -68,6 +72,11 @@ namespace DNT
 
    protected:
 
+      /*! Insert all default needed feats for a character. This function will
+       * insert, for example, base weapon attack feat, which is indispensable
+       * for fights. */
+      virtual void insertDefaultNeededFeats();
+
       /*! Parse key/value pairs specific to the character thing's 
        * specialization */
       bool doSpecificParse(Ogre::String key, Ogre::String value);
@@ -81,9 +90,15 @@ namespace DNT
    private:
 
       bool dead; /**< If the character is actually dead (just a corpse). */
-      ModEffectList effects;     /**< Current Character effects */
 
-      Alignment* curAlign; /**< Current character alignment */
+      ModEffectList effects;  /**< Current Character effects */
+      Alignment* curAlign;    /**< Current character alignment */
+      Class* classes[CHARACTER_MAX_DISTINCT_CLASSES]; /**< Character classes */
+      int classLevel[CHARACTER_MAX_DISTINCT_CLASSES]; /**< Each class level */
+      Race* race;    /**< Character race */
+      Feats* feats;  /**< Character current owned feats */
+
+      DiceInfo bareHandsDice; /**< Damage dice for barehands fight */
 };
 
 }

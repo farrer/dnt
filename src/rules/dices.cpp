@@ -139,6 +139,12 @@ int Dice::roll(bool critical)
    int d; /* dice counter */
    int value = 0; /* the value got */
 
+   if(diceType == DICE_TYPE_NONE)
+   {
+      /* No faces, no roll. */
+      return 0;
+   }
+
    /* Throw the dices */
    for(d = 0; d < numberOfDices; d++)
    {
@@ -158,7 +164,7 @@ int Dice::roll(bool critical)
    }
 
    /* Finally, the value */
-   return(value);
+   return value;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -171,9 +177,11 @@ int Dice::roll(bool critical)
  *                             Constructor                             *
  ***********************************************************************/
 DiceInfo::DiceInfo()
+         :baseDice(Dice::DICE_TYPE_NONE),
+          aditionalDice(Dice::DICE_TYPE_NONE)
+
 {
    /* Default is no aditional dices */
-   aditionalDice.setNumberOfDices(0);
    aditionalLevels = 0;
    initialLevel = 0;
 }
@@ -192,5 +200,61 @@ DiceInfo& DiceInfo::operator=(const DiceInfo& d)
    initialLevel = d.initialLevel;
 
    return *this;
+}
+
+/***********************************************************************
+ *                             setBaseDice                             *
+ ***********************************************************************/
+void DiceInfo::setBaseDice(Dice dice)
+{
+   baseDice = dice;
+}
+
+/***********************************************************************
+ *                           setAditinalDice                           *
+ ***********************************************************************/
+void DiceInfo::setAditionalDice(Dice dice)
+{
+   aditionalDice = dice;
+}
+
+/***********************************************************************
+ *                         setAditionalLevels                          *
+ ***********************************************************************/
+void DiceInfo::setAditionalLevels(int levels)
+{
+   aditionalLevels = levels;
+}
+
+/***********************************************************************
+ *                           setInitialLevel                           *
+ ***********************************************************************/
+void DiceInfo::setInitialLevel(int level)
+{
+   initialLevel = level;
+}
+
+/***********************************************************************
+ *                               roll                                  *
+ ***********************************************************************/
+int DiceInfo::roll(int level, bool critical)
+{
+   int value = 0;
+
+   /* Verify if can use the DiceInfo */
+   if(level > initialLevel)
+   {
+      /* Aply base dice */
+      value += baseDice.roll(critical);
+
+      /* Apply any aditional dices */
+      int aditionals = (level - initialLevel) / aditionalLevels;
+      for(int i = 0; i < aditionals; i++)
+      {
+         value += aditionalDice.roll(critical);
+      }
+   }
+
+   return value;
 }
 

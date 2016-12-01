@@ -76,13 +76,6 @@ Thing::~Thing()
       delete model3d;
    }
 
-   /* Decrement 'avoid-names-clash-map' counter */
-   std::map<Ogre::String,int>::iterator it = namesMap.find(untranslatedName);
-   if(it != namesMap.end())
-   {
-      namesMap[untranslatedName] = it->second - 1;
-   }
-   //TODO: else show error!
 }
 
 /**************************************************************************

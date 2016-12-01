@@ -34,6 +34,7 @@ class Dice
    public:
       enum DiceType
       {
+        DICE_TYPE_NONE = 0,     /**< 0 faces dice (no dice) */
         DICE_TYPE_D2  =  2,     /**< Two Faces Dice */
         DICE_TYPE_D4  =  4,     /**< Four Faces Dice */
         DICE_TYPE_D6  =  6,     /**< Six Faces Dice */
@@ -117,10 +118,32 @@ class DiceInfo
        * \param d -> pointer to another instance where will copy values from. */
       DiceInfo& operator=(const DiceInfo& d);
 
+      /*! Set base reference dice.
+       * \param dice new base reference dice */
+      void setBaseDice(Dice dice);
+      /*! Set aditional (per level) dice
+       * \param dice new per level aditional dice */
+      void setAditionalDice(Dice dice);
+      /*! Set number of levels per aditional dices
+       * \param levels number of levels to gain a new aditional dice */
+      void setAditionalLevels(int levels);
+      /*! Set initial level from this DiceInfo will be valid 
+       * \parma level level number */
+      void setInitialLevel(int level);
+      
+      /*! Roll the dice
+       * \param level -> current level (will determine how many aditional dices
+       *                 and if can use the base one).
+       * \param critical -> true if is a critical roll
+       * \return -> sum of value got by the base dice and its aditional ones */
+      int roll(int level, bool critical=false);
+
+   private:
+
       Dice baseDice;         /**< Basic Dice. */
       Dice aditionalDice;    /**< Aditional Dice per Level. */
       int aditionalLevels;   /**< Number of Levels per Aditional Dices. */
-      int initialLevel;      /**< Initial Level to use this diceThing. */
+      int initialLevel;      /**< Initial Level to use this DiceInfo. */
 };
 
 }
