@@ -26,6 +26,7 @@
 #include "bonusandsaves.h"
 
 #include "../lang/translate.h"
+#include "../core/dialog.h"
 
 #include <kobold/defparser.h>
 #include <kobold/log.h>
@@ -52,6 +53,7 @@ Thing::Thing()
    initiativeBonus = 0;
    displacement =  WALK_PER_MOVE_ACTION;;
    model3d = NULL;
+   conversation = NULL;
    state = 0;
    walkable = false;
    currentEnemy = NULL;
@@ -63,6 +65,11 @@ Thing::Thing()
  **************************************************************************/
 Thing::~Thing()
 {
+   /* Clean conversation, if loaded */
+   if(conversation)
+   {
+      delete conversation;
+   }
    /* Delete model, if defined */
    if(model3d)
    {
@@ -463,11 +470,17 @@ BonusAndSaves* Thing::getCurBonusAndSaves()
 }
 
 /**************************************************************************
- *                            getConversationFile                         *
+ *                            getConversation                             *
  **************************************************************************/
-Ogre::String Thing::getConversationFile()
+Conversation* Thing::getConversation()
 {
-   return conversationFile;
+   if((conversation == NULL) && (hasConversationFile()))
+   {
+      /* Create and load our conversation to use */
+      conversation = new Conversation();
+      conversation->load(conversationFile);
+   }
+   return conversation;
 }
 
 /**************************************************************************

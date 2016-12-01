@@ -1120,9 +1120,9 @@ TalkActionType Conversation::getActionType(Kobold::String token,
 }
 
 /*************************************************************************
- *                               loadFile                                *
+ *                                load                                   *
  *************************************************************************/
-bool Conversation::loadFile(Kobold::String filename)
+bool Conversation::load(Kobold::String filename)
 {
    Kobold::String buffer;
    Kobold::String stmp;

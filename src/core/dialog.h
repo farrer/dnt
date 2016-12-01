@@ -317,7 +317,7 @@ class Conversation: public Kobold::List
       /*! Load Conversation from a file.
        * \param filename -> file name to load
        * \return success flag. */
-      bool loadFile(Kobold::String filename);  
+      bool load(Kobold::String filename);  
 
       /*! Set the owner of the Conversation
        * \param thing -> pointer to Thing owner of the conversation

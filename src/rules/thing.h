@@ -133,8 +133,8 @@ class Thing : public Kobold::ListElement
       /*! \return current bonus and saves */
       BonusAndSaves* getCurBonusAndSaves();
 
-      /*! \return filename of the conversation owned */
-      Ogre::String getConversationFile();
+      /*! \return conversation to use. */
+      Conversation* getConversation();
 
       /*! \return if the thing has a conversation dialog file */
       bool hasConversationFile();
@@ -179,6 +179,7 @@ class Thing : public Kobold::ListElement
       Goblin::Model3d* model3d; /**< The 3d model representing the thing */
 
       Ogre::String conversationFile; /**< Conversation file, if any. */
+      Conversation* conversation; /**< Conversation loaded. */
 
       Thing* currentEnemy; /**< Pointer to current target enemy, if any */
       PsychoState psychoState; /**< State to Playable Characters */

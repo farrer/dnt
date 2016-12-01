@@ -24,6 +24,7 @@
 #include "dntconfig.h"
 
 #include "thing.h"
+#include "modeffect.h"
 
 namespace DNT
 {
@@ -80,7 +81,9 @@ namespace DNT
    private:
 
       bool dead; /**< If the character is actually dead (just a corpse). */
-      ModEffectList* effects;     /**< Current Character effects */
+      ModEffectList effects;     /**< Current Character effects */
+
+      Alignment* curAlign; /**< Current character alignment */
 };
 
 }
