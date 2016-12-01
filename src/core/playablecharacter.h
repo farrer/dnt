@@ -32,14 +32,30 @@ namespace DNT
 class PlayableCharacter : public Character
 {
    public:
+      /*! Constructor */
+      PlayableCharacter();
+      /*! Destructor */
+      ~PlayableCharacter();
+
+      /*! Verify if can take levels on an specific class
+       * \param cl -> class to verify if can take levels 
+       * \return -> true if can take a level, false otherwise */
+      bool canClass(Class* cl);
+
+      /*! Get a new level on a class
+       * \param cl -> pointer to the class to get a new level
+       * \note -> will only take a level if have enought XP
+       *          and can take a level at the specified class */
+      void getNewClassLevel(Class* cl);
 
    protected:
 
       /*! Parse key/value pairs related to the PlayableCharacter */
       bool doCharacterSpecializationParse(Ogre::String key, Ogre::String value);
 
-      int upLevels; /**< Number of levels the character can already advance */
-      int xp;       /**< Current number of experience points */
+   private:
+      int upLevels; /**< Number of levels a character can advance now. */
+      int xp;       /**< Current eXperience Points. */
 
       bool canMove;   /**< If still have movements at current fight's turn */
       bool canAttack; /**< If still have actions at current fight's turn */

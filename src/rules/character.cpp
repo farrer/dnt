@@ -26,6 +26,8 @@
 #include "feats.h"
 #include "modeffect.h"
 
+#include <assert.h>
+
 using namespace DNT;
 
 /***********************************************************************
@@ -134,6 +136,107 @@ bool Character::doSpecificParse(Ogre::String key, Ogre::String value)
 {
    //TODO
    return doCharacterSpecializationParse(key, value);
+}
+
+/*********************************************************************
+ *                             getLevel                              *
+ *********************************************************************/
+int Character::getLevel()
+{
+   int totalLevels = 0;
+   for(int i = 0; i < CHARACTER_MAX_DISTINCT_CLASSES; i++)
+   {
+      if(classes[i] != NULL)
+      {
+         totalLevels += classLevel[i];
+      }
+   }
+   return totalLevels;
+}
+
+/*********************************************************************
+ *                             getLevel                              *
+ *********************************************************************/
+int Character::getLevel(Class* cl)
+{
+   for(int i = 0; i < CHARACTER_MAX_DISTINCT_CLASSES; i++)
+   {
+      if(classes[i] == cl)
+      {
+         return classLevel[i];
+      }
+   }
+   return 0;
+}
+
+/*********************************************************************
+ *                             getLevel                              *
+ *********************************************************************/
+int Character::getLevel(Kobold::String classId)
+{
+   for(int i = 0; i < CHARACTER_MAX_DISTINCT_CLASSES; i++)
+   {
+      if((classes[i] != NULL) && 
+         (classes[i]->getStringId() == classId))
+      {
+         return classLevel[i];
+      }
+   }
+   return 0;
+}
+
+/*********************************************************************
+ *                              instantKill                          *
+ *********************************************************************/
+void Character::instantKill()
+{
+   dead = true;
+   //TODO: skeleton state: set as dead!
+   //scNode->getModel()->setState(STATE_DEAD);
+}
+
+/*********************************************************************
+ *                           applySkillCosts                         *
+ *********************************************************************/
+void Character::applySkillCosts()
+{
+   /* Clear current costs */
+   sk.clearCosts();
+
+   /* Apply Race Costs */
+   if(race) 
+   {
+      race->applySkillCosts(&sk);
+   }
+
+   //FIXME Classes Costs will be only per actual class?
+   //      In the way bellow is always for all classes.
+   for(int i = 0; i < CHARACTER_MAX_DISTINCT_CLASSES; i++)
+   {
+      if(classes[i] != NULL)
+      {
+         classes[i]->applySkillCosts(&sk);
+      }
+   }
+}
+
+/*********************************************************************
+ *                         applyBonusAndSaves                        *
+ *********************************************************************/
+void Character::applyBonusAndSaves()
+{
+   /* Clear the current */
+   curBonusAndSaves.clear();
+
+   /* Add from all classes */
+   for(int i = 0; i < CHARACTER_MAX_DISTINCT_CLASSES; i++)
+   {
+      if(classes[i] != NULL)
+      {
+         curBonusAndSaves = curBonusAndSaves + 
+            classes[i]->getBonusAndSaves(classLevel[i] - 1);
+      }
+   }
 }
 
 

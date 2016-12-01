@@ -70,6 +70,33 @@ namespace DNT
           * \note -> a common use is, for example: isAlignOf("FREE_SOFTWARE") */
          bool isAlignOf(Kobold::String al);
 
+         /*! Get the total class levels of the Character (ie: sum of all its
+          * classes levels).
+          * \return Character total levels */
+         int getLevel();
+
+         /*! Get the Character level for an specific class
+          * \param classId -> class' string identifier
+          * \return -> number of levels Character has on class */
+         int getLevel(Kobold::String classId);
+
+         /*! Get the Character level for an specific class
+          * \param cl -> class to get how many levels the Character has
+          * \return -> number of lvels Character has on class cl */
+         int getLevel(Class* cl);
+
+         /*! Kill the Character without calling dead animation
+          * \note this is usually used at ModState when loading a level
+          *       with dead characters information. */
+         void instantKill();
+
+         /*! Apply all current Race and Classes Skill costs to the character's
+          * skill list. */
+         void applySkillCosts();
+
+         /*! Apply Bonus And Saves from all owned Classes to the Character */
+         void applyBonusAndSaves();
+
    protected:
 
       /*! Insert all default needed feats for a character. This function will
@@ -87,17 +114,17 @@ namespace DNT
       virtual bool doCharacterSpecializationParse(Ogre::String key, 
             Ogre::String value) = 0;
 
-   private:
 
-      bool dead; /**< If the character is actually dead (just a corpse). */
-
-      ModEffectList effects;  /**< Current Character effects */
       Alignment* curAlign;    /**< Current character alignment */
       Class* classes[CHARACTER_MAX_DISTINCT_CLASSES]; /**< Character classes */
       int classLevel[CHARACTER_MAX_DISTINCT_CLASSES]; /**< Each class level */
       Race* race;    /**< Character race */
       Feats* feats;  /**< Character current owned feats */
 
+   private:
+      bool dead; /**< If the character is actually dead (just a corpse). */
+
+      ModEffectList effects;  /**< Current Character effects */
       DiceInfo bareHandsDice; /**< Damage dice for barehands fight */
 };
 

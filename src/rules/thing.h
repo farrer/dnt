@@ -87,15 +87,6 @@ class Thing : public Kobold::ListElement
        * \param state state value */
       void setState(int state);
 
-      /*! \return #lifePoints */
-      int getLifePoints();
-
-      /*! \return #maxLifePoints */
-      int getMaxLifePoints();
-
-      /*! Add value to life points */
-      void addLifePoints(int value);
-
       /*! \return if Characters could walk over or not */
       bool isWalkable();
       
@@ -154,6 +145,23 @@ class Thing : public Kobold::ListElement
       /*! Function that implements the normal interaction (not on batle) 
        * between a PlayableCharacter and the Thing. */
       //virtual bool interact() = 0;
+      
+      /*! Get the current number of life points
+       * \return -> current life points */
+      int getLifePoints();
+      /*! Add some points to the current life
+       * \param points -> points to add */
+      void addLifePoints(int points);
+      /*! Set the current life points
+       * \param points -> new life value */
+      void setLifePoints(int points);
+
+      /*! Get the current max life points
+       * \return -> max life points */
+      int getMaxLifePoints();
+      /*! Set the current max life points
+       * \param points -> new max life points*/
+      void setMaxLifePoints(int points);
       
    protected:
 

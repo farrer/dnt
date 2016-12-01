@@ -9,6 +9,7 @@ src/core/core.cpp
 src/core/dialog.cpp
 src/core/door.cpp
 src/core/object.cpp
+src/core/playablecharacter.cpp
 src/core/scenery.cpp
 src/core/util.cpp
 )

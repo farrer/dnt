@@ -203,36 +203,6 @@ void Thing::setState(int state)
 }
 
 /**************************************************************************
- *                               getLifePoints                            *
- **************************************************************************/
-int Thing::getLifePoints()
-{
-   return lifePoints;
-}
-
-/**************************************************************************
- *                               addLifePoints                            *
- **************************************************************************/
-void Thing::addLifePoints(int value)
-{
-   lifePoints += value;
-   if(lifePoints > maxLifePoints)
-   {
-      lifePoints = maxLifePoints;
-   }
-   //TODO: updateHealthBar!:w
-   //
-}
-
-/**************************************************************************
- *                             getMaxLifePoints                           *
- **************************************************************************/
-int Thing::getMaxLifePoints()
-{
-   return maxLifePoints;
-}
-
-/**************************************************************************
  *                                isWalkable                              *
  **************************************************************************/
 bool Thing::isWalkable()
@@ -528,6 +498,51 @@ bool Thing::doCheck(Kobold::String stateToCheck, int difficulty)
          "Warning: thing::doCheck - Unknown state to check: '%s'",
          stateToCheck.c_str());
    return false;
+}
+
+/******************************************************
+ *                    getLifePoints                   *
+ ******************************************************/
+int Thing::getLifePoints()
+{
+   return lifePoints;
+}
+
+/******************************************************
+ *                     addLifePoints                  *
+ ******************************************************/
+void Thing::addLifePoints(int points)
+{
+   lifePoints += points;
+   if(lifePoints > maxLifePoints)
+   {
+      lifePoints = maxLifePoints;
+   }
+}
+
+/******************************************************
+ *                   setLifePoints                    *
+ ******************************************************/
+void Thing::setLifePoints(int points)
+{
+   lifePoints = points;
+}
+
+/******************************************************
+ *                  getMaxLifePoints                  *
+ ******************************************************/
+int Thing::getMaxLifePoints()
+{
+   return maxLifePoints;
+}
+
+/******************************************************
+ *                  setMaxLifePoints                  *
+ ******************************************************/
+void Thing::setMaxLifePoints(int points)
+{
+   maxLifePoints = points;
+   lifePoints = maxLifePoints;
 }
 
 /**************************************************************************

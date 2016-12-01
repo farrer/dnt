@@ -23,6 +23,7 @@
 
 #include "dntconfig.h"
 
+#include "dices.h"
 #include "ruledef.h"
 #include "bonusandsaves.h"
 #include "modifier.h"
@@ -59,6 +60,14 @@ class Class : public Kobold::ListElement, public RuleDefinition
        * \param sk -> character skill list */
       void getAttModifiers(int mods[6], bool sum, Skills* sk);
 
+      /*! Get Class BonusAndSaves values for one of its levels.
+       * \param level class level to get its BonusAndSaves.
+       * \return Class BonusAndSaves values for a level */
+      BonusAndSaves getBonusAndSaves(int level);
+
+      /*! \return class DiceType to use for Life calculation */
+      Dice::DiceType getLifeDiceType();
+
    private:
 
       Kobold::String citation;      /**< Class Citation */
@@ -74,7 +83,7 @@ class Class : public Kobold::ListElement, public RuleDefinition
       int totalSkills;           /**< Total Class Skills */
       Kobold::String* classSkills;  /**< Class Skills */
 
-      int lifeDiceID;            /**< Life Dice ID */
+      Dice::DiceType lifeDiceType;  /**< Type of Life Dice to use */
       LevelPoints firstLevelSP;  /**< First Level Skill Points */
       LevelPoints otherLevelsSP; /**< Other Levels Skill Points */
 

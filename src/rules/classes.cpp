@@ -31,6 +31,8 @@
 #include <kobold/log.h>
 #include <kobold/defparser.h>
 
+#include <assert.h>
+
 using namespace DNT;
 
 /******************************************************************
@@ -47,6 +49,7 @@ Class::Class()
    reqLevel = NULL;
    previous = NULL;
    next = NULL;
+   lifeDiceType = Dice::DICE_TYPE_NONE;
 }
 
 /******************************************************************
@@ -124,7 +127,9 @@ bool Class::load(Kobold::String filename, Kobold::String imgFile,
       /* LifeDice */
       else if(key == "lifeDice")
       {
-         sscanf(value.c_str(), "d%d", &lifeDiceID);
+         int lifeDice = Dice::DICE_TYPE_NONE;
+         sscanf(value.c_str(), "d%d", &lifeDice);
+         lifeDiceType = (Dice::DiceType) lifeDice;
       }
       /* Total Modifiers */
       else if(key == "totalModifiers")
@@ -278,7 +283,23 @@ void Class::getAttModifiers(int mods[6], bool sum, Skills* sk)
          }
       }
    }
+}
 
+/******************************************************************
+ *                          getBonusAndSaves                      *
+ ******************************************************************/
+BonusAndSaves Class::getBonusAndSaves(int level)
+{
+   assert(level > 0 && level <= MAX_DEFINED_LEVEL);
+   return bonus[level - 1];
+}
+
+/******************************************************************
+ *                          getLifeDiceType                       *
+ ******************************************************************/
+Dice::DiceType Class::getLifeDiceType()
+{
+   return lifeDiceType;
 }
 
 /******************************************************************
