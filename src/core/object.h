@@ -39,11 +39,17 @@ class Object : public Thing
 
       /*! Parse common Object key/values pairs. */
       bool doSpecificParse(Ogre::String key, Ogre::String value);
+      /*! Save common Object key/values pairs */
+      bool doSpecificSave(std::ofstream& file);
 
       /*! Must implement the parse of key/values related to the specialized
        * class (not threated by the Object itself). */
       virtual bool doObjectSpecializationParse(Ogre::String key, 
             Ogre::String value) = 0;
+
+      /*! Must implement the save of key/values specific related to the
+       * specialized class  */
+      virtual bool doObjectSpecializationSave(std::ofstream& file) = 0;
 
    private:
      

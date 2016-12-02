@@ -230,6 +230,28 @@ bool Character::doSpecificParse(Ogre::String key, Ogre::String value)
    return doCharacterSpecializationParse(key, value);
 }
 
+/***********************************************************************
+ *                           doSpecifcSave                             *
+ ***********************************************************************/
+bool Character::doSpecificSave(std::ofstream& file)
+{
+   //TODO: file << CHARACTER_KEY_PORTRAIT << " = " << std::endl;
+   //TODO: file << CHARACTER_KEY_WALK_INTERVAL << " = " << std::endl;
+   //TODO: file << CHARACTER_KEY_BLOOD_POSITION << " = " << std::endl;
+   //TODO: file << CHARACTER_KEY_BLOOD_PARTICLE << " = " << std::endl;
+   file << CHARACTER_KEY_RACE << " = " << race->getStringId() << std::endl;
+   file << CHARACTER_KEY_ALIGNMENT << " = " << curAlign->getStringId() 
+        << std::endl;
+   /* Class */
+   for(int i = 0; 
+       ((i < CHARACTER_MAX_DISTINCT_CLASSES) || (classes[i] == NULL)); i++)
+   {
+      file << CHARACTER_KEY_CLASS << " = " << classes[i]->getStringId() 
+           << " " << classLevel[i] << std::endl;
+   }
+   return doCharacterSpecializationSave(file);
+}
+
 /*********************************************************************
  *                             getLevel                              *
  *********************************************************************/

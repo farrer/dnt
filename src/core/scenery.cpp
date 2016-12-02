@@ -24,4 +24,11 @@ bool Scenery::doObjectSpecializationParse(Ogre::String key, Ogre::String value)
    return false;
 }
 
+/**************************************************************************
+ *                       doObjectSpecializationSave                       *
+ **************************************************************************/
+bool Scenery::doObjectSpecializationSave(std::ofstream& file)
+{
+   return true;
+}
 

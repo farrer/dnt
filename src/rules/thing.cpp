@@ -30,6 +30,7 @@
 
 #include <kobold/defparser.h>
 #include <kobold/log.h>
+#include <kobold/userinfo.h>
 
 using namespace DNT;
 
@@ -41,6 +42,7 @@ using namespace DNT;
 #define THING_KEY_CONVERSATION        "conversation"
 
 #define THING_VALUE_TRUE              "true"
+#define THING_VALUE_FALSE             "false"
 
 /**************************************************************************
  *                               Constructor                              *
@@ -81,11 +83,11 @@ Thing::~Thing()
 /**************************************************************************
  *                                  load                                  *
  **************************************************************************/
-bool Thing::load(Ogre::SceneManager* sceneManager, Ogre::String fileName, 
+bool Thing::load(Ogre::SceneManager* sceneManager, Kobold::String fileName, 
       bool fullPath)
 {
    Kobold::DefParser defParser;
-   Ogre::String key, value, modelName;
+   Kobold::String key, value, modelName;
 
    if(!defParser.load(fileName, fullPath))
    {
@@ -100,7 +102,7 @@ bool Thing::load(Ogre::SceneManager* sceneManager, Ogre::String fileName,
          name = translateDataString(value);
          
          /* Define unique name */
-         std::map<Ogre::String,int>::iterator it = namesMap.find(value);
+         std::map<Kobold::String,int>::iterator it = namesMap.find(value);
          int counter = 0; 
          if(it != namesMap.end())
          {
@@ -122,7 +124,7 @@ bool Thing::load(Ogre::SceneManager* sceneManager, Ogre::String fileName,
       }
       else if(key == THING_KEY_DESCRIPTION)
       {
-         description = value;
+         description = translateDataString(value);
       }
       else if(key == THING_KEY_MODEL)
       {
@@ -163,6 +165,54 @@ bool Thing::load(Ogre::SceneManager* sceneManager, Ogre::String fileName,
 }
 
 /**************************************************************************
+ *                                   save                                 *
+ **************************************************************************/
+bool Thing::save(Kobold::String filename, bool fullPath)
+{
+   bool success = true;
+   Kobold::String filePath;
+   std::ofstream file;
+
+   /* Define file with its path */
+   if(fullPath)
+   {
+      filePath = filename;
+   }
+   else
+   {
+      filePath = Kobold::UserInfo::getUserHome() + filename;
+   }
+
+   /* Let's try to open it */
+   file.open(filePath.c_str(), std::ios::out | std::ios::binary);
+   if(!file)
+   {
+      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+            "Couldn't open thing file '%s' for saving it.", filePath.c_str());
+      return false;
+   }
+
+   /* write thing's values */
+   file << THING_KEY_NAME << " = gettext(\"" << name << "\")" << std::endl;
+   file << THING_KEY_DESCRIPTION << " = gettext(\"" 
+        << description << "\")" << std::endl;
+   file << THING_KEY_MODEL << " = " << modelFileName << std::endl;
+   file << THING_KEY_STATE << " = " << state << std::endl;
+   file << THING_KEY_WALKABLE << " = " 
+        << (walkable ? THING_VALUE_TRUE : THING_VALUE_FALSE) << std::endl;
+   file << THING_KEY_CONVERSATION << " = " << conversationFile << std::endl;
+ 
+   /* Save specific implementation values */
+   success |= doSpecificSave(file);
+
+   /* Close the file and done */
+   file.close();
+
+   return success;
+}
+
+
+/**************************************************************************
  *                             getModel3d                                 *
  **************************************************************************/
 Goblin::Model3d* Thing::getModel()
@@ -173,7 +223,7 @@ Goblin::Model3d* Thing::getModel()
 /**************************************************************************
  *                               getName                                  *
  **************************************************************************/
-Ogre::String Thing::getName()
+Kobold::String Thing::getName()
 {
    return name;
 }
@@ -181,7 +231,7 @@ Ogre::String Thing::getName()
 /**************************************************************************
  *                               getDescription                           *
  **************************************************************************/
-Ogre::String Thing::getDescription()
+Kobold::String Thing::getDescription()
 {
    return description;
 }
@@ -457,7 +507,7 @@ bool Thing::hasConversationFile()
 /**************************************************************************
  *                            setConversationFile                         *
  **************************************************************************/
-void Thing::setConversationFile(Ogre::String fileName)
+void Thing::setConversationFile(Kobold::String fileName)
 {
    conversationFile = fileName;
 }
@@ -548,5 +598,5 @@ void Thing::setMaxLifePoints(int points)
 /**************************************************************************
  *                             static members                             *
  **************************************************************************/
-std::map<Ogre::String, int> Thing::namesMap;
+std::map<Kobold::String, int> Thing::namesMap;
 

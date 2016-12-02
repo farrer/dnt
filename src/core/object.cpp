@@ -22,7 +22,16 @@ Object::~Object()
  **************************************************************************/
 bool Object::doSpecificParse(Ogre::String key, Ogre::String value)
 {
+   //TODO
    return doObjectSpecializationParse(key, value);
 }
 
+/**************************************************************************
+ *                             doSpecificSave                             *
+ **************************************************************************/
+bool Object::doSpecificSave(std::ofstream& file)
+{
+   //TODO
+   return doObjectSpecializationSave(file);
+}
 

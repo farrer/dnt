@@ -27,6 +27,8 @@
 #include "modeffect.h"
 #include "dices.h"
 
+#include <iostream>
+
 namespace DNT
 {
 
@@ -110,6 +112,14 @@ namespace DNT
       /*! Parse key/value pairs specific to the character thing's 
        * specialization */
       bool doSpecificParse(Ogre::String key, Ogre::String value);
+
+      /*! Output to file character specific definitions */
+      bool doSpecificSave(std::ofstream& file);
+
+      /*! Must add any specific specialization information to be 
+       * saved at a character file
+       * \return if was successful */
+      virtual bool doCharacterSpecializationSave(std::ofstream& file) = 0;
 
       /*! Parse specifc key/value pair readed from definition's file that
        * doesn't belong to the generic character specification (but to its

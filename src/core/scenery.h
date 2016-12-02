@@ -32,12 +32,17 @@ namespace DNT
 class Scenery : public Object
 {
    public:
+      /*! Contructor */
       Scenery();
+      /*! Destructor */
       ~Scenery();
 
    protected:
 
+      /*! Parse scenery specific values from file */
       bool doObjectSpecializationParse(Ogre::String key, Ogre::String value);
+      /*! write scenery specific values to file */
+      bool doObjectSpecializationSave(std::ofstream& file);
 
 };
 

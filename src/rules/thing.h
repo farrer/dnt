@@ -28,10 +28,11 @@
 
 #include <goblin/model3d.h>
 #include <kobold/list.h>
+#include <kobold/kstring.h>
 #include <OGRE/OgreSceneManager.h>
 
 #include <map>
-
+#include <iostream>
 
 namespace DNT
 {
@@ -68,17 +69,24 @@ class Thing : public Kobold::ListElement
        * \param fileName file to load
        * \param fullPath if fileName is defined with fullPath (true)
        *                 or inner resources directory (false). */
-      bool load(Ogre::SceneManager* sceneManager, Ogre::String fileName, 
+      bool load(Ogre::SceneManager* sceneManager, Kobold::String fileName, 
             bool fullPath=false);
+
+      /*! Save the thing specification.
+       * \param filename name of the file to save it
+       * \param fullPath if true, will use filename as a full path file
+       *        definition, if false, will save filename to DNT user's
+       *        home as root. */
+      bool save(Kobold::String filename, bool fullPath=false);
 
       /*! \return 3d representation of the thing, if any, or NULL. */
       Goblin::Model3d* getModel();
 
       /*! \return #name */
-      Ogre::String getName();
+      Kobold::String getName();
 
       /*! \return #description */
-      Ogre::String getDescription();
+      Kobold::String getDescription();
 
       /*! \return #state */
       int getState();
@@ -132,7 +140,7 @@ class Thing : public Kobold::ListElement
 
       /*! Set conversation file.
        * \param fileName name of the conversation file */
-      void setConversationFile(Ogre::String fileName);
+      void setConversationFile(Kobold::String fileName);
 
       /*! \return thing's skills */
       Skills* getSkills();
@@ -168,12 +176,18 @@ class Thing : public Kobold::ListElement
       /*! Parse specifc key/value pair readed from definition's file that
        * doesn't belong to the generic thing specification.
        * \return if treated key/value pair or not. */
-      virtual bool doSpecificParse(Ogre::String key, Ogre::String value) = 0;
+      virtual bool doSpecificParse(Kobold::String key, 
+            Kobold::String value) = 0;
+      /*! Add any specific specialization information to be 
+       * saved at a thing's file
+       * \param file ofstream with the file to save
+       * \return if was successful */
+      virtual bool doSpecificSave(std::ofstream& file) = 0;
 
-      Ogre::String name; /**< Name of the thing */
-      Ogre::String untranslatedName; /**< Untranslated name of the thing.
+      Kobold::String name; /**< Name of the thing */
+      Kobold::String untranslatedName; /**< Untranslated name of the thing.
                                           Used for hash key. */
-      Ogre::String description; /**< Text describing the thing */
+      Kobold::String description; /**< Text describing the thing */
 
       int lifePoints;    /**< Current life points. If <= 0 could be dead
                               or broken (or something near that state). */
@@ -184,10 +198,10 @@ class Thing : public Kobold::ListElement
 
       bool walkable; /**< If the thing could be walkable through or not. */
 
-      Ogre::String modelFileName; /**< File name of the 3d model */
+      Kobold::String modelFileName; /**< File name of the 3d model */
       Goblin::Model3d* model3d; /**< The 3d model representing the thing */
 
-      Ogre::String conversationFile; /**< Conversation file, if any. */
+      Kobold::String conversationFile; /**< Conversation file, if any. */
       Conversation* conversation; /**< Conversation loaded. */
 
       Thing* currentEnemy; /**< Pointer to current target enemy, if any */
@@ -203,7 +217,7 @@ class Thing : public Kobold::ListElement
 
       /*! Map to avoid name's clash with multiple intances of the same 
        * thing model */
-      static std::map<Ogre::String, int> namesMap;
+      static std::map<Kobold::String, int> namesMap;
 };
 
 }
