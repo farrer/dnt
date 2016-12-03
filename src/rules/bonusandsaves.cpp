@@ -389,3 +389,11 @@ AttackBonus* BonusAndSaves::getBaseAttackBonus()
    return &baseAttackBonus;
 }
 
+/***********************************************************************
+ *                               isDefined                             *
+ ***********************************************************************/
+bool BonusAndSaves::isDefined()
+{
+   return level != 0;
+}
+

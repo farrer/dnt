@@ -142,6 +142,9 @@ class BonusAndSaves
       /*! \return base attack bonus pointer */
       AttackBonus* getBaseAttackBonus();
 
+      /*! \return If the bonus and saves is actually defined */
+      bool isDefined();
+
    protected:
 
       int level;  /**< Class Level when this BonusAndSaves are valid. */

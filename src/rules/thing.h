@@ -82,6 +82,9 @@ class Thing : public Kobold::ListElement
       /*! \return 3d representation of the thing, if any, or NULL. */
       Goblin::Model3d* getModel();
 
+      /*! \return filename of the file used to load the thing */
+      Kobold::String getFilename();
+
       /*! \return #name */
       Kobold::String getName();
 
@@ -184,6 +187,7 @@ class Thing : public Kobold::ListElement
        * \return if was successful */
       virtual bool doSpecificSave(std::ofstream& file) = 0;
 
+      Kobold::String filename; /**< Filename used to load the thing */
       Kobold::String name; /**< Name of the thing */
       Kobold::String untranslatedName; /**< Untranslated name of the thing.
                                           Used for hash key. */

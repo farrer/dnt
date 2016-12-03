@@ -8,6 +8,7 @@ set(CORE_SOURCES
 src/core/core.cpp
 src/core/dialog.cpp
 src/core/door.cpp
+src/core/game.cpp
 src/core/object.cpp
 src/core/playablecharacter.cpp
 src/core/scenery.cpp
@@ -17,6 +18,7 @@ set(CORE_HEADERS
 src/core/core.h
 src/core/dialog.h
 src/core/door.h
+src/core/game.h
 src/core/item.h
 src/core/nonplayablecharacter.h
 src/core/object.h

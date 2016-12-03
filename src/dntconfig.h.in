@@ -56,6 +56,7 @@ namespace DNT
    class Character;
    class PlayableCharacter;
    class NonPlayableCharacter;
+   class CharacterList;
 
    class RuleDefinition;
    class Alignment;

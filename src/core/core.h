@@ -69,8 +69,6 @@ class Core : public Goblin::BaseApp
 
       Ogre::TerrainGlobalOptions* terrainGlobalOptions;
       Ogre::TerrainGroup* terrainGroup;
-
-      DNT::Map* map;
 };
 
 }

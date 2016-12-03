@@ -23,6 +23,8 @@
 
 #include "dntconfig.h"
 
+#include <kobold/kstring.h>
+
 #include "thing.h"
 #include "modeffect.h"
 #include "dices.h"
@@ -32,11 +34,12 @@
 namespace DNT
 {
 
-/*! How many classes a character can have at the same time (multiclass) */
-#define CHARACTER_MAX_DISTINCT_CLASSES  3
+   /*! How many classes a character can have at the same time (multiclass) */
+   #define CHARACTER_MAX_DISTINCT_CLASSES  3
 
    /*! A Character is a living Thing. Coulb be playable by human 
-    * (PlayableCharacter, or PC) or by the AI (NonPlayableCharacter, aka NPC). */
+    * (PlayableCharacter, or PC) or by the AI (NonPlayableCharacter, 
+    * aka NPC). */
    class Character : public Thing
    {
       public:
@@ -98,48 +101,121 @@ namespace DNT
 
          /*! Apply Bonus And Saves from all owned Classes to the Character */
          void applyBonusAndSaves();
+         
+         /*! Called after loaded the character, to set some of its 
+          * definitions 
+          * \param mapFilename filename of the Map where the Character is */
+         void doAfterLoad(Kobold::String& mapFilename);
 
-   protected:
-      /*! Get first available empty class index on character classes vector
-       * \return index first empty index or -1 if full. */
-      int getEmptyClassIndex();
+      protected:
+         /*! Get first available empty class index on character classes vector
+          * \return index first empty index or -1 if full. */
+         int getEmptyClassIndex();
 
-      /*! Insert all default needed feats for a character. This function will
-       * insert, for example, base weapon attack feat, which is indispensable
-       * for fights. */
-      virtual void insertDefaultNeededFeats();
+         /*! Insert all default needed feats for a character. This function will
+          * insert, for example, base weapon attack feat, which is indispensable
+          * for fights. */
+         virtual void insertDefaultNeededFeats();
 
-      /*! Parse key/value pairs specific to the character thing's 
-       * specialization */
-      bool doSpecificParse(Ogre::String key, Ogre::String value);
+         /*! Parse key/value pairs specific to the character thing's 
+          * specialization */
+         bool doSpecificParse(Kobold::String key, Kobold::String value);
 
-      /*! Output to file character specific definitions */
-      bool doSpecificSave(std::ofstream& file);
+         /*! Output to file character specific definitions */
+         bool doSpecificSave(std::ofstream& file);
 
-      /*! Must add any specific specialization information to be 
-       * saved at a character file
-       * \return if was successful */
-      virtual bool doCharacterSpecializationSave(std::ofstream& file) = 0;
+         /*! Must add any specific specialization information to be 
+          * saved at a character file
+          * \return if was successful */
+         virtual bool doCharacterSpecializationSave(std::ofstream& file) = 0;
 
-      /*! Parse specifc key/value pair readed from definition's file that
-       * doesn't belong to the generic character specification (but to its
-       * specialization). */
-      virtual bool doCharacterSpecializationParse(Ogre::String key, 
-            Ogre::String value) = 0;
+         /*! Parse specifc key/value pair readed from definition's file that
+          * doesn't belong to the generic character specification (but to its
+          * specialization). */
+         virtual bool doCharacterSpecializationParse(Kobold::String key, 
+               Kobold::String value) = 0;
 
 
-      Alignment* curAlign;    /**< Current character alignment */
-      Class* classes[CHARACTER_MAX_DISTINCT_CLASSES]; /**< Character classes */
-      int classLevel[CHARACTER_MAX_DISTINCT_CLASSES]; /**< Each class level */
-      Race* race;    /**< Character race */
-      Feats* feats;  /**< Character current owned feats */
+         Alignment* curAlign;    /**< Current character alignment */
+         /*! Character classes */
+         Class* classes[CHARACTER_MAX_DISTINCT_CLASSES];
+         /*! Each class level */
+         int classLevel[CHARACTER_MAX_DISTINCT_CLASSES];
+         Race* race;    /**< Character race */
+         Feats* feats;  /**< Character current owned feats */
 
-   private:
-      bool dead; /**< If the character is actually dead (just a corpse). */
+      private:
+         bool dead; /**< If the character is actually dead (just a corpse). */
 
-      ModEffectList effects;  /**< Current Character effects */
-      DiceInfo bareHandsDice; /**< Damage dice for barehands fight */
-};
+         ModEffectList effects;  /**< Current Character effects */
+         DiceInfo bareHandsDice; /**< Damage dice for barehands fight */
+
+         Kobold::String mapFilename; /**< Filename of Map where Character is */
+   };
+
+
+   /*! A list of Characters. */
+   class CharacterList: public Kobold::List
+   {
+      public:
+         /*! List Constructor */
+         CharacterList();
+         /*! List Destructor */
+         ~CharacterList();
+
+         /*! Insert a Character on the list
+          * \param dude -> pointer to Character to add */
+         void insertCharacter(Character* dude);
+
+         /*! Remove a Character from the list
+          * \param dude -> Character pointer to remove */
+         void removeCharacter(Character* dude);
+
+         /*! Get next hostile Character from the list
+          * \param last -> last hostile taken (NULL to get first)
+          * \return pointer to the hostile Character */
+         Character* getNextEnemyCharacter(Character* last);
+
+         /*! Get the active Character.
+          * \return pointer to the active Character. */
+         Character* getActiveCharacter();
+
+         /*! Get the first Character with filename on the list
+          * \param filename -> filename of the Character to get
+          * \return -> character pointer or NULL (if not found) */
+         Character* getCharacter(Kobold::String filename);
+
+         /*! Get the Character related to the SceneNode
+          * \return Character pointer or NULL */
+         Character* getCharacter(Ogre::SceneNode* scNode);
+
+         /*! Get the next Character with the same model from the list
+          * \param ch -> Character to get next with same model
+          * \return -> next Character with same model or NULL if
+          *            end of the list was reached. */
+         Character* getNextSameCharacter(Character* ch);
+
+         /*! Set the active Character
+          * \param dude -> pointer to the new active Character */
+         void setActiveCharacter(Character* dude);
+
+         /*! Treat Character's general scripts */
+         void treatGeneralScripts();
+
+         /*! Verify if a Character is on the list
+          * \paarm ch -> pointer to the Character
+          * \return -> true if the Character is on the list */
+         bool isCharacterIn(Character* ch);
+
+         /*! Update effects and positions of all Characters influences */
+         void update();
+
+      private:
+
+         Character* activeCharacter;  /**< Active Character's on list */
+         Character* curTreat;         /**< Current NPC To treat Scripts */
+
+   };
 
 }
 

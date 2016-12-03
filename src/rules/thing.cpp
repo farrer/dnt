@@ -60,6 +60,7 @@ Thing::Thing()
    walkable = false;
    currentEnemy = NULL;
    psychoState = PSYCHO_NEUTRAL;
+   filename = "";
 }
 
 /**************************************************************************
@@ -93,6 +94,7 @@ bool Thing::load(Ogre::SceneManager* sceneManager, Kobold::String fileName,
    {
       return false;
    }
+   filename = fileName;
 
    while(defParser.getNextTuple(key, value))
    {
@@ -218,6 +220,14 @@ bool Thing::save(Kobold::String filename, bool fullPath)
 Goblin::Model3d* Thing::getModel()
 {
    return model3d;
+}
+
+/**************************************************************************
+ *                             getFileName                                *
+ **************************************************************************/
+Kobold::String Thing::getFilename()
+{
+   return filename;
 }
 
 /**************************************************************************

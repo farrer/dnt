@@ -157,7 +157,7 @@ int Character::getEmptyClassIndex()
 /***********************************************************************
  *                           doSpecificParse                           *
  ***********************************************************************/
-bool Character::doSpecificParse(Ogre::String key, Ogre::String value)
+bool Character::doSpecificParse(Kobold::String key, Kobold::String value)
 {
    /* Portrait */
    if(key == CHARACTER_KEY_PORTRAIT)
@@ -228,6 +228,32 @@ bool Character::doSpecificParse(Ogre::String key, Ogre::String value)
    }
 
    return doCharacterSpecializationParse(key, value);
+}
+
+/***********************************************************************
+ *                            doAfterLoad                              *
+ ***********************************************************************/
+void Character::doAfterLoad(Kobold::String& mapFilename)
+{
+   this->mapFilename = mapFilename;
+
+   /* Define the AC if not yet defined at the file */
+   if(armatureClass == 0)
+   {
+      /* Define AC TODO others values to sum here*/ 
+      armatureClass = 10 + 
+         sk.getSkillByString("DEXTERITY")->getAttributeBonus();
+   }
+
+   /* Apply Saves and Bonus, if not yet defined (some npcs without classes
+    * defines its bonus on .npc file) */
+   if(!getCurBonusAndSaves()->isDefined())
+   {
+      applyBonusAndSaves();
+   }
+
+   /* Apply cost to skills */
+   applySkillCosts();
 }
 
 /***********************************************************************
@@ -351,6 +377,253 @@ void Character::applyBonusAndSaves()
             classes[i]->getBonusAndSaves(classLevel[i] - 1);
       }
    }
+}
+
+
+/***************************************************************************
+ ***************************************************************************
+ *                            CharacterList                                *
+ ***************************************************************************
+ ***************************************************************************/
+
+
+/*********************************************************************
+ *                         listConstructor                           *
+ *********************************************************************/
+CharacterList::CharacterList()
+{
+   curTreat = NULL;
+}
+
+/*********************************************************************
+ *                          listDestructor                           *
+ *********************************************************************/
+CharacterList::~CharacterList()
+{
+   clear();
+}
+
+/*********************************************************************
+ *                           insertCharacter                         *
+ *********************************************************************/
+void CharacterList::insertCharacter(Character* dude)
+{
+   /* Now insert it on the list */
+   insert(dude);
+   
+   /* And set it as the active Character */
+   activeCharacter = dude;
+} 
+
+/*********************************************************************
+ *                          removeCharacter                          *
+ *********************************************************************/
+void CharacterList::removeCharacter(Character* dude)
+{
+   /* Empty potential references to it */
+   if(dude == curTreat)
+   {
+      curTreat = NULL;
+   }
+   if(dude == activeCharacter)
+   {
+      activeCharacter = NULL;
+   }
+
+   /* Remove the Character from the list */
+   remove(dude);
+}
+
+/*********************************************************************
+ *                            getEnemyCharacter                      *
+ *********************************************************************/
+Character* CharacterList::getNextEnemyCharacter(Character* last)
+{
+   //TODO: must see use to reimplement this. seems strange.
+#if 0
+   while(last != first)
+   {
+      if(last->getPsychoState() == PSYCHO_HOSTILE)
+      {
+         return last;
+      }
+      last = (Character*) last->next;
+   }
+#endif
+   return NULL;
+}
+
+/*********************************************************************
+ *                           getActiveCharacter                      *
+ *********************************************************************/
+Character* CharacterList::getActiveCharacter()
+{
+   return activeCharacter;
+}
+
+/*********************************************************************
+ *                              getCharacter                         *
+ *********************************************************************/
+Character* CharacterList::getCharacter(Kobold::String filename)
+{
+   Character* ch = (Character*) getFirst();
+
+   /* Search the list for it */
+   for(int i = 0; i < getTotal(); i++)
+   {
+      if(ch->getFilename() == filename)
+      {
+         return ch;
+      }
+      ch = (Character*) ch->getNext();
+   }
+
+   return NULL;
+}
+
+/*********************************************************************
+ *                              getCharacter                         *
+ *********************************************************************/
+Character* CharacterList::getCharacter(Ogre::SceneNode* scNode)
+{
+   Character* ch = (Character*)first;
+
+   /* Search the list for it */
+   for(int i = 0; i < total; i++)
+   {
+      if((ch->getModel()) && (ch->getModel()->ownSceneNode(scNode)))
+      {
+         return ch;
+      }
+      ch = (Character*) ch->getNext();
+   }
+
+   return(NULL);
+}
+
+/*********************************************************************
+ *                         getNextSameCharacter                      *
+ *********************************************************************/
+Character* CharacterList::getNextSameCharacter(Character* ch)
+{
+   Character* cur = (Character*)ch->getNext();
+
+   /* Search the list for it */
+   while( (cur != ch) && (cur != first) )
+   {
+      if(cur->getFilename() == ch->getFilename())
+      {
+         return cur;
+      }
+      cur = (Character*) cur->getNext();
+   }
+
+   return NULL;
+}
+
+/*********************************************************************
+ *                            isCharacterIn                          *
+ *********************************************************************/
+bool CharacterList::isCharacterIn(Character* ch)
+{
+   Character* c = (Character*)first;
+   int i;
+
+   /* Search the list for it */
+   for(i = 0; i < total; i++)
+   {
+      if(c == ch)
+      {
+         return(true);
+      }
+      c = (Character*)c->getNext();
+   }
+
+   return(false);
+}
+
+/*********************************************************************
+ *                           setActiveCharacter                      *
+ *********************************************************************/
+void CharacterList::setActiveCharacter(Character* dude)
+{
+   activeCharacter = dude;
+}
+
+/*********************************************************************
+ *                                  update                           *
+ *********************************************************************/
+void CharacterList::update()
+{
+   int i;
+   Character* ch = (Character*)first;
+   for(i=0; i < total; i++)
+   {
+      ch->updateEffects();
+      ch = (Character*)ch->getNext();
+   }
+}
+
+/*********************************************************************
+ *                           treatGeneralScripts                     *
+ *********************************************************************/
+void CharacterList::treatGeneralScripts()
+{
+//TODO: scripts.
+#if 0
+   int i;
+   iaScript* script;
+   DialogWindow dlg;
+   Character* ch;
+
+   for(i=0; i < CHARACTER_TREAT_SCRIPTS; i++)
+   {
+      if(total <= 0)
+      {
+         /* No Characters -> Nothing to treat */
+         return;
+      }
+      
+      /* Set, if needed the current Character to treat */
+      if(!curTreat)
+      {
+         curTreat = (Character*)first;
+      }
+            
+      /* Get and treat script */
+      script = (iaScript*) curTreat->getGeneralScript();
+      if( (script) && (curTreat->isAlive()))
+      {
+         /* Only treat a Character script, if no dialog with it */
+         // TODO barter window too!
+         ch = script->getCharacterOwner();
+         if( (ch == NULL) || 
+             (!dlg.isOpened((Conversation*)ch->getConversation())))
+         {
+            script->defineMap(actualMap, NPCs);
+            script->run(MAX_SCRIPT_LINES);
+         }
+      }
+
+      /* Treat killed scripts (defined when Character is killed, 
+       * and removed from list when ends) */
+      script = curTreat->killedScript;
+      if((script) && (!curTreat->isAlive()))
+      {
+         script->defineMap(actualMap, NPCs);
+         script->run(MAX_SCRIPT_LINES);
+         if(script->finished())
+         {
+            /* Done with killed script, must clear it! */
+            delete(curTreat->killedScript);
+            curTreat->killedScript = NULL;
+         }
+      }
+
+      /* forward on the list */
+      curTreat = (Character*)curTreat->getNext();
+   }
+#endif
 }
 
 

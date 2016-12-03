@@ -22,6 +22,7 @@
 #include <farso/font.h>
 
 #include "core.h"
+#include "game.h"
 
 #include "../map/map.h"
 
@@ -41,16 +42,11 @@ Core::Core()
 {
    terrainGlobalOptions = NULL;
    terrainGroup = NULL;
-   map = NULL;
 }
 
 
 Core::~Core()
 {
-   if(map != NULL)
-   {
-      delete map;
-   }
    if(terrainGlobalOptions != NULL)
    {
       delete terrainGlobalOptions;
@@ -59,6 +55,8 @@ Core::~Core()
    {
       delete terrainGroup;
    }
+
+   Game::finish();
 
    Alignments::finish();
    SkillsDefinitions::finish();
@@ -182,8 +180,8 @@ bool Core::doInit()
 
    /* Load a map to test. FIXME: remove from here when reimplemented our
     * initial window. */
-   map = new DNT::Map(ogreSceneManager);
-   if(!map->load("tyrol/house1.map"))
+   Game::init(ogreSceneManager);
+   if(!Game::loadMap("tyrol/house1.map"))
    {
       return false;
    }
@@ -252,7 +250,7 @@ void Core::doSendToForeground()
 
 void Core::doCycle()
 {
-   map->update();
+   Game::getCurrentMap()->update();
    
    //TODO: right button pressed!
    if(Farso::Controller::verifyEvents(leftButtonPressed, false, mouseX, mouseY))
