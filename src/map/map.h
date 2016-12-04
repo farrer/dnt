@@ -47,6 +47,11 @@ class Map
       /*! Update everithing related to the map for curent frame. */
       void update();
 
+      /*! \return initial PlayableCharacters position on map
+       * \note this position is used just on plain map load, as on map travel,
+       * PCs positions are defined by the map connection used. */
+      Ogre::Vector3 getInitialPosition();
+
    private:
       IndoorTextureMeshes floor; /**< The indoor floor meshes */
       IndoorTextureMeshes walls; /**< The indoor wall meshes */
@@ -57,6 +62,8 @@ class Map
 
       int xSize;  /**< Map size (in square units) for X axys */
       int zSize;  /**< Map size (in square units) for Z axys */
+
+      Ogre::Vector3 initialPos; /**< initial position on map for PCs */
 };
 
 }

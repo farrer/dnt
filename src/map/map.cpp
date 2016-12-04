@@ -56,6 +56,8 @@ using namespace DNT;
 #define MAP_TOKEN_DOOR_LOCK             "doorLock"
 #define MAP_TOKEN_DOOR_LOCK_DIALOG      "doorLockDialog"
 
+#define MAP_TOKEN_INITIAL               "initial"
+
 #define MAP_VALUE_TRUE                  "true"
 
 /**************************************************************************
@@ -278,6 +280,16 @@ bool Map::load(Ogre::String mapFileName)
             last->setWalkable(value == MAP_VALUE_TRUE);
          }
       }
+      else if(key == MAP_TOKEN_INITIAL)
+      {
+         float ix = 0.0f;
+         float iz = 0.0f;
+         /* Define initial position */
+         sscanf(value.c_str(), "%f,%f", &ix, &iz);
+
+         //TODO: get map height at position and set it.
+         initialPos = Ogre::Vector3(ix, 0.0f, iz);
+      }
       else 
       {
          Ogre::LogManager::getSingleton().getDefaultLog()->stream()
@@ -290,5 +302,13 @@ bool Map::load(Ogre::String mapFileName)
    walls.updateAllDirty();
 
    return true;
+}
+
+/**************************************************************************
+ *                             getInitialPosition                         *
+ **************************************************************************/
+Ogre::Vector3 Map::getInitialPosition()
+{
+   return initialPos;
 }
 

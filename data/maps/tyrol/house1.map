@@ -477,5 +477,5 @@ thingOri = 0.000,-90.000,0.000
 thing = furniture/privada.scn 
 thingPos = 18.399,0.000,16.504
 thingOri = 0.000,179.000,0.000
-
 initial = 243.000,439.000
+

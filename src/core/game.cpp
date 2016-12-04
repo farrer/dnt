@@ -62,7 +62,7 @@ void Game::finish()
 /************************************************************************
  *                               loadMap                                *
  ************************************************************************/
-Map* Game::loadMap(Kobold::String filename)
+Map* Game::loadMap(Kobold::String filename, bool setPCsPositions)
 {
    /* Create and try to load map */
    Map* map = new DNT::Map(sceneManager);
@@ -82,7 +82,19 @@ Map* Game::loadMap(Kobold::String filename)
    /* Loaded, must set current map to it */
    currentMap = map;
 
-   //TODO: set PCs to initial position.
+   if(setPCsPositions)
+   {
+      /* Put PCs to initial position */
+      Character* ch = (Character*) pcs->getFirst();
+      for(int i = 0; i < pcs->getTotal(); i++)
+      {
+         //FIXME: currently putting all on same position, it should be fixed
+         //       to support multiple PCs.
+         ch->getModel()->setPosition(map->getInitialPosition());
+
+         ch = (Character*) ch->getNext();
+      }
+   }
 
    return map;
 }

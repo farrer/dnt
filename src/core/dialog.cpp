@@ -20,11 +20,14 @@
 
 #include "dialog.h"
 #include "playablecharacter.h"
+#include "game.h"
 
 #include "../rules/thing.h"
 #include "../lang/translate.h"
 
 #include "../rules/modifier.h"
+
+#include "../map/npcfile.h"
 
 #include <kobold/log.h>
 #include <kosound/sound.h>
@@ -373,14 +376,11 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
       /* Kill All NPCs from a file */
       case TALK_ACTION_KILL_ALL:
       {
-//TODO: current map npc list
-#if 0
-         npcFile npcs;
-         if(npcs.load(actions[i].satt))
+         NpcFile npcs;
+         if(npcs.load(satt))
          {
             npcs.killAll();
          }
-#endif
       }
       break;
 
