@@ -24,6 +24,7 @@
 #include <kobold/log.h>
 
 #include <stdio.h>
+#include <iostream>
 
 using namespace DNT;
 
@@ -126,9 +127,37 @@ bool NpcFile::load(Kobold::String filename)
  ***********************************************************************/
 bool NpcFile::save(Kobold::String filename)
 {
-   //TODO
-   return false;
+   std::ofstream file;
+   /* Let's try to open it */
+   
+   file.open(filename.c_str(), std::ios::out | std::ios::binary);
+   if(!file)
+   {
+      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+            "Couldn't open npc file '%s' for saving it.", filename.c_str());
+      return false;
+   }
+
+   /* Write its map */
+   file << NPC_FILE_KEY_MAP_FILE << " = " << mapFilename << std::endl;
+
+   /* Write each NPC */
+   NpcParseStruct* npc = (NpcParseStruct*) getFirst();
+   for(int i = 0; i < getTotal(); i++)
+   {
+      file << NPC_FILE_KEY_NPC << " = " << npc->name << std::endl;
+      file << NPC_FILE_KEY_FILE << " = " << npc->filename << std::endl;
+      file << NPC_FILE_KEY_POSITION << " = " << npc->posX << " " 
+           << npc->posZ << std::endl;
+      file << NPC_FILE_KEY_ANGLE << " = " << npc->angle << std::endl;
+      file << NPC_FILE_KEY_PSYCHO << " = " << npc->psycho << std::endl;
+
+      npc = (NpcParseStruct*) npc->getNext();
+   }
+
+   return true;
 }
+
 
 /***********************************************************************
  *                          insertCharacter                            *

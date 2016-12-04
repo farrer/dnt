@@ -59,7 +59,7 @@ class NpcFile: public Kobold::List
       bool load(Kobold::String filename);
 
       /*! Save the npc file
-       * \param filename -> relative fileName of the npc's file
+       * \param filename -> full filename (with path) of where to save.
        * \return -> true if saved, false otherwise */
       bool save(Kobold::String filename);
 
