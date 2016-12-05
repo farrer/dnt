@@ -26,6 +26,8 @@
 #include "feats.h"
 #include "modeffect.h"
 
+#include "../core/inventory.h"
+
 #include <kobold/log.h>
 
 #include <assert.h>
@@ -36,6 +38,7 @@ using namespace DNT;
  *                                Character                            *
  ***********************************************************************/
 Character::Character()
+          :Thing(Thing::THING_TYPE_CHARACTER)
 {
    /* Default: alive */
    this->dead = false;
@@ -59,6 +62,9 @@ Character::Character()
    /* Define default bare hands damage dice */
    bareHandsDice.setBaseDice(Dice(Dice::DICE_TYPE_D2));
    bareHandsDice.setInitialLevel(1);
+
+   /* Create its inventory */
+   inventory = new Inventory();
 }
 
 /***********************************************************************
@@ -69,6 +75,10 @@ Character::~Character()
    if(feats)
    {
       delete feats;
+   }
+   if(inventory)
+   {
+      delete inventory;
    }
 }
 
@@ -144,6 +154,14 @@ int Character::getEmptyClassIndex()
       }
    }
    return -1;
+}
+
+/***********************************************************************
+ *                              getInventory                           *
+ ***********************************************************************/
+Inventory* Character::getInventory()
+{
+   return inventory;
 }
 
 #define CHARACTER_KEY_PORTRAIT "portrait"
@@ -238,11 +256,11 @@ void Character::doAfterLoad(Kobold::String& mapFilename)
    this->mapFilename = mapFilename;
 
    /* Define the AC if not yet defined at the file */
-   if(armatureClass == 0)
+   if(getArmatureClass() == 0)
    {
       /* Define AC TODO others values to sum here*/ 
-      armatureClass = 10 + 
-         sk.getSkillByString("DEXTERITY")->getAttributeBonus();
+      setArmatureClass(10 + getSkills()->getSkillByString(
+               "DEXTERITY")->getAttributeBonus());
    }
 
    /* Apply Saves and Bonus, if not yet defined (some npcs without classes
@@ -340,13 +358,15 @@ void Character::instantKill()
  *********************************************************************/
 void Character::applySkillCosts()
 {
+   Skills* skills = getSkills();
+
    /* Clear current costs */
-   sk.clearCosts();
+   skills->clearCosts();
 
    /* Apply Race Costs */
    if(race) 
    {
-      race->applySkillCosts(&sk);
+      race->applySkillCosts(skills);
    }
 
    //FIXME Classes Costs will be only per actual class?
@@ -355,7 +375,7 @@ void Character::applySkillCosts()
    {
       if(classes[i] != NULL)
       {
-         classes[i]->applySkillCosts(&sk);
+         classes[i]->applySkillCosts(skills);
       }
    }
 }
@@ -365,16 +385,17 @@ void Character::applySkillCosts()
  *********************************************************************/
 void Character::applyBonusAndSaves()
 {
+   BonusAndSaves* bas = getCurBonusAndSaves();
+
    /* Clear the current */
-   curBonusAndSaves.clear();
+   bas->clear();
 
    /* Add from all classes */
    for(int i = 0; i < CHARACTER_MAX_DISTINCT_CLASSES; i++)
    {
       if(classes[i] != NULL)
       {
-         curBonusAndSaves = curBonusAndSaves + 
-            classes[i]->getBonusAndSaves(classLevel[i] - 1);
+         (*bas) = (*bas) + classes[i]->getBonusAndSaves(classLevel[i] - 1);
       }
    }
 }

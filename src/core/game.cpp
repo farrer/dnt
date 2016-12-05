@@ -88,8 +88,8 @@ Map* Game::loadMap(Kobold::String filename, bool setPCsPositions)
       Character* ch = (Character*) pcs->getFirst();
       for(int i = 0; i < pcs->getTotal(); i++)
       {
-         //FIXME: currently putting all on same position, it should be fixed
-         //       to support multiple PCs.
+         //FIXME: currently putting all at the same position, it should be
+         //       fixed to support multiple PCs.
          ch->getModel()->setPosition(map->getInitialPosition());
 
          ch = (Character*) ch->getNext();

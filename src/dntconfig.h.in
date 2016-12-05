@@ -104,6 +104,9 @@ namespace DNT
    class IndoorTextureMesh;
    class IndoorTextureMeshes;
 
+   class ItemSlot;
+   class Inventory;
+
 }
 
 #endif

@@ -85,7 +85,7 @@ void PlayableCharacter::getNewClassLevel(Class* cl)
 
       /* Roll a life dice */
       int constitutionBonus = 
-         sk.getSkillByString("CONSTITUTION")->getAttributeBonus();
+         getSkills()->getSkillByString("CONSTITUTION")->getAttributeBonus();
       Dice d(cl->getLifeDiceType());
       setMaxLifePoints(getMaxLifePoints() + d.roll() + constitutionBonus);
 

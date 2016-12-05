@@ -107,6 +107,9 @@ namespace DNT
           * \param mapFilename filename of the Map where the Character is */
          void doAfterLoad(Kobold::String& mapFilename);
 
+         /*! \return pointer to character's inventory */
+         Inventory* getInventory();
+
       protected:
          /*! Get first available empty class index on character classes vector
           * \return index first empty index or -1 if full. */
@@ -149,6 +152,8 @@ namespace DNT
 
          ModEffectList effects;  /**< Current Character effects */
          DiceInfo bareHandsDice; /**< Damage dice for barehands fight */
+
+         Inventory* inventory; /**< Character inventory */
 
          Kobold::String mapFilename; /**< Filename of Map where Character is */
    };

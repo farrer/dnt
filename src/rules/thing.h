@@ -59,8 +59,17 @@ class Thing : public Kobold::ListElement
          PSYCHO_FRIENDLY
       };
 
+      /*! The incredible Thing type */
+      enum ThingType
+      {
+         /*! Character derived type */
+         THING_TYPE_CHARACTER,
+         /*! Object derived type */
+         THING_TYPE_OBJECT
+      };
+
       /*! Constructor */
-      Thing();
+      Thing(ThingType type);
       /*! Destructor */
       virtual ~Thing();
 
@@ -171,6 +180,15 @@ class Thing : public Kobold::ListElement
       /*! Set the current max life points
        * \param points -> new max life points*/
       void setMaxLifePoints(int points);
+
+      /*! \return thing's type */
+      ThingType getThingType();
+
+      /*! \return current armature class value */
+      int getArmatureClass();
+      /*! Set current armature class
+       * \param value armature class value */
+      void setArmatureClass(int value);
       
    protected:
 
@@ -184,6 +202,9 @@ class Thing : public Kobold::ListElement
        * \param file ofstream with the file to save
        * \return if was successful */
       virtual bool doSpecificSave(std::ofstream& file) = 0;
+
+   private:
+      ThingType thingType; /**< Thing's type */
 
       Kobold::String filename; /**< Filename used to load the thing */
       Kobold::String name; /**< Name of the thing */

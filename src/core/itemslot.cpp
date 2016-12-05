@@ -37,6 +37,13 @@ ItemSlot::Space::Space()
 }
 
 /****************************************************************
+ *                           ~Space                             *
+ ****************************************************************/
+ItemSlot::Space::~Space()
+{
+}
+
+/****************************************************************
  *                           setItem                            *
  ****************************************************************/
 void ItemSlot::Space::setItem(Item* item, Ogre::Vector2 orig)
@@ -101,7 +108,7 @@ ItemSlot::~ItemSlot()
          if( (spaces[x][y].getItem() != NULL) &&
              (spaces[x][y].getOrigin() == orig) )
          {
-            /* Delete the itemect */
+            /* Delete the item */
             delete spaces[x][y].getItem();
          }
          spaces[x][y].setItem(NULL, orig);

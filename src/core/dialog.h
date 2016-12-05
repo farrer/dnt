@@ -97,12 +97,14 @@ enum TalkActionType
    TALK_ACTION_DIALOG_INIT, /**< Set the new initial Dialog */
    TALK_ACTION_ADD_MISSION, /**< Add a mission */
    TALK_ACTION_COMPLETE_MISSION, /**< Complete Mission */
-   TALK_ACTION_GIVE_ITEM, /**< Give an item */
-   TALK_ACTION_RECEIVE_MONEY, /**< Receive some money */
+   TALK_ACTION_GIVE_ITEM, /**< PC gives an item to conversation owner.
+                               \note item must be at PC's inventory. */
+   TALK_ACTION_RECEIVE_MONEY, /**< PC receives some money from dialog owner */
    TALK_ACTION_CHANGE_OBJECT_STATE, /**< Change Object State */
    TALK_ACTION_RECEIVE_XP, /**< Receive XP ammount */
    TALK_ACTION_KILL_ALL, /**< Kill All NPCs from a map */
-   TALK_ACTION_RECEIVE_ITEM, /**< Receive an Item */
+   TALK_ACTION_RECEIVE_ITEM, /**< PC receives an Item from dialog owner.
+                                  \note item must be at Owner's inventory */
    TALK_ACTION_MAP_TRAVEL, /**< Travel to another map */
    TALK_ACTION_GIVE_MONEY, /**< Give money quantity */
    TALK_ACTION_CALL_SCRIPT, /**< Call a one time finish script */

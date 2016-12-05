@@ -21,6 +21,8 @@
 #include "dialog.h"
 #include "playablecharacter.h"
 #include "game.h"
+#include "item.h"
+#include "inventory.h"
 
 #include "../rules/thing.h"
 #include "../lang/translate.h"
@@ -28,6 +30,8 @@
 #include "../rules/modifier.h"
 
 #include "../map/npcfile.h"
+
+#include "../gui/briefing.h"
 
 #include <kobold/log.h>
 #include <kosound/sound.h>
@@ -223,9 +227,9 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
             char vstr[200];
             sprintf(vstr,gettext("Mission Completed: %d XP!"),m->getXp());
             messageController msgController;
-            msgController.addMessage(actualPC->scNode->getPosX(),
-                  actualPC->scNode->getBoundingBox().max.y,
-                  actualPC->scNode->getPosZ(), vstr, 0.94, 0.8, 0.0);
+            msgController.addMessage(currentPC->scNode->getPosX(),
+                  currentPC->scNode->getBoundingBox().max.y,
+                  currentPC->scNode->getPosZ(), vstr, 0.94, 0.8, 0.0);
          }
 #endif
       }
@@ -233,102 +237,80 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
       /* Give a Item */
       case TALK_ACTION_GIVE_ITEM:
       {
-//TODO inventory
-#if 0
          /* Only give item if the owner is a Character */
-         if(owner->getThingType() == THING_TYPE_CHARACTER)
+         //TODO: Container object type
+         if(owner->getThingType() == Thing::THING_TYPE_CHARACTER)
          {
             Character* ownerNPC = (Character*)owner;
             /* Search for the item at actor's inventory */
-            object* obj = actualPC->inventories->getItemByFileName(
-                  actions[i].satt);
-            if(obj)
+            Item* item = pc->getInventory()->getItemByFilename(satt);
+            if(item)
             {
                /* Remove it from there */
-               actualPC->inventories->removeFromInventory(obj);
+               pc->getInventory()->removeFromInventory(item);
 
                /* Add it to the Owner NPC inventory */
-               ownerNPC->inventories->addObject(obj);
+               ownerNPC->getInventory()->addItem(item);
+
                /* NOTE: The NPC inventory is always saved at modstate when 
                 * the PC leaves the map, and reloaded when it come back */
-
-               sprintf(buf,gettext("%s lost."),obj->name.c_str());
-               brief.addText(buf,206,137,16);
+               Briefing::addText(gettext("%s lost."), item->getName().c_str());
             }
             else
             {
-               cerr << "Error: No object '" << actions[i].satt 
-                  << "' to give at Character inventory!" << endl;
+               Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+                  "Error: no object '%s' to give at character's inventory!",
+                  satt.c_str());
             }
          }
-#endif
       }
       break;
 
       /* Receive Item */
       case TALK_ACTION_RECEIVE_ITEM:
       {
-//TODO: inventory
-#if 0 
-         /* Search for the item (or load one, if needed) */
-         object* obj = objectsList::search(actions[i].satt, 0,0,0);
-         modState modif;
-         Map* actualMap = ((engine*)curEngine)->getCurrentMap();
-
-         if(obj == NULL)
+         /* Only receive items from characters */
+         //TODO: Container object type
+         if(owner->getThingType() == Thing::THING_TYPE_CHARACTER)
          {
-            /* Must load one */
-            obj = createObject(actions[i].satt, "");
-         }
-
-         /* Now, put it at the actualCharacter Inventory */
-         if(obj != NULL)
-         {
-            if(!actualPC->inventories->addObject(obj))
+            Character* ownerNPC = (Character*)owner;
+            /* Search for the item on owner's inventory */
+            Item* item = ownerNPC->getInventory()->getItemByFilename(satt);
+            if(item)
             {
-               /* Can't add to the inventory (is full?), so puting it
-                * at the floor. */
-               float height =  actualMap->getHeight(actualPC->scNode->getPosX(), 
-                     actualPC->scNode->getPosZ());
-               actualMap->insertObject(actualPC->scNode->getPosX(), height,
-                     actualPC->scNode->getPosZ(), 
-                     0.0f, 0.0f, 0.0f, obj, 0);
-               modif.mapObjectAddAction(MODSTATE_ACTION_OBJECT_ADD,
-                     actions[i].satt,
-                     actualMap->getFileName(),
-                     actualPC->scNode->getPosX(), height,
-                     actualPC->scNode->getPosZ());
+               /* Remove it from there */
+               ownerNPC->getInventory()->removeFromInventory(item);
+
+               /* Add it to the Owner NPC inventory */
+               pc->getInventory()->addItem(item);
+               //TODO map add object, when inventory is full!
+
+               /* NOTE: The NPC inventory is always saved at modstate when 
+                * the PC leaves the map, and reloaded when it come back */
+               Briefing::addText(gettext("Received %s"), 
+               item->getName().c_str());
             }
-            sprintf(buf,gettext("Received %s."),obj->name.c_str());
-            brief.addText(buf,240,226,0);
          }
-#endif
+         /* Else, show no error, as the character could 'lost' the item on 
+          * various ways: bartering, stealing, etc. */
       }
       break;
 
       /* Receive Money */
       case TALK_ACTION_RECEIVE_MONEY:
       {
-//TODO: inventory
-#if 0
-         actualPC->inventories->addMoney(actions[i].att);
-         sprintf(buf,gettext("Received $%d."),actions[i].att);
-         brief.addText(buf,18,191,0);
-#endif
+         pc->getInventory()->addMoney(att);
+         Briefing::addText(gettext("Received $%d."), att);
       }
       break;
 
-         /* Give Money */
+      /* Give Money */
       case TALK_ACTION_GIVE_MONEY:
       {
-//TODO inventory
-#if 0
-         actualPC->inventories->decMoney(actions[i].att);
-         sprintf(buf,gettext("Lost $%d."),actions[i].att);
-         brief.addText(buf,18,191,0);
-#endif
+         pc->getInventory()->decMoney(att);
+         Briefing::addText(gettext("Lost $%d."), att);
       }
-         break;
+      break;
 
       /* Change Object State */
       case TALK_ACTION_CHANGE_OBJECT_STATE:
@@ -339,7 +321,7 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
 #if 0
          /* Tell ModState about the change */
          modif.mapObjectAddAction(MODSTATE_ACTION_OBJECT_CHANGE_STATE,
-               obj->getFileName(), ownerMap,
+               obj->getFilename(), ownerMap,
                obj->scNode->getPosX(), 
                obj->scNode->getPosY(), 
                obj->scNode->getPosZ(), obj->getState());
@@ -353,7 +335,7 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
 //TODO: Experience
 #if 0
          /* At XP to the Character */
-         actualPC->addXP(actions[i].att);
+         currentPC->addXP(actions[i].att);
 
          /* Set the Message */
          char vstr[200];
@@ -361,9 +343,9 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
 
          /* Put Message at game */
          messageController msgController;
-         msgController.addMessage(actualPC->scNode->getPosX(),
-               actualPC->scNode->getBoundingBox().max.y,
-               actualPC->scNode->getPosZ(), vstr,
+         msgController.addMessage(currentPC->scNode->getPosX(),
+               currentPC->scNode->getBoundingBox().max.y,
+               currentPC->scNode->getPosZ(), vstr,
                0.94, 0.8, 0.0);
 
          /* Put Message at Briefing */
@@ -583,20 +565,18 @@ bool TalkTest::doTest(PlayableCharacter* pc, Thing* owner)
       /* Roll the Thing! */
       return pc->doCheck(test, value);
    }
-//TODO: inventory!
-#if 0
+   
    /* Have Item test */
    else if(type == TALK_TEST_HAVE_ITEM)
    {
-      return(pc->inventories->getItemByFileName(test) != NULL);  
+      return pc->getInventory()->getItemByFilename(test) != NULL;  
    }
 
    /* Have Item with info test */
    else if(type == TALK_TEST_HAVE_ITEM_WITH_INFO)
    {
-      return(pc->inventories->getItemByInfo(test) != NULL);
+      return pc->getInventory()->getItemByInfo(test) != NULL;
    }
-#endif
 
    /* Align Not Test */
    else if(type == TALK_TEST_ALIGNMENT_NOT)
@@ -627,16 +607,13 @@ bool TalkTest::doTest(PlayableCharacter* pc, Thing* owner)
    }
 #endif
 
-//TODO: inventory!
-#if 0 
    /* Have money */
-   else if(id == TALK_TEST_HAVE_MONEY)
+   else if(type == TALK_TEST_HAVE_MONEY)
    {
-      int val=0;
+      int val = 0;
       sscanf(test.c_str(), "%d", &val);
-      return(pc->inventories->getMoneyQuantity() >= val);
+      return pc->getInventory()->getMoneyQuantity() >= val;
    }
-#endif
 
 //TODO: Missions
 #if 0
@@ -1601,14 +1578,14 @@ void Conversation::changeDialog(int numDialog)
          /* And passes all preTests */
          for(j = 0; j < MAX_PRE_TESTS; j++)
          {
-            res &= dlg->options[i].preTest[j].doTest(actualPC, owner);
+            res &= dlg->options[i].preTest[j].doTest(currentPC, owner);
          }
 
          /* So, if pass all, add the option */
          if(res)
          {
             sprintf(conv, "%d - ", curOpt+1);
-            text = conv + dlg->options[i].postTest.getTestName(actualPC);
+            text = conv + dlg->options[i].postTest.getTestName(currentPC);
 
             /* Add the text*/
             text += dlg->options[i].text;

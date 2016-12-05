@@ -68,15 +68,15 @@ void Door::setOpenStatus(OpenStatus openStatus)
  **************************************************************************/
 bool Door::flip()
 {
-   Ogre::Vector3 pos = model3d->getPosition();
+   Ogre::Vector3 pos = getModel()->getPosition();
 
    if(openStatus == DOOR_CLOSED)
    {
-      if(state == DOOR_UNLOCKED)
+      if(getState() == DOOR_UNLOCKED)
       {
          openStatus = DOOR_OPENED;
          /* Set opening animation */
-         model3d->setTargetOrientation(0.0f, closedAngle + 90.0f, 0.0f);
+         getModel()->setTargetOrientation(0.0f, closedAngle + 90.0f, 0.0f);
          /* Call opening sound */
          Kosound::Sound::addSoundEffect(pos.x, pos.y, pos.z, SOUND_NO_LOOP,
                "sndfx/objects/door_open.ogg");
@@ -87,7 +87,7 @@ bool Door::flip()
    {
       openStatus = DOOR_CLOSED;
       /* Opened, we can always close the door */
-      model3d->setTargetOrientation(0.0f, closedAngle, 0.0f);
+      getModel()->setTargetOrientation(0.0f, closedAngle, 0.0f);
       /* Call closing sound */
       Kosound::Sound::addSoundEffect(pos.x, pos.y, pos.z, SOUND_NO_LOOP,
             "sndfx/objects/door_close.ogg");
