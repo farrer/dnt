@@ -24,6 +24,8 @@
 using namespace DNT;
 
 #define OBJECT_KEY_IMAGE     "image"
+#define OBJECT_KEY_COST      "cost"
+#define OBJECT_KEY_WEIGHT    "weight"
 
 /**************************************************************************
  *                               Constructor                              *
@@ -31,6 +33,8 @@ using namespace DNT;
 Object::Object()
 {
    image = NULL;
+   cost = 0;
+   weight = 0.0f;
 }
 
 /**************************************************************************
@@ -51,6 +55,40 @@ Farso::Surface* Object::getImage()
 {
    return image;
 }
+
+/**************************************************************************
+ *                                 setCost                                *
+ **************************************************************************/
+void Object::setCost(int value)
+{
+   cost = value;
+}
+
+/**************************************************************************
+ *                                 getCost                                *
+ **************************************************************************/
+int Object::getCost()
+{
+   return cost;
+}
+
+/**************************************************************************
+ *                                setWeight                               *
+ **************************************************************************/
+void Object::setWeight(float value)
+{
+   weight = value;
+}
+
+/**************************************************************************
+ *                                getWeight                               *
+ **************************************************************************/
+float Object::getWeight()
+{
+   return weight;
+}
+
+
 
 /**************************************************************************
  *                             doSpecificParse                            *
@@ -75,13 +113,21 @@ bool Object::doSpecificParse(Ogre::String key, Ogre::String value)
                  "Warning: object's image redefinition '%s' ignored", 
                  value.c_str());
       }
-      
-      return true;
+   }
+   else if(key == OBJECT_KEY_COST)
+   {
+      sscanf(value.c_str(), "%d", &cost);
+   }
+   else if(key == OBJECT_KEY_WEIGHT)
+   {
+      sscanf(value.c_str(), "%f", &weight);
    }
    else
    {
       return doObjectSpecializationParse(key, value);
    }
+
+   return true;
 }
 
 /**************************************************************************
@@ -94,6 +140,8 @@ bool Object::doSpecificSave(std::ofstream& file)
       file << OBJECT_KEY_IMAGE << " = " << image->getTextureName() 
            << std::endl;
    }
+   file << OBJECT_KEY_COST << " = " << cost << std::endl;
+   file << OBJECT_KEY_WEIGHT << " = " << weight << std::endl;
    
    return doObjectSpecializationSave(file);
 }

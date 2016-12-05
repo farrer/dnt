@@ -41,6 +41,18 @@ class Object : public Thing
        * \note could be NULL. */
       Farso::Surface* getImage();
 
+      /*! \ return current object's cost */
+      int getCost();
+      /*! Set current object's cost 
+       * \param value new cost value */
+      void setCost(int value);
+
+      /*! \return current object's weight */
+      float getWeight();
+      /*! Set object's weight
+       * \param value new object's weight value */
+      void setWeight(float value);
+
    protected:
 
       /*! Parse common Object key/values pairs. */
@@ -58,7 +70,8 @@ class Object : public Thing
       virtual bool doObjectSpecializationSave(std::ofstream& file) = 0;
 
    private:
-     
+      int cost;      /**< Current object's cost */
+      float weight;  /**< Current object's weight */
       Farso::Surface* image; /**< Image representing the object in 2d */
 
 };
