@@ -37,8 +37,7 @@ void Briefing::init()
    lastAddTimer.reset();
 
    briefTxt = new Farso::ScrollText(0, 0, 320, 160, 
-         "fonts/LiberationSans-Regular.ttf",
-         10, Farso::Colors::colorText, NULL);
+         "LiberationSans-Regular.ttf", 10, Farso::Colors::colorText, NULL);
    briefTxt->hide();
 }
 
