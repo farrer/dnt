@@ -32,12 +32,27 @@ namespace DNT
 class Item : public Object
 {
    public:
+      /*! Constructor */
       Item();
+      /*! Destructor */
       ~Item();
 
+      /*! \return Item's size on inventory */
+      Ogre::Vector2 getInventorySize();
+
+      /*! \return related information about the Item */
+      Kobold::String getRelatedInfo();
+
    protected:
-      
+     
+      /*! Parse specific Item definitions from file */
       bool doObjectSpecializationParse(Ogre::String key, Ogre::String value);
+      /*! Add specific Item definitions to file */
+      bool doObjectSpecializationSave(std::ofstream& file);
+      
+   private:
+      Ogre::Vector2 inventorySize; /**< Total size needed when on inventory */
+      Kobold::String relatedInfo; /**< Related Item information */
 
 };
 

@@ -9,6 +9,8 @@ src/core/core.cpp
 src/core/dialog.cpp
 src/core/door.cpp
 src/core/game.cpp
+src/core/item.cpp
+src/core/itemslot.cpp
 src/core/object.cpp
 src/core/playablecharacter.cpp
 src/core/scenery.cpp
@@ -20,6 +22,7 @@ src/core/dialog.h
 src/core/door.h
 src/core/game.h
 src/core/item.h
+src/core/itemslot.h
 src/core/nonplayablecharacter.h
 src/core/object.h
 src/core/playablecharacter.h

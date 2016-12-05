@@ -18,83 +18,74 @@
   along with DNT.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "object.h"
-#include <kobold/log.h>
-
+#include "item.h"
 using namespace DNT;
 
-#define OBJECT_KEY_IMAGE     "image"
+#define ITEM_KEY_INVENTORY_SIZE   "inventory_sizes"
+#define ITEM_KEY_RELATED_INFO     "related_info"
 
 /**************************************************************************
  *                               Constructor                              *
  **************************************************************************/
-Object::Object()
+Item::Item()
 {
-   image = NULL;
 }
 
 /**************************************************************************
  *                                Destructor                              *
  **************************************************************************/
-Object::~Object()
+Item::~Item()
 {
-   if(image)
+}
+
+/**************************************************************************
+ *                           getInventorySize                             *
+ **************************************************************************/
+Ogre::Vector2 Item::getInventorySize()
+{
+   return inventorySize;
+}
+
+/**************************************************************************
+ *                            getRelatedInfo                              *
+ **************************************************************************/
+Kobold::String Item::getRelatedInfo()
+{
+   return relatedInfo;
+}
+
+/**************************************************************************
+ *                     doObjectSpecializationParse                        *
+ **************************************************************************/
+bool Item::doObjectSpecializationParse(Ogre::String key, Ogre::String value)
+{
+   if(key == ITEM_KEY_INVENTORY_SIZE)
    {
-      delete image;
+      int sX=0, sY=0;
+      sscanf(value.c_str(), "%d %d", &sX, &sY);
+      inventorySize = Ogre::Vector2(sX, sY);
    }
-}
-
-/**************************************************************************
- *                                getImage                                *
- **************************************************************************/
-Farso::Surface* Object::getImage()
-{
-   return image;
-}
-
-/**************************************************************************
- *                             doSpecificParse                            *
- **************************************************************************/
-bool Object::doSpecificParse(Ogre::String key, Ogre::String value)
-{
-   if(key == OBJECT_KEY_IMAGE)
+   else if(key == ITEM_KEY_RELATED_INFO)
    {
-      if(!image)
-      {
-         image = Farso::Controller::loadImageToSurface(value);
-         if(!image)
-         {
-            Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
-                  "Error: couldn't load object's image '%s'", value.c_str());
-            return false;
-         }
-      }
-      else
-      {
-         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
-                 "Warning: object's image redefinition '%s' ignored", 
-                 value.c_str());
-      }
-      
-      return true;
+      relatedInfo = value;
    }
    else
    {
-      return doObjectSpecializationParse(key, value);
+      return false;
    }
+   
+   return true;
 }
 
 /**************************************************************************
- *                             doSpecificSave                             *
+ *                     doObjectSpecializationSave                         *
  **************************************************************************/
-bool Object::doSpecificSave(std::ofstream& file)
+bool Item::doObjectSpecializationSave(std::ofstream& file)
 {
-   if(image)
-   {
-      file << OBJECT_KEY_IMAGE << " = " << image->getTextureName() 
-           << std::endl;
-   }
-   
-   return doObjectSpecializationSave(file);
+   file << ITEM_KEY_INVENTORY_SIZE << " = " << ((int)inventorySize.x)
+        << " " << ((int)inventorySize.y) << std::endl;
+   file << ITEM_KEY_RELATED_INFO << " = " << relatedInfo << std::endl;
+ 
+   return true;
 }
-
+      

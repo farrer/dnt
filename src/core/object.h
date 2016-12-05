@@ -32,8 +32,14 @@ namespace DNT
 class Object : public Thing
 {
    public:
+      /*! Constructor */
       Object();
+      /*! Destructor */
       virtual ~Object();
+
+      /*! \return Surface that represents the Object in 2D.
+       * \note could be NULL. */
+      Farso::Surface* getImage();
 
    protected:
 
@@ -53,8 +59,7 @@ class Object : public Thing
 
    private:
      
-      Ogre::Vector2 inventorySize;
-      Farso::Surface* inventoryImage;
+      Farso::Surface* image; /**< Image representing the object in 2d */
 
 };
 
