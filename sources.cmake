@@ -9,6 +9,7 @@ src/core/core.cpp
 src/core/dialog.cpp
 src/core/door.cpp
 src/core/game.cpp
+src/core/inventory.cpp
 src/core/item.cpp
 src/core/itemslot.cpp
 src/core/money.cpp
@@ -22,6 +23,7 @@ src/core/core.h
 src/core/dialog.h
 src/core/door.h
 src/core/game.h
+src/core/inventory.h
 src/core/item.h
 src/core/itemslot.h
 src/core/money.h

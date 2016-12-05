@@ -32,6 +32,21 @@ namespace DNT
 class Item : public Object
 {
    public:
+      /*! Types of Items */
+      enum ItemType
+      {
+         ITEM_TYPE_GENERIC = 0,
+         ITEM_TYPE_WEAPON,
+         ITEM_TYPE_AMMO,
+         ITEM_TYPE_ARMOR,
+         ITEM_TYPE_HEAL,
+         ITEM_TYPE_EXPLOSIVE,
+         ITEM_TYPE_NARCOTIC,
+         ITEM_TYPE_BOOK,
+         ITEM_TYPE_MONEY,
+         ITEM_TOTAL_TYPES
+      };
+
       /*! Constructor */
       Item();
       /*! Destructor */
@@ -43,6 +58,12 @@ class Item : public Object
       /*! \return related information about the Item */
       Kobold::String getRelatedInfo();
 
+      /*! \return item type */
+      ItemType getType();
+
+      /*! \return if the item is usable or not (based on its type). */
+      bool isUsable();
+
    protected:
      
       /*! Parse specific Item definitions from file */
@@ -51,9 +72,17 @@ class Item : public Object
       bool doObjectSpecializationSave(std::ofstream& file);
       
    private:
+
+      /*! Set current  ItemType based on a string */
+      void setTypeByString(Kobold::String typeStr);
+      /*! \return String representation of current item type */
+      Kobold::String getTypeAsString();
+
       Ogre::Vector2 inventorySize; /**< Total size needed when on inventory */
       Kobold::String relatedInfo; /**< Related Item information */
+      ItemType type; /**< Type of the item */
 
+      static Kobold::String typeStrings[ITEM_TOTAL_TYPES];
 };
 
 }

@@ -19,16 +19,19 @@
 */
 
 #include "item.h"
+#include <kobold/log.h>
 using namespace DNT;
 
 #define ITEM_KEY_INVENTORY_SIZE   "inventory_sizes"
 #define ITEM_KEY_RELATED_INFO     "related_info"
+#define ITEM_KEY_TYPE     "type"
 
 /**************************************************************************
  *                               Constructor                              *
  **************************************************************************/
 Item::Item()
 {
+   type = ITEM_TYPE_GENERIC;
 }
 
 /**************************************************************************
@@ -55,6 +58,55 @@ Kobold::String Item::getRelatedInfo()
 }
 
 /**************************************************************************
+ *                               getType                                  *
+ **************************************************************************/
+Item::ItemType Item::getType()
+{
+   return type;
+}
+
+/**************************************************************************
+ *                              isUsable                                  *
+ **************************************************************************/
+bool Item::isUsable()
+{
+   return( (type == ITEM_TYPE_WEAPON) ||
+           (type == ITEM_TYPE_ARMOR) ||
+           (type == ITEM_TYPE_HEAL) ||
+           (type == ITEM_TYPE_EXPLOSIVE) ||
+           (type == ITEM_TYPE_BOOK) ||
+           (type == ITEM_TYPE_AMMO) ||
+           (type == ITEM_TYPE_NARCOTIC));
+}
+
+/**************************************************************************
+ *                          setTypeByString                               *
+ **************************************************************************/
+void Item::setTypeByString(Kobold::String typeStr)
+{
+   for(int i = 0; i < ITEM_TOTAL_TYPES; i++)
+   {
+      if(typeStrings[i] == typeStr)
+      {
+         type = (ItemType) i;
+         return;
+      }
+   }
+
+   Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+         "Warning: unknown item type '%s' was ignored", typeStr.c_str());
+   type = ITEM_TYPE_GENERIC;
+}
+
+/**************************************************************************
+ *                          getTypeAsString                               *
+ **************************************************************************/
+Kobold::String Item::getTypeAsString()
+{
+   return typeStrings[type];
+}
+
+/**************************************************************************
  *                     doObjectSpecializationParse                        *
  **************************************************************************/
 bool Item::doObjectSpecializationParse(Ogre::String key, Ogre::String value)
@@ -68,6 +120,10 @@ bool Item::doObjectSpecializationParse(Ogre::String key, Ogre::String value)
    else if(key == ITEM_KEY_RELATED_INFO)
    {
       relatedInfo = value;
+   }
+   else if(key == ITEM_KEY_TYPE)
+   {
+      setTypeByString(value);
    }
    else
    {
@@ -85,7 +141,15 @@ bool Item::doObjectSpecializationSave(std::ofstream& file)
    file << ITEM_KEY_INVENTORY_SIZE << " = " << ((int)inventorySize.x)
         << " " << ((int)inventorySize.y) << std::endl;
    file << ITEM_KEY_RELATED_INFO << " = " << relatedInfo << std::endl;
+   file << ITEM_KEY_TYPE << " = " << getTypeAsString() << std::endl;
  
    return true;
 }
-      
+
+/**************************************************************************
+ *                           Static Members                               *
+ **************************************************************************/
+Kobold::String Item::typeStrings[ITEM_TOTAL_TYPES] = {
+         "generic", "weapon", "ammo", "armor", "heal", "explosive", 
+         "narcotic", "book", "money"}; 
+

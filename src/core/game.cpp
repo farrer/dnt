@@ -65,7 +65,7 @@ void Game::finish()
 Map* Game::loadMap(Kobold::String filename, bool setPCsPositions)
 {
    /* Create and try to load map */
-   Map* map = new DNT::Map(sceneManager);
+   Map* map = new DNT::Map();
    if(!map->load(filename))
    {
       Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
@@ -121,6 +121,14 @@ CharacterList* Game::getNpcs()
 CharacterList* Game::getPcs()
 {
    return pcs;
+}
+
+/************************************************************************
+ *                            getSceneManager                           *
+ ************************************************************************/
+Ogre::SceneManager* Game::getSceneManager()
+{
+   return sceneManager;
 }
 
 

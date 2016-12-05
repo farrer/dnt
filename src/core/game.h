@@ -55,6 +55,9 @@ namespace DNT
          /*! \return current PlayableCharacters list */
          static CharacterList* getPcs();
 
+         /*! \return used SceneManager */
+         static Ogre::SceneManager* getSceneManager();
+
       private:
          static Ogre::SceneManager* sceneManager; /**< Used scene manager */
 

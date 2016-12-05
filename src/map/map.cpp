@@ -63,12 +63,12 @@ using namespace DNT;
 /**************************************************************************
  *                                Constructor                             *
  **************************************************************************/
-Map::Map(Ogre::SceneManager* sceneManager)
-    :floor(sceneManager, "wall"),walls(sceneManager, "floor")
+Map::Map()
+    :floor("wall"),
+     walls("floor")
 {
    this->xSize = 0;
    this->zSize = 0;
-   this->sceneManager = sceneManager;
    this->things = new Kobold::List(Kobold::LIST_TYPE_ADD_AT_END);
 }
 
@@ -248,7 +248,7 @@ bool Map::load(Ogre::String mapFileName)
          if(fileExtension == "scn")
          {
             Scenery* scenery = new Scenery();
-            scenery->load(sceneManager, value);
+            scenery->load(value);
             things->insert(scenery);
          }
       }

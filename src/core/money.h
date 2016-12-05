@@ -21,7 +21,7 @@
 #ifndef _dnt_money_h
 #define _dnt_money_h
 
-#include "object.h"
+#include "item.h"
 
 namespace DNT
 {
@@ -30,7 +30,7 @@ namespace DNT
 
 /*! Monetary objecy representation. Money is a distinct type of object, due
  * to its special monetary means. */
-class Money: public Object
+class Money: public Item
 {
    public:
       /*! Constructor  */

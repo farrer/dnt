@@ -32,9 +32,8 @@ namespace DNT
 class Map
 {
    public:
-      /*! Constructor 
-       * \param sceneManager pointer to the used scene manager. */
-      Map(Ogre::SceneManager* sceneManager);
+      /*! Constructor */
+      Map();
 
       /*! Destructor */
       ~Map();
@@ -55,7 +54,6 @@ class Map
    private:
       IndoorTextureMeshes floor; /**< The indoor floor meshes */
       IndoorTextureMeshes walls; /**< The indoor wall meshes */
-      Ogre::SceneManager* sceneManager; /**< Scene Manager used */
 
       //FIXME: use a more suitable structure.
       Kobold::List* things; /**< Things list */

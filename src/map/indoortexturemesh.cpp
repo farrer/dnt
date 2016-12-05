@@ -21,6 +21,8 @@
 
 
 #include "indoortexturemesh.h"
+#include "../core/game.h"
+
 #include <OGRE/OgreMeshManager.h>
 
 using namespace DNT;
@@ -209,10 +211,8 @@ Ogre::Vector3 IndoorTextureSquare::getTopRightCorner()
 /**************************************************************************
  *                                 Constructor                            *
  **************************************************************************/
-IndoorTextureMesh::IndoorTextureMesh(Ogre::SceneManager* sceneManager, 
-      Ogre::String materialName)
+IndoorTextureMesh::IndoorTextureMesh(Ogre::String materialName)
 {
-   this->sceneManager = sceneManager;
    this->materialName = materialName;
    this->manualObject = NULL;
    this->sceneNode = NULL;
@@ -257,8 +257,8 @@ void IndoorTextureMesh::deleteSceneNode()
    {
       /* Remove from scene and delete */
       sceneNode->detachObject(entity);
-      sceneManager->destroySceneNode(sceneNode);
-      sceneManager->destroyEntity(entity);
+      Game::getSceneManager()->destroySceneNode(sceneNode);
+      Game::getSceneManager()->destroyEntity(entity);
       Ogre::MeshManager::getSingleton().remove(ogreMesh->getName());
       delete manualObject;
 
@@ -304,10 +304,11 @@ void IndoorTextureMesh::updateManualObject(Ogre::String baseName)
 
          /* Define mesh */
          ogreMesh = manualObject->convertToMesh(baseName + materialName);
-         entity = sceneManager->createEntity(ogreMesh);
+         entity = Game::getSceneManager()->createEntity(ogreMesh);
 
          /* Create the scene node and attach to the scene with manual object */
-         sceneNode = sceneManager->getRootSceneNode()->createChildSceneNode();
+         sceneNode = 
+            Game::getSceneManager()->getRootSceneNode()->createChildSceneNode();
          sceneNode->attachObject(entity);
          sceneNode->setPosition(0.0f, 0.0f, 0.0f);
       }
@@ -317,10 +318,8 @@ void IndoorTextureMesh::updateManualObject(Ogre::String baseName)
 /**************************************************************************
  *                                 Constructor                            *
  **************************************************************************/
-IndoorTextureMeshes::IndoorTextureMeshes(Ogre::SceneManager* sceneManager,
-      Ogre::String baseName)
+IndoorTextureMeshes::IndoorTextureMeshes(Ogre::String baseName)
 {
-   this->sceneManager = sceneManager;
    this->baseName = baseName;
 }
 
@@ -337,7 +336,7 @@ IndoorTextureMeshes::~IndoorTextureMeshes()
 IndoorTextureMesh* IndoorTextureMeshes::createTextureMesh(
       Ogre::String materialName)
 {
-   IndoorTextureMesh* mesh = new IndoorTextureMesh(sceneManager, materialName);
+   IndoorTextureMesh* mesh = new IndoorTextureMesh(materialName);
    insert(mesh);
    return mesh;
 }

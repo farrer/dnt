@@ -27,6 +27,7 @@
 
 #include "../lang/translate.h"
 #include "../core/dialog.h"
+#include "../core/game.h"
 
 #include <kobold/defparser.h>
 #include <kobold/log.h>
@@ -84,8 +85,7 @@ Thing::~Thing()
 /**************************************************************************
  *                                  load                                  *
  **************************************************************************/
-bool Thing::load(Ogre::SceneManager* sceneManager, Kobold::String fileName, 
-      bool fullPath)
+bool Thing::load(Kobold::String fileName, bool fullPath)
 {
    Kobold::DefParser defParser;
    Kobold::String key, value, modelName;
@@ -136,7 +136,7 @@ bool Thing::load(Ogre::SceneManager* sceneManager, Kobold::String fileName,
          {
             modelFileName = value;
             model3d = new Goblin::Model3d(modelName, modelFileName, 
-                  sceneManager);
+                  Game::getSceneManager());
          }
       }
       else if(key == THING_KEY_STATE)

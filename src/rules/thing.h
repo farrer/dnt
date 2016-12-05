@@ -65,12 +65,10 @@ class Thing : public Kobold::ListElement
       virtual ~Thing();
 
       /*! Load the thing specification
-       * \param sceneManager pointer to scenemanager in use.
        * \param fileName file to load
        * \param fullPath if fileName is defined with fullPath (true)
        *                 or inner resources directory (false). */
-      bool load(Ogre::SceneManager* sceneManager, Kobold::String fileName, 
-            bool fullPath=false);
+      bool load(Kobold::String fileName, bool fullPath=false);
 
       /*! Save the thing specification.
        * \param filename name of the file to save it

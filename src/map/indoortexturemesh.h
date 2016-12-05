@@ -87,10 +87,8 @@ class IndoorTextureMesh : public Kobold::List, public Kobold::ListElement
 {
    public:
       /*! Constructor.
-       * \param sceneManager pointer to the used scene manger.
        * \param materialName material to use for the mesh itself. */
-      IndoorTextureMesh(Ogre::SceneManager* sceneManager,
-            Ogre::String materialName);
+      IndoorTextureMesh(Ogre::String materialName);
       /*! Destructor */
       ~IndoorTextureMesh();
 
@@ -115,7 +113,6 @@ class IndoorTextureMesh : public Kobold::List, public Kobold::ListElement
       Ogre::ManualObject* manualObject; /**< Manual Object for the mesh. */
       Ogre::MeshPtr ogreMesh; /**< Mesh related to the manual object. */
       Ogre::Entity* entity; /**< Entity related to the manual object mesh. */
-      Ogre::SceneManager* sceneManager; /**< Scene Manager used */
       Ogre::SceneNode* sceneNode; /**< Scene node related to the mesh. */
 };
 
@@ -123,8 +120,7 @@ class IndoorTextureMesh : public Kobold::List, public Kobold::ListElement
 class IndoorTextureMeshes : public Kobold::List
 {
    public:
-     IndoorTextureMeshes(Ogre::SceneManager* sceneManager, 
-           Ogre::String baseName);
+     IndoorTextureMeshes(Ogre::String baseName);
      ~IndoorTextureMeshes();
 
      IndoorTextureMesh* createTextureMesh(Ogre::String materialName);
@@ -137,7 +133,6 @@ class IndoorTextureMeshes : public Kobold::List
      void updateAllDirty();
 
    private:
-      Ogre::SceneManager* sceneManager;
       Ogre::String baseName;
 };
 
