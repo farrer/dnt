@@ -19,6 +19,12 @@
 */
 
 #include "game.h"
+
+#include "object.h"
+#include "money.h"
+#include "item.h"
+#include "scenery.h"
+
 #include "../map/map.h"
 #include "../rules/character.h"
 
@@ -129,6 +135,49 @@ CharacterList* Game::getPcs()
 Ogre::SceneManager* Game::getSceneManager()
 {
    return sceneManager;
+}
+
+/************************************************************************
+ *                             createObject                             *
+ ************************************************************************/
+Object* Game::createObject(Kobold::String filename)
+{
+   Object* obj = NULL;
+
+   /* verify if is money */
+   if(filename == DNT_MONEY_OBJECT)
+   {
+      obj = (Object*) new Money();
+   }
+   else
+   {
+      if(filename.find(".scn", 0) != Kobold::String::npos)
+      {
+         /* Static Scenery */
+         obj = (Object*) new Scenery();
+      }
+      else if(filename.find(".itn", 0) != Kobold::String::npos)
+      {
+         /* Item */
+         obj = (Object*) new Item();
+      }
+      //TODO: weapon
+      //else if(filename.find(".wcc", 0) != Kobold::String::npos)
+   }
+
+   if(obj)
+   {
+      /* Load the object */
+      obj->load(filename);
+   }
+   else
+   {
+      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+            "Could not define type or could not load object '%s'",
+            filename.c_str());
+   }
+
+   return obj;
 }
 
 

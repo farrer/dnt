@@ -23,6 +23,7 @@
 #include "game.h"
 #include "item.h"
 #include "inventory.h"
+#include "modstate.h"
 
 #include "../rules/thing.h"
 #include "../lang/translate.h"
@@ -95,7 +96,7 @@ void TalkAction::setQuantity(int qty)
  *                                execute                                *
  *************************************************************************/
 void TalkAction::execute(Conversation* conv, PlayableCharacter* pc, 
-      Thing* owner)
+      Thing* owner, Kobold::String ownerMap)
 {
    switch(type)
    {
@@ -317,15 +318,11 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
       {
          /* Change the state */
          owner->setState(att);
-//TODO ModState
-#if 0
+         Object* obj = static_cast<Object*>(owner);
          /* Tell ModState about the change */
-         modif.mapObjectAddAction(MODSTATE_ACTION_OBJECT_CHANGE_STATE,
+         ModState::addMapObjectAction(MODSTATE_ACTION_OBJECT_CHANGE_STATE,
                obj->getFilename(), ownerMap,
-               obj->scNode->getPosX(), 
-               obj->scNode->getPosY(), 
-               obj->scNode->getPosZ(), obj->getState());
-#endif
+               obj->getModel()->getPosition(), obj->getState());
       }
       break;
 
@@ -590,22 +587,17 @@ bool TalkTest::doTest(PlayableCharacter* pc, Thing* owner)
       return pc->isAlignOf(test);
    }
 
-//TODO: ModState!
-#if 0
    /* All Alive */
    else if(type == TALK_TEST_ALL_ALIVE)
    {
-      modState modif;
-      return modif.allCharactersAlive(test);
+      return ModState::isAllCharactersAlive(test);
    }
 
    /* All Dead */
-   else if(id == TALK_TEST_ALL_DEAD)
+   else if(type == TALK_TEST_ALL_DEAD)
    {
-      modState modif;
-      return(modif.allCharactersDead(test));
+      return ModState::isAllCharactersDead(test);
    }
-#endif
 
    /* Have money */
    else if(type == TALK_TEST_HAVE_MONEY)
@@ -788,12 +780,12 @@ bool DialogOption::doPostTest(PlayableCharacter* pc, Thing* owner)
  *                         executeIfActions                              *
  *************************************************************************/
 void DialogOption::executeIfActions(Conversation* conv, PlayableCharacter* pc, 
-      Thing* owner)
+      Thing* owner, Kobold::String ownerMap)
 {
    TalkAction* act = (TalkAction*) ifActions.getFirst();
    for(int i = 0; i < ifActions.getTotal(); i++)
    {
-      act->execute(conv, pc, owner);
+      act->execute(conv, pc, owner, ownerMap);
       act = (TalkAction*) act->getNext();
    }
 }
@@ -802,12 +794,12 @@ void DialogOption::executeIfActions(Conversation* conv, PlayableCharacter* pc,
  *                        executeElseActions                             *
  *************************************************************************/
 void DialogOption::executeElseActions(Conversation* conv, 
-      PlayableCharacter* pc, Thing* owner)
+      PlayableCharacter* pc, Thing* owner, Kobold::String ownerMap)
 {
    TalkAction* act = (TalkAction*) elseActions.getFirst();
    for(int i = 0; i < elseActions.getTotal(); i++)
    {
-      act->execute(conv, pc, owner);
+      act->execute(conv, pc, owner, ownerMap);
       act = (TalkAction*) act->getNext();
    }
 }
@@ -1440,16 +1432,13 @@ void Conversation::setInitialDialog(int numDialog)
    /* Tell the modeState */
    if(owner)
    {
-//TODO: ModState
-#if 0
-      if(owner->getThingType() == THING_TYPE_CHARACTER)
+      if(owner->getThingType() == Thing::THING_TYPE_CHARACTER)
       {
-         Character* ownerNPC = (Character*)owner;
-         mod.mapTalkAddAction(MODSTATE_TALK_ENTER_VALUE, 
-               ownerNPC->getCharacterFile(),
-               ownerMap, numDialog);
+         Character* ownerNPC = static_cast<Character*>(owner);
+         ModState::addMapTalkAction(MODSTATE_TALK_ENTER_VALUE, 
+               ownerNPC->getFilename(), ownerMap, numDialog);
       }
-#endif
+      //TODO: allowing set initial talk for objects too!
    }
 }
 
@@ -1514,12 +1503,12 @@ void Conversation::proccessAction(int option)
    if(opt->doPostTest(currentPC, owner))
    {
       /* Passed test, so if action */
-      opt->executeIfActions(this, currentPC, owner);
+      opt->executeIfActions(this, currentPC, owner, ownerMap);
    }
    else
    {
       /* Failed test, so else action */
-      opt->executeElseActions(this, currentPC, owner);
+      opt->executeElseActions(this, currentPC, owner, ownerMap);
    }
 }
 

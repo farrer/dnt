@@ -55,6 +55,13 @@ namespace DNT
          /*! \return current PlayableCharacters list */
          static CharacterList* getPcs();
 
+         /*! Create a new object (with its specialization type) based on its
+          * file extension.
+          * \param filename file to create (and load) object 
+          * \return pointer to the created object
+          * \note object's memory deallocation is caller's respnsability */
+         static Object* createObject(Kobold::String filename);
+
          /*! \return used SceneManager */
          static Ogre::SceneManager* getSceneManager();
 

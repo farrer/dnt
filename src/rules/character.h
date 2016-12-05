@@ -110,6 +110,11 @@ namespace DNT
          /*! \return pointer to character's inventory */
          Inventory* getInventory();
 
+         /*! \return initial position on map */
+         Ogre::Vector3 getInitialPosition();
+         /*! Set initial position on map */
+         void setInitialPosition(Ogre::Vector3 pos);
+
       protected:
          /*! Get first available empty class index on character classes vector
           * \return index first empty index or -1 if full. */
@@ -156,6 +161,8 @@ namespace DNT
          Inventory* inventory; /**< Character inventory */
 
          Kobold::String mapFilename; /**< Filename of Map where Character is */
+
+         Ogre::Vector3 initialPos; /**< Initial position on map */
    };
 
 

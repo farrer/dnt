@@ -1,5 +1,5 @@
 # Made by DNT's MapEditor, 0.10
-size = 6X8
+size = 6x8
 name = gettext("Logan's Occupation")
 npcFile = mapas/tutorial/house1.map.npc
 musicFile = music/emptycity.ogg

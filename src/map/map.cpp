@@ -67,6 +67,7 @@ Map::Map()
     :floor("wall"),
      walls("floor")
 {
+   this->filename = "";
    this->xSize = 0;
    this->zSize = 0;
    this->things = new Kobold::List(Kobold::LIST_TYPE_ADD_AT_END);
@@ -98,12 +99,22 @@ void Map::update()
 }
 
 /**************************************************************************
+ *                              getFilename                               *
+ **************************************************************************/
+Kobold::String Map::getFilename()
+{
+   return filename;
+}
+
+/**************************************************************************
  *                                    load                                *
  **************************************************************************/
 bool Map::load(Ogre::String mapFileName)
 {
    Kobold::DefParser parser;
    Ogre::String key, value;
+
+   this->filename = mapFileName;
 
    if(!parser.load(mapFileName))
    {

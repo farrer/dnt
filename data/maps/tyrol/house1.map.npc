@@ -1,6 +1,6 @@
 mapFile = tyrol/house1.map
 npc = Logan 
    file = characters/pcs/logan.pc 
-   position = 152.419 471.939 
+   position = 152.419 0.000 471.939 
    angle = 0.000 
    psycho = 1

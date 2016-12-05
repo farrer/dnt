@@ -25,6 +25,7 @@
 
 #include "indoortexturemesh.h"
 #include <kobold/list.h>
+#include <kobold/kstring.h>
 
 namespace DNT
 {
@@ -41,7 +42,11 @@ class Map
       /*! Open a map to use. 
        * \param mapFileName name of the map file to load.
        * \return if load was successfull or not. */
-      bool load(Ogre::String mapFileName);
+      bool load(Kobold::String mapFileName);
+
+      /*! \return map's filename
+       * \note only valid after load. */
+      Kobold::String getFilename();
 
       /*! Update everithing related to the map for curent frame. */
       void update();
@@ -54,6 +59,8 @@ class Map
    private:
       IndoorTextureMeshes floor; /**< The indoor floor meshes */
       IndoorTextureMeshes walls; /**< The indoor wall meshes */
+
+      Kobold::String filename; /**< Map's filename */
 
       //FIXME: use a more suitable structure.
       Kobold::List* things; /**< Things list */

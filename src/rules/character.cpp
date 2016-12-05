@@ -164,6 +164,22 @@ Inventory* Character::getInventory()
    return inventory;
 }
 
+/***********************************************************************
+ *                           getInitialPosition                        *
+ ***********************************************************************/
+Ogre::Vector3 Character::getInitialPosition()
+{
+   return initialPos;
+}
+
+/***********************************************************************
+ *                           setInitialPosition                        *
+ ***********************************************************************/
+void Character::setInitialPosition(Ogre::Vector3 pos)
+{
+   initialPos = pos;
+}
+
 #define CHARACTER_KEY_PORTRAIT "portrait"
 #define CHARACTER_KEY_WALK_INTERVAL "walk_interval"
 #define CHARACTER_KEY_BLOOD_POSITION "bloodPosition"

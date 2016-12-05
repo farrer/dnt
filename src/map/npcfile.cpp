@@ -92,7 +92,9 @@ bool NpcFile::load(Kobold::String filename)
          }
          else if(key == NPC_FILE_KEY_POSITION)
          {
-            sscanf(value.c_str(), "%f %f", &npc->posX, &npc->posZ);
+            float pX=0.0f, pY=0.0f, pZ=0.0f;
+            sscanf(value.c_str(), "%f %f %f", &pX, &pY, &pZ);
+            npc->position = Ogre::Vector3(pX, pY, pZ);
          }
          else if(key == NPC_FILE_KEY_ANGLE)
          {
@@ -147,8 +149,8 @@ bool NpcFile::save(Kobold::String filename)
    {
       file << NPC_FILE_KEY_NPC << " = " << npc->name << std::endl;
       file << NPC_FILE_KEY_FILE << " = " << npc->filename << std::endl;
-      file << NPC_FILE_KEY_POSITION << " = " << npc->posX << " " 
-           << npc->posZ << std::endl;
+      file << NPC_FILE_KEY_POSITION << " = " << npc->position.x << " " 
+           << npc->position.y << " " << npc->position.z << std::endl;
       file << NPC_FILE_KEY_ANGLE << " = " << npc->angle << std::endl;
       file << NPC_FILE_KEY_PSYCHO << " = " << npc->psycho << std::endl;
 
@@ -163,14 +165,13 @@ bool NpcFile::save(Kobold::String filename)
  *                          insertCharacter                            *
  ***********************************************************************/
 void NpcFile::insertCharacter(Kobold::String name, Kobold::String filename,
-      float posX, float posZ, float angle, Thing::PsychoState psycho)
+      Ogre::Vector3 pos, float angle, Thing::PsychoState psycho)
 {
    /* create and define the character struct */
    NpcParseStruct* npc = new NpcParseStruct();
    npc->name = name;
    npc->filename = filename;
-   npc->posX = posX;
-   npc->posZ = posZ;
+   npc->position = pos;
    npc->angle = angle;
    npc->psycho = psycho;
 
@@ -182,7 +183,7 @@ void NpcFile::insertCharacter(Kobold::String name, Kobold::String filename,
  *                           getNextCharacter                          *
  ***********************************************************************/
 bool NpcFile::getNextCharacter(Kobold::String& name, Kobold::String& filename, 
-      float& posX, float& posZ, float& angle, Thing::PsychoState& psycho)
+      Ogre::Vector3& pos, float& angle, Thing::PsychoState& psycho)
 {
    bool res = false;
    
@@ -190,12 +191,12 @@ bool NpcFile::getNextCharacter(Kobold::String& name, Kobold::String& filename,
    {
       if(!current)
       {
-         current = (NpcParseStruct*) getFirst();
+         current = static_cast<NpcParseStruct*>(getFirst());
          res = true;
       }
       else
       {
-         current = (NpcParseStruct*) current->getNext();
+         current = static_cast<NpcParseStruct*>(current->getNext());
          res = (current != first);
       }
    }
@@ -205,8 +206,7 @@ bool NpcFile::getNextCharacter(Kobold::String& name, Kobold::String& filename,
    {
       name = current->name;
       filename = current->filename;
-      posX = current->posX;
-      posZ = current->posZ;
+      pos = current->position;
       angle = current->angle;
       psycho = current->psycho;
    }
@@ -219,11 +219,10 @@ bool NpcFile::getNextCharacter(Kobold::String& name, Kobold::String& filename,
  ***********************************************************************/
 void NpcFile::killAll()
 {
-   NpcParseStruct* npc = (NpcParseStruct*)first;
-   int i;
+   NpcParseStruct* npc = static_cast<NpcParseStruct*>(getFirst());
 
    /* Tell modState that All Elements are dead */
-   for(i=0; i < getTotal(); i++)
+   for(int i=0; i < getTotal(); i++)
    {
 //TODO: ModState!
 #if 0
@@ -233,7 +232,7 @@ void NpcFile::killAll()
                                   npc->posX, npc->posZ);
 #endif
 
-      npc = (NpcParseStruct*) npc->getNext();
+      npc = static_cast<NpcParseStruct*>(npc->getNext());
    }
 }
 

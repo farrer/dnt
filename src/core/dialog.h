@@ -138,7 +138,8 @@ class TalkAction : public Kobold::ListElement
      void setStringFactor(Kobold::String factor);
 
      /*! Execute the action */
-     void execute(Conversation* conv, PlayableCharacter* pc, Thing* owner);
+     void execute(Conversation* conv, PlayableCharacter* pc, Thing* owner,
+                  Kobold::String ownerMap);
 
   private:
 
@@ -248,11 +249,11 @@ class DialogOption : public Kobold::ListElement
 
       /*! Execute all If actions */
       void executeIfActions(Conversation* conv, PlayableCharacter* pc, 
-            Thing* owner);
+            Thing* owner, Kobold::String ownerMap);
 
       /*! Execute all Else actions */
       void executeElseActions(Conversation* conv, PlayableCharacter* pc, 
-            Thing* owner);
+            Thing* owner, Kobold::String ownerMap);
 
    private:
       Kobold::List preTests; /**< Pre-Tests (if all passed, the option is 

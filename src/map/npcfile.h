@@ -41,9 +41,8 @@ class NpcFile: public Kobold::List
          public:
             Kobold::String name;     /**< The NPC name */
             Kobold::String filename; /**< The file of NPC */
-            float posX,      /**< The NPC Initial X Position */
-                  posZ,      /**< The NPC Initial Z Position */
-                  angle;     /**< The NPC Initial Orientation Angle */
+            Ogre::Vector3 position;  /**< The NPC Initial Position */
+            float angle;     /**< The NPC Initial Orientation Angle */
             Thing::PsychoState psycho; /**< The NPC Initial Psycho state */
       };
 
@@ -66,25 +65,21 @@ class NpcFile: public Kobold::List
       /*! Get the next character readed from the file
        * \param name -> name of the npc
        * \param fileName -> fileName of the character got
-       * \param posX -> X position of the character got 
-       * \param posZ -> Z position of the character got
-       * \param ange -> Orientation angle of the character got
+       * \param pos -> initial position of the character got 
+       * \param angle -> Orientation angle of the character got
        * \param psycho -> Psycho state of the character got
        * \return -> true if can get the next character, false otherwise */
       bool getNextCharacter(Kobold::String& name, Kobold::String& fileName,
-            float& posX, float& posZ, float& angle,
-            Thing::PsychoState& psycho);
+            Ogre::Vector3& pos, float& angle, Thing::PsychoState& psycho);
 
       /* Insert a character at the list
        * \param name -> name of the npc
        * \param fileName -> fileName of the character got
-       * \param posX -> X position of the character got 
-       * \param posZ -> Z position of the character got
+       * \param pos -> initial position of the character got 
        * \param angle -> Orientation angle of the character got
        * \param psycho -> Character psycho state */
       void insertCharacter(Kobold::String name, Kobold::String fileName, 
-            float posX, float posZ, float angle, 
-            Thing::PsychoState psycho);
+            Ogre::Vector3, float angle, Thing::PsychoState psycho);
 
       /*! Kill All NPCs defined by the NPC file */
       void killAll();
