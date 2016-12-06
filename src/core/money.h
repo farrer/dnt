@@ -41,7 +41,7 @@ class Money: public Item
 
       /*! Get the current Money quantity (value)
        * \return -> current Money value */
-      int quantity();
+      int getQuantity();
 
       /*! Remove quantity from current Money
        * \param qty -> quantity to remove 

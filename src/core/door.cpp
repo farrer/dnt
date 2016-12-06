@@ -29,7 +29,8 @@ using namespace DNT;
 Door::Door()
 {
    closedAngle = 0;
-   openStatus = DOOR_OPENED;
+   /* Default to closed door, but not locked. */
+   setOpenStatus(DOOR_CLOSED);
 }
 
 /**************************************************************************
@@ -52,7 +53,7 @@ void Door::setClosedAngle(int angle)
  **************************************************************************/
 Door::OpenStatus Door::getOpenStatus()
 {
-   return openStatus;
+   return static_cast<OpenStatus>(getState());
 }
 
 /**************************************************************************
@@ -60,7 +61,7 @@ Door::OpenStatus Door::getOpenStatus()
  **************************************************************************/
 void Door::setOpenStatus(OpenStatus openStatus)
 {
-   this->openStatus = openStatus;
+   setState(openStatus);
 }
 
 /**************************************************************************
@@ -70,31 +71,63 @@ bool Door::flip()
 {
    Ogre::Vector3 pos = getModel()->getPosition();
 
-   if(openStatus == DOOR_CLOSED)
+   if(getOpenStatus() == DOOR_CLOSED)
    {
-      if(getState() == DOOR_UNLOCKED)
-      {
-         openStatus = DOOR_OPENED;
-         /* Set opening animation */
-         getModel()->setTargetOrientation(0.0f, closedAngle + 90.0f, 0.0f);
-         /* Call opening sound */
-         Kosound::Sound::addSoundEffect(pos.x, pos.y, pos.z, SOUND_NO_LOOP,
-               "sndfx/objects/door_open.ogg");
-         return true;
-      }
+      /* Must open it */
+      setOpenStatus(DOOR_OPENED);
+
+      /* Set opening animation */
+      getModel()->setTargetOrientation(0.0f, closedAngle + 90.0f, 0.0f);
+
+      /* Call opening sound */
+      Kosound::Sound::addSoundEffect(pos.x, pos.y, pos.z, SOUND_NO_LOOP,
+            "sndfx/objects/door_open.ogg");
+
+      return true;
    } 
-   else
+   else if(getOpenStatus() == DOOR_OPENED)
    {
-      openStatus = DOOR_CLOSED;
+      /* Must close it */
+      setOpenStatus(DOOR_CLOSED);
+
       /* Opened, we can always close the door */
       getModel()->setTargetOrientation(0.0f, closedAngle, 0.0f);
+
       /* Call closing sound */
       Kosound::Sound::addSoundEffect(pos.x, pos.y, pos.z, SOUND_NO_LOOP,
             "sndfx/objects/door_close.ogg");
+
       return true;
    }
 
-   /* Couldn't open or close. */
+   /* Couldn't open or close (it's locked). */
    return false;
 }
+
+/**************************************************************************
+ *                                canInteract                             *
+ **************************************************************************/
+bool Door::canInteract()
+{
+   return true;
+}
+
+/**************************************************************************
+ *                                 interact                               *
+ **************************************************************************/
+Object::InteractResult Door::interact(Character* actor)
+{
+   if(getOpenStatus() == DOOR_LOCKED)
+   {
+      /* Locked: should open unlock dialog. */
+      return Object::INTERACTION_OPEN_CONVERSATION; 
+   }
+   else 
+   {
+      /* Just flip our open/close status */
+      flip();
+      return Object::INTERACTION_DONE;
+   }
+}
+
 

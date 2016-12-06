@@ -176,7 +176,7 @@ int Inventory::getMoneyQuantity()
    Money* m = getMoney();
    if(m)
    {
-      return m->quantity();
+      return m->getQuantity();
    }
 
    return 0;
@@ -250,7 +250,7 @@ bool Inventory::decMoney(int qty)
       /* add quantity and quit */
       if(m->removeQuantity(qty))
       {
-         if(m->quantity() == 0)
+         if(m->getQuantity() == 0)
          {
             /* Must delete Money! */
             removeFromInventory(m);

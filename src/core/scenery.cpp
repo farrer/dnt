@@ -32,3 +32,20 @@ bool Scenery::doObjectSpecializationSave(std::ofstream& file)
    return true;
 }
 
+/**************************************************************************
+ *                              canInteract                               *
+ **************************************************************************/
+bool Scenery::canInteract()
+{
+   return false;
+}
+
+/**************************************************************************
+ *                                Interact                                *
+ **************************************************************************/
+Object::InteractResult Scenery::interact(Character* actor)
+{
+   return Object::INTERACTION_DONE;
+}
+
+

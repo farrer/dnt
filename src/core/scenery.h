@@ -37,6 +37,12 @@ class Scenery : public Object
       /*! Destructor */
       ~Scenery();
 
+      /*! \return false. Scenery is static. */
+      bool canInteract();
+
+      /*! Interact with Scenery: nothing to do. */
+      Object::InteractResult interact(Character* actor);
+
    protected:
 
       /*! Parse scenery specific values from file */

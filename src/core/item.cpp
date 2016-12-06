@@ -19,12 +19,26 @@
 */
 
 #include "item.h"
+#include "money.h"
+
+#include "../rules/character.h"
+#include "inventory.h"
+
+#include "modstate.h"
+#include "game.h"
+
+#include "../map/map.h"
+
+#include "../gui/briefing.h"
+
 #include <kobold/log.h>
+#include <kosound/sound.h>
+
 using namespace DNT;
 
 #define ITEM_KEY_INVENTORY_SIZE   "inventory_sizes"
 #define ITEM_KEY_RELATED_INFO     "related_info"
-#define ITEM_KEY_TYPE     "type"
+#define ITEM_KEY_TYPE             "type"
 
 /**************************************************************************
  *                               Constructor                              *
@@ -144,6 +158,65 @@ bool Item::doObjectSpecializationSave(std::ofstream& file)
    file << ITEM_KEY_TYPE << " = " << getTypeAsString() << std::endl;
  
    return true;
+}
+
+/**************************************************************************
+ *                               canInteract                              *
+ **************************************************************************/
+bool Item::canInteract()
+{
+   return true;
+}
+
+/**************************************************************************
+ *                                interact                                *
+ **************************************************************************/
+Object::InteractResult Item::interact(Character* actor)
+{
+   /* Pick it. */
+   bool picked = false;
+
+   if(getType() == ITEM_TYPE_MONEY)
+   {
+      /* Just add the money to character's */
+      Money* m = static_cast<Money*>(this);
+      picked = actor->getInventory()->addMoney(m->getQuantity());
+   }
+   else
+   {
+      /* Add the item to inventory. */
+      picked = actor->getInventory()->addItem(this);
+   }
+
+   if(picked)
+   {
+      /* Play 'pick' sound */
+      Ogre::Vector3 pos = getModel()->getPosition();
+      Kosound::Sound::addSoundEffect(pos.x, pos.y, pos.z,
+            SOUND_NO_LOOP, "sndfx/objects/take_item.ogg");
+      /* Log text on briefing */
+      Briefing::addText(gettext("%s taken."), getName().c_str());
+
+      /* Tell ModState */
+      ModState::addMapObjectAction(MODSTATE_ACTION_OBJECT_REMOVE,
+            getFilename(), Game::getCurrentMap()->getFilename(), pos);
+
+      //TODO: remove item from map!
+      //Game::getCurrentMap()::removeObject(this);
+
+
+      if(getType() == ITEM_TYPE_MONEY)
+      {
+         /* We should also delete money object, as no more needed */
+         //TODO: mark it for deletion on next cycle!
+      }
+   }
+   else
+   {
+      Briefing::addWarning(gettext("Inventory is full!"));
+   }
+
+   return Object::INTERACTION_DONE;
 }
 
 /**************************************************************************

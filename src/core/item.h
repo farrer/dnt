@@ -64,6 +64,12 @@ class Item : public Object
       /*! \return if the item is usable or not (based on its type). */
       bool isUsable();
 
+      /* \return true. Itens are interactive. */
+      bool canInteract();
+
+      /* Interact with the item: pick it. */
+      Object::InteractResult interact(Character* actor);
+
    protected:
      
       /*! Parse specific Item definitions from file */

@@ -27,21 +27,16 @@
 namespace DNT
 {
 
-/*! A Door is an object that could be opened and closed, at the Character's
- * way from some room to another one. It could be initially locked. */
+/*! A Door is an object that could be opened and closed, usually situaded 
+ * between walls, blocking or allowing passing by through a path (or corridor).
+ * It could also be locked. */
 class Door : public Object
 {
    public:
       enum OpenStatus
       {
          DOOR_CLOSED = 0,
-         DOOR_OPENED
-      };
-
-      /* #state meaning for doors: Unlocked or locked. */
-      enum LockedState
-      {
-         DOOR_UNLOCKED = 0,
+         DOOR_OPENED,
          DOOR_LOCKED
       };
 
@@ -50,30 +45,36 @@ class Door : public Object
       /*! Destructor */
       ~Door();
 
-      /*! Open/close the door.
-       * \return if action was successfull. */
-      bool flip();
-
-      /*! \return current Open Status: if door is opened or closed */
+      /*! \return current Open Status. */
       OpenStatus getOpenStatus();
 
-      /*! Set if door is locked or unlocked, without any checks
-       * and without any effects (as sound and animations) */
+      /*! Set the door open status, without any checks
+       * and without any effects (as sound and animations). */
       void setOpenStatus(OpenStatus openStatus);
 
-      /*! Set model's yaw angle.
+      /*! Set yaw angle to use for model's when the door is closed.
        * \param angle -> yaw angle when door is closed */
       void setClosedAngle(int angle);
+
+      /* \return true. Doors are interactive. */
+      bool canInteract();
+
+      /* Interact with the door, opening/closing it if unlocked, or 
+       * defining to open its conversation to unlock it, if locked. */
+      Object::InteractResult interact(Character* actor);
 
    protected:
       /*! Parse specific door attributes */
       bool doObjectSpecializationParse(Ogre::String key, Ogre::String value);
 
-      int closedAngle; /**< Model's yaw angle when closed */
+   private:
 
-      OpenStatus openStatus; /**< If actually locked or unlocked */
+      /*! Open/close the door.
+       * \note only works if not locked.
+       * \return if action was successfull. */
+      bool flip();
 
-
+      int closedAngle; /**< Angle to use when the door is closed */
 };
 
 }

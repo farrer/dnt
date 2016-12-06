@@ -22,6 +22,9 @@
 #define _dnt_briefing_h
 
 #include "dntconfig.h"
+
+#include "../lang/translate.h"
+
 #include <farso/controller.h>
 #include <kobold/kstring.h>
 

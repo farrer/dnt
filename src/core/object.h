@@ -53,6 +53,27 @@ class Object : public Thing
        * \param value new object's weight value */
       void setWeight(float value);
 
+      /*! \return if interaction between the object and characters 
+       * is possible. */
+      virtual bool canInteract() = 0;
+
+      enum InteractResult
+      {
+         /* The interaction is done. */
+         INTERACTION_DONE,
+         /* Should open a conversation with object's conversation file
+          * to allow the interaction */
+         INTERACTION_OPEN_CONVERSATION
+      };
+
+      /*! Interact with the object.
+       * \note this function is usually called when player's is in range
+       *       and clicked into the object (and the object is, by itself,
+       *       interactive - catInteract() with true result).
+       * \param actor pointer to the character that is interacting with
+       * \return interaction result */
+      virtual InteractResult interact(Character* actor) = 0;
+
    protected:
 
       /*! Parse common Object key/values pairs. */
