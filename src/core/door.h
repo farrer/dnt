@@ -54,7 +54,14 @@ class Door : public Object
 
       /*! Set yaw angle to use for model's when the door is closed.
        * \param angle -> yaw angle when door is closed */
-      void setClosedAngle(int angle);
+      void setClosedAngle(Ogre::Real angle);
+
+      /*! Lock a door.
+       * \param unlockChallenge -> how much difficult to unlock it
+       * \param forceChallenge -> how much difficult to force the door to open
+       * \return if locked it.
+       * \note only can lock a closed door */
+      bool lock(int unlockChallenge, int forceChallenge);
 
       /* \return true. Doors are interactive. */
       bool canInteract();
@@ -66,6 +73,8 @@ class Door : public Object
    protected:
       /*! Parse specific door attributes */
       bool doObjectSpecializationParse(Ogre::String key, Ogre::String value);
+      /*! Save specific door attributes */
+      bool doObjectSpecializationSave(std::ofstream& file);
 
    private:
 
@@ -74,7 +83,7 @@ class Door : public Object
        * \return if action was successfull. */
       bool flip();
 
-      int closedAngle; /**< Angle to use when the door is closed */
+      Ogre::Real closedAngle; /**< Angle to use when the door is closed */
 };
 
 }

@@ -1,0 +1,150 @@
+#
+# This dialog controls the behaviour of a common locked door.
+#
+# Note: against unlock (operate mechanic object) value is door's IamNotaFool
+#       against burglary value is door's fortitude
+#       against explosive items, is door's fortitude
+#
+
+############################################################
+#                     Main Dialog                          #
+############################################################
+dialog(0)
+   npc_begin
+      text = gettext("(The door seems to be locked)")
+   npc_end
+   pc_begin
+
+      option
+         # The unlock counter is the door I Am Not A Fool!
+         text = gettext("Try to unlock it.")
+         post_test = roll(OPERATE_MECHANIC_OBJECTS, I_AM_NOT_A_FOOL)
+         if_action = play_sound("sndfx/objects/door_pick_lock.ogg")
+         if_action = open()
+         if_action = change_object_state(0)
+         if_action = dialog_init(3)
+         if_action = go_to_dialog(2)
+         else_action = play_sound("sndfx/objects/door_pick_lock.ogg")
+         else_action = go_to_dialog(1)
+
+      option 
+         # The burglary counter is the door Fortitude!
+         text = gettext("Force your entrance.")
+         post_test = roll(BURGLARY, FORTITUDE)
+         if_action = play_sound("sndfx/objects/door_unlock.ogg")
+         if_action = open()
+         if_action = change_object_state(0)
+         if_action = dialog_init(5)
+         if_action = go_to_dialog(5)
+         else_action = go_to_dialog(4)
+
+      #TODO option 
+      #   pre_test = have_item("explosive")
+      #   text = gettext("Use an explosive on it")
+
+      option
+         text = gettext("Sit down and cry.")
+         action = go_to_dialog(6)
+
+   pc_end
+end_dialog
+
+############################################################
+#                     Unlock Failure                       #
+############################################################
+dialog(1)
+   npc_begin
+      text = gettext("(You failed to unlock it.)")
+   npc_end
+
+   pc_begin
+      option
+         text = gettext("Sit down and cry.")
+         action = go_to_dialog(6)
+
+      option
+         text = gettext("Exit")
+         action = finish_dialog()
+   pc_end
+end_dialog
+
+############################################################
+#                     Unlock Success                       #
+############################################################
+dialog(2)
+   npc_begin
+      text = gettext("(Tic, trec, ouch! You almost lost a finger but the door is now opened.)")
+   npc_end
+
+   pc_begin
+      option
+         text = gettext("Exit")
+         action = finish_dialog()
+   pc_end
+end_dialog
+
+############################################################
+#                     Unlocked Door                        #
+############################################################
+dialog(3)
+   npc_begin
+      text = gettext("(The door is unlocked.)")
+   npc_end
+
+   pc_begin
+      option
+         text = gettext("Exit")
+         action = finish_dialog()
+   pc_end
+end_dialog
+
+############################################################
+#                     Force  Failure                       #
+############################################################
+dialog(4)
+   npc_begin
+      text = gettext("(You failed to put it down.)")
+   npc_end
+
+   pc_begin
+      option
+         text = gettext("Sit down and cry.")
+         action = go_to_dialog(6)
+
+      option
+         text = gettext("Exit")
+         action = finish_dialog()
+   pc_end
+
+end_dialog
+
+############################################################
+#                     Force  Success                       #
+############################################################
+dialog(5)
+   npc_begin
+      text = gettext("(The jamb was broken and the door is now opened .)")
+   npc_end
+
+   pc_begin
+      option
+         text = gettext("Exit")
+         action = finish_dialog()
+   pc_end
+end_dialog
+
+############################################################
+#                           Cry                            #
+############################################################
+dialog(6)
+   npc_begin
+      text = gettext("(The door doesn't seem to listen you.)")
+   npc_end
+
+   pc_begin
+      option
+         text = gettext("Exit")
+         action = finish_dialog()
+   pc_end
+end_dialog
+

@@ -1,0 +1,5 @@
+name = gettext("Blue Wooden Door")
+description = gettext("A door made of wood and painted blue.")
+model = doors/porta8.mesh
+walkable = false
+

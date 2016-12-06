@@ -28,7 +28,7 @@ using namespace DNT;
  **************************************************************************/
 Door::Door()
 {
-   closedAngle = 0;
+   closedAngle = 0.0f;
    /* Default to closed door, but not locked. */
    setOpenStatus(DOOR_CLOSED);
 }
@@ -43,7 +43,7 @@ Door::~Door()
 /**************************************************************************
  *                              setClosedAngle                            *
  **************************************************************************/
-void Door::setClosedAngle(int angle)
+void Door::setClosedAngle(Ogre::Real angle)
 {
    closedAngle = angle;
 }
@@ -103,6 +103,25 @@ bool Door::flip()
    /* Couldn't open or close (it's locked). */
    return false;
 }
+ 
+/**************************************************************************
+ *                                   lock                                 *
+ **************************************************************************/    bool Door::lock(int unlockChallenge, int forceChallenge)
+{
+   if(getOpenStatus() != DOOR_OPENED)
+   {
+      /* Lock it (or re-lock it), and define its 'unlock' and 'forced open' 
+       * challenge values. */
+      setOpenStatus(DOOR_LOCKED);
+      getCurBonusAndSaves()->setIAmNotAFool(unlockChallenge);
+      getCurBonusAndSaves()->setFortitude(forceChallenge);
+
+      return true;
+   }
+
+   /* Door is opened, and couldn't be locked! */
+   return false;
+}
 
 /**************************************************************************
  *                                canInteract                             *
@@ -130,4 +149,20 @@ Object::InteractResult Door::interact(Character* actor)
    }
 }
 
+/**************************************************************************
+ *                      doObjectSpecializationParse                       *
+ **************************************************************************/
+bool Door::doObjectSpecializationParse(Ogre::String key, Ogre::String value)
+{
+   /* Nothing to do: locked status is defined at each map. */
+   return false;
+}
+
+/**************************************************************************
+ *                      doObjectSpecializationSave                        *
+ **************************************************************************/
+bool Door::doObjectSpecializationSave(std::ofstream& file)
+{
+   return true;
+}
 

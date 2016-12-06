@@ -1,0 +1,5 @@
+name = gettext("Rotten Door")
+description = gettext("Several signs of age appear on this door.")
+model = doors/porta6.mesh
+walkable = false
+

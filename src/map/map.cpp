@@ -25,9 +25,10 @@
 
 #include "../rules/thing.h"
 #include "../core/scenery.h"
+#include "../core/door.h"
 
 #include <kobold/defparser.h>
-#include <OGRE/OgreLogManager.h>
+#include <kobold/log.h>
 
 using namespace DNT;
 
@@ -243,28 +244,47 @@ bool Map::load(Ogre::String mapFileName)
          mesh->addSquare(wX2, 0.0f, wZ1, wX2, MAP_WALL_HEIGHT, wZ2,
                1.0f, 0.0f, 0.0f);
       }
-      /* Define a thing (object, character, scenery, etc) on the map */
-      else if(key == MAP_TOKEN_THING)
+      /* Define a thing (object, item, scenery, etc) on the map */
+      else if((key == MAP_TOKEN_THING) || (key == MAP_TOKEN_DOOR))
       {
-         /* We define thing's type by file extension. They are:
-          * .npc -> NonPlayableCharacter 
-          * .itm -> Item 
-          * .scn -> Scenery
-          * .wpn -> Weapon
-          * .amm -> Ammo 
-          * Note that PlayableCharacters are never defined in the map file. */
-         Ogre::String fileExtension, baseName, path;
+         /* We define thing's type by file extension. */
+         Kobold::String fileExtension, baseName, path;
          Ogre::StringUtil::splitFullFilename(value, baseName, 
                fileExtension, path);
+         Thing* thing = NULL;
          if(fileExtension == "scn")
          {
-            Scenery* scenery = new Scenery();
-            scenery->load(value);
-            things->insert(scenery);
+            thing = new Scenery();
+         }
+         else if(fileExtension == "dor")
+         {
+            thing = new Door();
+         }
+
+         if(thing)
+         {
+            if(!thing->load(value))
+            {
+               /* Couldn't load, no need to keep it at list. */
+               delete thing;
+               Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+                  "Error: couldn't load thing from file '%s'", value.c_str());
+            }
+            else 
+            {
+               things->insert(thing);
+            }
+         }
+         else
+         {
+            Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+               "Error: couldn't define thing's type for '%s'", value.c_str());
          }
       }
-      else if(key == MAP_TOKEN_THING_POSITION)
+      else if((key == MAP_TOKEN_THING_POSITION) ||
+              (key == MAP_TOKEN_DOOR_POSITION))
       {
+         /* Define last thing's position. */
          Thing* last = (Thing*) things->getLast();
          if(last != NULL)
          {
@@ -275,6 +295,7 @@ bool Map::load(Ogre::String mapFileName)
       }
       else if(key == MAP_TOKEN_THING_ORIENTATION)
       {
+         /* Define last thing's orientation */
          Thing* last = (Thing*) things->getLast();
          if(last != NULL)
          {
@@ -285,10 +306,43 @@ bool Map::load(Ogre::String mapFileName)
       }
       else if(key == MAP_TOKEN_THING_WALKABLE)
       {
+         /* Define last thing's walkable flag */
          Thing* last = (Thing*) things->getLast();
          if(last != NULL)
          {
             last->setWalkable(value == MAP_VALUE_TRUE);
+         }
+      }
+      else if(key == MAP_TOKEN_DOOR_ORIENTATION)
+      {
+         /* Define last door orientation */
+         Door* last = static_cast<Door*>(things->getLast());
+         if(last != NULL)
+         {
+            Ogre::Real oY=0.0f;
+            sscanf(value.c_str(), "%f", &oY);
+            last->getModel()->setOrientation(0.0f, oY, 0.0f);
+            last->setClosedAngle(oY);
+         }
+      }
+      else if(key == MAP_TOKEN_DOOR_LOCK)
+      {
+         /* Lock the door */
+         int ope=0, burg=0;
+         sscanf(value.c_str(), "%d %d", &ope, &burg);
+         Door* last = static_cast<Door*>(things->getLast());
+         if(last != NULL)
+         {
+            last->lock(ope, burg);
+         }
+      }
+      else if(key == MAP_TOKEN_DOOR_LOCK_DIALOG)
+      {
+         /* Define door unlock conversation file */
+         Thing* last = (Thing*) things->getLast();
+         if(last != NULL)
+         {
+            last->setConversationFile(value);
          }
       }
       else if(key == MAP_TOKEN_INITIAL)
@@ -303,9 +357,9 @@ bool Map::load(Ogre::String mapFileName)
       }
       else 
       {
-         Ogre::LogManager::getSingleton().getDefaultLog()->stream()
-            << "WARN: Unknow key '" << key << "' at map definition file '"
-            << mapFileName << "'";
+         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+               "Warning: unknow key '%s' at map's definition file '%s'",
+               key.c_str(), mapFileName.c_str());
       }
    }
 
