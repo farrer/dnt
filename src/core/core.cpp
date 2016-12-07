@@ -34,6 +34,8 @@
 
 #include "../gui/briefing.h"
 
+#include <goblin/camera.h>
+
 using namespace DNT;
 
 /***********************************************************************
@@ -41,6 +43,8 @@ using namespace DNT;
  ***********************************************************************/
 Core::Core()
 {
+   lastMouseX = -1;
+   lastMouseY = -1;
 }
 
 /***********************************************************************
@@ -146,11 +150,37 @@ void Core::doSendToForeground()
  ***********************************************************************/
 void Core::doCycle()
 {
-   Game::getCurrentMap()->update();
+   Game::getCurrentMap()->update(floorMouse);
    
    if(Farso::Controller::verifyEvents(leftButtonPressed, false, mouseX, mouseY))
    {
       //TODO;
+   }
+   else
+   {
+      if((lastMouseX != mouseX) && (lastMouseY != mouseY))
+      {
+         /* The floor mouse could change with camera move too, but I believe
+          * it's no problem to only update it with mouse movement after all. */
+         lastMouseX = mouseX;
+         lastMouseY = mouseY;
+         //FIXME: must just use the last collider? Or first collider project
+         // to Y=0? Anyway, the raycast to plane Y=0 isn't the best way for DNT.
+         /* Calculate floor mouse coordinates */
+         Ogre::Ray mouseRay;
+         Goblin::Camera::getCameraToViewportRay(
+               mouseX / Ogre::Real(ogreWindow->getWidth()),
+               mouseY / Ogre::Real(ogreWindow->getHeight()), &mouseRay);
+
+         /* with a ray cast to Y=0 plane */
+         std::pair< bool, Ogre::Real > res;
+         res = Ogre::Math::intersects(mouseRay, 
+               Ogre::Plane(Ogre::Vector3(0.0f, 1.0f, 0.0f), 0.0f));
+         if(res.first)
+         {
+            floorMouse = mouseRay.getPoint(res.second);
+         }
+      }
    }
 }
 

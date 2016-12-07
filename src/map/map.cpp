@@ -22,6 +22,7 @@
 #include "map.h"
 
 #include "indoortexturemesh.h"
+#include "light.h"
 
 #include "../rules/thing.h"
 #include "../core/scenery.h"
@@ -60,8 +61,11 @@ using namespace DNT;
 
 #define MAP_TOKEN_LIGHT                 "light"
 #define MAP_TOKEN_LIGHT_POS             "lightPos"
+#define MAP_TOKEN_LIGHT_DIR             "lightDir"
 #define MAP_TOKEN_LIGHT_DIFFUSE         "lightDiffuse"
 #define MAP_TOKEN_LIGHT_SPECULAR        "lightSpecular"
+#define MAP_TOKEN_LIGHT_SPOT_RANGE      "lightSpotRange"
+#define MAP_TOKEN_LIGHT_AREA            "lightArea"
 
 #define MAP_VALUE_LIGHT_POINT           "point"
 #define MAP_VALUE_LIGHT_SPOTLIGHT       "spot"
@@ -69,67 +73,6 @@ using namespace DNT;
 #define MAP_TOKEN_INITIAL               "initial"
 
 #define MAP_VALUE_TRUE                  "true"
-
-/**************************************************************************
- *                                Constructor                             *
- **************************************************************************/
-Map::Light::Light()
-{
-   light = Game::getSceneManager()->createLight();
-}
-
-/**************************************************************************
- *                                 Destructor                             *
- **************************************************************************/
-Map::Light::~Light()
-{
-   if(light)
-   {
-      Game::getSceneManager()->destroyLight(light);
-   }
-}
-
-/**************************************************************************
- *                               setPosition                              *
- **************************************************************************/
-void Map::Light::setPosition(Ogre::Vector3 pos)
-{
-   light->setPosition(pos);
-}
-
-/**************************************************************************
- *                               setDiffuse                               *
- **************************************************************************/
-void Map::Light::setDiffuse(float r, float g, float b)
-{
-   light->setDiffuseColour(r, g, b);
-}
-
-/**************************************************************************
- *                               setSpecular                              *
- **************************************************************************/
-void Map::Light::setSpecular(float r, float g, float b)
-{
-   light->setSpecularColour(r, g, b);
-}
-
-/**************************************************************************
- *                                setAsPoint                              *
- **************************************************************************/
-void Map::Light::setAsPoint()
-{
-   light->setType(Ogre::Light::LT_POINT);
-}
-
-/**************************************************************************
- *                             setAsSpotLight                             *
- **************************************************************************/
-void Map::Light::setAsSpotlight()
-{
-   light->setType(Ogre::Light::LT_SPOTLIGHT);
-   light->setDirection(0.0f, -1.0f, 0.0f);
-   light->setSpotlightRange(Ogre::Degree(0), Ogre::Degree(120));
-}
 
 /**************************************************************************
  *                                Constructor                             *
@@ -142,6 +85,7 @@ Map::Map()
    this->xSize = 0;
    this->zSize = 0;
    this->things = new Kobold::List(Kobold::LIST_TYPE_ADD_AT_END);
+   this->lights = new MapLights();
 }
 
 /**************************************************************************
@@ -150,13 +94,19 @@ Map::Map()
 Map::~Map()
 {
   delete this->things;
+  delete this->lights;
 }
 
 /**************************************************************************
  *                                 update                                 *
  **************************************************************************/
-void Map::update()
+void Map::update(Ogre::Vector3 floorMouse)
 {
+   /* FIXME: must use character coordinate, not mouse as here. */
+   lights->setActiveLight(floorMouse.x, floorMouse.z);
+
+   /* FIXME: would be better to just use a list of animated or scriptable
+    * things, instead of updating everything. */
    Thing* thing = static_cast<Thing*>(things->getFirst());
    for(int i = 0; i < things->getTotal(); i++)
    {
@@ -184,6 +134,7 @@ bool Map::load(Ogre::String mapFileName)
 {
    Kobold::DefParser parser;
    Ogre::String key, value;
+   LightInfo* lastLight = NULL;
 
    this->filename = mapFileName;
 
@@ -431,49 +382,72 @@ bool Map::load(Ogre::String mapFileName)
       else if(key == MAP_TOKEN_LIGHT)
       {
          /* Create a new light */
-         Light* light = new Light();
          if(value == MAP_VALUE_LIGHT_POINT)
          {
-            light->setAsPoint();
+            lastLight = lights->createLightInfo(Ogre::Light::LT_POINT);
          }
          else if(value == MAP_VALUE_LIGHT_SPOTLIGHT)
          {
-            light->setAsSpotlight();
+            lastLight = lights->createLightInfo(Ogre::Light::LT_SPOTLIGHT);
          }
-         //TODO: spotlight and directional!
-         lights.insert(light);
+         //TODO: directional!
       }
       else if(key == MAP_TOKEN_LIGHT_POS)
       {
          /* Set last light position */
-         Light* light = static_cast<Light*>(lights.getLast());
-         if(light)
+         if(lastLight)
          {
             float lx=0.0f, ly=0.0f, lz=0.0f;
             sscanf(value.c_str(), "%f %f %f", &lx, &ly, &lz);
-            light->setPosition(Ogre::Vector3(lx, ly, lz));
+            lastLight->setPosition(Ogre::Vector3(lx, ly, lz));
+         }
+      }
+      else if(key == MAP_TOKEN_LIGHT_DIR)
+      {
+         /* Set last light direction */
+         if(lastLight)
+         {
+            float lx=0.0f, ly=0.0f, lz=0.0f;
+            sscanf(value.c_str(), "%f %f %f", &lx, &ly, &lz);
+            lastLight->setDirection(Ogre::Vector3(lx, ly, lz));
          }
       }
       else if(key == MAP_TOKEN_LIGHT_DIFFUSE)
       {
          /* Set last light diffuse color */
-         Light* light = static_cast<Light*>(lights.getLast());
-         if(light)
+         if(lastLight)
          {
             float lr=0.0f, lg=0.0f, lb=0.0f;
             sscanf(value.c_str(), "%f %f %f", &lr, &lg, &lb);
-            light->setDiffuse(lr, lg, lb);
+            lastLight->setDiffuse(lr, lg, lb);
          }
       }
       else if(key == MAP_TOKEN_LIGHT_SPECULAR)
       {
          /* Set last light specular color */
-         Light* light = static_cast<Light*>(lights.getLast());
-         if(light)
+         if(lastLight)
          {
             float lr=0.0f, lg=0.0f, lb=0.0f;
             sscanf(value.c_str(), "%f %f %f", &lr, &lg, &lb);
-            light->setSpecular(lr, lg, lb);
+            lastLight->setSpecular(lr, lg, lb);
+         }
+      }
+      else if(key == MAP_TOKEN_LIGHT_SPOT_RANGE)
+      {
+         if(lastLight)
+         {
+            float ang=0.0f;
+            sscanf(value.c_str(), "%f", &ang);
+            lastLight->setSpotlightRange(Ogre::Degree(ang));
+         }
+      }
+      else if(key == MAP_TOKEN_LIGHT_AREA)
+      {
+         if(lastLight)
+         {
+            int x1=0, y1=0, x2=0, y2=0;
+            sscanf(value.c_str(), "%d %d %d %d", &x1, &y1, &x2, &y2);
+            lastLight->setArea(x1, y1, x2, y2);
          }
       }
       else 
@@ -486,6 +460,7 @@ bool Map::load(Ogre::String mapFileName)
 
    floor.updateAllDirty();
    walls.updateAllDirty();
+   lights->setActiveLight(0.0f, 0.0f);
 
    return true;
 }

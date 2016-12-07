@@ -67,6 +67,10 @@ class Core : public Goblin::BaseApp
 
    private:
 
+      Ogre::Vector3 floorMouse; /**< Coordinates of mouse on floor */ 
+      int lastMouseX; /**< Last mouse X coordinate when updated floorMouse */
+      int lastMouseY; /**< Last mouse Y coordinate when updated floorMouse */
+
 };
 
 }

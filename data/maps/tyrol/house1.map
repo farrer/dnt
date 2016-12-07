@@ -5,9 +5,23 @@ outdoor = 0
 npcFile = mapas/tutorial/house1.map.npc
 musicFile = music/emptycity.ogg
 light = point
+lightArea = 64 384 256 512
 lightPos = 180.000 48.000 474.000
 lightDiffuse = 0.8 0.8 0.8
-lightSpecular = 0.93 0.468 0.0
+lightSpecular = 0.93 0.468 0.20
+
+light = point
+lightArea = 0 384 64 512
+lightPos = 12.000 48.000 474.000
+lightDiffuse = 0.8 0.8 0.8
+lightSpecular = 0.93 0.468 0.20
+
+light = point
+lightArea = 256 320 384 512
+lightPos = 320.000 48.000 416.000
+lightDiffuse = 0.8 0.8 0.8
+lightSpecular = 0.8 0.8 0.8
+
 door = doors/door5.dor
 doorPos = 21.686,0.000,138.000
 doorOri = 0

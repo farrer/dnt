@@ -37,12 +37,14 @@ src/core/util.h
 )
 set(MAP_SOURCES
 src/map/indoortexturemesh.cpp
+src/map/light.cpp
 src/map/map.cpp
 src/map/npcfile.cpp
 )
 set(MAP_HEADERS
 src/map/indoortexturemesh.h
 src/map/map.h
+src/map/light.h
 src/map/npcfile.h
 )
 set(RULES_SOURCES

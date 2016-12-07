@@ -103,6 +103,8 @@ namespace DNT
    class IndoorTextureSquare;
    class IndoorTextureMesh;
    class IndoorTextureMeshes;
+   class LightInfo;
+   class MapLights;
 
    class ItemSlot;
    class Inventory;
