@@ -24,8 +24,6 @@
 
 #include "dntconfig.h"
 #include <goblin/baseapp.h>
-#include <OGRE/Terrain/OgreTerrain.h>
-#include <OGRE/Terrain/OgreTerrainGroup.h>
 
 namespace DNT
 {
@@ -57,21 +55,18 @@ class Core : public Goblin::BaseApp
       void getDataDirectories(Ogre::String** dataDirectories,
             Ogre::String** dataGroups, int& total);
 
-      /*! Override our BaseApp shadoe technique to  what we defined. */
+      /*! Override our BaseApp shadow technique to  what we defined. */
       Ogre::ShadowTechnique getShadowTechnique();
 
       void doLowMemoryClean();
       void doSendToBackground();
       void doSendToForeground();
+
       void doCycle();
       bool shouldQuit();
 
    private:
 
-      void initBlendMaps(Ogre::Terrain* terrain);
-
-      Ogre::TerrainGlobalOptions* terrainGlobalOptions;
-      Ogre::TerrainGroup* terrainGroup;
 };
 
 }
