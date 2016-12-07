@@ -400,8 +400,8 @@ void Feat::decQuantity(int value, Feats* feats)
    quantity -= value;
    
    /* Decrement avaiable quantity of dependent Feats */
-   FeatDescription::DepFeat* dft = (FeatDescription::DepFeat*) 
-      info->getDepFeats()->getFirst();
+   FeatDescription::DepFeat* dft = static_cast<FeatDescription::DepFeat*>
+      (info->getDepFeats()->getFirst());
 
    for(int i=0; i < info->getDepFeats()->getTotal(); i++)
    {
@@ -410,7 +410,7 @@ void Feat::decQuantity(int value, Feats* feats)
             info->getCostToUse() / dft->getReason());
 
       /* next dependency */
-      dft = (FeatDescription::DepFeat*) dft->getNext();
+      dft = static_cast<FeatDescription::DepFeat*>(dft->getNext());
    }
 }
 

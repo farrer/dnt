@@ -387,8 +387,8 @@ bool ModEffectList::insertCopy(ModEffect* obj, bool applyEffect)
 void ModEffectList::rest()
 {
    int i;
-   int curTotal = total;
-   ModEffect* eff = (ModEffect*)first;
+   int curTotal = getTotal();
+   ModEffect* eff = static_cast<ModEffect*>(getFirst());
    ModEffect* efaux;
 
    /* Search the list for expired ModEffects */
@@ -396,7 +396,7 @@ void ModEffectList::rest()
    {
       /* Getting the next to not lose the pointer */
       efaux = eff;
-      eff = (ModEffect*)eff->getNext();
+      eff = static_cast<ModEffect*>(eff->getNext());
 
       /* Verify if is timed */
       if(efaux->isTemporally() != 0)
@@ -419,8 +419,8 @@ void ModEffectList::rest()
 void ModEffectList::doStep()
 {
    int i;
-   int curTotal = total;
-   ModEffect* eff = (ModEffect*)first;
+   int curTotal = getTotal();
+   ModEffect* eff = static_cast<ModEffect*>(getFirst());
    ModEffect* efaux;
 
    /* Search the list for expired ModEffects */
@@ -428,7 +428,7 @@ void ModEffectList::doStep()
    {
       /* Getting the next to not lose the pointer */
       efaux = eff;
-      eff = (ModEffect*)eff->getNext();
+      eff = static_cast<ModEffect*>(eff->getNext());
 
       /* Verify if expired */
       if(efaux->isElapsed())
@@ -462,15 +462,15 @@ void ModEffectList::unApply()
 {
    int i;
 
-   ModEffect* eff = (ModEffect*)first;
+   ModEffect* eff = static_cast<ModEffect*>(getFirst());
 
-   for(i=0; i < total; i++)
+   for(i=0; i < getTotal(); i++)
    {
       if(eff->wasApplied())
       {
          eff->unApply(owner);
       }
-      eff = (ModEffect*)eff->getNext();
+      eff = static_cast<ModEffect*>(eff->getNext());
    }
 }
 
@@ -481,15 +481,15 @@ void ModEffectList::apply()
 {
    int i;
 
-   ModEffect* eff = (ModEffect*)first;
+   ModEffect* eff = static_cast<ModEffect*>(getFirst());
 
-   for(i=0; i < total; i++)
+   for(i=0; i < getTotal(); i++)
    {
       if(!eff->wasApplied())
       {
          eff->apply(owner);
       }
-      eff = (ModEffect*)eff->getNext();
+      eff = static_cast<ModEffect*>(eff->getNext());
    }
 }
 

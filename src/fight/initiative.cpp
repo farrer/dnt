@@ -85,14 +85,14 @@ Initiative::~Initiative()
  ***************************************************************/
 InitiativeInfo* Initiative::getFirstLesser(int value)
 {
-   InitiativeInfo* inf = (InitiativeInfo*) getFirst();
+   InitiativeInfo* inf = static_cast<InitiativeInfo*>(getFirst());
    for(int i = 0; i < getTotal(); i++)
    {
       if(inf->getValue() < value)
       {
          return inf;
       }
-      inf = (InitiativeInfo*) inf->getNext();
+      inf = static_cast<InitiativeInfo*>(inf->getNext());
    }
 
    return inf;
@@ -133,7 +133,7 @@ void Initiative::insertCharacter(Character* pers)
  ***************************************************************/
 void Initiative::newRound()
 {
-   next = (InitiativeInfo*) getFirst();
+   next = static_cast<InitiativeInfo*>(getFirst());
 }
 
 /***************************************************************
@@ -144,7 +144,7 @@ Character* Initiative::getNextCharacter()
    current = next;
    if(next)
    {
-      next = (InitiativeInfo*) next->getNext();
+      next = static_cast<InitiativeInfo*>(next->getNext());
       if(next == getFirst())
       {
          /* Got end of the list, must set as NULL */

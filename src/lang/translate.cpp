@@ -21,10 +21,13 @@
 
 #include "translate.h"
 
+namespace DNT
+{
+
 /************************************************************
  *                     translateDataString                  *
  ************************************************************/
-Ogre::String translateDataString(Ogre::String dataString)
+Kobold::String translateDataString(Kobold::String dataString)
 {
    if( (dataString.length() > 10) && (dataString[0] == 'g') &&
        (dataString[1] == 'e') && (dataString[2] == 't') && 
@@ -50,5 +53,7 @@ Ogre::String translateDataString(Ogre::String dataString)
 
    /* Not a translatable one */
    return dataString;
+}
+
 }
 

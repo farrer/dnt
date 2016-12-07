@@ -157,7 +157,7 @@ Map::~Map()
  **************************************************************************/
 void Map::update()
 {
-   Thing* thing = (Thing*) things->getFirst();
+   Thing* thing = static_cast<Thing*>(things->getFirst());
    for(int i = 0; i < things->getTotal(); i++)
    {
       Goblin::Model3d* model = thing->getModel();
@@ -165,7 +165,7 @@ void Map::update()
       {
          model->update();
       }
-      thing = (Thing*) thing->getNext();
+      thing = static_cast<Thing*>(thing->getNext());
    }
 }
 
@@ -356,7 +356,7 @@ bool Map::load(Ogre::String mapFileName)
               (key == MAP_TOKEN_DOOR_POSITION))
       {
          /* Define last thing's position. */
-         Thing* last = (Thing*) things->getLast();
+         Thing* last = static_cast<Thing*>(things->getLast());
          if(last != NULL)
          {
             Ogre::Real pX=0.0f, pY=0.0f, pZ=0.0f;
@@ -367,7 +367,7 @@ bool Map::load(Ogre::String mapFileName)
       else if(key == MAP_TOKEN_THING_ORIENTATION)
       {
          /* Define last thing's orientation */
-         Thing* last = (Thing*) things->getLast();
+         Thing* last = static_cast<Thing*>(things->getLast());
          if(last != NULL)
          {
             Ogre::Real oX=0.0f, oY=0.0f, oZ=0.0f;
@@ -378,7 +378,7 @@ bool Map::load(Ogre::String mapFileName)
       else if(key == MAP_TOKEN_THING_WALKABLE)
       {
          /* Define last thing's walkable flag */
-         Thing* last = (Thing*) things->getLast();
+         Thing* last = static_cast<Thing*>(things->getLast());
          if(last != NULL)
          {
             last->setWalkable(value == MAP_VALUE_TRUE);
@@ -410,7 +410,7 @@ bool Map::load(Ogre::String mapFileName)
       else if(key == MAP_TOKEN_DOOR_LOCK_DIALOG)
       {
          /* Define door unlock conversation file */
-         Thing* last = (Thing*) things->getLast();
+         Thing* last = static_cast<Thing*>(things->getLast());
          if(last != NULL)
          {
             last->setConversationFile(value);

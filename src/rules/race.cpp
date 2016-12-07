@@ -48,8 +48,6 @@ Race::Race()
    totalSkills = 0;
    raceSkills = NULL;
    raceSkillsJustify = NULL;
-   previous = NULL;
-   next = NULL;
 }
 
 /******************************************************************
@@ -316,7 +314,7 @@ void Races::insertRace(Kobold::String fileName, Kobold::String imgFile,
  ******************************************************************/
 Race* Races::getRaceByInteger(int id)
 {
-   Race* ret = (Race*)list->getFirst();
+   Race* ret = static_cast<Race*>(list->getFirst());
    int i;
    for(i = 0; i < list->getTotal(); i++)
    {
@@ -324,7 +322,7 @@ Race* Races::getRaceByInteger(int id)
       {
          return ret;
       }
-      ret = (Race*) ret->getNext();
+      ret = static_cast<Race*>(ret->getNext());
    }
 
    return NULL;
@@ -335,7 +333,7 @@ Race* Races::getRaceByInteger(int id)
  ******************************************************************/
 Race* Races::getRaceByString(Kobold::String id)
 {
-   Race* ret = (Race*)list->getFirst();
+   Race* ret = static_cast<Race*>(list->getFirst());
    int i;
    for(i = 0; i < list->getTotal(); i++)
    {
@@ -343,7 +341,7 @@ Race* Races::getRaceByString(Kobold::String id)
       {
          return ret;
       }
-      ret = (Race*) ret->getNext();
+      ret = static_cast<Race*>(ret->getNext());
    }
 
    return NULL;

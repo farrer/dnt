@@ -484,7 +484,7 @@ Character* CharacterList::getNextEnemyCharacter(Character* last)
       {
          return last;
       }
-      last = (Character*) last->next;
+      last = static_cast<Character*>(last->getNext());
    }
 #endif
    return NULL;
@@ -503,7 +503,7 @@ Character* CharacterList::getActiveCharacter()
  *********************************************************************/
 Character* CharacterList::getCharacter(Kobold::String filename)
 {
-   Character* ch = (Character*) getFirst();
+   Character* ch = static_cast<Character*>(getFirst());
 
    /* Search the list for it */
    for(int i = 0; i < getTotal(); i++)
@@ -512,7 +512,7 @@ Character* CharacterList::getCharacter(Kobold::String filename)
       {
          return ch;
       }
-      ch = (Character*) ch->getNext();
+      ch = static_cast<Character*>(ch->getNext());
    }
 
    return NULL;
@@ -523,19 +523,19 @@ Character* CharacterList::getCharacter(Kobold::String filename)
  *********************************************************************/
 Character* CharacterList::getCharacter(Ogre::SceneNode* scNode)
 {
-   Character* ch = (Character*)first;
+   Character* ch = static_cast<Character*>(getFirst());
 
    /* Search the list for it */
-   for(int i = 0; i < total; i++)
+   for(int i = 0; i < getTotal(); i++)
    {
       if((ch->getModel()) && (ch->getModel()->ownSceneNode(scNode)))
       {
          return ch;
       }
-      ch = (Character*) ch->getNext();
+      ch = static_cast<Character*>(ch->getNext());
    }
 
-   return(NULL);
+   return NULL;
 }
 
 /*********************************************************************
@@ -543,16 +543,16 @@ Character* CharacterList::getCharacter(Ogre::SceneNode* scNode)
  *********************************************************************/
 Character* CharacterList::getNextSameCharacter(Character* ch)
 {
-   Character* cur = (Character*)ch->getNext();
+   Character* cur = static_cast<Character*>(ch->getNext());
 
    /* Search the list for it */
-   while( (cur != ch) && (cur != first) )
+   while( (cur != ch) && (cur != static_cast<Character*>(getFirst())) )
    {
       if(cur->getFilename() == ch->getFilename())
       {
          return cur;
       }
-      cur = (Character*) cur->getNext();
+      cur = static_cast<Character*>(cur->getNext());
    }
 
    return NULL;
@@ -563,20 +563,20 @@ Character* CharacterList::getNextSameCharacter(Character* ch)
  *********************************************************************/
 bool CharacterList::isCharacterIn(Character* ch)
 {
-   Character* c = (Character*)first;
+   Character* c = static_cast<Character*>(getFirst());
    int i;
 
    /* Search the list for it */
-   for(i = 0; i < total; i++)
+   for(i = 0; i < getTotal(); i++)
    {
       if(c == ch)
       {
-         return(true);
+         return true;
       }
-      c = (Character*)c->getNext();
+      c = static_cast<Character*>(c->getNext());
    }
 
-   return(false);
+   return false;
 }
 
 /*********************************************************************
@@ -593,11 +593,11 @@ void CharacterList::setActiveCharacter(Character* dude)
 void CharacterList::update()
 {
    int i;
-   Character* ch = (Character*)first;
-   for(i=0; i < total; i++)
+   Character* ch = static_cast<Character*>(getFirst());
+   for(i=0; i < getTotal(); i++)
    {
       ch->updateEffects();
-      ch = (Character*)ch->getNext();
+      ch = static_cast<Character*>(ch->getNext());
    }
 }
 
@@ -624,11 +624,11 @@ void CharacterList::treatGeneralScripts()
       /* Set, if needed the current Character to treat */
       if(!curTreat)
       {
-         curTreat = (Character*)first;
+         curTreat = static_cast<Character*>(first);
       }
             
       /* Get and treat script */
-      script = (iaScript*) curTreat->getGeneralScript();
+      script = static_cast<Script*> curTreat->getGeneralScript();
       if( (script) && (curTreat->isAlive()))
       {
          /* Only treat a Character script, if no dialog with it */
@@ -658,7 +658,7 @@ void CharacterList::treatGeneralScripts()
       }
 
       /* forward on the list */
-      curTreat = (Character*)curTreat->getNext();
+      curTreat = static_cast<Character*>(curTreat->getNext());
    }
 #endif
 }

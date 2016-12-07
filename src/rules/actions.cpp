@@ -660,7 +660,7 @@ bool Action::doAreaAttack(Thing* actor, float targetX, float targetZ,
 
          }
 
-         targ = (Character*)targ->getNext();
+         targ = static_cast<Character*>(targ->getNext());
       }
       l = eng->NPCs;
    }

@@ -290,14 +290,15 @@ void IndoorTextureMesh::updateManualObject(Ogre::String baseName)
          int curVertIndex = 0;
 
          /* Define each square as two triangles */
-         IndoorTextureSquare* square = (IndoorTextureSquare*) first;
+         IndoorTextureSquare* square = static_cast<IndoorTextureSquare*>
+            (getFirst());
          for(int i = 0; i < getTotal(); i++)
          {
             square->define(manualObject, curVertIndex);
             curVertIndex += 4;
 
             /* Done, let's check next square */
-            square = (IndoorTextureSquare*) square->getNext();
+            square = static_cast<IndoorTextureSquare*>(square->getNext());
          }
 
          manualObject->end();
@@ -347,14 +348,14 @@ IndoorTextureMesh* IndoorTextureMeshes::createTextureMesh(
 IndoorTextureMesh* IndoorTextureMeshes::getTextureMesh(
       Ogre::String materialName)
 {
-   IndoorTextureMesh* mesh = (IndoorTextureMesh*) getFirst();
+   IndoorTextureMesh* mesh = static_cast<IndoorTextureMesh*>(getFirst());
    for(int i = 0; i < getTotal(); i++)
    {
       if(mesh->getMaterialName() == materialName)
       {
          return mesh;
       }
-      mesh = (IndoorTextureMesh*) mesh->getNext();
+      mesh = static_cast<IndoorTextureMesh*>(mesh->getNext());
    }
 
    return NULL;
@@ -373,11 +374,11 @@ bool IndoorTextureMeshes::hasTextureMesh(Ogre::String materialName)
  **************************************************************************/
 void IndoorTextureMeshes::updateAllDirty()
 {
-   IndoorTextureMesh* mesh = (IndoorTextureMesh*) getFirst();
+   IndoorTextureMesh* mesh = static_cast<IndoorTextureMesh*>(getFirst());
    for(int i = 0; i < getTotal(); i++)
    {
       mesh->updateManualObject(baseName);
-      mesh = (IndoorTextureMesh*) mesh->getNext();
+      mesh = static_cast<IndoorTextureMesh*>(mesh->getNext());
    }
 }
 

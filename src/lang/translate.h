@@ -29,17 +29,21 @@
    #ifndef _gettext_func_
       #define _gettext_func_
       /* Define a gettext ignore function */
-      inline char* gettext(const char* s){return((char*)s);};
+      inline char* gettext(const char* s){return(static_cast<char*>(s));};
    #endif
 #endif
 
-#include <OGRE/OgreString.h>
+#include <kobold/kstring.h>
 
-/*! Translate a data string readed from a data file.
- * \param dataString -> translatable data string readed from a data file 
- * \return -> translated string for the input data. */
-Ogre::String translateDataString(Ogre::String dataString);
+namespace DNT
+{
 
+   /*! Translate a data string readed from a data file.
+    * \param dataString -> translatable data string readed from a data file 
+    * \return -> translated string for the input data. */
+   Kobold::String translateDataString(Kobold::String dataString);
+
+}
 
 #endif
 

@@ -47,8 +47,6 @@ Class::Class()
    totalSkills = 0;
    classSkills = NULL;
    reqLevel = NULL;
-   previous = NULL;
-   next = NULL;
    lifeDiceType = Dice::DICE_TYPE_NONE;
 }
 
@@ -363,7 +361,7 @@ void Classes::insertClass(Kobold::String fileName, Kobold::String imgFile,
  ******************************************************************/
 Class* Classes::getClassByInteger(int id)
 {
-   Class* ret = (Class*)list->getFirst();
+   Class* ret = static_cast<Class*>(list->getFirst());
    int i;
    for(i = 0; i < list->getTotal(); i++)
    {
@@ -371,7 +369,7 @@ Class* Classes::getClassByInteger(int id)
       {
          return ret;
       }
-      ret = (Class*) ret->getNext();
+      ret = static_cast<Class*>(ret->getNext());
    }
 
    return NULL;
@@ -382,7 +380,7 @@ Class* Classes::getClassByInteger(int id)
  ******************************************************************/
 Class* Classes::getClassByString(Kobold::String id)
 {
-   Class* ret = (Class*)list->getFirst();
+   Class* ret = static_cast<Class*>(list->getFirst());
    int i;
    for(i = 0; i < list->getTotal(); i++)
    {
@@ -390,7 +388,7 @@ Class* Classes::getClassByString(Kobold::String id)
       {
          return ret;
       }
-      ret = (Class*)ret->getNext();
+      ret = static_cast<Class*>(ret->getNext());
    }
 
    return NULL;

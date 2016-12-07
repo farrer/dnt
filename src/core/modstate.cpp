@@ -477,7 +477,7 @@ void ModInventory::flush(Inventory* inv)
    bool res;
 
    /* Insert all objects at its previous Inventory positions */
-   for(int i = 0; i < total; i++)
+   for(int i = 0; i < getTotal(); i++)
    {
       /* create the item */
       curItem = static_cast<Item*>(Game::createObject(invObj->filename)); 
@@ -834,7 +834,7 @@ void ModMap::addMapObjectAction(ModActionType action, Kobold::String target,
    else if(action == MODSTATE_ACTION_OBJECT_CHANGE_STATE)
    {
       /* search for already created one */
-      n = (MapObjectModAction*)search(action, target, pos);
+      n = static_cast<MapObjectModAction*>(search(action, target, pos));
 
       /* not found, so must create a new one */
       if(n == NULL)
@@ -1107,7 +1107,7 @@ void ModMap::doMapModifications()
 //TODO map search object to change its state
 #if 0
          /* Get the object from the list */
-         MapObjectModAction* act = (MapObjectModAction*)tmpMobj;
+         MapObjectModAction* act = static_cast<MapObjectModAction*>(tmpMobj);
          object* obj = objectsList::search(act->getTarget(), x, y, z);
 
          if(obj)
@@ -1206,7 +1206,7 @@ void ModMap::doMapModifications()
       else if(tmpMobj->getAction() == MODSTATE_INVENTORY)
       {
          /* Get the modified Inventory */
-         ModInventory* mInv = (ModInventory*)tmpMobj;
+         ModInventory* mInv = static_cast<ModInventory*>(tmpMobj);
          /* Get the Character */
          ch = Game::getNpcs()->getCharacter(tmpMobj->getTarget());
          if(ch)

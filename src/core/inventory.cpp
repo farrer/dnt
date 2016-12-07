@@ -192,7 +192,7 @@ Money* Inventory::getMoney()
    /* search inventory slots */
    for(int inv = 0; inv < INVENTORY_PER_CHARACTER; inv++)
    {
-      m = (Money*) slots[inv]->getItemByFilename(DNT_MONEY_OBJECT);
+      m = static_cast<Money*>(slots[inv]->getItemByFilename(DNT_MONEY_OBJECT));
       if(m != NULL)
       {
          /* Found! */

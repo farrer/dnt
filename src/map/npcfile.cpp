@@ -144,7 +144,7 @@ bool NpcFile::save(Kobold::String filename)
    file << NPC_FILE_KEY_MAP_FILE << " = " << mapFilename << std::endl;
 
    /* Write each NPC */
-   NpcParseStruct* npc = (NpcParseStruct*) getFirst();
+   NpcParseStruct* npc = static_cast<NpcParseStruct*>(getFirst());
    for(int i = 0; i < getTotal(); i++)
    {
       file << NPC_FILE_KEY_NPC << " = " << npc->name << std::endl;
@@ -154,7 +154,7 @@ bool NpcFile::save(Kobold::String filename)
       file << NPC_FILE_KEY_ANGLE << " = " << npc->angle << std::endl;
       file << NPC_FILE_KEY_PSYCHO << " = " << npc->psycho << std::endl;
 
-      npc = (NpcParseStruct*) npc->getNext();
+      npc = static_cast<NpcParseStruct*>(npc->getNext());
    }
 
    return true;
@@ -197,7 +197,7 @@ bool NpcFile::getNextCharacter(Kobold::String& name, Kobold::String& filename,
       else
       {
          current = static_cast<NpcParseStruct*>(current->getNext());
-         res = (current != first);
+         res = (current != static_cast<NpcParseStruct*>(getFirst()));
       }
    }
 

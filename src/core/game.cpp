@@ -91,14 +91,14 @@ Map* Game::loadMap(Kobold::String filename, bool setPCsPositions)
    if(setPCsPositions)
    {
       /* Put PCs to initial position */
-      Character* ch = (Character*) pcs->getFirst();
+      Character* ch = static_cast<Character*>(pcs->getFirst());
       for(int i = 0; i < pcs->getTotal(); i++)
       {
          //FIXME: currently putting all at the same position, it should be
          //       fixed to support multiple PCs.
          ch->getModel()->setPosition(map->getInitialPosition());
 
-         ch = (Character*) ch->getNext();
+         ch = static_cast<Character*>(ch->getNext());
       }
    }
 
@@ -147,19 +147,19 @@ Object* Game::createObject(Kobold::String filename)
    /* verify if is money */
    if(filename == DNT_MONEY_OBJECT)
    {
-      obj = (Object*) new Money();
+      obj = static_cast<Object*>(new Money());
    }
    else
    {
       if(filename.find(".scn", 0) != Kobold::String::npos)
       {
          /* Static Scenery */
-         obj = (Object*) new Scenery();
+         obj = static_cast<Object*>(new Scenery());
       }
       else if(filename.find(".itn", 0) != Kobold::String::npos)
       {
          /* Item */
-         obj = (Object*) new Item();
+         obj = static_cast<Object*>(new Item());
       }
       //TODO: weapon
       //else if(filename.find(".wcc", 0) != Kobold::String::npos)

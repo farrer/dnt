@@ -242,7 +242,7 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
          //TODO: Container object type
          if(owner->getThingType() == Thing::THING_TYPE_CHARACTER)
          {
-            Character* ownerNPC = (Character*)owner;
+            Character* ownerNPC = static_cast<Character*>(owner);
             /* Search for the item at actor's inventory */
             Item* item = pc->getInventory()->getItemByFilename(satt);
             if(item)
@@ -274,7 +274,7 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
          //TODO: Container object type
          if(owner->getThingType() == Thing::THING_TYPE_CHARACTER)
          {
-            Character* ownerNPC = (Character*)owner;
+            Character* ownerNPC = static_cast<Character*>(owner);
             /* Search for the item on owner's inventory */
             Item* item = ownerNPC->getInventory()->getItemByFilename(satt);
             if(item)
@@ -782,11 +782,11 @@ bool DialogOption::doPostTest(PlayableCharacter* pc, Thing* owner)
 void DialogOption::executeIfActions(Conversation* conv, PlayableCharacter* pc, 
       Thing* owner, Kobold::String ownerMap)
 {
-   TalkAction* act = (TalkAction*) ifActions.getFirst();
+   TalkAction* act = static_cast<TalkAction*>(ifActions.getFirst());
    for(int i = 0; i < ifActions.getTotal(); i++)
    {
       act->execute(conv, pc, owner, ownerMap);
-      act = (TalkAction*) act->getNext();
+      act = static_cast<TalkAction*>(act->getNext());
    }
 }
 
@@ -796,11 +796,11 @@ void DialogOption::executeIfActions(Conversation* conv, PlayableCharacter* pc,
 void DialogOption::executeElseActions(Conversation* conv, 
       PlayableCharacter* pc, Thing* owner, Kobold::String ownerMap)
 {
-   TalkAction* act = (TalkAction*) elseActions.getFirst();
+   TalkAction* act = static_cast<TalkAction*>(elseActions.getFirst());
    for(int i = 0; i < elseActions.getTotal(); i++)
    {
       act->execute(conv, pc, owner, ownerMap);
-      act = (TalkAction*) act->getNext();
+      act = static_cast<TalkAction*>(act->getNext());
    }
 }
 
@@ -863,7 +863,7 @@ Kobold::List* Dialog::getOptions()
  *************************************************************************/
 DialogOption* Dialog::getOption(int option)
 {
-   DialogOption* opt = (DialogOption*) options.getFirst();
+   DialogOption* opt = static_cast<DialogOption*>(options.getFirst());
    for(int i = 0; i < options.getTotal(); i++)
    {
       if(i == option)
@@ -871,7 +871,7 @@ DialogOption* Dialog::getOption(int option)
          return opt;
       }
 
-      opt = (DialogOption*) opt->getNext();
+      opt = static_cast<DialogOption*>(opt->getNext());
    }
 
    return NULL;
@@ -1393,7 +1393,7 @@ bool Conversation::load(Kobold::String filename)
 Dialog* Conversation::getDialog(int id)
 {
    int i;
-   Dialog* dlg = (Dialog*) getFirst();
+   Dialog* dlg = static_cast<Dialog*>(getFirst());
 
    for(i = 0; i < getTotal(); i++)
    {
@@ -1401,7 +1401,7 @@ Dialog* Conversation::getDialog(int id)
       {
          return dlg;
       }
-      dlg = (Dialog*) dlg->getNext();
+      dlg = static_cast<Dialog*>(dlg->getNext());
    }
 
    return NULL;
