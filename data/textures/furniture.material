@@ -7,7 +7,7 @@ material wardrobe
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture furniture/wardrobe.png
@@ -30,7 +30,7 @@ material letto
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture furniture/letto.png
@@ -53,7 +53,7 @@ material pillow
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture furniture/sofa.png
@@ -77,7 +77,7 @@ material sofa
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture furniture/sofa.png
@@ -100,7 +100,7 @@ material cadeira
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture furniture/cadeira.png
@@ -123,7 +123,7 @@ material bookshelf
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture furniture/bookshelf.png
@@ -146,7 +146,7 @@ material dinner_table
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture furniture/dinner_table.png
@@ -169,7 +169,7 @@ material dinner_chair
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture furniture/dinner_chair.png
@@ -193,7 +193,7 @@ material estante
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture furniture/estante.png
@@ -216,7 +216,7 @@ material oven
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture furniture/oven.png
@@ -239,7 +239,7 @@ material pia
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture furniture/pia.png
@@ -262,7 +262,7 @@ material microwave
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture furniture/microwave.png
@@ -285,7 +285,7 @@ material fridge
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture furniture/fridge.png
@@ -308,7 +308,7 @@ material rug
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture furniture/rug.png
@@ -331,7 +331,7 @@ material pc_table
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture furniture/pc_table.png
@@ -354,7 +354,7 @@ material pc_chair
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture furniture/pc_chair.png
@@ -377,7 +377,7 @@ material mesa_redonda
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture furniture/mesa_redonda.png
@@ -400,7 +400,7 @@ material meuble
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture furniture/meuble.png
@@ -423,7 +423,7 @@ material privada
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture furniture/privada.png
@@ -446,7 +446,7 @@ material papel_higienico
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture furniture/papel_higienico.png
@@ -469,7 +469,7 @@ material poster
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture furniture/poster.png
@@ -492,7 +492,7 @@ material calendar
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture furniture/calendar.png

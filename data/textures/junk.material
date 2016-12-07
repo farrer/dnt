@@ -7,7 +7,7 @@ material caixa1
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture junk/caixa1.png
@@ -30,7 +30,7 @@ material caixa2
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture junk/caixa2.png
@@ -53,7 +53,7 @@ material apple_crate
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture junk/apple_crate.png

@@ -57,6 +57,40 @@ class Map
       Ogre::Vector3 getInitialPosition();
 
    private:
+
+      /*! Keep light information in a map */
+      class Light : public Kobold::ListElement
+      {
+         public:
+            /*! Constructor */
+            Light();
+            /*! Destructor */
+            ~Light();
+
+            /*! Set light position
+             * \param pos new light position */
+            void setPosition(Ogre::Vector3 pos);
+
+            /*! Set diffuse light color */
+            void setDiffuse(float r, float g, float b);
+            /*! Set specular light color */
+            void setSpecular(float r, float g, float b);
+
+            /*! Define as a point light */
+            void setAsPoint();
+
+            /*! Define as a spotlight */
+            void setAsSpotlight();
+
+            /*TODO: void setAsSpotlight();
+            void setAsDirectional(); */
+
+         private:
+            Ogre::Light* light;
+      };
+
+      Kobold::List lights; /**< Map Lights */
+
       IndoorTextureMeshes floor; /**< The indoor floor meshes */
       IndoorTextureMeshes walls; /**< The indoor wall meshes */
 

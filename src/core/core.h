@@ -57,6 +57,9 @@ class Core : public Goblin::BaseApp
       void getDataDirectories(Ogre::String** dataDirectories,
             Ogre::String** dataGroups, int& total);
 
+      /*! Override our BaseApp shadoe technique to  what we defined. */
+      Ogre::ShadowTechnique getShadowTechnique();
+
       void doLowMemoryClean();
       void doSendToBackground();
       void doSendToForeground();

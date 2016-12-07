@@ -7,7 +7,7 @@ material porta
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture doors/porta1.png
@@ -27,7 +27,7 @@ material porta2
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture doors/porta2.png
@@ -47,7 +47,7 @@ material porta3
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture doors/porta3.png
@@ -67,7 +67,7 @@ material porta4
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture doors/porta4.png
@@ -87,7 +87,7 @@ material porta5
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture doors/porta5.png
@@ -107,7 +107,7 @@ material porta6
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture doors/porta6.png
@@ -127,7 +127,7 @@ material porta7
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture doors/porta7.png
@@ -147,7 +147,7 @@ material porta8
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture doors/porta8.png

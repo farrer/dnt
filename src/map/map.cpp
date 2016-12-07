@@ -26,6 +26,7 @@
 #include "../rules/thing.h"
 #include "../core/scenery.h"
 #include "../core/door.h"
+#include "../core/game.h"
 
 #include <kobold/defparser.h>
 #include <kobold/log.h>
@@ -57,9 +58,78 @@ using namespace DNT;
 #define MAP_TOKEN_DOOR_LOCK             "doorLock"
 #define MAP_TOKEN_DOOR_LOCK_DIALOG      "doorLockDialog"
 
+#define MAP_TOKEN_LIGHT                 "light"
+#define MAP_TOKEN_LIGHT_POS             "lightPos"
+#define MAP_TOKEN_LIGHT_DIFFUSE         "lightDiffuse"
+#define MAP_TOKEN_LIGHT_SPECULAR        "lightSpecular"
+
+#define MAP_VALUE_LIGHT_POINT           "point"
+#define MAP_VALUE_LIGHT_SPOTLIGHT       "spot"
+
 #define MAP_TOKEN_INITIAL               "initial"
 
 #define MAP_VALUE_TRUE                  "true"
+
+/**************************************************************************
+ *                                Constructor                             *
+ **************************************************************************/
+Map::Light::Light()
+{
+   light = Game::getSceneManager()->createLight();
+}
+
+/**************************************************************************
+ *                                 Destructor                             *
+ **************************************************************************/
+Map::Light::~Light()
+{
+   if(light)
+   {
+      Game::getSceneManager()->destroyLight(light);
+   }
+}
+
+/**************************************************************************
+ *                               setPosition                              *
+ **************************************************************************/
+void Map::Light::setPosition(Ogre::Vector3 pos)
+{
+   light->setPosition(pos);
+}
+
+/**************************************************************************
+ *                               setDiffuse                               *
+ **************************************************************************/
+void Map::Light::setDiffuse(float r, float g, float b)
+{
+   light->setDiffuseColour(r, g, b);
+}
+
+/**************************************************************************
+ *                               setSpecular                              *
+ **************************************************************************/
+void Map::Light::setSpecular(float r, float g, float b)
+{
+   light->setSpecularColour(r, g, b);
+}
+
+/**************************************************************************
+ *                                setAsPoint                              *
+ **************************************************************************/
+void Map::Light::setAsPoint()
+{
+   light->setType(Ogre::Light::LT_POINT);
+}
+
+/**************************************************************************
+ *                             setAsSpotLight                             *
+ **************************************************************************/
+void Map::Light::setAsSpotlight()
+{
+   light->setType(Ogre::Light::LT_SPOTLIGHT);
+   light->setDirection(0.0f, -1.0f, 0.0f);
+   light->setSpotlightRange(Ogre::Degree(0), Ogre::Degree(120));
+}
 
 /**************************************************************************
  *                                Constructor                             *
@@ -125,8 +195,9 @@ bool Map::load(Ogre::String mapFileName)
    /* Read size of the map */
    if( (!parser.getNextTuple(key, value)) || (key != MAP_TOKEN_SIZE) )
    {
-      //cerr << "Map Size not defined: " << arquivo << endl;
-      //cerr << " Found " << key << " when especting size" << endl;
+      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+            "Error: Map size not defined at '%s', found '%s' instead of 'size'",
+            mapFileName.c_str(), key.c_str());
       return false;
    }
    sscanf(value.c_str(), "%dX%d", &xSize, &zSize);
@@ -354,6 +425,56 @@ bool Map::load(Ogre::String mapFileName)
 
          //TODO: get map height at position and set it.
          initialPos = Ogre::Vector3(ix, 0.0f, iz);
+      }
+      //FIXME: should define light areas on indoor maps, and change 
+      // between active lights based on current character position.
+      else if(key == MAP_TOKEN_LIGHT)
+      {
+         /* Create a new light */
+         Light* light = new Light();
+         if(value == MAP_VALUE_LIGHT_POINT)
+         {
+            light->setAsPoint();
+         }
+         else if(value == MAP_VALUE_LIGHT_SPOTLIGHT)
+         {
+            light->setAsSpotlight();
+         }
+         //TODO: spotlight and directional!
+         lights.insert(light);
+      }
+      else if(key == MAP_TOKEN_LIGHT_POS)
+      {
+         /* Set last light position */
+         Light* light = static_cast<Light*>(lights.getLast());
+         if(light)
+         {
+            float lx=0.0f, ly=0.0f, lz=0.0f;
+            sscanf(value.c_str(), "%f %f %f", &lx, &ly, &lz);
+            light->setPosition(Ogre::Vector3(lx, ly, lz));
+         }
+      }
+      else if(key == MAP_TOKEN_LIGHT_DIFFUSE)
+      {
+         /* Set last light diffuse color */
+         Light* light = static_cast<Light*>(lights.getLast());
+         if(light)
+         {
+            float lr=0.0f, lg=0.0f, lb=0.0f;
+            sscanf(value.c_str(), "%f %f %f", &lr, &lg, &lb);
+            light->setDiffuse(lr, lg, lb);
+         }
+      }
+      else if(key == MAP_TOKEN_LIGHT_SPECULAR)
+      {
+         /* Set last light specular color */
+         Light* light = static_cast<Light*>(lights.getLast());
+         if(light)
+         {
+            float lr=0.0f, lg=0.0f, lb=0.0f;
+            sscanf(value.c_str(), "%f %f %f", &lr, &lg, &lb);
+            light->setSpecular(lr, lg, lb);
+         }
       }
       else 
       {

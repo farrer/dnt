@@ -67,6 +67,10 @@ Core::~Core()
    Farso::Controller::finish();
 }
 
+Ogre::ShadowTechnique Core::getShadowTechnique()
+{
+   return Ogre::SHADOWTYPE_STENCIL_ADDITIVE;
+}
 
 bool Core::doInit()
 {
@@ -160,6 +164,10 @@ bool Core::doInit()
 
    terrainGroup->freeTemporaryResources();
 #endif
+
+   //getSceneManager()->setShadowTextureSelfShadow(true);
+   getSceneManager()->setAmbientLight(Ogre::ColourValue(0.1f, 0.1f, 0.1f));
+
    /* Init Farso */
    Farso::Controller::init(Farso::RENDERER_TYPE_OGRE3D, DEFAULT_WINDOW_WIDTH,
        DEFAULT_WINDOW_HEIGHT, 32, "", getSceneManager());

@@ -7,7 +7,7 @@ material upper_wall
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.000000 0.000000 0.000000 1.000000
          texture_unit
          {
             texture indoor/upper_wall.png
@@ -32,7 +32,7 @@ material concrete6
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture indoor/concrete6.png
@@ -55,7 +55,7 @@ material wall_crete03b
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture indoor/wall_crete03b.png
@@ -78,7 +78,7 @@ material tile3
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture indoor/tile3.png
@@ -101,7 +101,7 @@ material stonetile
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture indoor/stonetile.png
@@ -124,7 +124,7 @@ material wood1
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture indoor/wood1.png
@@ -147,7 +147,7 @@ material plaster3c
          ambient 0.500000 0.500000 0.500000 1.000000
          diffuse 0.640000 0.640000 0.640000 1.000000
          specular 0.500000 0.500000 0.500000 1.000000 12.500000
-         emissive 0.300000 0.300000 0.300000 1.000000
+         emissive 0.0 0.0 0.0 1.000000
          texture_unit
          {
             texture indoor/plaster3c.png
