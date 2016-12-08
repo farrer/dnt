@@ -59,8 +59,8 @@ namespace DNT
          /*! Set outer angle of the spotlight range */
          void setSpotlightRange(Ogre::Degree outerAngle);
 
-         /*! Set affected area */
-         void setArea(int x1, int y1, int x2, int y2);
+         /*! Add an affected area */
+         void addArea(int x1, int y1, int x2, int y2);
 
          /*! \return if point is inner affected area */
          bool isInner(int pX, int pZ);
@@ -69,6 +69,11 @@ namespace DNT
          void setLight(Ogre::Light* light);
 
       private:
+         class Area : public Kobold::ListElement
+         {
+            public:
+               Farso::Rect rect;  /**< Area where the light will act */
+         };
          Ogre::ColourValue diffuse;   /**< Diffuse color */
          Ogre::ColourValue specular;  /**< Specular color */
 
@@ -79,8 +84,7 @@ namespace DNT
 
          Ogre::Light::LightTypes type; /**< Type of the light used */
 
-         Farso::Rect area;  /**< Area where the light will act */
-
+         Kobold::List areas; /**< Afftecting areas */
    };
 
    /*! Class that keeps information about all lights on a map, selecting

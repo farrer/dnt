@@ -447,7 +447,7 @@ bool Map::load(Ogre::String mapFileName)
          {
             int x1=0, y1=0, x2=0, y2=0;
             sscanf(value.c_str(), "%d %d %d %d", &x1, &y1, &x2, &y2);
-            lastLight->setArea(x1, y1, x2, y2);
+            lastLight->addArea(x1, y1, x2, y2);
          }
       }
       else 

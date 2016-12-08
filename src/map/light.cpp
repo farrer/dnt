@@ -84,9 +84,11 @@ void LightInfo::setSpotlightRange(Ogre::Degree outerAngle)
 /**************************************************************************
  *                                setArea                                 *
  **************************************************************************/
-void LightInfo::setArea(int x1, int y1, int x2, int y2)
+void LightInfo::addArea(int x1, int y1, int x2, int y2)
 {
-   area = Farso::Rect(x1, y1, x2, y2);
+   LightInfo::Area* area = new LightInfo::Area();
+   area->rect = Farso::Rect(x1, y1, x2, y2);
+   areas.insert(area);
 }
 
 /**************************************************************************
@@ -94,7 +96,17 @@ void LightInfo::setArea(int x1, int y1, int x2, int y2)
  **************************************************************************/
 bool LightInfo::isInner(int pX, int pZ)
 {
-   return area.isInner(pX, pZ);
+   LightInfo::Area* area = static_cast<LightInfo::Area*>(areas.getFirst());
+   for(int i = 0; i < areas.getTotal(); i++)
+   {
+      if(area->rect.isInner(pX, pZ))
+      {
+         /* Is inner some of our affecting areas */
+         return true;
+      }
+      area = static_cast<LightInfo::Area*>(area->getNext());
+   }
+   return false;
 }
 
 /**************************************************************************
@@ -126,6 +138,7 @@ void LightInfo::setLight(Ogre::Light* light)
 MapLights::MapLights()
 {
    light = Game::getSceneManager()->createLight();
+   light->setType(Ogre::Light::LT_POINT);
    lastX = -1;
    lastZ = -1;
    curLight = NULL;
