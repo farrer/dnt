@@ -66,6 +66,7 @@ using namespace DNT;
 #define MAP_TOKEN_LIGHT_SPECULAR        "lightSpecular"
 #define MAP_TOKEN_LIGHT_SPOT_RANGE      "lightSpotRange"
 #define MAP_TOKEN_LIGHT_AREA            "lightArea"
+#define MAP_TOKEN_LIGHT_ATTENUATION     "lightAttenuation"
 
 #define MAP_VALUE_LIGHT_POINT           "point"
 #define MAP_VALUE_LIGHT_SPOTLIGHT       "spot"
@@ -443,6 +444,15 @@ bool Map::load(Ogre::String mapFileName)
             float ang=0.0f;
             sscanf(value.c_str(), "%f", &ang);
             lastLight->setSpotlightRange(Ogre::Degree(ang));
+         }
+      }
+      else if(key == MAP_TOKEN_LIGHT_ATTENUATION)
+      {
+         if(lastLight)
+         {
+            float r=0.0f, c=0.0f, l=0.0f, q=0.0f;
+            sscanf(value.c_str(), "%f %f %f %f", &r, &c, &l, &q);
+            lastLight->setAttenuation(r, c, l, q);
          }
       }
       else if(key == MAP_TOKEN_LIGHT_AREA)

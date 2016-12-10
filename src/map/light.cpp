@@ -34,6 +34,10 @@ LightInfo::LightInfo(Ogre::Light::LightTypes type)
    this->type = type;
    this->direction = Ogre::Vector3(0.0f, -1.0f, 0.0f);
    this->outerAngle = 80.0f;
+   this->range = 325;
+   this->constant = 1.0;
+   this->linear = 0.014; 
+   this->quadratic = 0.0007;
 }
 
 /**************************************************************************
@@ -84,6 +88,18 @@ void LightInfo::setSpotlightRange(Ogre::Degree outerAngle)
 }
 
 /**************************************************************************
+ *                            setAttenuation                              *
+ **************************************************************************/
+void LightInfo::setAttenuation(Ogre::Real range, Ogre::Real constant,
+      Ogre::Real linear, Ogre::Real quadratic)
+{
+   this->range = range;
+   this->constant = constant;
+   this->linear = linear;
+   this->quadratic = quadratic;
+}
+
+/**************************************************************************
  *                                setArea                                 *
  **************************************************************************/
 void LightInfo::addArea(int x1, int y1, int x2, int y2)
@@ -126,6 +142,11 @@ void LightInfo::setLight(Ogre::Light* light)
    {
       /* Use direction */
       light->setDirection(direction);
+   }
+   else
+   {
+      /* Use attenuation */
+      light->setAttenuation(range, constant, linear, quadratic);
    }
    if(type == Ogre::Light::LT_SPOTLIGHT)
    {

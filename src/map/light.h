@@ -68,6 +68,10 @@ namespace DNT
          /*! Set an Ogre light to be as defined by this LightInfo */
          void setLight(Ogre::Light* light);
 
+         /*! Set attenuation factor (only used for point lights) */
+         void setAttenuation(Ogre::Real range, Ogre::Real constant,
+               Ogre::Real linear, Ogre::Real quadratic);
+
       private:
          class Area : public Kobold::ListElement
          {
@@ -85,6 +89,12 @@ namespace DNT
          Ogre::Light::LightTypes type; /**< Type of the light used */
 
          Kobold::List areas; /**< Afftecting areas */
+
+         /* Attenuation values */
+         Ogre::Real range,
+                    constant,
+                    linear,
+                    quadratic;
    };
 
    /*! Class that keeps information about all lights on a map, selecting
