@@ -125,6 +125,7 @@ FeatDescription::FeatDescription()
    radius = 0;
    selectable = true;
    scriptFile = "";
+   aditionalFactor = NULL;
 
    action = Action::ACT_NONE;
    type = FEAT_TYPE_PERMANENT;
@@ -135,6 +136,10 @@ FeatDescription::FeatDescription()
  ***************************************************************/
 FeatDescription::~FeatDescription()
 {
+   if(aditionalFactor)
+   {
+      delete aditionalFactor;
+   }
 }
 
 /***************************************************************
