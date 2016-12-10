@@ -18,7 +18,9 @@
   along with DNT.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
+#define INDOOR_SUBDIVISIONS         2
+#define INDOOR_SUBDIV_P1     (INDOOR_SUBDIVISIONS + 1)
+#define INDOOR_VERTICES_PER_SQUARE  (INDOOR_SUBDIV_P1) * (INDOOR_SUBDIV_P1)
 
 #include "indoortexturemesh.h"
 #include "../core/game.h"
@@ -81,34 +83,41 @@ void IndoorTextureSquare::defineAtY(Ogre::ManualObject* manualObject,
    Ogre::Real maxU = (topRight.x - bottomLeft.x) / textureDelta;
    Ogre::Real maxV = (topRight.z - bottomLeft.z) / textureDelta;
 
-   /* Define Vertices */
-   manualObject->position(bottomLeft);
-   manualObject->normal(normal);
-   manualObject->textureCoord(0.0f, 0.0f);
+   Ogre::Vector3 inc = (topRight - bottomLeft) / INDOOR_SUBDIVISIONS;
+   Ogre::Vector3 cur = bottomLeft;
+   Ogre::Vector2 incUv = Ogre::Vector2(maxU / INDOOR_SUBDIVISIONS,
+                                       maxV / INDOOR_SUBDIVISIONS);
+   Ogre::Vector2 uv = Ogre::Vector2(0.0f, 0.0f); 
 
-   manualObject->position(topRight.x, bottomLeft.y, bottomLeft.z);
-   manualObject->normal(normal);
-   manualObject->textureCoord(maxU, 0.0f);
-
-   manualObject->position(bottomLeft.x, bottomLeft.y, topRight.z);
-   manualObject->normal(normal);
-   manualObject->textureCoord(0.0f, maxV);
-
-   manualObject->position(topRight.x, bottomLeft.y, topRight.z);
-   manualObject->normal(normal);
-   manualObject->textureCoord(maxU, maxV);
-
-   /* Define Both Triangles */
-   if(normal.y > 0)
+   /* Let's declare all vertices */
+   for(int i = 0; i <= INDOOR_SUBDIVISIONS; i++)
    {
-      manualObject->triangle(curIndex + 2, curIndex + 1, curIndex);
-      manualObject->triangle(curIndex + 1, curIndex + 2, curIndex + 3);
+      if(i == INDOOR_SUBDIVISIONS)
+      {
+         cur.x = topRight.x;
+         uv.x = maxU;
+      }
+      uv.y = 0.0f;
+      cur.z = bottomLeft.z;
+      for(int j = 0; j <= INDOOR_SUBDIVISIONS; j++)
+      {
+         if(j == INDOOR_SUBDIVISIONS)
+         {
+            cur.z = topRight.z;
+            uv.y = maxV;
+         }
+         manualObject->position(cur);
+         manualObject->normal(normal);
+         manualObject->textureCoord(uv);
+         
+         uv.y += incUv.y;
+         cur.z += inc.z;
+      }
+      cur.x += inc.x;
+      uv.x += incUv.x;
    }
-   else
-   {
-      manualObject->triangle(curIndex, curIndex + 1, curIndex + 2);
-      manualObject->triangle(curIndex + 3, curIndex + 2, curIndex + 1);
-   }
+
+   defineTriangles(manualObject, curIndex, normal.y);
 }
 
 /**************************************************************************
@@ -119,35 +128,43 @@ void IndoorTextureSquare::defineAtX(Ogre::ManualObject* manualObject,
 {
    Ogre::Real maxU = (topRight.z - bottomLeft.z) / textureDelta;
    Ogre::Real maxV = (topRight.y - bottomLeft.y) / textureDelta;
-   
-   /* Define Vertices */
-   manualObject->position(bottomLeft);
-   manualObject->normal(normal);
-   manualObject->textureCoord(0.0f, 0.0f);
 
-   manualObject->position(bottomLeft.x, topRight.y, bottomLeft.z);
-   manualObject->normal(normal);
-   manualObject->textureCoord(0.0f, maxV);
+   Ogre::Vector3 inc = (topRight - bottomLeft) / INDOOR_SUBDIVISIONS;
+   Ogre::Vector3 cur = bottomLeft;
+   Ogre::Vector2 incUv = Ogre::Vector2(maxU / INDOOR_SUBDIVISIONS,
+                                       maxV / INDOOR_SUBDIVISIONS);
+   Ogre::Vector2 uv = Ogre::Vector2(0.0f, 0.0f); 
 
-   manualObject->position(bottomLeft.x, bottomLeft.y, topRight.z);
-   manualObject->normal(normal);
-   manualObject->textureCoord(maxU, 0.0f);
-
-   manualObject->position(bottomLeft.x, topRight.y, topRight.z);
-   manualObject->normal(normal);
-   manualObject->textureCoord(maxU, maxV);
-
-   /* Define Both Triangles */
-   if(normal.x < 0)
+   /* Let's declare all vertices */
+   for(int i = 0; i <= INDOOR_SUBDIVISIONS; i++)
    {
-      manualObject->triangle(curIndex + 2, curIndex + 1, curIndex);
-      manualObject->triangle(curIndex + 1, curIndex + 2, curIndex + 3);
-   } 
-   else
-   {
-      manualObject->triangle(curIndex, curIndex + 1, curIndex + 2);
-      manualObject->triangle(curIndex + 3, curIndex + 2, curIndex + 1);
+      if(i == INDOOR_SUBDIVISIONS)
+      {
+         cur.z = topRight.z;
+         uv.x = maxU;
+      }
+      uv.y = 0.0f;
+      cur.y = bottomLeft.y;
+
+      for(int j = 0; j <= INDOOR_SUBDIVISIONS; j++)
+      {
+         if(j == INDOOR_SUBDIVISIONS)
+         {
+            cur.y = topRight.y;
+            uv.y = maxV;
+         }
+         manualObject->position(cur);
+         manualObject->normal(normal);
+         manualObject->textureCoord(uv);
+         
+         uv.y += incUv.y;
+         cur.y += inc.y;
+      }
+      cur.z += inc.z;
+      uv.x += incUv.x;
    }
+
+   defineTriangles(manualObject, curIndex, normal.x);
 }
 
 
@@ -160,36 +177,81 @@ void IndoorTextureSquare::defineAtZ(Ogre::ManualObject* manualObject,
    Ogre::Real maxU = (topRight.x - bottomLeft.x) / textureDelta;
    Ogre::Real maxV = (topRight.y - bottomLeft.y) / textureDelta;
 
-   /* Define Vertices */
-   manualObject->position(bottomLeft);
-   manualObject->normal(normal);
-   manualObject->textureCoord(0.0f, 0.0f);
+   Ogre::Vector3 inc = (topRight - bottomLeft) / INDOOR_SUBDIVISIONS;
+   Ogre::Vector3 cur = bottomLeft;
 
-   manualObject->position(topRight.x, bottomLeft.y, bottomLeft.z);
-   manualObject->normal(normal);
-   manualObject->textureCoord(maxU, 0.0f);
+   Ogre::Vector2 incUv = Ogre::Vector2(maxU / INDOOR_SUBDIVISIONS,
+                                       maxV / INDOOR_SUBDIVISIONS);
+   Ogre::Vector2 uv = Ogre::Vector2(0.0f, 0.0f); 
 
-   manualObject->position(bottomLeft.x, topRight.y, bottomLeft.z);
-   manualObject->normal(normal);
-   manualObject->textureCoord(0.0f, maxV);
-
-   manualObject->position(topRight.x, topRight.y, bottomLeft.z);
-   manualObject->normal(normal);
-   manualObject->textureCoord(maxU, maxV);
-
-   /* Define Both Triangles */
-   if(normal.z < 0)
+   /* Let's declare all vertices */
+   for(int i = 0; i <= INDOOR_SUBDIVISIONS; i++)
    {
-      manualObject->triangle(curIndex + 2, curIndex + 1, curIndex);
-      manualObject->triangle(curIndex + 1, curIndex + 2, curIndex + 3);
+      if(i == INDOOR_SUBDIVISIONS)
+      {
+         cur.x = topRight.x;
+         uv.x = maxU;
+      }
+      uv.y = 0.0f;
+      cur.y = bottomLeft.y;
+
+      for(int j = 0; j <= INDOOR_SUBDIVISIONS; j++)
+      {
+         if(j == INDOOR_SUBDIVISIONS)
+         {
+            cur.y = topRight.y;
+            uv.y = maxV;
+         }
+         manualObject->position(cur);
+         manualObject->normal(normal);
+         manualObject->textureCoord(uv);
+         
+         uv.y += incUv.y;
+         cur.y += inc.y;
+      }
+      cur.x += inc.x;
+      uv.x += incUv.x;
    }
-   else
-   {
-      manualObject->triangle(curIndex, curIndex + 1, curIndex + 2);
-      manualObject->triangle(curIndex + 3, curIndex + 2, curIndex + 1);
-   }
+
+   /* Let's define its triangles */
+   defineTriangles(manualObject, curIndex, -normal.z);
 }
 
+/**************************************************************************
+ *                              defineTriangles                           *
+ **************************************************************************/
+void IndoorTextureSquare::defineTriangles(Ogre::ManualObject* manualObject,
+      int index, int nValue)
+{
+   int curIndex; 
+   for(int i = 0; i < INDOOR_SUBDIVISIONS; i++)
+   {
+      /* Define index of first element on row */
+      curIndex = index + ((INDOOR_SUBDIVISIONS + 1)  * i);
+
+      /* Let's define the 'row' */
+      for(int j = 0; j < INDOOR_SUBDIVISIONS; j++)
+      {
+         if(nValue < 0)
+         {
+            manualObject->triangle(curIndex + INDOOR_SUBDIVISIONS + 1, 
+                                   curIndex + 1, curIndex);
+            manualObject->triangle(curIndex + 1, 
+                                   curIndex + INDOOR_SUBDIVISIONS + 1, 
+                                   curIndex + INDOOR_SUBDIVISIONS + 2);
+         }
+         else
+         {
+            manualObject->triangle(curIndex, curIndex + 1, 
+                                   curIndex + INDOOR_SUBDIVISIONS + 1);
+            manualObject->triangle(curIndex + INDOOR_SUBDIVISIONS + 2, 
+                                   curIndex + INDOOR_SUBDIVISIONS + 1, 
+                                   curIndex + 1);
+         }
+         curIndex += 1;
+      }
+   }
+}
 
 
 /**************************************************************************
@@ -271,7 +333,7 @@ void IndoorTextureMesh::updateManualObject(Ogre::String baseName)
          for(int i = 0; i < getTotal(); i++)
          {
             square->define(manualObject, curVertIndex);
-            curVertIndex += 4;
+            curVertIndex += INDOOR_VERTICES_PER_SQUARE;
 
             /* Done, let's check next square */
             square = static_cast<IndoorTextureSquare*>(square->getNext());
@@ -371,26 +433,29 @@ bool IndoorTextureMeshes::hasTextureMesh(Ogre::String materialName)
  **************************************************************************/
 void IndoorTextureMeshes::updateAllDirty()
 {
-   deleteSceneNode();
-
-   IndoorTextureMesh* mesh = static_cast<IndoorTextureMesh*>(getFirst());
-   for(int i = 0; i < getTotal(); i++)
+   //FIXME: top wall!
+   if(getTotal() > 1)
    {
-      mesh->updateManualObject(baseName);
-      mesh = static_cast<IndoorTextureMesh*>(mesh->getNext());
+      deleteSceneNode();
+
+      IndoorTextureMesh* mesh = static_cast<IndoorTextureMesh*>(getFirst());
+      for(int i = 0; i < getTotal(); i++)
+      {
+         mesh->updateManualObject(baseName);
+         mesh = static_cast<IndoorTextureMesh*>(mesh->getNext());
+      }
+
+      /* Define mesh */
+      ogreMesh = manualObject->convertToMesh(baseName);
+      entity = Game::getSceneManager()->createEntity(ogreMesh);
+      entity->setCastShadows(castShadows);
+
+      /* Create the scene node and attach to the scene with manual object */
+      sceneNode = 
+         Game::getSceneManager()->getRootSceneNode()->createChildSceneNode();
+      sceneNode->attachObject(entity);
+      sceneNode->setPosition(0.0f, 0.0f, 0.0f);
    }
-
-   /* Define mesh */
-   ogreMesh = manualObject->convertToMesh(baseName);
-   entity = Game::getSceneManager()->createEntity(ogreMesh);
-   entity->setCastShadows(castShadows);
-
-   /* Create the scene node and attach to the scene with manual object */
-   sceneNode = 
-      Game::getSceneManager()->getRootSceneNode()->createChildSceneNode();
-   sceneNode->attachObject(entity);
-   sceneNode->setPosition(0.0f, 0.0f, 0.0f);
-
 }
 
 

@@ -75,6 +75,8 @@ class IndoorTextureSquare : public Kobold::ListElement
                      Ogre::Real textureDelta);
       void defineAtZ(Ogre::ManualObject* manualObject, int curIndex,
                      Ogre::Real textureDelta);
+      void defineTriangles(Ogre::ManualObject* manualObject, int index,
+            int nValue);
 
       Ogre::Vector3 bottomLeft; /**< Bottom Left Corner */
       Ogre::Vector3 topRight;  /**< Top Right Corner */
