@@ -211,12 +211,13 @@ Ogre::Vector3 IndoorTextureSquare::getTopRightCorner()
 /**************************************************************************
  *                                 Constructor                            *
  **************************************************************************/
-IndoorTextureMesh::IndoorTextureMesh(Ogre::String materialName)
+IndoorTextureMesh::IndoorTextureMesh(Ogre::ManualObject* manualObject,
+      Ogre::String materialName, bool castShadows)
 {
    this->materialName = materialName;
-   this->manualObject = NULL;
-   this->sceneNode = NULL;
+   this->manualObject = manualObject;
    this->dirty = false;
+   this->castShadows = castShadows;
 }
 
 /**************************************************************************
@@ -225,7 +226,6 @@ IndoorTextureMesh::IndoorTextureMesh(Ogre::String materialName)
 
 IndoorTextureMesh::~IndoorTextureMesh()
 {
-   deleteSceneNode();
 }
 
 /**************************************************************************
@@ -249,41 +249,17 @@ void IndoorTextureMesh::addSquare(Ogre::Real x1, Ogre::Real y1, Ogre::Real z1,
 }
 
 /**************************************************************************
- *                               deleteSceneNode                          *
- **************************************************************************/
-void IndoorTextureMesh::deleteSceneNode()
-{
-   if(sceneNode != NULL)
-   {
-      /* Remove from scene and delete */
-      sceneNode->detachObject(entity);
-      Game::getSceneManager()->destroySceneNode(sceneNode);
-      Game::getSceneManager()->destroyEntity(entity);
-      Ogre::MeshManager::getSingleton().remove(ogreMesh->getName());
-      delete manualObject;
-
-      /* Nullify */
-      sceneNode = NULL;
-      manualObject = NULL;
-   }
-}
-
-/**************************************************************************
  *                             updateSceneNode                            *
  **************************************************************************/
 void IndoorTextureMesh::updateManualObject(Ogre::String baseName)
 {
    if(dirty)
    {
-      deleteSceneNode();
       dirty = false;
 
       /* Only create the manual object if have some square defined. */
       if(getTotal() > 0)
       {
-         /* Create the object */
-         manualObject = new Ogre::ManualObject(baseName + materialName);
-
          manualObject->begin(materialName, 
                Ogre::RenderOperation::OT_TRIANGLE_LIST);
 
@@ -302,16 +278,6 @@ void IndoorTextureMesh::updateManualObject(Ogre::String baseName)
          }
 
          manualObject->end();
-
-         /* Define mesh */
-         ogreMesh = manualObject->convertToMesh(baseName + materialName);
-         entity = Game::getSceneManager()->createEntity(ogreMesh);
-
-         /* Create the scene node and attach to the scene with manual object */
-         sceneNode = 
-            Game::getSceneManager()->getRootSceneNode()->createChildSceneNode();
-         sceneNode->attachObject(entity);
-         sceneNode->setPosition(0.0f, 0.0f, 0.0f);
       }
    }
 }
@@ -319,9 +285,15 @@ void IndoorTextureMesh::updateManualObject(Ogre::String baseName)
 /**************************************************************************
  *                                 Constructor                            *
  **************************************************************************/
-IndoorTextureMeshes::IndoorTextureMeshes(Ogre::String baseName)
+IndoorTextureMeshes::IndoorTextureMeshes(Ogre::String baseName, 
+      bool castShadows)
 {
+   this->manualObject = new Ogre::ManualObject(baseName);
+   this->sceneNode = NULL;
+   this->entity = NULL;
+
    this->baseName = baseName;
+   this->castShadows = castShadows;
 }
 
 /**************************************************************************
@@ -329,7 +301,31 @@ IndoorTextureMeshes::IndoorTextureMeshes(Ogre::String baseName)
  **************************************************************************/
 IndoorTextureMeshes::~IndoorTextureMeshes()
 {
+   deleteSceneNode();
+   if(manualObject)
+   {
+      delete manualObject;
+   }
 }
+
+/**************************************************************************
+ *                                deleteObjects                           *
+ **************************************************************************/
+void IndoorTextureMeshes::deleteSceneNode()
+{
+   if(sceneNode != NULL)
+   {
+      /* Remove from scene and delete */
+      sceneNode->detachObject(entity);
+      Game::getSceneManager()->destroySceneNode(sceneNode);
+      Game::getSceneManager()->destroyEntity(entity);
+      Ogre::MeshManager::getSingleton().remove(ogreMesh->getName());
+
+      /* Nullify */
+      sceneNode = NULL;
+   }
+}
+
 
 /**************************************************************************
  *                              createTextureMesh                         *
@@ -337,7 +333,8 @@ IndoorTextureMeshes::~IndoorTextureMeshes()
 IndoorTextureMesh* IndoorTextureMeshes::createTextureMesh(
       Ogre::String materialName)
 {
-   IndoorTextureMesh* mesh = new IndoorTextureMesh(materialName);
+   IndoorTextureMesh* mesh = new IndoorTextureMesh(manualObject, 
+         materialName, castShadows);
    insert(mesh);
    return mesh;
 }
@@ -374,12 +371,26 @@ bool IndoorTextureMeshes::hasTextureMesh(Ogre::String materialName)
  **************************************************************************/
 void IndoorTextureMeshes::updateAllDirty()
 {
+   deleteSceneNode();
+
    IndoorTextureMesh* mesh = static_cast<IndoorTextureMesh*>(getFirst());
    for(int i = 0; i < getTotal(); i++)
    {
       mesh->updateManualObject(baseName);
       mesh = static_cast<IndoorTextureMesh*>(mesh->getNext());
    }
+
+   /* Define mesh */
+   ogreMesh = manualObject->convertToMesh(baseName);
+   entity = Game::getSceneManager()->createEntity(ogreMesh);
+   entity->setCastShadows(castShadows);
+
+   /* Create the scene node and attach to the scene with manual object */
+   sceneNode = 
+      Game::getSceneManager()->getRootSceneNode()->createChildSceneNode();
+   sceneNode->attachObject(entity);
+   sceneNode->setPosition(0.0f, 0.0f, 0.0f);
+
 }
 
 

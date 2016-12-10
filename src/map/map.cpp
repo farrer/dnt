@@ -69,6 +69,7 @@ using namespace DNT;
 
 #define MAP_VALUE_LIGHT_POINT           "point"
 #define MAP_VALUE_LIGHT_SPOTLIGHT       "spot"
+#define MAP_VALUE_LIGHT_DIRECTIONAL     "directional"
 
 #define MAP_TOKEN_INITIAL               "initial"
 
@@ -78,8 +79,8 @@ using namespace DNT;
  *                                Constructor                             *
  **************************************************************************/
 Map::Map()
-    :floor("wall"),
-     walls("floor")
+    :floor("floor", false),
+     walls("wall", true)
 {
    this->filename = "";
    this->xSize = 0;
@@ -390,7 +391,10 @@ bool Map::load(Ogre::String mapFileName)
          {
             lastLight = lights->createLightInfo(Ogre::Light::LT_SPOTLIGHT);
          }
-         //TODO: directional!
+         else if(value == MAP_VALUE_LIGHT_DIRECTIONAL)
+         {
+            lastLight = lights->createLightInfo(Ogre::Light::LT_DIRECTIONAL);
+         }
       }
       else if(key == MAP_TOKEN_LIGHT_POS)
       {

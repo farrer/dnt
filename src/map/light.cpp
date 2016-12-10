@@ -32,6 +32,8 @@ using namespace DNT;
 LightInfo::LightInfo(Ogre::Light::LightTypes type)
 {
    this->type = type;
+   this->direction = Ogre::Vector3(0.0f, -1.0f, 0.0f);
+   this->outerAngle = 80.0f;
 }
 
 /**************************************************************************

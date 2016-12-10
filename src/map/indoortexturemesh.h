@@ -87,8 +87,11 @@ class IndoorTextureMesh : public Kobold::List, public Kobold::ListElement
 {
    public:
       /*! Constructor.
-       * \param materialName material to use for the mesh itself. */
-      IndoorTextureMesh(Ogre::String materialName);
+       * \param manualObject pointer to the manual object to use.
+       * \param materialName material to use for the submesh.
+       * \param castShadows if cast shadows or not. */
+      IndoorTextureMesh(Ogre::ManualObject* manualObject,
+            Ogre::String materialName, bool castShadows);
       /*! Destructor */
       ~IndoorTextureMesh();
 
@@ -105,22 +108,19 @@ class IndoorTextureMesh : public Kobold::List, public Kobold::ListElement
 
    private:
 
-      void deleteSceneNode();
-
       Ogre::String materialName; /**< Material to use for the mesh. */
       bool dirty; /**< If the vertices list was modified and the manual object
                        must be recreated. */
+      bool castShadows; /**< If cast shadows or not */
       Ogre::ManualObject* manualObject; /**< Manual Object for the mesh. */
-      Ogre::MeshPtr ogreMesh; /**< Mesh related to the manual object. */
-      Ogre::Entity* entity; /**< Entity related to the manual object mesh. */
-      Ogre::SceneNode* sceneNode; /**< Scene node related to the mesh. */
+      
 };
 
 /*! A List of IndoorTextureMesh'es */
 class IndoorTextureMeshes : public Kobold::List
 {
    public:
-     IndoorTextureMeshes(Ogre::String baseName);
+     IndoorTextureMeshes(Ogre::String baseName, bool castShadows);
      ~IndoorTextureMeshes();
 
      IndoorTextureMesh* createTextureMesh(Ogre::String materialName);
@@ -133,7 +133,17 @@ class IndoorTextureMeshes : public Kobold::List
      void updateAllDirty();
 
    private:
-      Ogre::String baseName;
+
+      /*! Delete related SceneNode, if defined. */
+      void deleteSceneNode();
+
+      Ogre::String baseName;  /**< Basic name (usually 'wall' or 'floor') */
+      bool castShadows;       /**< If its mesh cast shadows or not */
+
+      Ogre::ManualObject* manualObject; /**< Manual Object for the mesh. */
+      Ogre::MeshPtr ogreMesh; /**< Mesh related to the manual object. */
+      Ogre::Entity* entity; /**< Entity related to the manual object mesh. */
+      Ogre::SceneNode* sceneNode; /**< Scene node related to the mesh. */
 };
 
 }
