@@ -39,18 +39,28 @@ namespace DNTMapEditor
           * \return true if should quit the editor. */
          bool checkEvents();
 
+         /*! \return if light is enabled or not */
+         bool isLightEnabled();
+
       private:
 
          void openLoadOrSaveWindow(bool loading);
 
          Farso::Button* fileButton;
-         
          Farso::Menu* fileMenu;
          Farso::Menu::MenuItem* menuItemNew;
          Farso::Menu::MenuItem* menuItemLoad;
          Farso::Menu::MenuItem* menuItemSave;
          Farso::Menu::MenuItem* menuItemSaveAs;
          Farso::Menu::MenuItem* menuItemExit;
+
+         Farso::Button* dialogsButton;
+         Farso::Menu* dialogsMenu;
+
+         Farso::Button* viewButton;
+         Farso::Menu* viewMenu;
+         Farso::Menu::MenuItem* menuItemToggleLight;
+         bool lightEnabled;
 
          Farso::Window* loadSaveWindow;
          Farso::FileSelector* loadSaveSelector;

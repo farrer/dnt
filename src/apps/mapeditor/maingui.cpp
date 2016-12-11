@@ -27,9 +27,13 @@ using namespace DNTMapEditor;
  ***********************************************************************/
 MainGui::MainGui()
 {
+   Farso::Container* cont = new Farso::Container(
+         Farso::Container::TYPE_TOP_LEFT,0, 0, 1024, 23, NULL);
+   cont->setFilled();
+   
    /* Create File button and its menu */
-   fileButton = new Farso::Button(0, 0, 80, 21, "File", NULL);
-   fileMenu = new Farso::Menu(80);
+   fileButton = new Farso::Button(1, 1, 80, 21, "File", cont);
+   fileMenu = new Farso::Menu(100);
    fileMenu->beginCreate();
    menuItemNew = fileMenu->insertItem("New");
    fileMenu->insertSeparator();
@@ -41,12 +45,41 @@ MainGui::MainGui()
    fileMenu->insertSeparator();
    menuItemExit = fileMenu->insertItem("Exit");
    fileMenu->endCreate();
+   fileButton->setMenu(fileMenu);
 
    /* Nullify Load/Save window things */
    loadSaveWindow = NULL;
    loadSaveSelector = NULL;
 
-   fileButton->setMenu(fileMenu);
+   /* Create view button and menu */
+   viewButton = new Farso::Button(81, 1, 80, 21, "View", cont);
+   viewMenu = new Farso::Menu();
+   viewMenu->beginCreate();
+   menuItemToggleLight = viewMenu->insertItem("Disable light");
+   lightEnabled = true;
+   viewMenu->insertSeparator();
+   viewMenu->insertItem("Show connections");
+   viewMenu->endCreate();
+   viewButton->setMenu(viewMenu);
+
+   /* Create dialogs button and menu */
+   dialogsButton = new Farso::Button(161, 1, 80, 21, "Dialogs", cont);
+   dialogsMenu = new Farso::Menu(120);
+   dialogsMenu->beginCreate();
+   dialogsMenu->insertItem("Lights");
+   dialogsMenu->insertSeparator();
+   dialogsMenu->insertItem("Terrain");
+   dialogsMenu->insertItem("Wall");
+   dialogsMenu->insertItem("Tile Wall");
+   dialogsMenu->insertSeparator();
+   dialogsMenu->insertItem("Objects");
+   dialogsMenu->insertItem("Characters");
+   dialogsMenu->insertSeparator();
+   dialogsMenu->insertItem("Portal");
+   dialogsMenu->insertSeparator();
+   dialogsMenu->insertItem("Particles");
+   dialogsMenu->endCreate();
+   dialogsButton->setMenu(dialogsMenu);
 }
 
 /***********************************************************************
@@ -83,17 +116,40 @@ void MainGui::openLoadOrSaveWindow(bool loading)
 bool MainGui::checkEvents()
 {
    Farso::Event event = Farso::Controller::getLastEvent();
-   if((event.getWidget() == fileMenu) && 
-      (event.getType() == Farso::EVENT_MENU_SELECTED)) 
+   if(event.getType() == Farso::EVENT_MENU_SELECTED)
    {
-      if(fileMenu->getCurrentItem() == menuItemExit)
+      if(event.getWidget() == fileMenu)
       {
-         /* Should quit */
-         return true;
+         if(fileMenu->getCurrentItem() == menuItemExit)
+         {
+            /* Should quit */
+            return true;
+         }
+         else if(fileMenu->getCurrentItem() == menuItemLoad)
+         {
+            openLoadOrSaveWindow(true);
+         }
       }
-      else if(fileMenu->getCurrentItem() == menuItemLoad)
+      else if(event.getWidget() == viewMenu)
       {
-         openLoadOrSaveWindow(true);
+         if(viewMenu->getCurrentItem() == menuItemToggleLight)
+         {
+            lightEnabled = !lightEnabled;
+            if(lightEnabled)
+            {
+               /* Enable light */
+               menuItemToggleLight->setCaption("Disable light");
+               DNT::Game::getSceneManager()->setAmbientLight(
+                     Ogre::ColourValue(0.1f, 0.1f, 0.1f));
+            }
+            else
+            {
+               /* Disable the lights */
+               menuItemToggleLight->setCaption("Enable light");
+               DNT::Game::getSceneManager()->setAmbientLight(
+                     Ogre::ColourValue(0.8f, 0.8f, 0.8f));
+            }
+         }
       }
    }
    else if(event.getWidget() == loadSaveSelector)
@@ -130,5 +186,12 @@ bool MainGui::checkEvents()
 
    /* Should not quit. */
    return false;
+}
+ 
+/***********************************************************************
+ *                           isLightEnabled                            *
+ ***********************************************************************/       bool MainGui::isLightEnabled()
+{
+   return lightEnabled;
 }
 

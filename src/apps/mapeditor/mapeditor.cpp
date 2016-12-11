@@ -85,8 +85,6 @@ Ogre::ShadowTechnique MapEditor::getShadowTechnique()
  ***********************************************************************/
 bool MapEditor::doInit()
 {
-   getSceneManager()->setAmbientLight(Ogre::ColourValue(0.1f, 0.1f, 0.1f));
-
    /* Init Farso */
    Farso::Controller::init(Farso::RENDERER_TYPE_OGRE3D, DEFAULT_WINDOW_WIDTH,
        DEFAULT_WINDOW_HEIGHT, 32, "", getSceneManager());
@@ -105,7 +103,6 @@ bool MapEditor::doInit()
    DNT::Classes::init();
 
    mainGui = new MainGui();
-
 
    /* Load a map to test. 
     * FIXME: remove from here when readded main editor window */
@@ -153,7 +150,7 @@ void MapEditor::doSendToForeground()
  ***********************************************************************/
 void MapEditor::doCycle()
 {
-   if(DNT::Game::getCurrentMap())
+   if((DNT::Game::getCurrentMap()) && (mainGui->isLightEnabled()))
    {
       DNT::Game::getCurrentMap()->update(floorMouse);
    }
