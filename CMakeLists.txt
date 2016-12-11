@@ -125,23 +125,23 @@ configure_file("./src/dntconfig.h.in" "./src/dntconfig.h")
 # Make Libraries
 add_library(dntlib ${DNT_LIB_SOURCES} ${DNT_LIB_HEADERS} )
 
+set(LIBRARIES ${FARSO_LIBRARY} ${GOBLIN_LIBRARY} ${KOSOUND_LIBRARY} 
+   ${KOBOLD_LIBRARY} ${OGRE_LIBRARIES} ${OGRE_RTShaderSystem_LIBRARIES}
+   ${OGRE_Overlay_LIBRARIES} ${OGRE_Terrain_LIBRARIES}
+   ${FREETYPE_LIBRARIES} ${SDL2_IMAGE_LIBRARY} ${SDL2_LIBRARY} 
+   ${OPENAL_LIBRARY} ${VORBISFILE_LIBRARY} ${VORBIS_LIBRARY}
+   ${OGG_LIBRARY} m ${OPENGL_LIBRARY} ${LIBINTL_LIBRARIES} pthread
+)
+
 # Make Binaries
 add_executable(dnt WIN32 ${DNT_SOURCES} ${DNT_HEADERS} )
-target_link_libraries(dnt dntlib ${FARSO_LIBRARY} 
-                          ${GOBLIN_LIBRARY} ${KOSOUND_LIBRARY} 
-                          ${KOBOLD_LIBRARY}
-                          ${OGRE_LIBRARIES} 
-                          ${OGRE_RTShaderSystem_LIBRARIES}
-                          ${OGRE_Overlay_LIBRARIES}
-                          ${OGRE_Terrain_LIBRARIES}
-                          ${FREETYPE_LIBRARIES}
-                          ${SDL2_IMAGE_LIBRARY} ${SDL2_LIBRARY} 
-                          ${OPENAL_LIBRARY} 
-                          ${VORBISFILE_LIBRARY} ${VORBIS_LIBRARY}
-                          ${OGG_LIBRARY} m
-                          ${OPENGL_LIBRARY}
-                          ${LIBINTL_LIBRARIES} pthread)
-                          
+target_link_libraries(dnt dntlib ${LIBRARIES})
+
+add_executable(dntMapEditor WIN32 ${DNT_MAP_EDITOR_SOURCES} 
+               ${DNT_MAP_EDITOR_HEADERS} )
+target_link_libraries(dntMapEditor dntlib ${LIBRARIES})
+
+
 # Create the .gmo files
 #IF(NOT WIN32 AND NOT MINGW)
   #include(GettextTranslate)
