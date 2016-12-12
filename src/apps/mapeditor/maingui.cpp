@@ -50,6 +50,10 @@ MainGui::MainGui()
    /* Nullify Load/Save window things */
    loadSaveWindow = NULL;
    loadSaveSelector = NULL;
+   newMapWindow = NULL;
+   spinNewMapSizeX = NULL;
+   spinNewMapSizeZ = NULL;
+   buttonNewMapCreate = NULL;
 
    /* Create view button and menu */
    viewButton = new Farso::Button(81, 1, 80, 21, "View", cont);
@@ -204,6 +208,37 @@ void MainGui::openLoadOrSaveWindow(bool loading)
 }
 
 /***********************************************************************
+ *                          openNewMapWindow                           *
+ ***********************************************************************/
+void MainGui::openNewMapWindow()
+{
+   /* Close it, if opened */
+   if(newMapWindow)
+   {
+      newMapWindow->close();
+   }
+   
+   /* Create it */
+   newMapWindow = new Farso::Window(154, 100, "New Map");
+   new Farso::Label(0, 1, 44, 21, "SizeX:", newMapWindow);
+   spinNewMapSizeX = new Farso::Spin(Farso::Spin::VALUE_TYPE_INTEGER, 45, 1,
+         newMapWindow);
+   spinNewMapSizeX->setValue(6);
+   spinNewMapSizeX->setRange(1, 20);
+   new Farso::Label(0, 23, 44, 21, "SizeZ:", newMapWindow);
+   spinNewMapSizeZ = new Farso::Spin(Farso::Spin::VALUE_TYPE_INTEGER, 45, 23,
+         newMapWindow);
+   spinNewMapSizeZ->setValue(6);
+   spinNewMapSizeZ->setRange(1, 20);
+   Farso::Container* cont = new Farso::Container(
+         Farso::Container::TYPE_BOTTOM_CENTERED, newMapWindow);
+   buttonNewMapCreate = new Farso::Button(0, 2, 100, 21, "Create", cont);
+   newMapWindow->setExternPointer(&newMapWindow);
+   newMapWindow->open();
+   newMapWindow->setPosition(0, 100);
+}
+
+/***********************************************************************
  *                            checkEvents                              *
  ***********************************************************************/
 bool MainGui::checkEvents()
@@ -215,13 +250,7 @@ bool MainGui::checkEvents()
       {
          if(fileMenu->getCurrentItem() == menuItemNewIndoor)
          {
-            /* Force deletion of any already loaded map */
-            DNT::Game::setCurrentMap(NULL);
-            /* Create a new map and set it to be the active one */
-            DNT::Map* map = new DNT::Map();
-            map->create(6, 6);
-            DNT::Game::setCurrentMap(map);
-            toggleMenuStatus();
+            openNewMapWindow();
          }
          if(fileMenu->getCurrentItem() == menuItemExit)
          {
@@ -240,6 +269,22 @@ bool MainGui::checkEvents()
             lightEnabled = !lightEnabled;
             setLight();
          }
+      }
+   }
+   else if(event.getType() == Farso::EVENT_BUTTON_RELEASE)
+   {
+      /* Check creation of a new map */
+      if(event.getWidget() == buttonNewMapCreate)
+      {
+         /* Force deletion of any already loaded map */
+         DNT::Game::setCurrentMap(NULL);
+         /* Create a new map and set it to be the active one */
+         DNT::Map* map = new DNT::Map();
+         map->create(spinNewMapSizeX->getIntValue(), 
+               spinNewMapSizeZ->getIntValue());
+         DNT::Game::setCurrentMap(map);
+         toggleMenuStatus();
+         newMapWindow->close();
       }
    }
    else if(event.getWidget() == loadSaveSelector)

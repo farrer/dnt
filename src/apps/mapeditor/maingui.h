@@ -45,9 +45,11 @@ namespace DNTMapEditor
       private:
 
          void openLoadOrSaveWindow(bool loading);
+         void openNewMapWindow();
          void toggleMenuStatus();
          void setLight();
 
+         /* File button and Menu */
          Farso::Button* fileButton;
          Farso::Menu* fileMenu;
          Farso::Menu::MenuItem* menuItemNewIndoor;
@@ -57,6 +59,7 @@ namespace DNTMapEditor
          Farso::Menu::MenuItem* menuItemSaveAs;
          Farso::Menu::MenuItem* menuItemExit;
 
+         /* Dialogs button and Menu */
          Farso::Button* dialogsButton;
          Farso::Menu* dialogsMenu;
          Farso::Menu::MenuItem* menuItemLights;
@@ -69,19 +72,29 @@ namespace DNTMapEditor
          Farso::Menu::MenuItem* menuItemPortal;
          Farso::Menu::MenuItem* menuItemParticles;
 
+         /* View button and Menu */
          Farso::Button* viewButton;
          Farso::Menu* viewMenu;
          Farso::Menu::MenuItem* menuItemToggleLight;
          bool lightEnabled;
          Farso::Menu::MenuItem* menuItemShowConnections;
 
+         /* Map button and Menu */
          Farso::Button* mapButton;
          Farso::Menu* mapMenu;
          Farso::Menu::MenuItem* menuItemMusic;
          Farso::Menu::MenuItem* menuItemMetadata;
 
+         /* Load / Save window widgets */
          Farso::Window* loadSaveWindow;
          Farso::FileSelector* loadSaveSelector;
+
+         /* New Map Window widgets */
+         Farso::Window* newMapWindow;
+         Farso::Spin* spinNewMapSizeX;
+         Farso::Spin* spinNewMapSizeZ;
+         Farso::Button* buttonNewMapCreate;
+
    };
 
 
