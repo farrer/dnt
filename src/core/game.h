@@ -41,9 +41,11 @@ namespace DNT
          /*! Load a map and set it the current one. 
           * \note if travelling through maps, use #travelToMap instead. 
           * \param filename map file to load.
+          * \param fullPath if filename is defined with full path or as
+          *        an inner file.
           * \param setPCsPositions set or not PCs at initial map position.
           * \return loaded Map pointer (NULL if fail to load). */
-         static Map* loadMap(Kobold::String filename, 
+         static Map* loadMap(Kobold::String filename, bool fullPath=false, 
                bool setPCsPositions=true);
 
          /*! \return current loaded map */

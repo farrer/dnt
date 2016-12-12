@@ -163,7 +163,7 @@ void Map::create(int sizeX, int sizeZ)
 /**************************************************************************
  *                                 load                                   *
  **************************************************************************/
-bool Map::load(Ogre::String mapFileName)
+bool Map::load(Ogre::String mapFileName, bool fullPath)
 {
    Kobold::DefParser parser;
    Ogre::String key, value;
@@ -171,7 +171,7 @@ bool Map::load(Ogre::String mapFileName)
 
    this->filename = mapFileName;
 
-   if(!parser.load(mapFileName))
+   if(!parser.load(mapFileName, fullPath))
    {
       return false;
    }

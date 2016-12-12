@@ -47,8 +47,9 @@ class Map
 
       /*! Open a map to use. 
        * \param mapFileName name of the map file to load.
+       * \param fullPath if mapFileName is defined as full path or inner file.
        * \return if load was successfull or not. */
-      bool load(Kobold::String mapFileName);
+      bool load(Kobold::String mapFileName, bool fullPath);
 
       /*! \return map's filename
        * \note only valid after load. */

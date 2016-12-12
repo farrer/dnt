@@ -80,7 +80,7 @@ void Game::setCurrentMap(Map* map)
 /************************************************************************
  *                               loadMap                                *
  ************************************************************************/
-Map* Game::loadMap(Kobold::String filename, bool setPCsPositions)
+Map* Game::loadMap(Kobold::String filename, bool fullPath, bool setPCsPositions)
 {
    /* Must freed any loaded map */
    if(currentMap)
@@ -91,7 +91,7 @@ Map* Game::loadMap(Kobold::String filename, bool setPCsPositions)
 
    /* Create and try to load map */
    Map* map = new DNT::Map();
-   if(!map->load(filename))
+   if(!map->load(filename, fullPath))
    {
       Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
          "Error: couldn't load map '%s'", filename.c_str());

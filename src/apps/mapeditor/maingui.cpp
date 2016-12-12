@@ -294,7 +294,7 @@ bool MainGui::checkEvents()
          if(loadSaveSelector->isLoadType())
          {
             /* Must load the map */
-            if(!DNT::Game::loadMap("tyrol/house1.map"))
+            if(!DNT::Game::loadMap(loadSaveSelector->getFilename(), true))
             {
                /* TODO: Show error! */
                //TODO: delete map!
