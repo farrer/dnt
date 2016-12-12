@@ -138,6 +138,52 @@ material wood1
    }
 }
 
+material wood8
+{
+   technique
+   {
+      pass
+      {
+         ambient 0.500000 0.500000 0.500000 1.000000
+         diffuse 0.640000 0.640000 0.640000 1.000000
+         specular 0.500000 0.500000 0.500000 1.000000 12.500000
+         emissive 0.0 0.0 0.0 1.000000
+         texture_unit
+         {
+            texture indoor/wood8.png
+            tex_address_mode wrap
+            filtering trilinear
+         }
+         rtshader_system
+         {
+         }
+      }
+   }
+}
+
+material oldwood1
+{
+   technique
+   {
+      pass
+      {
+         ambient 0.500000 0.500000 0.500000 1.000000
+         diffuse 0.640000 0.640000 0.640000 1.000000
+         specular 0.500000 0.500000 0.500000 1.000000 12.500000
+         emissive 0.0 0.0 0.0 1.000000
+         texture_unit
+         {
+            texture indoor/oldwood1.png
+            tex_address_mode wrap
+            filtering trilinear
+         }
+         rtshader_system
+         {
+         }
+      }
+   }
+}
+
 material plaster3c
 {
    technique

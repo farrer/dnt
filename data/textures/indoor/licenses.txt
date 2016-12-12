@@ -14,7 +14,7 @@ OpenFrag and Lemog3D CC-BY Textures
 
 burl.png, corrosive.png, gold.png, gold2.png, mosaic1.png, mosaic2.png,
 steel2.png, steel3.png, stonetile.png, wood.png, wood3.png, wood6.png, 
-wood7.png oldwood1.png oldwood2.png oldwood3.png
+wood7.png wood8.png oldwood1.png oldwood2.png oldwood3.png
 
 ===========================================================================
 
