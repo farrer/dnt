@@ -63,7 +63,9 @@ before_install:
    - cd build
    - cmake .. 
    - make -j5
-   - sudo make install
+   - make install
+   - sudo cp -r ogredeps/include/* /usr/local/include/
+   - sudo cp -r ogredeps/lib/* /usr/local/lib/
    - cd ../../
 
    # Ogre3d
