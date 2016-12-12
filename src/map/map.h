@@ -40,6 +40,11 @@ class Map
       /*! Destructor */
       ~Map();
 
+      /*! Create a new (and empty) map to use.
+       * \param sizeX x dimension
+       * \param sizeZ z dimension */
+      void create(int sizeX, int sizeZ);
+
       /*! Open a map to use. 
        * \param mapFileName name of the map file to load.
        * \return if load was successfull or not. */

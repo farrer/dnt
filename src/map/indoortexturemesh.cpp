@@ -350,7 +350,7 @@ void IndoorTextureMesh::updateManualObject(Ogre::String baseName)
 IndoorTextureMeshes::IndoorTextureMeshes(Ogre::String baseName, 
       bool castShadows)
 {
-   this->manualObject = new Ogre::ManualObject(baseName);
+   this->manualObject = Game::getSceneManager()->createManualObject(baseName);
    this->sceneNode = NULL;
    this->entity = NULL;
 
@@ -363,11 +363,8 @@ IndoorTextureMeshes::IndoorTextureMeshes(Ogre::String baseName,
  **************************************************************************/
 IndoorTextureMeshes::~IndoorTextureMeshes()
 {
+   Game::getSceneManager()->destroyManualObject(manualObject);
    deleteSceneNode();
-   if(manualObject)
-   {
-      delete manualObject;
-   }
 }
 
 /**************************************************************************
@@ -433,8 +430,7 @@ bool IndoorTextureMeshes::hasTextureMesh(Ogre::String materialName)
  **************************************************************************/
 void IndoorTextureMeshes::updateAllDirty()
 {
-   //FIXME: top wall!
-   if(getTotal() > 1)
+   if(getTotal() > 0)
    {
       deleteSceneNode();
 

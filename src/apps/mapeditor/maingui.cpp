@@ -36,11 +36,12 @@ MainGui::MainGui()
    fileButton = new Farso::Button(1, 1, 80, 21, "File", cont);
    fileMenu = new Farso::Menu(100);
    fileMenu->beginCreate();
-   menuItemNew = fileMenu->insertItem("New");
+   menuItemNewIndoor = fileMenu->insertItem("New Indoor Map...");
+   menuItemNewOutdoor = fileMenu->insertItem("New Outdoor Map...");
    fileMenu->insertSeparator();
-   menuItemLoad = fileMenu->insertItem("Load");
+   menuItemLoad = fileMenu->insertItem("Load...");
    menuItemSave = fileMenu->insertItem("Save");
-   menuItemSaveAs = fileMenu->insertItem("Save as");
+   menuItemSaveAs = fileMenu->insertItem("Save as...");
    fileMenu->insertSeparator();
    menuItemExit = fileMenu->insertItem("Exit");
    fileMenu->endCreate();
@@ -108,7 +109,8 @@ MainGui::~MainGui()
  ***********************************************************************/
 void MainGui::toggleMenuStatus()
 {
-   menuItemNew->enable();
+   menuItemNewIndoor->enable();
+   menuItemNewOutdoor->enable();
    menuItemLoad->enable();
    menuItemExit->enable();
 
@@ -211,6 +213,16 @@ bool MainGui::checkEvents()
    {
       if(event.getWidget() == fileMenu)
       {
+         if(fileMenu->getCurrentItem() == menuItemNewIndoor)
+         {
+            /* Force deletion of any already loaded map */
+            DNT::Game::setCurrentMap(NULL);
+            /* Create a new map and set it to be the active one */
+            DNT::Map* map = new DNT::Map();
+            map->create(6, 6);
+            DNT::Game::setCurrentMap(map);
+            toggleMenuStatus();
+         }
          if(fileMenu->getCurrentItem() == menuItemExit)
          {
             /* Should quit */

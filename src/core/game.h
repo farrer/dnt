@@ -49,6 +49,10 @@ namespace DNT
          /*! \return current loaded map */
          static Map* getCurrentMap();
 
+         /*! Hard set current map.
+          * \note used only for MapEditor */
+         static void setCurrentMap(Map* map);
+
          /*! \return current NonPolayableCharacters list */
          static CharacterList* getNpcs();
  

@@ -130,7 +130,38 @@ Kobold::String Map::getFilename()
 }
 
 /**************************************************************************
- *                                    load                                *
+ *                                create                                  *
+ **************************************************************************/
+void Map::create(int sizeX, int sizeZ)
+{
+   /* Define its size */
+   xSize = sizeX;
+   zSize = sizeZ;
+
+   /* Define the upper wall texture */
+   //walls.createTextureMesh(MAP_UPPER_WALL_MATERIAL);
+
+   /* Create the mesh for default texture */
+   IndoorTextureMesh* mesh = floor.createTextureMesh("concrete6");
+   for(int squareZ = 0; squareZ < sizeZ; squareZ++)
+   {
+      for(int squareX = 0; squareX < sizeX; squareX++)
+      {
+         mesh->addSquare(squareX * MAP_SQUARE_SIZE, 0.0f, 
+                         squareZ * MAP_SQUARE_SIZE, 
+                         (squareX + 1) * MAP_SQUARE_SIZE, 0.0f,
+                         (squareZ + 1) * MAP_SQUARE_SIZE,
+                         0.0f, 1.0f, 0.0f);
+      }
+   }
+   floor.updateAllDirty();
+   walls.updateAllDirty();
+   lights->setActiveLight(0.0f, 0.0f);
+
+}
+
+/**************************************************************************
+ *                                 load                                   *
  **************************************************************************/
 bool Map::load(Ogre::String mapFileName)
 {

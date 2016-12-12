@@ -105,8 +105,11 @@ bool MapEditor::doInit()
    /* Init the Game controller */
    DNT::Game::init(ogreSceneManager);
 
-   /* Crete Map Editor's GUI */
+   /* Create Map Editor's GUI */
    mainGui = new MainGui();
+
+   /* Set camera initial position */
+   Goblin::Camera::set(200.0f, 30.0f, 120.0f, 0.0f, 89.0f, 410.0f);
 
    return true;
 }

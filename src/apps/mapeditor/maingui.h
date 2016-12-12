@@ -50,7 +50,8 @@ namespace DNTMapEditor
 
          Farso::Button* fileButton;
          Farso::Menu* fileMenu;
-         Farso::Menu::MenuItem* menuItemNew;
+         Farso::Menu::MenuItem* menuItemNewIndoor;
+         Farso::Menu::MenuItem* menuItemNewOutdoor;
          Farso::Menu::MenuItem* menuItemLoad;
          Farso::Menu::MenuItem* menuItemSave;
          Farso::Menu::MenuItem* menuItemSaveAs;

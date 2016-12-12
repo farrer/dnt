@@ -66,6 +66,18 @@ void Game::finish()
 }
 
 /************************************************************************
+ *                           setCurrentMap                              *
+ ************************************************************************/
+void Game::setCurrentMap(Map* map)
+{
+   if(currentMap)
+   {
+      delete currentMap;
+   }
+   currentMap = map;
+}
+
+/************************************************************************
  *                               loadMap                                *
  ************************************************************************/
 Map* Game::loadMap(Kobold::String filename, bool setPCsPositions)
