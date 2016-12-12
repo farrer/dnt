@@ -45,6 +45,8 @@ namespace DNTMapEditor
       private:
 
          void openLoadOrSaveWindow(bool loading);
+         void toggleMenuStatus();
+         void setLight();
 
          Farso::Button* fileButton;
          Farso::Menu* fileMenu;
@@ -56,11 +58,26 @@ namespace DNTMapEditor
 
          Farso::Button* dialogsButton;
          Farso::Menu* dialogsMenu;
+         Farso::Menu::MenuItem* menuItemLights;
+         Farso::Menu::MenuItem* menuItemSounds;
+         Farso::Menu::MenuItem* menuItemTerrain;
+         Farso::Menu::MenuItem* menuItemWall;
+         Farso::Menu::MenuItem* menuItemTileWall;
+         Farso::Menu::MenuItem* menuItemObjects;
+         Farso::Menu::MenuItem* menuItemCharacters;
+         Farso::Menu::MenuItem* menuItemPortal;
+         Farso::Menu::MenuItem* menuItemParticles;
 
          Farso::Button* viewButton;
          Farso::Menu* viewMenu;
          Farso::Menu::MenuItem* menuItemToggleLight;
          bool lightEnabled;
+         Farso::Menu::MenuItem* menuItemShowConnections;
+
+         Farso::Button* mapButton;
+         Farso::Menu* mapMenu;
+         Farso::Menu::MenuItem* menuItemMusic;
+         Farso::Menu::MenuItem* menuItemMetadata;
 
          Farso::Window* loadSaveWindow;
          Farso::FileSelector* loadSaveSelector;

@@ -102,11 +102,11 @@ bool MapEditor::doInit()
    DNT::Races::init();
    DNT::Classes::init();
 
-   mainGui = new MainGui();
-
-   /* Load a map to test. 
-    * FIXME: remove from here when readded main editor window */
+   /* Init the Game controller */
    DNT::Game::init(ogreSceneManager);
+
+   /* Crete Map Editor's GUI */
+   mainGui = new MainGui();
 
    return true;
 }

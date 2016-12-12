@@ -1,6 +1,6 @@
 # Moderna skin definition file
 atlas = skins/moderna.png
-defaultFont = LiberationSerif-Regular.ttf
+defaultFont = fonts/LiberationSerif-Regular.ttf
 defaultFontSize = 10
 defaultFontColor = 255,255,255,255
 
@@ -29,7 +29,7 @@ element = window
       topLeftCorner = 138,208,207,251
       topRightCorner = 232,208,300,251
       textAreaDelta = 38,8,38,4
-      textFont = LiberationSerif-Bold.ttf
+      textFont = fonts/LiberationSerif-Bold.ttf
       textFontSize = 12
       textAlignment = 1 
 
@@ -41,7 +41,7 @@ element = window
       topLeftCorner = 138,156,207,199
       topRightCorner = 232,156,300,199
       textAreaDelta = 38,8,38,4
-      textFont = LiberationSerif-Bold.ttf
+      textFont = fonts/LiberationSerif-Bold.ttf
       textFontSize = 12
       textFontColor = 200,200,200,255
       textAlignment = 1 
@@ -103,6 +103,9 @@ element = buttonDisabled
 element = label
    textAreaDelta = 0,0,0,0
    textFontColor = 255,255,255,255
+element = labelDisabled
+   textAreaDelta = 0,0,0,0
+   textFontColor = 120,120,120,255
 element = fileLabel
    textAreaDelta = 0,0,0,0
    textFontColor = 255,255,255,255

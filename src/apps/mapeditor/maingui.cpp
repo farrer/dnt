@@ -20,6 +20,7 @@
 
 #include "maingui.h"
 #include "../../core/game.h"
+#include "../../map/map.h"
 using namespace DNTMapEditor;
 
 /***********************************************************************
@@ -39,9 +40,7 @@ MainGui::MainGui()
    fileMenu->insertSeparator();
    menuItemLoad = fileMenu->insertItem("Load");
    menuItemSave = fileMenu->insertItem("Save");
-   menuItemSave->disable();
    menuItemSaveAs = fileMenu->insertItem("Save as");
-   menuItemSaveAs->disable();
    fileMenu->insertSeparator();
    menuItemExit = fileMenu->insertItem("Exit");
    fileMenu->endCreate();
@@ -58,7 +57,7 @@ MainGui::MainGui()
    menuItemToggleLight = viewMenu->insertItem("Disable light");
    lightEnabled = true;
    viewMenu->insertSeparator();
-   viewMenu->insertItem("Show connections");
+   menuItemShowConnections = viewMenu->insertItem("Show connections");
    viewMenu->endCreate();
    viewButton->setMenu(viewMenu);
 
@@ -66,20 +65,34 @@ MainGui::MainGui()
    dialogsButton = new Farso::Button(161, 1, 80, 21, "Dialogs", cont);
    dialogsMenu = new Farso::Menu(120);
    dialogsMenu->beginCreate();
-   dialogsMenu->insertItem("Lights");
+   menuItemLights = dialogsMenu->insertItem("Lights");
+   menuItemSounds = dialogsMenu->insertItem("Sounds");
    dialogsMenu->insertSeparator();
-   dialogsMenu->insertItem("Terrain");
-   dialogsMenu->insertItem("Wall");
-   dialogsMenu->insertItem("Tile Wall");
+   menuItemTerrain = dialogsMenu->insertItem("Terrain");
+   menuItemWall = dialogsMenu->insertItem("Wall");
+   menuItemTileWall = dialogsMenu->insertItem("Tile Wall");
    dialogsMenu->insertSeparator();
-   dialogsMenu->insertItem("Objects");
-   dialogsMenu->insertItem("Characters");
+   menuItemObjects = dialogsMenu->insertItem("Objects");
+   menuItemCharacters = dialogsMenu->insertItem("Characters");
    dialogsMenu->insertSeparator();
-   dialogsMenu->insertItem("Portal");
+   menuItemPortal = dialogsMenu->insertItem("Portal");
    dialogsMenu->insertSeparator();
-   dialogsMenu->insertItem("Particles");
+   menuItemParticles = dialogsMenu->insertItem("Particles");
    dialogsMenu->endCreate();
    dialogsButton->setMenu(dialogsMenu);
+
+   /* Create map button and menu */
+   mapButton = new Farso::Button(241, 1, 80, 21, "Map", cont);
+   mapMenu = new Farso::Menu(100);
+   mapMenu->beginCreate();
+   menuItemMusic = mapMenu->insertItem("Music");
+   mapMenu->insertSeparator();
+   menuItemMetadata = mapMenu->insertItem("Metadata");
+   mapMenu->endCreate();
+   mapButton->setMenu(mapMenu);
+
+   toggleMenuStatus();
+   setLight();
 }
 
 /***********************************************************************
@@ -88,6 +101,84 @@ MainGui::MainGui()
 MainGui::~MainGui()
 {
    /* Farso::Controller::finish will delete our widgets for us. */
+}
+
+/***********************************************************************
+ *                          toggleMenuStatus                           *
+ ***********************************************************************/
+void MainGui::toggleMenuStatus()
+{
+   menuItemNew->enable();
+   menuItemLoad->enable();
+   menuItemExit->enable();
+
+   if(DNT::Game::getCurrentMap())
+   {
+      /* Direct-save only enabled when with filename defined. */
+      if(DNT::Game::getCurrentMap()->getFilename().empty())
+      {
+         menuItemSave->disable();
+      }
+      else
+      {
+         menuItemSave->enable();
+      }
+      menuItemSaveAs->enable();
+      menuItemLights->enable();
+      menuItemSounds->enable();
+      menuItemTerrain->enable();
+      menuItemWall->enable();
+      menuItemTileWall->enable();
+      menuItemObjects->enable();
+      menuItemCharacters->enable();
+      menuItemPortal->enable();
+      menuItemParticles->enable();
+
+      menuItemToggleLight->enable();
+      menuItemShowConnections->enable();
+
+      menuItemMusic->enable();
+      menuItemMetadata->enable();
+   }
+   else
+   {
+      menuItemSave->disable();
+      menuItemSaveAs->disable();
+      menuItemLights->disable();
+      menuItemSounds->disable();
+      menuItemTerrain->disable();
+      menuItemWall->disable();
+      menuItemTileWall->disable();
+      menuItemObjects->disable();
+      menuItemCharacters->disable();
+      menuItemPortal->disable();
+      menuItemParticles->disable();
+      menuItemToggleLight->disable();
+      menuItemShowConnections->disable();
+      menuItemMusic->disable();
+      menuItemMetadata->disable();
+   }
+}
+
+/***********************************************************************
+ *                               setLight                              *
+ ***********************************************************************/
+void MainGui::setLight()
+{
+   if(lightEnabled)
+   {
+      /* Enable light */
+      menuItemToggleLight->setCaption("Disable light");
+      DNT::Game::getSceneManager()->setAmbientLight(
+            Ogre::ColourValue(0.1f, 0.1f, 0.1f));
+   }
+   else
+   {
+      /* Disable the lights */
+      menuItemToggleLight->setCaption("Enable light");
+      DNT::Game::getSceneManager()->setAmbientLight(
+            Ogre::ColourValue(0.8f, 0.8f, 0.8f));
+   }
 }
 
 /***********************************************************************
@@ -135,20 +226,7 @@ bool MainGui::checkEvents()
          if(viewMenu->getCurrentItem() == menuItemToggleLight)
          {
             lightEnabled = !lightEnabled;
-            if(lightEnabled)
-            {
-               /* Enable light */
-               menuItemToggleLight->setCaption("Disable light");
-               DNT::Game::getSceneManager()->setAmbientLight(
-                     Ogre::ColourValue(0.1f, 0.1f, 0.1f));
-            }
-            else
-            {
-               /* Disable the lights */
-               menuItemToggleLight->setCaption("Enable light");
-               DNT::Game::getSceneManager()->setAmbientLight(
-                     Ogre::ColourValue(0.8f, 0.8f, 0.8f));
-            }
+            setLight();
          }
       }
    }
@@ -159,17 +237,12 @@ bool MainGui::checkEvents()
          if(loadSaveSelector->isLoadType())
          {
             /* Must load the map */
-            if(DNT::Game::loadMap("tyrol/house1.map"))
-            {
-               menuItemSave->enable();
-               menuItemSaveAs->enable();
-            }
-            else
+            if(!DNT::Game::loadMap("tyrol/house1.map"))
             {
                /* TODO: Show error! */
-               menuItemSave->disable();
-               menuItemSaveAs->disable();
+               //TODO: delete map!
             }
+            toggleMenuStatus();
          }
          else
          {
