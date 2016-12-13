@@ -89,7 +89,7 @@ bool MapEditor::doInit()
    Farso::Controller::init(Farso::RENDERER_TYPE_OGRE3D, DEFAULT_WINDOW_WIDTH,
        DEFAULT_WINDOW_HEIGHT, 32, "", getSceneManager());
    Farso::FontManager::setDefaultFont("LiberationSans-Regular.ttf");
-   //Farso::Controller::loadSkin("skins/moderna.skin");
+   Farso::Controller::loadSkin("skins/clean.skin");
    Farso::Controller::setCursor("cursor/sel.png");
 
    /* Init our widgets */

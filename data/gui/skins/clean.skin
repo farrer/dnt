@@ -1,0 +1,278 @@
+# Clean skin definition file
+atlas = skins/clean.png
+defaultFont = LiberationSerif-Regular.ttf
+defaultFontSize = 10
+defaultFontColor = 0,0,0,255
+
+# Window
+element = window
+   backgroundDelta = 4,19,4,4
+   background = 12,43,15,46
+
+   cornerDelta = 0,0,0,0
+   bottomRightCorner = 42,44,45,47
+   bottomLeftCorner = 4,44,7,47
+
+   leftBorderDelta = 0,19,0,4
+   leftBorder = 4,44,8,44
+   rightBorderDelta = 0,19,0,4
+   rightBorder = 41,44,45,44
+   bottomBorderDelta = 4,0,4,0
+   bottomBorder = 24,44,25,47
+
+   # Window Inactive Title bar
+   element = windowInactiveTitleBar
+      borderDelta = 7,0,7,0
+      topBorder = 23,22,26,40
+      cornerDelta = 0,0,0,0
+      topLeftCorner = 4,22,20,40
+      topRightCorner = 29,22,45,40
+      textAreaDelta = 0,0,0,0
+      textFont = LiberationSerif-Bold.ttf
+      textFontColor = 200,200,200,255
+      textAlignment = 1 
+
+   # Window Active Title bar
+   element = windowActiveTitleBar
+      borderDelta = 7,0,7,0
+      topBorder = 23,22,26,40
+      cornerDelta = 0,0,0,0
+      topLeftCorner = 4,22,20,40
+      topRightCorner = 29,22,45,40
+      textAreaDelta = 0,0,0,0
+      textFont = LiberationSerif-Bold.ttf
+      textAlignment = 1 
+
+   # Window close button (enabled).
+   element = windowEnabledCloseButton
+      borderDelta = 0,4,4,0
+      topRightCorner = 0,9,11,20
+
+# Button
+element = buttonPressed
+   cornerDelta = 0,0,0,0
+   topLeftCorner = 20,0,21,1
+   topRightCorner = 26,0,27,1
+   bottomLeftCorner = 20,6,21,7
+   bottomRightCorner = 26,6,27,7
+   topBorderDelta = 2,0,2,0
+   topBorder = 23,0,23,1
+   bottomBorderDelta = 2,0,2,0
+   bottomBorder = 23,6,23,7
+   leftBorderDelta = 0,2,0,2
+   leftBorder = 20,3,21,3
+   rightBorderDelta = 0,2,0,2
+   rightBorder = 26,3,27,3
+   backgroundDelta = 2,2,2,2
+   background = 22,2,23,3
+   textAreaDelta = 2,1,1,0
+   textAlignment = 1 
+element = buttonEnabled
+   cornerDelta = 0,0,0,0
+   topLeftCorner = 11,0,12,1
+   topRightCorner = 17,0,18,1
+   bottomLeftCorner = 11,6,12,7
+   bottomRightCorner = 17,6,18,7
+   topBorderDelta = 2,0,2,0
+   topBorder = 14,0,14,1
+   bottomBorderDelta = 2,0,2,0
+   bottomBorder = 14,6,14,7
+   leftBorderDelta = 0,2,0,2
+   leftBorder = 11,3,12,3
+   rightBorderDelta = 0,2,0,2
+   rightBorder = 17,3,18,3
+   backgroundDelta = 2,2,2,2
+   background = 13,2,14,3
+   textAreaDelta = 1,0,1,0
+   textAlignment = 1 
+element = buttonDisabled
+   cornerDelta = 0,0,0,0
+   topLeftCorner = 11,0,12,1
+   topRightCorner = 17,0,18,1
+   bottomLeftCorner = 11,6,12,7
+   bottomRightCorner = 17,6,18,7
+   topBorderDelta = 2,0,2,0
+   topBorder = 14,0,14,1
+   bottomBorderDelta = 2,0,2,0
+   bottomBorder = 14,6,14,7
+   leftBorderDelta = 0,2,0,2
+   leftBorder = 11,3,12,3
+   rightBorderDelta = 0,2,0,2
+   rightBorder = 17,3,18,3
+   backgroundDelta = 2,2,2,2
+   background = 13,2,14,3
+   textAreaDelta = 1,0,1,0
+   textFontColor = 155,155,155,255
+   textAlignment = 1 
+
+# Label
+element = label
+   textAreaDelta = 0,0,0,0
+element = labelDisabled
+   textAreaDelta = 0,0,0,0
+   textFontColor = 120,120,120,255
+element = fileLabel
+   textAreaDelta = 0,0,0,0
+element = directoryLabel
+   textAreaDelta = 0,0,0,0
+   textFontColor = 62,157,230,255
+
+
+# Check Box
+element = checkBoxEnabledChecked
+   cornerDelta = 0,4,0,0
+   topLeftCorner = 13,9,23,19
+   
+   element = checkBoxEnabled
+      cornerDelta = 0,4,0,0
+      topLeftCorner = 25,9,35,19
+
+   element = checkBoxDisabledChecked
+      cornerDelta = 0,4,0,0
+      topLeftCorner = 49,9,59,19
+
+   element = checkBoxDisabled
+      cornerDelta = 0,4,0,0
+      topLeftCorner = 37,9,47,19
+
+# Progress bar definition
+element = progressBar
+   borderDelta = 0,0,0,0 
+   topBorder = 37,9,37,9
+   bottomBorder = 37,9,37,9
+   leftBorder  = 37,9,37,9
+   rightBorder  = 37,9,37,9
+   backgroundDelta = 1,1,1,1
+   background = 38,10,38,10
+   
+   element = progressBarFill
+      cornerDelta = 2,2,2,2
+      topLeftCorner = 0,0,3,2
+      bottomLeftCorner = 0,3,3,5
+      topRightCorner = 6,0,9,2
+      bottomRightCorner = 6,3,9,5
+      topBorderDelta = 6,2,6,2 
+      topBorder = 5,0,5,2
+      bottomBorderDelta = 6,2,6,2 
+      bottomBorder = 5,3,5,5
+      leftBorderDelta = 2,5,2,5
+      leftBorder = 0,2,3,2
+      rightBorderDelta = 2,5,2,5
+      rightBorder = 6,2,9,2
+      backgroundDelta = 6,5,6,5
+      background = 5,3,5,3
+
+# Text Selectors
+element = textOption
+   textAreaDelta = 0,0,0,0
+   element = textOptionOver
+      textAreaDelta = 0,0,0,0
+      textFontColor = 62,157,230,255
+
+# Special captions
+element = upCaption
+   cornerDelta = 1,1,0,0
+   topLeftCorner = 38,1,46,5
+   element = downCaption
+      cornerDelta = 1,1,0,0
+      topLeftCorner = 29,1,37,5
+   element = leftCaption
+      cornerDelta = 1,1,0,0
+      topLeftCorner = 47,21,51,29
+   element = rightCaption
+      cornerDelta = 1,1,0,0
+      topLeftCorner = 53,21,57,29
+
+# Some special borders
+element = borderLeft
+   borderDelta = 0,1,0,1
+   leftBorder = 13,40,13,40
+   element = borderRight
+      borderDelta = 0,1,0,1
+      rightBorder = 13,40,13,40
+   element = borderTop
+      borderDelta = 1,0,1,0
+      topBorder = 13,40,13,40
+   element = borderBottom
+      borderDelta = 1,0,1,0
+      bottomBorder = 13,40,13,40
+
+# TextEntry
+element = textEntry
+   leftBorderDelta = 0,1,0,1
+   leftBorder = 25,10,25,10
+   rightBorderDelta = 0,1,0,1
+   rightBorder = 25,10,25,10
+   topBorderDelta = 1,0,1,0
+   topBorder = 25,10,25,10
+   bottomBorderDelta = 1,0,1,0
+   bottomBorder = 25,10,25,10
+   backgroundDelta = 1,1,1,1
+   background = 26,11,26,11
+   textAreaDelta = 2,0,2,0
+   textAlignment = 0 
+
+element = textEntryDisabled
+   leftBorderDelta = 0,1,0,1
+   leftBorder = 25,10,25,10
+   rightBorderDelta = 0,1,0,1
+   rightBorder = 25,10,25,10
+   topBorderDelta = 1,0,1,0
+   topBorder = 25,10,25,10
+   bottomBorderDelta = 1,0,1,0
+   bottomBorder = 25,10,25,10
+   backgroundDelta = 1,1,1,1
+   background = 38,11,38,11
+   textAreaDelta = 2,0,2,0
+   textAlignment = 0 
+   textFontColor = 40,40,40,255
+
+# Cursor Textual Tip
+element = cursorTextualTip
+   leftBorderDelta = 0,1,0,1
+   leftBorder = 25,10,25,10
+   rightBorderDelta = 0,1,0,1
+   rightBorder = 25,10,25,10
+   topBorderDelta = 1,0,1,0
+   topBorder = 25,10,25,10
+   bottomBorderDelta = 1,0,1,0
+   bottomBorder = 25,10,25,10
+   backgroundDelta = 1,1,1,1
+   background = 38,11,38,11
+   textAreaDelta = 0,0,0,0
+   textAlignment = 1
+
+# Grid Element Border Highlight
+element = gridBorder
+   borderDelta = 0,0,0,0
+   leftBorder = 4,2,4,2
+   rightBorder = 4,2,4,2
+   topBorder = 4,2,4,2
+   bottomBorder = 4,2,4,2
+
+# Grid Element Fill Highlight
+element = gridFill
+   borderDelta = 0,0,0,0
+   leftBorder = 4,2,4,2
+   rightBorder = 4,2,4,2
+   topBorder = 4,2,4,2
+   bottomBorder = 4,2,4,2
+   backgroundDelta = 1,1,1,1
+   background = 4,2,4,2
+
+# Menu
+element = menu
+   leftBorderDelta = 0,1,0,1
+   leftBorder = 25,10,25,10
+   rightBorderDelta = 0,1,0,1
+   rightBorder = 25,10,25,10
+   topBorderDelta = 1,0,1,0
+   topBorder = 25,10,25,10
+   bottomBorderDelta = 1,0,1,0
+   bottomBorder = 25,10,25,10
+   backgroundDelta = 1,1,1,1
+   background = 38,11,38,11
+   element = menuSeparator
+      borderDelta = 4,10,6,0
+      topBorder = 15,6,15,7
+

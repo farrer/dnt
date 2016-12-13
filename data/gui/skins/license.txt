@@ -1,7 +1,13 @@
+clean skin
+ \
+  author: farrer (DNTeam)
+  license: CC-By-SA 3.0
+  source: http://github.com/farrer/farso
+
 moderna skin
  \
   Adapted by DNTeam from:
   author: Jorge Avila
-  licese: CC-By 3.0
+  license: CC-By 3.0
   source: http://opengameart.org/content/moderna-graphical-interface
 
