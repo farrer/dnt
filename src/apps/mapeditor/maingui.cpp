@@ -219,7 +219,7 @@ void MainGui::openNewMapWindow()
    }
    
    /* Create it */
-   newMapWindow = new Farso::Window(154, 100, "New Map");
+   newMapWindow = new Farso::Window(158, 100, "New Map");
    new Farso::Label(0, 1, 44, 21, "SizeX:", newMapWindow);
    spinNewMapSizeX = new Farso::Spin(Farso::Spin::VALUE_TYPE_INTEGER, 45, 1,
          newMapWindow);
