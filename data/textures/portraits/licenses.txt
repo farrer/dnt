@@ -1,0 +1,111 @@
+gordinho.png
+metaleiro.png
+metaleiro2.png
+mutante.png
+velho.png
+   Author: Raquel (from DNTeam), colored by Farrer (from DNTeam).
+   License: GPLv3 or later
+
+hippie.png
+   Author: Scribe (Daniel Stephens)
+   License: CC0
+   Reference:
+   http://opengameart.org/forumtopic/portraits-for-weird-realism-cartoon-style-satirical-post-apocalyptic-rpg
+
+velhaca.png
+   Author: qubodup
+   License: CC0
+   Reference:
+   http://qubodup.deviantart.com/art/Velhaca-Badly-Drawn-Portrait-for-DNT-305587263
+
+ameiva.png
+ameiva02.png
+athlete.png
+chicolee.png
+chico.png
+chico_a.png
+f04.png 
+fille.png
+fille2.png
+fille3.png
+garcon.png
+garcon2.png
+garcon3.png
+h06.png
+linda.png
+magda.png
+mama.png
+punk.png
+ratazana.png
+santa.png
+santa2.png
+transgender.png
+zedobar.png
+   Author: nubux
+   License: CC-BY 3.0
+   Reference:
+   http://opengameart.org/forumtopic/portraits-for-weird-realism-cartoon-style-satirical-post-apocalyptic-rpg
+   http://opengameart.org/content/9-portaits-108px
+   http://opengameart.org/content/11-portraits-108px
+
+logan.png
+   Author: nubux
+   License: CC-BY 3.0
+   Reference:
+   http://opengameart.org/forumtopic/portraits-for-weird-realism-cartoon-style-satirical-post-apocalyptic-rpg
+   Note: Modified by qubodup (Iwan Gabovitch) <qubodup@gmail.com>
+
+atleticano.png
+cruzeirense.png
+   Author: nubux
+   License: CC-BY 3.0
+   Modifications: color adjustments by qubodup (Iwan Gabovitch) <qubodup@gmail.com>
+   Source: http://opengameart.org/content/athlete-portrait-variations
+
+moco01.png
+sarah.png
+   Author: nubux and qubodup
+   License: CC-BY 3.0
+   Reference:
+   http://opengameart.org/forumtopic/portraits-for-weird-realism-cartoon-style-satirical-post-apocalyptic-rpg
+
+cicero.png
+menino01.png
+moca01.png
+moca02
+nikki.png
+senhor01.png
+senhor02.png
+senhor03.png
+velho01.png
+velho02.png
+   Author: Filipe Dilly
+   License: CC-BY 3.0
+   Source: http://dillydailydraws.wordpress.com/2011/08/30/217/
+           http://dillydailydraws.wordpress.com/2011/07/26/201-2/
+           http://dillydailydraws.wordpress.com/2011/08/29/216/
+           http://dillydailydraws.wordpress.com/2011/01/02/50/
+           http://dillydailydraws.wordpress.com/2011/08/30/229/
+           http://dillydailydraws.wordpress.com/2011/08/13/211/
+           http://dillydailydraws.wordpress.com/2011/08/07/209/
+           http://dillydailydraws.wordpress.com/2012/01/09/238/
+           http://dillydailydraws.wordpress.com/2011/08/30/222/
+           http://dillydailydraws.wordpress.com/2011/10/08/226/
+
+mysterious.png
+   Author: Buch
+   License: GPLv3
+   Reference: http://opengameart.org/content/mysterious-man
+
+mercenary.png
+   Author: Buch
+   Modifications: Color adjusts by Scribe (Daniel Stephens)
+   License: GPLv3
+   References: http://opengameart.org/content/post-apocaliptic-soldier
+               http://opengameart.org/forumtopic/portraits-for-weird-realism-cartoon-style-satirical-post-apocalyptic-rpg
+
+back.png
+borda.png
+   Author: DNTeam
+   License: GPLv3 or later
+
