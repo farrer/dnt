@@ -38,6 +38,7 @@ using namespace DNT;
 #define THING_KEY_NAME                "name"
 #define THING_KEY_DESCRIPTION         "description"
 #define THING_KEY_MODEL               "model"
+#define THING_KEY_SCALE               "scale"
 #define THING_KEY_STATE               "state"
 #define THING_KEY_WALKABLE            "walkable"
 #define THING_KEY_CONVERSATION        "conversation"
@@ -114,6 +115,7 @@ bool Thing::load(Kobold::String fileName, bool fullPath)
 {
    Kobold::DefParser defParser;
    Kobold::String key, value, modelName;
+   float scale = 1.0f;
 
    if(!defParser.load(fileName, fullPath))
    {
@@ -164,6 +166,11 @@ bool Thing::load(Kobold::String fileName, bool fullPath)
                   Game::getSceneManager());
          }
       }
+      else if(key == THING_KEY_SCALE)
+      {
+         /* Let's load its scale (to apply later) */
+         sscanf(value.c_str(), "%f", &scale);
+      }
       else if(key == THING_KEY_STATE)
       {
          sscanf(value.c_str(), "%d", &state);
@@ -186,6 +193,12 @@ bool Thing::load(Kobold::String fileName, bool fullPath)
                   key.c_str(), fileName.c_str());
          }
       }
+   }
+
+   /* Apply our scale */
+   if(getModel() != NULL)
+   {
+      getModel()->setScale(scale, scale, scale);
    }
 
    return true;
