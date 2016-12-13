@@ -1,0 +1,6 @@
+
+zedobar.png
+   Author: Estrada Real Digital
+   License: GPLv2
+   Source: http://sourceforge.net/projects/erd/
+

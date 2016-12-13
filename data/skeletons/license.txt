@@ -1,0 +1,6 @@
+
+male.skeleton
+   Author: FreeLikeGNU, Clint Bellanger, and Pompei2, with adjusts by DNTeam.
+   License: CC-By-SA 3.0 or GPLv3
+   Source: http://opengameart.org/content/base-human-models-low-poly-for-blender-25x
+

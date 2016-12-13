@@ -1,0 +1,6 @@
+
+zedobar.mesh
+   Author: Estrada Real Digital, with some modifications by DNTeam
+   License: GPLv2
+   Source: http://sourceforge.net/projects/erd/
+
