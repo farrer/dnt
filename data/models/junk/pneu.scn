@@ -1,0 +1,5 @@
+name = gettext("Tire")
+description = gettext("An old and useless tire.")
+model = junk/pneu.mesh
+walkable = false
+

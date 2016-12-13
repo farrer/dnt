@@ -1,4 +1,4 @@
-caixa1.png, caixa2.png
+caixa1.png, caixa2.png, pneu.png
    author: DNTeam
    license: GPLv3
 
