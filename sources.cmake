@@ -139,10 +139,12 @@ set(DNT_MAP_EDITOR_SOURCES
    src/apps/mapeditor/main.cpp
    src/apps/mapeditor/maingui.cpp
    src/apps/mapeditor/mapeditor.cpp
+   src/apps/mapeditor/metadatagui.cpp
    ${WIN_SOURCES}
 )
 set(DNT_MAP_EDITOR_HEADERS
    src/apps/mapeditor/maingui.h
    src/apps/mapeditor/mapeditor.h
+   src/apps/mapeditor/metadatagui.h
 )
 

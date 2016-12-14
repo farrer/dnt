@@ -54,12 +54,7 @@ MainGui::MainGui()
    spinNewMapSizeX = NULL;
    spinNewMapSizeZ = NULL;
    buttonNewMapCreate = NULL;
-   metadataWindow = NULL;
-   mapNameTextEntry = NULL;
-   mapMusicTextEntry = NULL;
-   buttonSelectMusic = NULL;
-   buttonApplyMetadata = NULL;
-
+   
    /* Create view button and menu */
    viewButton = new Farso::Button(81, 1, 80, 21, "View", cont);
    viewMenu = new Farso::Menu();
@@ -240,43 +235,6 @@ void MainGui::openNewMapWindow()
 }
 
 /***********************************************************************
- *                         openMetadataWindow                          *
- ***********************************************************************/
-void MainGui::openMetadataWindow()
-{
-   Ogre::StringStream ss;
-
-   if(metadataWindow)
-   {
-      metadataWindow->close();
-   }
-   metadataWindow = new Farso::Window(300, 125, "Metadata");
-
-   ss << "Size: ";
-   ss << DNT::Game::getCurrentMap()->getSizeX();
-   ss << " x ";
-   ss << DNT::Game::getCurrentMap()->getSizeZ();
-   new Farso::Label(0, 1, 200, 21, ss.str(), metadataWindow);
-   new Farso::Label(0, 23, 44, 21, "Name:", metadataWindow);
-   mapNameTextEntry = new Farso::TextEntry(45, 23, 155, 21, metadataWindow);
-   mapNameTextEntry->setCaption(DNT::Game::getCurrentMap()->getName());
-   new Farso::Label(0, 45, 44, 21, "Music:", metadataWindow);
-   mapMusicTextEntry = new Farso::TextEntry(45, 45, 155, 21, metadataWindow); 
-   mapMusicTextEntry->setCaption(
-         DNT::Game::getCurrentMap()->getMusicFilename());
-   mapMusicTextEntry->disable();
-   buttonSelectMusic = new Farso::Button(205, 45, 80, 21, "Select", 
-         metadataWindow);
-   Farso::Container* cont = new Farso::Container(
-         Farso::Container::TYPE_BOTTOM_CENTERED, metadataWindow);
-   buttonApplyMetadata = new Farso::Button(0, 2, 80, 21, "Apply", cont);
-
-   metadataWindow->setExternPointer(&metadataWindow);
-   metadataWindow->open();
-   metadataWindow->setPosition(Kobold::Mouse::getX(), Kobold::Mouse::getY());
-}
-
-/***********************************************************************
  *                            checkEvents                              *
  ***********************************************************************/
 bool MainGui::checkEvents()
@@ -312,7 +270,7 @@ bool MainGui::checkEvents()
       {
          if(mapMenu->getCurrentItem() == menuItemMetadata)
          {
-            openMetadataWindow();
+            metadataGui.open();
          }
       }
    }
@@ -357,6 +315,10 @@ bool MainGui::checkEvents()
          /* Close the window */
          loadSaveWindow->close();
       }
+   }
+   
+   if(metadataGui.checkEvents())
+   {
    }
 
    /* Should not quit. */

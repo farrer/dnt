@@ -22,6 +22,7 @@
 #define _dnt_mapeditor_main_gui_h
 
 #include <farso/controller.h>
+#include "metadatagui.h"
 
 namespace DNTMapEditor
 {
@@ -46,7 +47,6 @@ namespace DNTMapEditor
 
          void openLoadOrSaveWindow(bool loading);
          void openNewMapWindow();
-         void openMetadataWindow();
          void toggleMenuStatus();
          void setLight();
 
@@ -95,13 +95,7 @@ namespace DNTMapEditor
          Farso::Spin* spinNewMapSizeZ;
          Farso::Button* buttonNewMapCreate;
 
-         /* Map Metadata widgets */
-         Farso::Window* metadataWindow;
-         Farso::TextEntry* mapNameTextEntry;
-         Farso::TextEntry* mapMusicTextEntry;
-         Farso::Button* buttonSelectMusic;
-         Farso::Button* buttonApplyMetadata;
-
+         MetadataGui metadataGui; /**< Metadata editor gui */
    };
 
 
