@@ -100,6 +100,7 @@ bool Core::doInit()
    Classes::init();
 
    Game::init(ogreSceneManager);
+   Goblin::Camera::disableTranslations();
 
    /* Load a PC */
    PlayableCharacter* pc = new PlayableCharacter();
@@ -113,6 +114,7 @@ bool Core::doInit()
    {
       return false;
    }
+   Goblin::Camera::setPosition(pc->getModel()->getPosition());
 
    return true;
 }
@@ -159,8 +161,16 @@ void Core::doSendToForeground()
  ***********************************************************************/
 void Core::doCycle()
 {
-   Game::getCurrentMap()->update(floorMouse);
-//         Game::getPcs()->getActiveCharacter()->getModel()->getPosition());
+   /* Define current active playable character */
+   PlayableCharacter* curPc = static_cast<PlayableCharacter*>(
+            Game::getPcs()->getActiveCharacter());
+   
+   if(curPc)
+   {
+      //Game::getCurrentMap()->update(floorMouse);
+      Game::getCurrentMap()->update(curPc->getModel()->getPosition());
+   }
+
    
    if(Farso::Controller::verifyEvents(leftButtonPressed, false, mouseX, mouseY))
    {
@@ -194,8 +204,6 @@ void Core::doCycle()
 
 
       /* Check current PC movement input */
-      PlayableCharacter* curPc = static_cast<PlayableCharacter*>(
-            Game::getPcs()->getActiveCharacter());
       curPc->checkInputForMovement();
    }
 }

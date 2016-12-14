@@ -195,7 +195,6 @@ void Map::create(int sizeX, int sizeZ)
    floor.updateAllDirty();
    walls.updateAllDirty();
    lights->setActiveLight(0.0f, 0.0f);
-
 }
 
 /**************************************************************************

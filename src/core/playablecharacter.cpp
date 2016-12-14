@@ -21,6 +21,9 @@
 
 #include "playablecharacter.h"
 #include "../rules/classes.h"
+
+#include <goblin/camera.h>
+
 using namespace DNT;
 
 /*********************************************************************
@@ -149,6 +152,7 @@ bool PlayableCharacter::checkInputForMovement()
       curPos.x += varX;
       curPos.z += varZ;
       getModel()->setPosition(curPos);
+      Goblin::Camera::setPosition(curPos);
    }
 
    /* Rotate left and rotate right */

@@ -201,7 +201,7 @@ void MapLights::setActiveLight(float pX, float pZ)
    {
       lastX = iX;
       lastZ = iZ;
-      
+
       /* Note: assuming that full map is always covered by at least one area. */
       LightInfo* info = static_cast<LightInfo*>(lights.getFirst());
       for(int i = 0; i < lights.getTotal(); i++)
