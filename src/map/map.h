@@ -66,8 +66,9 @@ class Map
        * \note only valid after load. */
       Kobold::String getFilename();
 
-      /*! Update everithing related to the map for curent frame. */
-      void update(Ogre::Vector3 floorMouse);
+      /*! Update everithing related to the map for curent frame.
+       * \param refPos reference position for active lights. */
+      void update(Ogre::Vector3 refPos);
 
       /*! \return initial PlayableCharacters position on map
        * \note this position is used just on plain map load, as on map travel,

@@ -35,7 +35,7 @@
 
 using namespace DNT;
 
-#define MAP_WALL_HEIGHT                 50
+#define MAP_WALL_HEIGHT                 64
 #define MAP_UPPER_WALL_MATERIAL         "upper_wall"
 
 #define MAP_TOKEN_SIZE                  "size"
@@ -108,10 +108,9 @@ Map::~Map()
 /**************************************************************************
  *                                 update                                 *
  **************************************************************************/
-void Map::update(Ogre::Vector3 floorMouse)
+void Map::update(Ogre::Vector3 refPos)
 {
-   /* FIXME: must use character coordinate, not mouse as here. */
-   lights->setActiveLight(floorMouse.x, floorMouse.z);
+   lights->setActiveLight(refPos.x, refPos.z);
 
    /* FIXME: would be better to just use a list of animated or scriptable
     * things, instead of updating everything. */
@@ -565,6 +564,8 @@ bool Map::load(Ogre::String mapFileName, bool fullPath)
                key.c_str(), mapFileName.c_str());
       }
    }
+
+   //TODO: define some walls above doors!
 
    floor.updateAllDirty();
    walls.updateAllDirty();
