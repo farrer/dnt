@@ -123,12 +123,6 @@ void MetadataGui::openSelectMusicWindow()
  ***********************************************************************/
 bool MetadataGui::checkEvents()
 {
-   if((selectWindow) && (!metadataWindow))
-   {
-      /* Closed the metadata window (but not the select), so close it. */
-      selectWindow->close();
-   }
-
    Farso::Event event = Farso::Controller::getLastEvent();
    if(event.getType() == Farso::EVENT_BUTTON_RELEASE)
    {
@@ -175,6 +169,15 @@ bool MetadataGui::checkEvents()
             metadataWindow->activate();
          }
          return true;
+      }
+   }
+   else if(event.getType() == Farso::EVENT_WINDOW_WILL_CLOSE)
+   {
+      if((event.getWidget() == metadataWindow) && (selectWindow))
+      {
+         /* Closed the metadata window (but not the select), must close 
+          * it too. */
+         selectWindow->close();
       }
    }
    return false;
