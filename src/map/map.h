@@ -45,11 +45,22 @@ class Map
        * \param sizeZ z dimension */
       void create(int sizeX, int sizeZ);
 
+      /*! \return map's x dimension */
+      int getSizeX();
+      /*! \return map's z dimension */
+      int getSizeZ();
+
       /*! Open a map to use. 
        * \param mapFileName name of the map file to load.
        * \param fullPath if mapFileName is defined as full path or inner file.
        * \return if load was successfull or not. */
       bool load(Kobold::String mapFileName, bool fullPath);
+
+      /*! \return  map's name */
+      Kobold::String getName();
+      /*! Set map's name 
+       * \param name new map name. */
+      void setName(Kobold::String name);
 
       /*! \return map's filename
        * \note only valid after load. */
@@ -74,6 +85,7 @@ class Map
       IndoorTextureMeshes floor; /**< The indoor floor meshes */
       IndoorTextureMeshes walls; /**< The indoor wall meshes */
 
+      Kobold::String name;     /**< Map's name */
       Kobold::String filename; /**< Map's filename */
       
       Kobold::String musicFilename; /**< Map's music filename */

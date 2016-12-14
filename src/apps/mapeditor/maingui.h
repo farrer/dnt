@@ -46,6 +46,7 @@ namespace DNTMapEditor
 
          void openLoadOrSaveWindow(bool loading);
          void openNewMapWindow();
+         void openMetadataWindow();
          void toggleMenuStatus();
          void setLight();
 
@@ -82,7 +83,6 @@ namespace DNTMapEditor
          /* Map button and Menu */
          Farso::Button* mapButton;
          Farso::Menu* mapMenu;
-         Farso::Menu::MenuItem* menuItemMusic;
          Farso::Menu::MenuItem* menuItemMetadata;
 
          /* Load / Save window widgets */
@@ -94,6 +94,13 @@ namespace DNTMapEditor
          Farso::Spin* spinNewMapSizeX;
          Farso::Spin* spinNewMapSizeZ;
          Farso::Button* buttonNewMapCreate;
+
+         /* Map Metadata widgets */
+         Farso::Window* metadataWindow;
+         Farso::TextEntry* mapNameTextEntry;
+         Farso::TextEntry* mapMusicTextEntry;
+         Farso::Button* buttonSelectMusic;
+         Farso::Button* buttonApplyMetadata;
 
    };
 

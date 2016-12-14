@@ -28,6 +28,7 @@
 #include "../core/scenery.h"
 #include "../core/door.h"
 #include "../core/game.h"
+#include "../lang/translate.h"
 
 #include <kobold/defparser.h>
 #include <kobold/log.h>
@@ -42,6 +43,7 @@ using namespace DNT;
 #define MAP_TOKEN_SQUARE                "square"
 #define MAP_TOKEN_USE_TEXTURE           "useTexture"
 
+#define MAP_TOKEN_NAME                  "name"
 #define MAP_TOKEN_MUSIC_FILE            "musicFile"
 
 #define MAP_TOKEN_WALL                  "wall"
@@ -85,6 +87,7 @@ Map::Map()
     :floor("floor", false),
      walls("wall", true)
 {
+   this->name = "";
    this->filename = "";
    this->musicFilename = "";
    this->xSize = 0;
@@ -130,6 +133,22 @@ void Map::update(Ogre::Vector3 floorMouse)
 Kobold::String Map::getFilename()
 {
    return filename;
+}
+
+/**************************************************************************
+ *                                 getName                                *
+ **************************************************************************/
+Kobold::String Map::getName()
+{
+   return name;
+}
+
+/**************************************************************************
+ *                                 setName                                *
+ **************************************************************************/
+void Map::setName(Kobold::String name)
+{
+   this->name = name;
 }
 
 /**************************************************************************
@@ -180,6 +199,22 @@ void Map::create(int sizeX, int sizeZ)
 }
 
 /**************************************************************************
+ *                             getSizeX                                   *
+ **************************************************************************/
+int Map::getSizeX()
+{
+   return xSize;
+}
+
+/**************************************************************************
+ *                             getSizeZ                                   *
+ **************************************************************************/
+int Map::getSizeZ()
+{
+   return zSize;
+}
+
+/**************************************************************************
  *                                 load                                   *
  **************************************************************************/
 bool Map::load(Ogre::String mapFileName, bool fullPath)
@@ -203,7 +238,7 @@ bool Map::load(Ogre::String mapFileName, bool fullPath)
             mapFileName.c_str(), key.c_str());
       return false;
    }
-   sscanf(value.c_str(), "%dX%d", &xSize, &zSize);
+   sscanf(value.c_str(), "%dx%d", &xSize, &zSize);
 
    /* Define the upper wall texture */
    walls.createTextureMesh(MAP_UPPER_WALL_MATERIAL);
@@ -216,8 +251,13 @@ bool Map::load(Ogre::String mapFileName, bool fullPath)
 
    while(parser.getNextTuple(key, value))
    {
+      /* Map's name */
+      if(key == MAP_TOKEN_NAME)
+      {
+         name = translateDataString(value);
+      }
       /* Music file to use */
-      if(key == MAP_TOKEN_MUSIC_FILE)
+      else if(key == MAP_TOKEN_MUSIC_FILE)
       {
          musicFilename = value;
       }
