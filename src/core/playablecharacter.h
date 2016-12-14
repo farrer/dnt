@@ -37,6 +37,10 @@ class PlayableCharacter : public Character
       /*! Destructor */
       ~PlayableCharacter();
 
+      /*! Check user input for PlayableCharacter's movement 
+       * \return true if tried to move. */
+      bool checkInputForMovement();
+
       /*! Verify if can take levels on an specific class
        * \param cl -> class to verify if can take levels 
        * \return -> true if can take a level, false otherwise */

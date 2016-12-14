@@ -203,6 +203,11 @@ class Thing : public Kobold::ListElement
        * \return if was successful */
       virtual bool doSpecificSave(std::ofstream& file) = 0;
 
+      /*! \return distance can move each frame when walking */
+      float getWalkInterval(); 
+      /*! \return distance can rotate each frame */
+      float getTurnAroundInterval(); 
+
    private:
       ThingType thingType; /**< Thing's type */
 
@@ -236,6 +241,9 @@ class Thing : public Kobold::ListElement
       BonusAndSaves curBonusAndSaves; /**< Thing's bonus and saves */
       int displacement;       /**< Thing's Displacement (in meters) */
       int initiativeBonus;    /**< Thing's initiative bonus value */
+
+      float walkInterval; /**< Distance can move each frame */
+      float turnAroundInterval; /**< Distance can rotate each frame */
 
 
       /*! Map to avoid name's clash with multiple intances of the same 

@@ -35,16 +35,18 @@
 
 using namespace DNT;
 
-#define THING_KEY_NAME                "name"
-#define THING_KEY_DESCRIPTION         "description"
-#define THING_KEY_MODEL               "model"
-#define THING_KEY_SCALE               "scale"
-#define THING_KEY_STATE               "state"
-#define THING_KEY_WALKABLE            "walkable"
-#define THING_KEY_CONVERSATION        "conversation"
+#define THING_KEY_NAME                 "name"
+#define THING_KEY_DESCRIPTION          "description"
+#define THING_KEY_MODEL                "model"
+#define THING_KEY_SCALE                "scale"
+#define THING_KEY_STATE                "state"
+#define THING_KEY_WALKABLE             "walkable"
+#define THING_KEY_WALK_INTERVAL        "walkInterval"
+#define THING_KEY_TURN_AROUND_INTERVAL "turnAroundInterval"
+#define THING_KEY_CONVERSATION         "conversation"
 
-#define THING_VALUE_TRUE              "true"
-#define THING_VALUE_FALSE             "false"
+#define THING_VALUE_TRUE               "true"
+#define THING_VALUE_FALSE              "false"
 
 /**************************************************************************
  *                               Constructor                              *
@@ -55,7 +57,9 @@ Thing::Thing(ThingType type)
    lifePoints = 0;
    armatureClass = 0;
    initiativeBonus = 0;
-   displacement =  WALK_PER_MOVE_ACTION;;
+   displacement =  WALK_PER_MOVE_ACTION;
+   walkInterval = 1.2f; 
+   turnAroundInterval = 3.5f; 
    model3d = NULL;
    conversation = NULL;
    state = 0;
@@ -107,6 +111,21 @@ void Thing::setArmatureClass(int value)
    armatureClass = value;
 }
 
+/**************************************************************************
+ *                           getWalkInterval                              *
+ **************************************************************************/
+float Thing::getWalkInterval()
+{
+   return walkInterval;
+}
+
+/**************************************************************************
+ *                        getTurnAroundInterval                           *
+ **************************************************************************/
+float Thing::getTurnAroundInterval()
+{
+   return turnAroundInterval;
+}
 
 /**************************************************************************
  *                                  load                                  *
@@ -178,6 +197,14 @@ bool Thing::load(Kobold::String fileName, bool fullPath)
       else if(key == THING_KEY_WALKABLE)
       {
          walkable = (value == THING_VALUE_TRUE);
+      }
+      else if(key == THING_KEY_WALK_INTERVAL)
+      {
+         sscanf(value.c_str(), "%f", &walkInterval);
+      }
+      else if(key == THING_KEY_TURN_AROUND_INTERVAL)
+      {
+         sscanf(value.c_str(), "%f", &turnAroundInterval);
       }
       else if(key == THING_KEY_CONVERSATION)
       {

@@ -159,8 +159,8 @@ void Core::doSendToForeground()
  ***********************************************************************/
 void Core::doCycle()
 {
-   Game::getCurrentMap()->update(
-         Game::getPcs()->getActiveCharacter()->getModel()->getPosition());
+   Game::getCurrentMap()->update(floorMouse);
+//         Game::getPcs()->getActiveCharacter()->getModel()->getPosition());
    
    if(Farso::Controller::verifyEvents(leftButtonPressed, false, mouseX, mouseY))
    {
@@ -191,6 +191,12 @@ void Core::doCycle()
             floorMouse = mouseRay.getPoint(res.second);
          }
       }
+
+
+      /* Check current PC movement input */
+      PlayableCharacter* curPc = static_cast<PlayableCharacter*>(
+            Game::getPcs()->getActiveCharacter());
+      curPc->checkInputForMovement();
    }
 }
 

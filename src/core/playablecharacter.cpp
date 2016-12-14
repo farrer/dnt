@@ -111,3 +111,76 @@ bool PlayableCharacter::doCharacterSpecializationSave(std::ofstream& file)
 }
 
 
+/***********************************************************************
+ *                           checkInputForMovement                     *
+ ***********************************************************************/
+bool PlayableCharacter::checkInputForMovement()
+{
+   //TODO: get keys from options!
+
+   //TODO: Run.
+
+   bool triedToMove = false;
+   Ogre::Vector3 curPos = getModel()->getPosition();
+   float curYaw = getModel()->getYaw();
+   float curWalk = getWalkInterval();
+   float curTurnAround = getTurnAroundInterval();
+   float varX, varZ, varOri;
+
+   /* Let's check for keyboard movement */
+
+   /* Forward and backward movement */
+   if((Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_W)) ||
+      (Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_S)))
+   {
+      triedToMove = true;
+
+      varX = curWalk * Ogre::Math::Sin(Ogre::Radian(Ogre::Degree(curYaw)));
+      varZ = curWalk * Ogre::Math::Cos(Ogre::Radian(Ogre::Degree(curYaw)));
+
+      if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_S))
+      {
+         /* backward */
+         varX *= -1.0f;
+         varZ *= -1.0f;
+      }
+
+      /* TODO: check if can walk to the new position */
+      curPos.x += varX;
+      curPos.z += varZ;
+      getModel()->setPosition(curPos);
+   }
+
+   /* Rotate left and rotate right */
+   if((Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_A)) ||
+      (Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_D)))
+   {
+      triedToMove = true;
+      varOri = curTurnAround;
+
+      if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_D))
+      {
+         /* Clockwise! */
+         varOri *= -1.0f;
+      }
+
+      curYaw += varOri;
+      /* Check within [0, 360) interval */
+      if(curYaw < 0)
+      {
+         curYaw += 360.0f;
+      }
+      else if(curYaw >= 360.0f)
+      {
+         curYaw -= 360.0f;
+      }
+
+      //TODO: check if can turn around!
+
+      /* Apply new yaw */
+      getModel()->setOrientation(curYaw);
+   }
+
+   return triedToMove;
+}
+
