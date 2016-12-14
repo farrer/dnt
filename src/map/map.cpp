@@ -245,7 +245,7 @@ bool Map::load(Ogre::String mapFileName, bool fullPath)
    int squareX = -1;
    int squareZ = 0;
 
-   float wX1=0.0f, wZ1=0.0f, wX2=0.0f, wZ2=0.0f;
+   float wX1=0.0f, wY1=0.0f, wZ1=0.0f, wX2=0.0f, wY2=0.0f, wZ2=0.0f;
 
    while(parser.getNextTuple(key, value))
    {
@@ -291,7 +291,9 @@ bool Map::load(Ogre::String mapFileName, bool fullPath)
       else if(key == MAP_TOKEN_WALL)
       {
          /* Read current wall corners */
-         sscanf(value.c_str(),"%f,%f,%f,%f",&wX1, &wZ1, &wX2, &wZ2);
+         sscanf(value.c_str(),"%f,%f,%f,%f,%f,%f",
+                &wX1, &wY1, &wZ1, &wX2, &wY2, &wZ2);
+         /* make sure 1 <= 2 */
          Ogre::Real tmp;
          if(wX2 < wX1)
          {
@@ -305,15 +307,28 @@ bool Map::load(Ogre::String mapFileName, bool fullPath)
             wZ2 = wZ1;
             wZ1 = tmp;
          }
+         if(wY2 < wY1)
+         {
+            tmp = wY2;
+            wY2 = wY1;
+            wY1 = tmp;
+         }
 
          /* Define the upper wall square */
          IndoorTextureMesh* mesh = walls.getTextureMesh(
                MAP_UPPER_WALL_MATERIAL);
          if(mesh)
          {
-            mesh->addSquare(wX1, MAP_WALL_HEIGHT, wZ1, 
-                            wX2, MAP_WALL_HEIGHT, wZ2,
+            mesh->addSquare(wX1, wY2, wZ1, 
+                            wX2, wY2, wZ2,
                             0.0f, 1.0f, 0.0f);
+            if(wY1 != 0.0f)
+            {
+               /* Also define a square for bottom, as not at floor */
+               mesh->addSquare(wX1, wY1, wZ1,
+                               wX2, wY1, wZ2,
+                               0.0f, -1.0f, 0.0f);
+            }
          }
 
       }
@@ -325,7 +340,7 @@ bool Map::load(Ogre::String mapFileName, bool fullPath)
          {
             mesh = walls.createTextureMesh(value);
          }
-         mesh->addSquare(wX1, 0.0f, wZ1, wX2, MAP_WALL_HEIGHT, wZ1,
+         mesh->addSquare(wX1, wY1, wZ1, wX2, wY2, wZ1,
                0.0f, 0.0f, -1.0f);
       }
       /* Define Current Wall Back Texture */
@@ -336,7 +351,7 @@ bool Map::load(Ogre::String mapFileName, bool fullPath)
          {
             mesh = walls.createTextureMesh(value);
          }
-         mesh->addSquare(wX1, 0.0f, wZ2, wX2, MAP_WALL_HEIGHT, wZ2,
+         mesh->addSquare(wX1, wY1, wZ2, wX2, wY2, wZ2,
                0.0f, 0.0f, 1.0f);
       }
       /* Define Current Wall Left Texture */
@@ -347,7 +362,7 @@ bool Map::load(Ogre::String mapFileName, bool fullPath)
          {
             mesh = walls.createTextureMesh(value);
          }
-         mesh->addSquare(wX1, 0.0f, wZ1, wX1, MAP_WALL_HEIGHT, wZ2,
+         mesh->addSquare(wX1, wY1, wZ1, wX1, wY2, wZ2,
                -1.0f, 0.0f, 0.0f);
       }
       /* Define Current Wall Left Texture */
@@ -358,7 +373,7 @@ bool Map::load(Ogre::String mapFileName, bool fullPath)
          {
             mesh = walls.createTextureMesh(value);
          }
-         mesh->addSquare(wX2, 0.0f, wZ1, wX2, MAP_WALL_HEIGHT, wZ2,
+         mesh->addSquare(wX2, wY1, wZ1, wX2, wY2, wZ2,
                1.0f, 0.0f, 0.0f);
       }
       /* Define a thing (object, item, scenery, etc) on the map */
@@ -564,8 +579,6 @@ bool Map::load(Ogre::String mapFileName, bool fullPath)
                key.c_str(), mapFileName.c_str());
       }
    }
-
-   //TODO: define some walls above doors!
 
    floor.updateAllDirty();
    walls.updateAllDirty();

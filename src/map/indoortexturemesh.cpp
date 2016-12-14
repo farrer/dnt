@@ -143,7 +143,7 @@ void IndoorTextureSquare::defineAtX(Ogre::ManualObject* manualObject,
          cur.z = topRight.z;
          uv.x = maxU;
       }
-      uv.y = 0.0f;
+      uv.y = textureDelta - maxV;
       cur.y = bottomLeft.y;
 
       for(int j = 0; j <= INDOOR_SUBDIVISIONS; j++)
@@ -151,7 +151,7 @@ void IndoorTextureSquare::defineAtX(Ogre::ManualObject* manualObject,
          if(j == INDOOR_SUBDIVISIONS)
          {
             cur.y = topRight.y;
-            uv.y = maxV;
+            uv.y = textureDelta;
          }
          manualObject->position(cur);
          manualObject->normal(normal);
@@ -192,7 +192,7 @@ void IndoorTextureSquare::defineAtZ(Ogre::ManualObject* manualObject,
          cur.x = topRight.x;
          uv.x = maxU;
       }
-      uv.y = 0.0f;
+      uv.y = textureDelta - maxV;
       cur.y = bottomLeft.y;
 
       for(int j = 0; j <= INDOOR_SUBDIVISIONS; j++)
@@ -200,7 +200,7 @@ void IndoorTextureSquare::defineAtZ(Ogre::ManualObject* manualObject,
          if(j == INDOOR_SUBDIVISIONS)
          {
             cur.y = topRight.y;
-            uv.y = maxV;
+            uv.y = textureDelta;
          }
          manualObject->position(cur);
          manualObject->normal(normal);
