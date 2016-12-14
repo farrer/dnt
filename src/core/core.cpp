@@ -34,6 +34,8 @@
 
 #include "../gui/briefing.h"
 
+#include "../core/playablecharacter.h"
+
 #include <goblin/camera.h>
 
 using namespace DNT;
@@ -97,10 +99,16 @@ bool Core::doInit()
    Races::init();
    Classes::init();
 
+   Game::init(ogreSceneManager);
+
+   /* Load a PC */
+   PlayableCharacter* pc = new PlayableCharacter();
+   pc->load("humans/zedobar.npc");
+
+   Game::getPcs()->insertCharacter(pc);
 
    /* Load a map to test. FIXME: remove from here when reimplemented our
     * initial window. */
-   Game::init(ogreSceneManager);
    if(!Game::loadMap("tyrol/house1.map"))
    {
       return false;
@@ -116,10 +124,10 @@ void Core::getDataDirectories(Ogre::String** dataDirectories,
       Ogre::String** dataGroups, int& total)
 {
    static Ogre::String dirs[] = {"gui", "textures", "maps", "models", "fonts",
-      "rules"};
+      "rules", "skeletons"};
    (*dataDirectories) = &dirs[0];
    (*dataGroups) = &dirs[0];
-   total = 6;
+   total = 7;
 }
 
 /***********************************************************************
@@ -151,7 +159,8 @@ void Core::doSendToForeground()
  ***********************************************************************/
 void Core::doCycle()
 {
-   Game::getCurrentMap()->update(floorMouse);
+   Game::getCurrentMap()->update(
+         Game::getPcs()->getActiveCharacter()->getModel()->getPosition());
    
    if(Farso::Controller::verifyEvents(leftButtonPressed, false, mouseX, mouseY))
    {

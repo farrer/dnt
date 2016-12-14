@@ -2,4 +2,3 @@ name = gettext("Dinner Chair")
 description = gettext("A chair used to sit down while eating some meals.")
 model = furniture/dinner_chair.mesh
 walkable = false
-

@@ -52,6 +52,7 @@ class PlayableCharacter : public Character
 
       /*! Parse key/value pairs related to the PlayableCharacter */
       bool doCharacterSpecializationParse(Ogre::String key, Ogre::String value);
+      bool doCharacterSpecializationSave(std::ofstream& file);
 
    private:
       int upLevels; /**< Number of levels a character can advance now. */

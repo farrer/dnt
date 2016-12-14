@@ -63,12 +63,20 @@ class Map
        * PCs positions are defined by the map connection used. */
       Ogre::Vector3 getInitialPosition();
 
+      /*! \return music's file to play while active */
+      Kobold::String getMusicFilename();
+      /*! Set music file to be played while map is active 
+       * \param filename music filename */
+      void setMusicFilename(Kobold::String filename);
+
    private:
 
       IndoorTextureMeshes floor; /**< The indoor floor meshes */
       IndoorTextureMeshes walls; /**< The indoor wall meshes */
 
       Kobold::String filename; /**< Map's filename */
+      
+      Kobold::String musicFilename; /**< Map's music filename */
 
       MapLights* lights; /**< All light definitions for map */
 

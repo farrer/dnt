@@ -97,3 +97,17 @@ void PlayableCharacter::getNewClassLevel(Class* cl)
    }
 }
 
+bool PlayableCharacter::doCharacterSpecializationParse(Ogre::String key, 
+      Ogre::String value)
+{
+   //TODO
+   return false;
+}
+
+bool PlayableCharacter::doCharacterSpecializationSave(std::ofstream& file)
+{
+   //TODO
+   return true;
+}
+
+

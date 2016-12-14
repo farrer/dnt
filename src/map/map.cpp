@@ -42,6 +42,8 @@ using namespace DNT;
 #define MAP_TOKEN_SQUARE                "square"
 #define MAP_TOKEN_USE_TEXTURE           "useTexture"
 
+#define MAP_TOKEN_MUSIC_FILE            "musicFile"
+
 #define MAP_TOKEN_WALL                  "wall"
 #define MAP_TOKEN_WALL_TEXTURE_FRONT    "wtf"
 #define MAP_TOKEN_WALL_TEXTURE_LEFT     "wtl"
@@ -84,6 +86,7 @@ Map::Map()
      walls("wall", true)
 {
    this->filename = "";
+   this->musicFilename = "";
    this->xSize = 0;
    this->zSize = 0;
    this->things = new Kobold::List(Kobold::LIST_TYPE_ADD_AT_END);
@@ -127,6 +130,22 @@ void Map::update(Ogre::Vector3 floorMouse)
 Kobold::String Map::getFilename()
 {
    return filename;
+}
+
+/**************************************************************************
+ *                           getMusicFilename                             *
+ **************************************************************************/
+Kobold::String Map::getMusicFilename()
+{
+   return musicFilename;
+}
+
+/**************************************************************************
+ *                           setMusicFilename                             *
+ **************************************************************************/
+void Map::setMusicFilename(Kobold::String filename)
+{
+   musicFilename = filename;
 }
 
 /**************************************************************************
@@ -197,8 +216,13 @@ bool Map::load(Ogre::String mapFileName, bool fullPath)
 
    while(parser.getNextTuple(key, value))
    {
+      /* Music file to use */
+      if(key == MAP_TOKEN_MUSIC_FILE)
+      {
+         musicFilename = value;
+      }
       /* Square definition */
-      if(key == MAP_TOKEN_SQUARE)
+      else if(key == MAP_TOKEN_SQUARE)
       {
          if(squareX == xSize - 1)
          {
