@@ -300,7 +300,6 @@ bool MainGui::checkEvents()
             if(!DNT::Game::loadMap(loadSaveSelector->getFilename(), true))
             {
                /* TODO: Show error! */
-               //TODO: delete map!
             }
             toggleMenuStatus();
          }

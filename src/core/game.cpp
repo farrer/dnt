@@ -93,6 +93,10 @@ Map* Game::loadMap(Kobold::String filename, bool fullPath, bool setPCsPositions)
    Map* map = new DNT::Map();
    if(!map->load(filename, fullPath))
    {
+      /* Must delete the failed to load map */
+      delete map;
+
+      /* Log error and exit. */
       Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
          "Error: couldn't load map '%s'", filename.c_str());
       return NULL;
