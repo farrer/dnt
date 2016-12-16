@@ -21,6 +21,9 @@
 #include "maingui.h"
 #include "../../core/game.h"
 #include "../../map/map.h"
+
+#include <goblin/camera.h>
+
 using namespace DNTMapEditor;
 
 /***********************************************************************
@@ -286,6 +289,7 @@ bool MainGui::checkEvents()
          map->create(spinNewMapSizeX->getIntValue(), 
                spinNewMapSizeZ->getIntValue());
          DNT::Game::setCurrentMap(map);
+         setCameraOnMap();
          toggleMenuStatus();
          newMapWindow->close();
       }
@@ -297,7 +301,11 @@ bool MainGui::checkEvents()
          if(loadSaveSelector->isLoadType())
          {
             /* Must load the map */
-            if(!DNT::Game::loadMap(loadSaveSelector->getFilename(), true))
+            if(DNT::Game::loadMap(loadSaveSelector->getFilename(), true))
+            {
+               setCameraOnMap();
+            }
+            else
             {
                /* TODO: Show error! */
             }
@@ -323,10 +331,26 @@ bool MainGui::checkEvents()
    /* Should not quit. */
    return false;
 }
- 
+
+/***********************************************************************
+ *                           setCameraOnMap                            *
+ ***********************************************************************/
+void MainGui::setCameraOnMap()
+{
+   int sizeX = DNT::Game::getCurrentMap()->getSizeX() *  MAP_SQUARE_SIZE;
+   int sizeZ = DNT::Game::getCurrentMap()->getSizeZ() *  MAP_SQUARE_SIZE;
+   /* Set camera area to the whole map */
+   Goblin::Camera::limitCameraArea(Ogre::Vector3(0.0f,0.0f,0.0f),
+         Ogre::Vector3(sizeX, 0.0f, sizeZ));
+
+   /* Put it at map's center */
+   Goblin::Camera::setPosition(Ogre::Vector3(sizeX / 2.0f, 0.0f, sizeZ / 2.0f));
+}
+
 /***********************************************************************
  *                           isLightEnabled                            *
- ***********************************************************************/       bool MainGui::isLightEnabled()
+ ***********************************************************************/
+bool MainGui::isLightEnabled()
 {
    return lightEnabled;
 }

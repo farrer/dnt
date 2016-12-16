@@ -49,6 +49,8 @@ namespace DNTMapEditor
          void openNewMapWindow();
          void toggleMenuStatus();
          void setLight();
+         /*! Set current camera to be within map area */
+         void setCameraOnMap();
 
          /* File button and Menu */
          Farso::Button* fileButton;
