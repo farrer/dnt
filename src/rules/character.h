@@ -43,6 +43,19 @@ namespace DNT
    class Character : public Thing
    {
       public:
+         /* Each character animation */
+         enum CharacterAnimation
+         {
+            CHARACTER_ANIMATION_ATTACK = 0,
+            CHARACTER_ANIMATION_DEAD,
+            CHARACTER_ANIMATION_DIE,
+            CHARACTER_ANIMATION_IDLE,
+            CHARACTER_ANIMATION_RUN,
+            CHARACTER_ANIMATION_WALK,
+            CHARACTER_TOTAL_ANIMATIONS,
+            CHARACTER_ANIMATION_NONE
+         };
+
          /*! Constructor */
          Character();
          /*! Destructor */
@@ -114,6 +127,13 @@ namespace DNT
          Ogre::Vector3 getInitialPosition();
          /*! Set initial position on map */
          void setInitialPosition(Ogre::Vector3 pos);
+
+         /*! Set current charcter animation 
+          * \param animation to set
+          * \param loop if will loop or just run once. */
+         void setAnimation(CharacterAnimation animation, bool loop = true);
+         /*! Get current character animation */
+         CharacterAnimation getCurrentAnimation();
 
       protected:
          /*! Get first available empty class index on character classes vector

@@ -38,7 +38,7 @@ using namespace DNT;
  *                                Character                            *
  ***********************************************************************/
 Character::Character()
-          :Thing(Thing::THING_TYPE_CHARACTER)
+          :Thing(Thing::THING_TYPE_CHARACTER, CHARACTER_TOTAL_ANIMATIONS)
 {
    /* Default: alive */
    this->dead = false;
@@ -162,6 +162,33 @@ int Character::getEmptyClassIndex()
 Inventory* Character::getInventory()
 {
    return inventory;
+}
+
+/***********************************************************************
+ *                              setAnimation                           *
+ ***********************************************************************/
+void Character::setAnimation(CharacterAnimation animation, bool loop)
+{
+   Goblin::AnimatedModel3d* model = static_cast<Goblin::AnimatedModel3d*>(
+         getModel());
+   model->setBaseAnimation(animation, loop, true);
+}
+
+/***********************************************************************
+ *                              getAnimation                           *
+ ***********************************************************************/
+Character::CharacterAnimation Character::getCurrentAnimation()
+{
+   Goblin::AnimatedModel3d* model = static_cast<Goblin::AnimatedModel3d*>(
+         getModel());
+
+   int curAnim = model->getCurrentAnimation();
+   if((curAnim >= 0) && (curAnim < CHARACTER_TOTAL_ANIMATIONS))
+   {
+      return static_cast<CharacterAnimation>(curAnim);
+   }
+
+   return CHARACTER_ANIMATION_NONE;
 }
 
 /***********************************************************************

@@ -69,7 +69,7 @@ class Thing : public Kobold::ListElement
       };
 
       /*! Constructor */
-      Thing(ThingType type);
+      Thing(ThingType type, int totalAnimations);
       /*! Destructor */
       virtual ~Thing();
 
@@ -210,6 +210,7 @@ class Thing : public Kobold::ListElement
 
    private:
       ThingType thingType; /**< Thing's type */
+      int totalAnimations; /**< Expected total animations */
 
       Kobold::String filename; /**< Filename used to load the thing */
       Kobold::String name; /**< Name of the thing */

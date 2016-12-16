@@ -38,6 +38,7 @@ using namespace DNT;
 #define THING_KEY_NAME                 "name"
 #define THING_KEY_DESCRIPTION          "description"
 #define THING_KEY_MODEL                "model"
+#define THING_KEY_ANIMATED_MODEL       "animatedModel"
 #define THING_KEY_SCALE                "scale"
 #define THING_KEY_STATE                "state"
 #define THING_KEY_WALKABLE             "walkable"
@@ -51,23 +52,24 @@ using namespace DNT;
 /**************************************************************************
  *                               Constructor                              *
  **************************************************************************/
-Thing::Thing(ThingType type)
+Thing::Thing(ThingType type, int totalAnimations)
 {
-   maxLifePoints = 0;
-   lifePoints = 0;
-   armatureClass = 0;
-   initiativeBonus = 0;
-   displacement =  WALK_PER_MOVE_ACTION;
-   walkInterval = 1.2f; 
-   turnAroundInterval = 3.5f; 
-   model3d = NULL;
-   conversation = NULL;
-   state = 0;
-   walkable = false;
-   currentEnemy = NULL;
-   psychoState = PSYCHO_NEUTRAL;
-   filename = "";
-   thingType = type;
+   this->maxLifePoints = 0;
+   this->lifePoints = 0;
+   this->armatureClass = 0;
+   this->initiativeBonus = 0;
+   this->displacement =  WALK_PER_MOVE_ACTION;
+   this->walkInterval = 1.2f; 
+   this->turnAroundInterval = 3.5f; 
+   this->model3d = NULL;
+   this->conversation = NULL;
+   this->state = 0;
+   this->walkable = false;
+   this->currentEnemy = NULL;
+   this->psychoState = PSYCHO_NEUTRAL;
+   this->filename = "";
+   this->thingType = type;
+   this->totalAnimations = totalAnimations;
 }
 
 /**************************************************************************
@@ -176,13 +178,24 @@ bool Thing::load(Kobold::String fileName, bool fullPath)
       }
       else if(key == THING_KEY_MODEL)
       {
-         /* Load model. Just once, avoiding overload and memmory leaks on
-          * wrong defined files. */
+         assert(model3d == NULL);
+         assert(totalAnimations == 0);
          if(model3d == NULL)
          {
             modelFileName = value;
             model3d = new Goblin::Model3d(modelName, modelFileName, 
                   Game::getSceneManager());
+         }
+      }
+      else if(key == THING_KEY_ANIMATED_MODEL)
+      {
+         assert(model3d == NULL);
+         assert(totalAnimations > 0);
+         if(model3d == NULL)
+         {
+            modelFileName = value;
+            model3d = new Goblin::AnimatedModel3d(modelName, modelFileName,
+                    Game::getSceneManager(), totalAnimations);
          }
       }
       else if(key == THING_KEY_SCALE)

@@ -38,6 +38,9 @@ namespace DNT
          /*! Finish current game. Called when done playing it. */
          static void finish();
 
+         /*! Do the update to our models and map */
+         static void update();
+
          /*! Load a map and set it the current one. 
           * \note if travelling through maps, use #travelToMap instead. 
           * \param filename map file to load.

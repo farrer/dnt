@@ -185,6 +185,16 @@ bool PlayableCharacter::checkInputForMovement()
       getModel()->setOrientation(curYaw);
    }
 
+   if((triedToMove) && (getCurrentAnimation() != CHARACTER_ANIMATION_WALK))
+   {
+      setAnimation(CHARACTER_ANIMATION_WALK, true);
+   }
+   else if((!triedToMove) && 
+          (getCurrentAnimation() == CHARACTER_ANIMATION_WALK))
+   {
+      setAnimation(CHARACTER_ANIMATION_IDLE, true);
+   }
+
    return triedToMove;
 }
 

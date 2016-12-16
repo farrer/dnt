@@ -105,6 +105,7 @@ bool Core::doInit()
    /* Load a PC */
    PlayableCharacter* pc = new PlayableCharacter();
    pc->load("humans/zedobar.npc");
+   pc->setAnimation(Character::CHARACTER_ANIMATION_IDLE, true);
 
    Game::getPcs()->insertCharacter(pc);
 
@@ -164,13 +165,9 @@ void Core::doCycle()
    /* Define current active playable character */
    PlayableCharacter* curPc = static_cast<PlayableCharacter*>(
             Game::getPcs()->getActiveCharacter());
-   
-   if(curPc)
-   {
-      //Game::getCurrentMap()->update(floorMouse);
-      Game::getCurrentMap()->update(curPc->getModel()->getPosition());
-   }
 
+   /* Update current models and map */
+   Game::update();
    
    if(Farso::Controller::verifyEvents(leftButtonPressed, false, mouseX, mouseY))
    {

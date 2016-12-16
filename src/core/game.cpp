@@ -23,6 +23,7 @@
 #include "object.h"
 #include "money.h"
 #include "item.h"
+#include "playablecharacter.h"
 #include "scenery.h"
 
 #include "../map/map.h"
@@ -63,6 +64,21 @@ void Game::finish()
       pcs = NULL;
    }
    sceneManager = NULL;
+}
+
+/************************************************************************
+ *                               update                                 *
+ ************************************************************************/
+void Game::update()
+{
+   PlayableCharacter* curPc = static_cast<PlayableCharacter*>(
+            getPcs()->getActiveCharacter());
+   
+   if(curPc)
+   {
+      getCurrentMap()->update(curPc->getModel()->getPosition());
+      curPc->getModel()->update();
+   }
 }
 
 /************************************************************************

@@ -31,7 +31,7 @@ using namespace DNT;
  *                               Constructor                              *
  **************************************************************************/
 Object::Object()
-       :Thing(Thing::THING_TYPE_OBJECT)
+       :Thing(Thing::THING_TYPE_OBJECT, 0)
 {
    image = NULL;
    cost = 0;

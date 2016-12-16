@@ -1,5 +1,5 @@
 name = Zé do Bar
-model = humans/zedobar.mesh
+animatedModel = humans/zedobar.mesh
 #scale = 18.2
 portrait = portraits/zedobar.png
 battleScript = ia/script/fight/fight_animal.dsl
