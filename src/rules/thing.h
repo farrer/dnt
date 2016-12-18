@@ -75,9 +75,11 @@ class Thing : public Kobold::ListElement
 
       /*! Load the thing specification
        * \param fileName file to load
+       * \param modelType if will use static or dynamic model
        * \param fullPath if fileName is defined with fullPath (true)
        *                 or inner resources directory (false). */
-      bool load(Kobold::String fileName, bool fullPath=false);
+      bool load(Kobold::String fileName, 
+            Goblin::Model3d::Model3dType modelType, bool fullPath=false);
 
       /*! Save the thing specification.
        * \param filename name of the file to save it

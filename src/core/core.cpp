@@ -66,6 +66,7 @@ Core::~Core()
    Farso::Controller::finish();
 }
 
+#if OGRE_VERSION_MAJOR == 1
 /***********************************************************************
  *                          getShadowTechnique                         *
  ***********************************************************************/
@@ -73,6 +74,7 @@ Ogre::ShadowTechnique Core::getShadowTechnique()
 {
    return Ogre::SHADOWTYPE_STENCIL_ADDITIVE;
 }
+#endif
 
 /***********************************************************************
  *                               doInit                                *

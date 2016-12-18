@@ -94,7 +94,8 @@ class Map
       MapLights* lights; /**< All light definitions for map */
 
       //FIXME: use a more suitable structure.
-      Kobold::List* things; /**< Things list */
+      Kobold::List* dynamicThings; /**< Dynamic things list */
+      Kobold::List* staticThings;  /**< Static things list */
 
       int xSize;  /**< Map size (in square units) for X axys */
       int zSize;  /**< Map size (in square units) for Z axys */

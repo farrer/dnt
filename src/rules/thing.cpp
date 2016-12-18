@@ -132,7 +132,8 @@ float Thing::getTurnAroundInterval()
 /**************************************************************************
  *                                  load                                  *
  **************************************************************************/
-bool Thing::load(Kobold::String fileName, bool fullPath)
+bool Thing::load(Kobold::String fileName,
+      Goblin::Model3d::Model3dType modelType, bool fullPath)
 {
    Kobold::DefParser defParser;
    Kobold::String key, value, modelName;
@@ -184,7 +185,7 @@ bool Thing::load(Kobold::String fileName, bool fullPath)
          {
             modelFileName = value;
             model3d = new Goblin::Model3d(modelName, modelFileName, 
-                  Game::getSceneManager());
+                  Game::getSceneManager(), modelType);
          }
       }
       else if(key == THING_KEY_ANIMATED_MODEL)

@@ -24,6 +24,7 @@
 #include "dntconfig.h"
 
 #include <OGRE/OgreLight.h>
+#include <OGRE/OgreSceneNode.h>
 
 #include <kobold/list.h>
 #include <kobold/kstring.h>
@@ -66,7 +67,7 @@ namespace DNT
          bool isInner(int pX, int pZ);
 
          /*! Set an Ogre light to be as defined by this LightInfo */
-         void setLight(Ogre::Light* light);
+         void setLight(Ogre::Light* light, Ogre::SceneNode* sceneNode);
 
          /*! Set attenuation factor (only used for point lights) */
          void setAttenuation(Ogre::Real range, Ogre::Real constant,
@@ -121,6 +122,9 @@ namespace DNT
 
       private:
          Ogre::Light* light;  /**< Current active light (Ogre) */
+#if OGRE_VERSION_MAJOR != 1
+         Ogre::SceneNode* lightSceneNode; /**< Node associated to the light */
+#endif
          LightInfo* curLight; /**< Current active light */
          Kobold::List lights; /**< Map Lights */
 

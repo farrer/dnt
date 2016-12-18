@@ -57,8 +57,10 @@ class MapEditor : public Goblin::BaseApp
       void getDataDirectories(Ogre::String** dataDirectories,
             Ogre::String** dataGroups, int& total);
 
+#if OGRE_VERSION_MAJOR == 1
       /*! Override our BaseApp shadow technique to  what we defined. */
       Ogre::ShadowTechnique getShadowTechnique();
+#endif
 
       void doLowMemoryClean();
       void doSendToBackground();

@@ -21,6 +21,7 @@
 #include "game.h"
 
 #include "object.h"
+#include "door.h"
 #include "money.h"
 #include "item.h"
 #include "playablecharacter.h"
@@ -176,6 +177,7 @@ Ogre::SceneManager* Game::getSceneManager()
 Object* Game::createObject(Kobold::String filename)
 {
    Object* obj = NULL;
+   Goblin::Model3d::Model3dType modelType = Goblin::Model3d::MODEL_DYNAMIC;
 
    /* verify if is money */
    if(filename == DNT_MONEY_OBJECT)
@@ -188,11 +190,17 @@ Object* Game::createObject(Kobold::String filename)
       {
          /* Static Scenery */
          obj = static_cast<Object*>(new Scenery());
+         modelType = Goblin::Model3d::MODEL_STATIC;
       }
       else if(filename.find(".itn", 0) != Kobold::String::npos)
       {
          /* Item */
          obj = static_cast<Object*>(new Item());
+      }
+      else if(filename.find(".dor", 0) != Kobold::String::npos)
+      {
+         /* Door */
+         obj = static_cast<Object*>(new Door());
       }
       //TODO: weapon
       //else if(filename.find(".wcc", 0) != Kobold::String::npos)
@@ -201,13 +209,16 @@ Object* Game::createObject(Kobold::String filename)
    if(obj)
    {
       /* Load the object */
-      obj->load(filename);
+      obj->load(filename, modelType);
    }
    else
    {
       Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
             "Could not define type or could not load object '%s'",
             filename.c_str());
+      /* Must delete to avoid leaks. */
+      delete obj;
+      obj = NULL;
    }
 
    return obj;

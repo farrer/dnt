@@ -130,18 +130,26 @@ bool LightInfo::isInner(int pX, int pZ)
 /**************************************************************************
  *                               setLight                                 *
  **************************************************************************/
-void LightInfo::setLight(Ogre::Light* light)
+void LightInfo::setLight(Ogre::Light* light, Ogre::SceneNode* sceneNode)
 {
    /* Define common light elements */
    light->setType(type);
+#if OGRE_VERSION_MAJOR == 1
    light->setPosition(position);
+#else
+   sceneNode->setPosition(position);
+#endif
    light->setDiffuseColour(diffuse);
    light->setSpecularColour(specular);
 
    if(type != Ogre::Light::LT_POINT)
    {
       /* Use direction */
+#if OGRE_VERSION_MAJOR == 1
       light->setDirection(direction);
+#else
+      sceneNode->setDirection(direction);
+#endif
    }
    else
    {
@@ -162,6 +170,13 @@ MapLights::MapLights()
 {
    light = Game::getSceneManager()->createLight();
    light->setType(Ogre::Light::LT_POINT);
+
+#if OGRE_VERSION_MAJOR != 1
+   lightSceneNode = 
+      Game::getSceneManager()->getRootSceneNode()->createChildSceneNode();
+   lightSceneNode->attachObject(light);
+#endif
+
    lastX = -1;
    lastZ = -1;
    curLight = NULL;
@@ -172,6 +187,13 @@ MapLights::MapLights()
  **************************************************************************/
 MapLights::~MapLights()
 {
+#if OGRE_VERSION_MAJOR != 1
+   if(lightSceneNode)
+   {
+      lightSceneNode->detachObject(light);
+      Game::getSceneManager()->destroySceneNode(lightSceneNode);
+   }
+#endif
    if(light)
    {
       Game::getSceneManager()->destroyLight(light);
@@ -212,7 +234,11 @@ void MapLights::setActiveLight(float pX, float pZ)
             if(curLight != info)
             {
                curLight = info;
-               info->setLight(light);
+#if OGRE_VERSION_MAJOR == 1
+               info->setLight(light, NULL);
+#else
+               info->setLight(light, lightSceneNode);
+#endif
             }
             return;
          }
@@ -225,7 +251,11 @@ void MapLights::setActiveLight(float pX, float pZ)
       if(curLight != info)
       {
          curLight = info;
-         info->setLight(light);
+#if OGRE_VERSION_MAJOR == 1
+         info->setLight(light, NULL);
+#else
+         info->setLight(light, lightSceneNode);
+#endif
       }
    }
 }

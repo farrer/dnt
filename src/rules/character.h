@@ -114,6 +114,9 @@ namespace DNT
 
          /*! Apply Bonus And Saves from all owned Classes to the Character */
          void applyBonusAndSaves();
+
+         /*! Load a character model */
+         bool load(Kobold::String filename);
          
          /*! Called after loaded the character, to set some of its 
           * definitions 

@@ -72,6 +72,7 @@ MapEditor::~MapEditor()
    Farso::Controller::finish();
 }
 
+#if OGRE_VERSION_MAJOR == 1
 /***********************************************************************
  *                          getShadowTechnique                         *
  ***********************************************************************/
@@ -79,6 +80,7 @@ Ogre::ShadowTechnique MapEditor::getShadowTechnique()
 {
    return Ogre::SHADOWTYPE_STENCIL_ADDITIVE;
 }
+#endif
 
 /***********************************************************************
  *                               doInit                                *

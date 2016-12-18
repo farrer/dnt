@@ -350,7 +350,11 @@ void IndoorTextureMesh::updateManualObject(Ogre::String baseName)
 IndoorTextureMeshes::IndoorTextureMeshes(Ogre::String baseName, 
       bool castShadows)
 {
+#if OGRE_VERSION_MAJOR == 1
    this->manualObject = Game::getSceneManager()->createManualObject(baseName);
+#else
+   this->manualObject = Game::getSceneManager()->createManualObject();
+#endif
    this->sceneNode = NULL;
    this->entity = NULL;
 

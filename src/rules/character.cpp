@@ -292,6 +292,14 @@ bool Character::doSpecificParse(Kobold::String key, Kobold::String value)
 }
 
 /***********************************************************************
+ *                                load                                 *
+ ***********************************************************************/
+bool Character::load(Kobold::String filename)
+{
+   return Thing::load(filename, Goblin::Model3d::MODEL_DYNAMIC);
+}
+
+/***********************************************************************
  *                            doAfterLoad                              *
  ***********************************************************************/
 void Character::doAfterLoad(Kobold::String& mapFilename)

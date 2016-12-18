@@ -92,7 +92,8 @@ Map::Map()
    this->musicFilename = "";
    this->xSize = 0;
    this->zSize = 0;
-   this->things = new Kobold::List(Kobold::LIST_TYPE_ADD_AT_END);
+   this->staticThings = new Kobold::List(Kobold::LIST_TYPE_ADD_AT_END);
+   this->dynamicThings = new Kobold::List(Kobold::LIST_TYPE_ADD_AT_END);
    this->lights = new MapLights();
 }
 
@@ -101,7 +102,8 @@ Map::Map()
  **************************************************************************/
 Map::~Map()
 {
-  delete this->things;
+  delete this->staticThings;
+  delete this->dynamicThings;
   delete this->lights;
 }
 
@@ -110,12 +112,12 @@ Map::~Map()
  **************************************************************************/
 void Map::update(Ogre::Vector3 refPos)
 {
+   /* Define which light to be the active one */
    lights->setActiveLight(refPos.x, refPos.z);
 
-   /* FIXME: would be better to just use a list of animated or scriptable
-    * things, instead of updating everything. */
-   Thing* thing = static_cast<Thing*>(things->getFirst());
-   for(int i = 0; i < things->getTotal(); i++)
+   /* Update our dynamic objects */
+   Thing* thing = static_cast<Thing*>(dynamicThings->getFirst());
+   for(int i = 0; i < dynamicThings->getTotal(); i++)
    {
       Goblin::Model3d* model = thing->getModel();
       if(model)
@@ -220,6 +222,7 @@ bool Map::load(Ogre::String mapFileName, bool fullPath)
    Kobold::DefParser parser;
    Ogre::String key, value;
    LightInfo* lastLight = NULL;
+   Thing* lastThing = NULL;
 
    this->filename = mapFileName;
 
@@ -379,76 +382,58 @@ bool Map::load(Ogre::String mapFileName, bool fullPath)
       /* Define a thing (object, item, scenery, etc) on the map */
       else if((key == MAP_TOKEN_THING) || (key == MAP_TOKEN_DOOR))
       {
-         /* We define thing's type by file extension. */
-         Kobold::String fileExtension, baseName, path;
-         Ogre::StringUtil::splitFullFilename(value, baseName, 
-               fileExtension, path);
-         Thing* thing = NULL;
-         if(fileExtension == "scn")
-         {
-            thing = new Scenery();
-         }
-         else if(fileExtension == "dor")
-         {
-            thing = new Door();
-         }
-
+         Thing* thing = Game::createObject(value);
          if(thing)
          {
-            if(!thing->load(value))
+            if(thing->getModel()->isStatic())
             {
-               /* Couldn't load, no need to keep it at list. */
-               delete thing;
-               Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
-                  "Error: couldn't load thing from file '%s'", value.c_str());
+               staticThings->insert(thing);
             }
-            else 
+            else
             {
-               things->insert(thing);
+               dynamicThings->insert(thing);
             }
-         }
-         else
-         {
-            Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
-               "Error: couldn't define thing's type for '%s'", value.c_str());
+            /* Notify last thing dirty state, if needed. */
+            if((lastThing) && (lastThing->getModel()->isStatic()))
+            {
+               lastThing->getModel()->notifyStaticDirty();
+            }
+            lastThing = thing;
          }
       }
       else if((key == MAP_TOKEN_THING_POSITION) ||
               (key == MAP_TOKEN_DOOR_POSITION))
       {
          /* Define last thing's position. */
-         Thing* last = static_cast<Thing*>(things->getLast());
-         if(last != NULL)
+         if(lastThing != NULL)
          {
             Ogre::Real pX=0.0f, pY=0.0f, pZ=0.0f;
             sscanf(value.c_str(), "%f,%f,%f", &pX, &pY, &pZ);
-            last->getModel()->setPosition(pX, pY, pZ);
+            lastThing->getModel()->setPosition(pX, pY, pZ);
          }
       }
       else if(key == MAP_TOKEN_THING_ORIENTATION)
       {
          /* Define last thing's orientation */
-         Thing* last = static_cast<Thing*>(things->getLast());
-         if(last != NULL)
+         if(lastThing != NULL)
          {
             Ogre::Real oX=0.0f, oY=0.0f, oZ=0.0f;
             sscanf(value.c_str(), "%f,%f,%f", &oX, &oY, &oZ);
-            last->getModel()->setOrientation(oX, oY, oZ);
+            lastThing->getModel()->setOrientation(oX, oY, oZ);
          }
       }
       else if(key == MAP_TOKEN_THING_WALKABLE)
       {
          /* Define last thing's walkable flag */
-         Thing* last = static_cast<Thing*>(things->getLast());
-         if(last != NULL)
+         if(lastThing != NULL)
          {
-            last->setWalkable(value == MAP_VALUE_TRUE);
+            lastThing->setWalkable(value == MAP_VALUE_TRUE);
          }
       }
       else if(key == MAP_TOKEN_DOOR_ORIENTATION)
       {
          /* Define last door orientation */
-         Door* last = static_cast<Door*>(things->getLast());
+         Door* last = static_cast<Door*>(lastThing);
          if(last != NULL)
          {
             Ogre::Real oY=0.0f;
@@ -462,7 +447,7 @@ bool Map::load(Ogre::String mapFileName, bool fullPath)
          /* Lock the door */
          int ope=0, burg=0;
          sscanf(value.c_str(), "%d %d", &ope, &burg);
-         Door* last = static_cast<Door*>(things->getLast());
+         Door* last = static_cast<Door*>(lastThing);
          if(last != NULL)
          {
             last->lock(ope, burg);
@@ -471,7 +456,7 @@ bool Map::load(Ogre::String mapFileName, bool fullPath)
       else if(key == MAP_TOKEN_DOOR_LOCK_DIALOG)
       {
          /* Define door unlock conversation file */
-         Thing* last = static_cast<Thing*>(things->getLast());
+         Thing* last = static_cast<Thing*>(lastThing);
          if(last != NULL)
          {
             last->setConversationFile(value);
@@ -487,8 +472,6 @@ bool Map::load(Ogre::String mapFileName, bool fullPath)
          //TODO: get map height at position and set it.
          initialPos = Ogre::Vector3(ix, 0.0f, iz);
       }
-      //FIXME: should define light areas on indoor maps, and change 
-      // between active lights based on current character position.
       else if(key == MAP_TOKEN_LIGHT)
       {
          /* Create a new light */
@@ -580,8 +563,17 @@ bool Map::load(Ogre::String mapFileName, bool fullPath)
       }
    }
 
+   /* Notify last thing dirty state, if needed. */
+   if((lastThing) && (lastThing->getModel()->isStatic()))
+   {
+      lastThing->getModel()->notifyStaticDirty();
+   }
+
+   /* Update our floor and walls */
    floor.updateAllDirty();
    walls.updateAllDirty();
+
+   /* Define an active light */
    lights->setActiveLight(0.0f, 0.0f);
 
    return true;

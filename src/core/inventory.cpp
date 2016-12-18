@@ -220,8 +220,7 @@ bool Inventory::addMoney(int qty)
    }
 
    /* Couldn't found... must create a Money item and add it to Inventory */
-   m = new Money();
-   m->load(DNT_MONEY_OBJECT);
+   m = static_cast<Money*>(Game::createObject(DNT_MONEY_OBJECT));
    m->setQuantity(qty);
 
    /* Try to add it to Inventory */
