@@ -44,21 +44,22 @@ class Core : public Goblin::BaseApp
       ~Core();
    protected:
 
-      Ogre::String getApplicationUnixName() { return APP_NAME; };
-      int getDefaultWindowWidth() { return DEFAULT_WINDOW_WIDTH; };
-      int getDefaultWindowHeight() { return DEFAULT_WINDOW_HEIGHT; };
-      Orientation getDefaultOrientation() { return LANDSCAPE; };
-      int getMinWidthToUseDoubleSizedGui() { return WIDTH_TO_DOUBLE_SIZE; };
-      Ogre::String getBaseDataDir() {return BASE_DATA_DIR;};
+      const Ogre::String getApplicationUnixName() const { return APP_NAME; };
+      const int getDefaultWindowWidth() const { return DEFAULT_WINDOW_WIDTH; };
+      const int getDefaultWindowHeight() const {return DEFAULT_WINDOW_HEIGHT;};
+      const Orientation getDefaultOrientation() const { return LANDSCAPE; };
+      const int getMinWidthToUseDoubleSizedGui() const 
+      { 
+         return WIDTH_TO_DOUBLE_SIZE; 
+      };
+      const Ogre::String getBaseDataDir() const {return BASE_DATA_DIR;};
+      const bool shouldUseKoboldI18n() const { return false; };
+      const bool shouldCreateBasicWorkspace() const { return false; };
+
 
       bool doInit();
       void getDataDirectories(Ogre::String** dataDirectories,
             Ogre::String** dataGroups, int& total);
-
-#if OGRE_VERSION_MAJOR == 1
-      /*! Override our BaseApp shadow technique to  what we defined. */
-      Ogre::ShadowTechnique getShadowTechnique();
-#endif
 
       void doLowMemoryClean();
       void doSendToBackground();

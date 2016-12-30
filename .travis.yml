@@ -71,6 +71,7 @@ before_install:
    # Ogre3d
    - hg clone https://bitbucket.org/sinbad/ogre/
    - cd ogre
+   - hg update v2-1
    - mkdir build
    - cd build
    - cmake -DOGRE_DEPENDENCIES_DIR=../../ogredeps/build/ogredeps -DOGRE_STATIC=1 -DOGRE_BUILD_SAMPLES=0 -DOGRE_BUILD_TOOLS=0 ..

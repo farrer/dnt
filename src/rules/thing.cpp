@@ -130,6 +130,16 @@ float Thing::getTurnAroundInterval()
 }
 
 /**************************************************************************
+ *                          getAnimationList                              *
+ **************************************************************************/
+Kobold::String* Thing::getAnimationList()
+{
+   Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 
+         "Warning: This thing implementation do not support animations");
+   return NULL;
+}
+
+/**************************************************************************
  *                                  load                                  *
  **************************************************************************/
 bool Thing::load(Kobold::String fileName,
@@ -196,7 +206,8 @@ bool Thing::load(Kobold::String fileName,
          {
             modelFileName = value;
             model3d = new Goblin::AnimatedModel3d(modelName, modelFileName,
-                    Game::getSceneManager(), totalAnimations);
+                    Game::getSceneManager(), getAnimationList(),
+                    totalAnimations);
          }
       }
       else if(key == THING_KEY_SCALE)

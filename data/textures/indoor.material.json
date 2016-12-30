@@ -1,0 +1,238 @@
+{
+   "samplers" :
+   {
+      "SamplerBlock_indoor1" :
+      {
+         "min" : "linear",
+         "mag" : "linear",
+         "u" : "wrap",
+         "v" : "wrap"
+      }
+   },
+   "macroblocks" :
+   {
+      "MacroBlock_indoor1" :
+      {
+         "depth_check" : true,
+         "depth_write" : true,
+         "polygon_mode" : "solid"
+      }
+   },
+   "blendblocks" : 
+   {
+      "Blendblock_indoor1" :
+      {
+      }
+   },
+   "pbs" :
+   {
+      "upper_wall":
+      {
+         "macroblock" : "Macroblock_indoor1",
+         "blendblock" : "Blendblock_indoor1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "indoor/upper_wall.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "normal" : 
+         {
+            "value" : 1,
+            "texture" : "indoor/upper_wall_n.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "specular":
+         {
+            "value": [0.64, 0.64, 0.64]
+         }
+      },
+      "concrete6":
+      {
+         "macroblock" : "Macroblock_indoor1",
+         "blendblock" : "Blendblock_indoor1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "indoor/concrete6.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "normal" : 
+         {
+            "value" : 1,
+            "texture" : "indoor/concrete6_n.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "specular":
+         {
+            "value": [0.64, 0.64, 0.64]
+         }
+      },
+      "wall_crete03b":
+      {
+         "macroblock" : "Macroblock_indoor1",
+         "blendblock" : "Blendblock_indoor1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "indoor/wall_crete03b.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "normal" : 
+         {
+            "value" : 1,
+            "texture" : "indoor/wall_crete03b_n.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "specular":
+         {
+            "value": [0.64, 0.64, 0.64]
+         }
+      },
+      "tile3":
+      {
+         "macroblock" : "Macroblock_indoor1",
+         "blendblock" : "Blendblock_indoor1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "indoor/tile3.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "normal" : 
+         {
+            "value" : 1,
+            "texture" : "indoor/tile3_n.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "specular":
+         {
+            "value": [0.64, 0.64, 0.64]
+         }
+      },
+      "stonetile":
+      {
+         "macroblock" : "Macroblock_indoor1",
+         "blendblock" : "Blendblock_indoor1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "indoor/stonetile.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "normal" : 
+         {
+            "value" : 1,
+            "texture" : "indoor/stonetile_n.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "specular":
+         {
+            "value": [0.64, 0.64, 0.64]
+         }
+      },
+      "wood1":
+      {
+         "macroblock" : "Macroblock_indoor1",
+         "blendblock" : "Blendblock_indoor1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "indoor/wood1.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "normal" : 
+         {
+            "value" : 1,
+            "texture" : "indoor/wood1_n.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "specular":
+         {
+            "value": [0.64, 0.64, 0.64]
+         }
+      },
+      "wood8":
+      {
+         "macroblock" : "Macroblock_indoor1",
+         "blendblock" : "Blendblock_indoor1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "indoor/wood8.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "normal" : 
+         {
+            "value" : 1,
+            "texture" : "indoor/wood8_n.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "specular":
+         {
+            "value": [0.64, 0.64, 0.64]
+         }
+      },
+      "oldwood1":
+      {
+         "macroblock" : "Macroblock_indoor1",
+         "blendblock" : "Blendblock_indoor1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "indoor/oldwood1.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "normal" : 
+         {
+            "value" : 1,
+            "texture" : "indoor/oldwood1_n.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "specular":
+         {
+            "value": [0.24, 0.24, 0.24]
+         }
+      },
+      "plaster3c":
+      {
+         "macroblock" : "Macroblock_indoor1",
+         "blendblock" : "Blendblock_indoor1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "indoor/plaster3c.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "normal" : 
+         {
+            "value" : 1,
+            "texture" : "indoor/plaster3c_n.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "specular":
+         {
+            "value": [0.64, 0.64, 0.64]
+         }
+      }
+   }
+}
+

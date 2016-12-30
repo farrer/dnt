@@ -26,14 +26,16 @@
 #include "dntconfig.h"
 
 #include <kobold/list.h>
-#include <OGRE/OgreManualObject.h>
+
 #include <OGRE/OgreSceneManager.h>
 #include <OGRE/OgreSceneNode.h>
-#include <OGRE/OgreMesh.h>
-#include <OGRE/OgreEntity.h>
+#include <OGRE/OgreMesh2.h>
+#include <OGRE/OgreItem.h>
+
+#include <OGRE/Vao/OgreVaoManager.h>
 
 
-#define MAP_SQUARE_SIZE                 64
+#define MAP_SQUARE_SIZE                 64.0f
 
 namespace DNT
 {
@@ -58,10 +60,14 @@ class IndoorTextureSquare : public Kobold::ListElement
       /*! Destructor */
       ~IndoorTextureSquare();
 
-      /* Define the square inside a manual object as two triangles.
-       * \param manualObject pointer to object to define the square
-       * \param curIndex current (first) index of manual object to define. */
-      void define(Ogre::ManualObject* manualObject, int curIndex);
+      /* Define the square with triangles.
+       * \note side effect: will increment curVert and curFace
+       * \param vertices current Ogre vertex info to define
+       * \param curVert current (first) vertex info index to define here
+       * \param faces current Ogre face Index do define
+       * \param curFace current face (first) index to define here  */
+      void define(float* vertices, int& curVert, int& curIndex, 
+            Ogre::uint16* faces, int& curFace);
 
       /*! \return bottom left coordinates */
       Ogre::Vector3 getBottomLeftCorner();
@@ -69,14 +75,17 @@ class IndoorTextureSquare : public Kobold::ListElement
       Ogre::Vector3 getTopRightCorner();
 
    private:
-      void defineAtX(Ogre::ManualObject* manualObject, int curIndex,
-                     Ogre::Real textureDelta);
-      void defineAtY(Ogre::ManualObject* manualObject, int curIndex,
-                     Ogre::Real textureDelta);
-      void defineAtZ(Ogre::ManualObject* manualObject, int curIndex,
-                     Ogre::Real textureDelta);
-      void defineTriangles(Ogre::ManualObject* manualObject, int index,
-            int nValue);
+      void defineAtX(float* vertices, int& curVert, int& curIndex, 
+            Ogre::uint16* faces, int& curFace, Ogre::Real textureDelta);
+      void defineAtY(float* vertices, int& curVert, int& curIndex, 
+            Ogre::uint16* faces, int& curFace, Ogre::Real textureDelta);
+      void defineAtZ(float* vertices, int& curVert, int& curIndex, 
+            Ogre::uint16* faces, int& curFace, Ogre::Real textureDelta);
+      void defineTriangles(int& curIndex, Ogre::uint16* faces, 
+            int& curFace, int nValue);
+
+      void setVertex(float* vertices, int& curVert, Ogre::Vector3 pos, 
+                     Ogre::Vector3 normal, Ogre::Vector2 uv);
 
       Ogre::Vector3 bottomLeft; /**< Bottom Left Corner */
       Ogre::Vector3 topRight;  /**< Top Right Corner */
@@ -85,17 +94,14 @@ class IndoorTextureSquare : public Kobold::ListElement
 
 /*! This class represents a Manual Object for all indoor vertices
  * of a single texture (being them a floor square or a wall face). */
-class IndoorTextureMesh : public Kobold::List, public Kobold::ListElement
+class MapSubMesh : public Kobold::List, public Kobold::ListElement
 {
    public:
       /*! Constructor.
-       * \param manualObject pointer to the manual object to use.
-       * \param materialName material to use for the submesh.
-       * \param castShadows if cast shadows or not. */
-      IndoorTextureMesh(Ogre::ManualObject* manualObject,
-            Ogre::String materialName, bool castShadows);
+       * \param datablockName datablock datablock to use for the mesh. */
+      MapSubMesh(Ogre::MeshPtr mesh, Ogre::String datablockName);
       /*! Destructor */
-      ~IndoorTextureMesh();
+      ~MapSubMesh();
 
       /*! Add a square to the mesh */
       void addSquare(Ogre::Real x1, Ogre::Real y1, Ogre::Real z1,
@@ -103,33 +109,46 @@ class IndoorTextureMesh : public Kobold::List, public Kobold::ListElement
                      Ogre::Real normX, Ogre::Real nomrY, Ogre::Real normZ);
 
       /*! Create or update manual object if needed */
-      void updateManualObject(Ogre::String baseName);
+      void update();
 
-      /*! \return name of the used material for this mesh. */
-      Ogre::String getMaterialName();
+      /*! \return name of the used datablock for this mesh. */
+      Ogre::String getDatablockName();
 
+      Ogre::Vector3 getMin() { return min; };
+      Ogre::Vector3 getMax() { return max; };
+ 
    private:
 
-      Ogre::String materialName; /**< Material to use for the mesh. */
-      bool dirty; /**< If the vertices list was modified and the manual object
-                       must be recreated. */
-      bool castShadows; /**< If cast shadows or not */
-      Ogre::ManualObject* manualObject; /**< Manual Object for the mesh. */
+      Ogre::Vector3 min; /**< Minimum values for x,y,z */
+      Ogre::Vector3 max; /**< Maximum values for x,y,z */
+
+      void createVao(float* verts, Ogre::uint16* faces);
+
+      Ogre::MeshPtr mesh; /**< The mesh owner of this submesh */
+      int subMeshIndex; /**< index of our submesh */
+      Ogre::SubMesh* subMesh; /**< Submesh to populate with. */
+
+      Ogre::VertexArrayObject* vao; /**< The single VAO of this renderable */
+      Ogre::VertexBufferPacked* vertexBuffer; /**< Its vertex buffer */
+      Ogre::IndexBufferPacked* indexBuffer; /**< Its index buffer */
       
+      Ogre::String datablockName; /**< Datablock to use for the mesh. */
+      bool dirty; /**< If the vertices list was modified and the Vao
+                       must be redefined. */
 };
 
-/*! A List of IndoorTextureMesh'es */
-class IndoorTextureMeshes : public Kobold::List
+/*! A List of MapSubMesh'es */
+class MapMesh : public Kobold::List
 {
    public:
-     IndoorTextureMeshes(Ogre::String baseName, bool castShadows);
-     ~IndoorTextureMeshes();
+     MapMesh(Ogre::String baseName);
+     ~MapMesh();
 
-     IndoorTextureMesh* createTextureMesh(Ogre::String materialName);
+     MapSubMesh* createSubMesh(Ogre::String datablockName);
 
-     IndoorTextureMesh* getTextureMesh(Ogre::String materialName);
+     MapSubMesh* getSubMesh(Ogre::String datablockName);
 
-     bool hasTextureMesh(Ogre::String materialName);
+     bool hasTextureMesh(Ogre::String datablockName);
 
      /*! Create or update all dirty manual objects */
      void updateAllDirty();
@@ -139,13 +158,14 @@ class IndoorTextureMeshes : public Kobold::List
       /*! Delete related SceneNode, if defined. */
       void deleteSceneNode();
 
-      Ogre::String baseName;  /**< Basic name (usually 'wall' or 'floor') */
-      bool castShadows;       /**< If its mesh cast shadows or not */
+      /*! Define meshes bounds */
+      void defineBounds();
 
-      Ogre::ManualObject* manualObject; /**< Manual Object for the mesh. */
-      Ogre::MeshPtr ogreMesh; /**< Mesh related to the manual object. */
-      Ogre::Entity* entity; /**< Entity related to the manual object mesh. */
+      Ogre::MeshPtr mesh; /**< The Ogre::Mesh representation */
+      Ogre::String baseName;  /**< Basic name (usually 'wall' or 'floor') */
+      Ogre::Item* item; /**< Item related to the mesh. */
       Ogre::SceneNode* sceneNode; /**< Scene node related to the mesh. */
+
 };
 
 }

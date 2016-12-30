@@ -83,8 +83,8 @@ class Map
 
    private:
 
-      IndoorTextureMeshes floor; /**< The indoor floor meshes */
-      IndoorTextureMeshes walls; /**< The indoor wall meshes */
+      MapMesh floor; /**< The indoor floor meshes */
+      MapMesh walls; /**< The indoor wall meshes */
 
       Kobold::String name;     /**< Map's name */
       Kobold::String filename; /**< Map's filename */

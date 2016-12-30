@@ -1,0 +1,166 @@
+{
+   "samplers" :
+   {
+      "SamplerBlock_doors1" :
+      {
+         "min" : "linear",
+         "mag" : "linear",
+         "u" : "wrap",
+         "v" : "wrap"
+      }
+   },
+   "macroblocks" :
+   {
+      "MacroBlock_doors1" :
+      {
+         "depth_check" : true,
+         "depth_write" : true,
+         "polygon_mode" : "solid"
+      }
+   },
+   "blendblocks" : 
+   {
+      "Blendblock_doors1" :
+      {
+      }
+   },
+   "pbs" :
+   {
+      "porta":
+      {
+         "macroblock" : "Macroblock_doors1",
+         "blendblock" : "Blendblock_doors1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "doors/porta1.png",
+            "sampler" : "SamplerBlock_doors1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "porta2":
+      {
+         "macroblock" : "Macroblock_doors1",
+         "blendblock" : "Blendblock_doors1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "doors/porta2.png",
+            "sampler" : "SamplerBlock_doors1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "porta3":
+      {
+         "macroblock" : "Macroblock_doors1",
+         "blendblock" : "Blendblock_doors1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "doors/porta3.png",
+            "sampler" : "SamplerBlock_doors1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "porta4":
+      {
+         "macroblock" : "Macroblock_doors1",
+         "blendblock" : "Blendblock_doors1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "doors/porta4.png",
+            "sampler" : "SamplerBlock_doors1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "porta5":
+      {
+         "macroblock" : "Macroblock_doors1",
+         "blendblock" : "Blendblock_doors1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "doors/porta5.png",
+            "sampler" : "SamplerBlock_doors1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "porta6":
+      {
+         "macroblock" : "Macroblock_doors1",
+         "blendblock" : "Blendblock_doors1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "doors/porta6.png",
+            "sampler" : "SamplerBlock_doors1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "porta7":
+      {
+         "macroblock" : "Macroblock_doors1",
+         "blendblock" : "Blendblock_doors1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "doors/porta7.png",
+            "sampler" : "SamplerBlock_doors1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "porta8":
+      {
+         "macroblock" : "Macroblock_doors1",
+         "blendblock" : "Blendblock_doors1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "doors/porta8.png",
+            "sampler" : "SamplerBlock_doors1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      }
+   }
+}

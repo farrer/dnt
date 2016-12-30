@@ -101,8 +101,8 @@ namespace DNT
 
    class Map;
    class IndoorTextureSquare;
-   class IndoorTextureMesh;
-   class IndoorTextureMeshes;
+   class MapSubMesh;
+   class MapMesh;
    class LightInfo;
    class MapLights;
 

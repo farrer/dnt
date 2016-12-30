@@ -1,0 +1,99 @@
+{
+   "samplers" :
+   {
+      "SamplerBlock_junk1" :
+      {
+         "min" : "linear",
+         "mag" : "linear",
+         "u" : "wrap",
+         "v" : "wrap"
+      }
+   },
+   "macroblocks" :
+   {
+      "MacroBlock_junk1" :
+      {
+         "depth_check" : true,
+         "depth_write" : true,
+         "polygon_mode" : "solid"
+      }
+   },
+   "blendblocks" : 
+   {
+      "Blendblock_junk1" :
+      {
+      }
+   },
+   "pbs" :
+   {
+      "caixa1":
+      {
+         "macroblock" : "Macroblock_junk1",
+         "blendblock" : "Blendblock_junk1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "junk/caixa1.png",
+            "sampler" : "SamplerBlock_junk1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "caixa2":
+      {
+         "macroblock" : "Macroblock_junk1",
+         "blendblock" : "Blendblock_junk1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "junk/caixa2.png",
+            "sampler" : "SamplerBlock_junk1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "apple_crate":
+      {
+         "macroblock" : "Macroblock_junk1",
+         "blendblock" : "Blendblock_junk1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "junk/apple_crate.png",
+            "sampler" : "SamplerBlock_junk1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "pneu":
+      {
+         "macroblock" : "Macroblock_junk1",
+         "blendblock" : "Blendblock_junk1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "junk/pneu.png",
+            "sampler" : "SamplerBlock_junk1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      }
+   }
+}
+

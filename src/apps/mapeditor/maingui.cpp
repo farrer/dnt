@@ -170,19 +170,32 @@ void MainGui::toggleMenuStatus()
  ***********************************************************************/
 void MainGui::setLight()
 {
+   //FIXME: for outdoor maps, must define the hemisphere colors with
+   //       different values.
    if(lightEnabled)
    {
       /* Enable light */
       menuItemToggleLight->setCaption("Disable light");
       DNT::Game::getSceneManager()->setAmbientLight(
-            Ogre::ColourValue(0.1f, 0.1f, 0.1f));
+            Ogre::ColourValue(0.1f, 0.1f, 0.1f),
+            Ogre::ColourValue(0.1f, 0.1f, 0.1f),
+            Ogre::Vector3(0.0f, -1.0f, 0.0f));
+/*
+      Ogre::Light *light = DNT::Game::getSceneManager()->createLight();
+      Ogre::SceneNode *lightNode = DNT::Game::getSceneManager()->getRootSceneNode()->createChildSceneNode();
+      lightNode->attachObject( light );
+      light->setPowerScale( 1.0f );
+      light->setType( Ogre::Light::LT_DIRECTIONAL );
+      light->setDirection( Ogre::Vector3( -1, -1, -1 ).normalisedCopy() ); */
    }
    else
    {
       /* Disable the lights */
       menuItemToggleLight->setCaption("Enable light");
       DNT::Game::getSceneManager()->setAmbientLight(
-            Ogre::ColourValue(0.8f, 0.8f, 0.8f));
+            Ogre::ColourValue(0.8f, 0.8f, 0.8f),
+            Ogre::ColourValue(0.8f, 0.8f, 0.8f),
+            Ogre::Vector3(0.0f, -1.0f, 0.0f));
    }
 }
 

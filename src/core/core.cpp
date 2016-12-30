@@ -82,7 +82,13 @@ Ogre::ShadowTechnique Core::getShadowTechnique()
 bool Core::doInit()
 {
    //getSceneManager()->setShadowTextureSelfShadow(true);
-   getSceneManager()->setAmbientLight(Ogre::ColourValue(0.1f, 0.1f, 0.1f));
+   
+   //FIXME: for outdoor maps, must define the hemisphere colors with
+   //       different values.
+   getSceneManager()->setAmbientLight(
+         Ogre::ColourValue(0.1f, 0.1f, 0.1f),
+         Ogre::ColourValue(0.1f, 0.1f, 0.1f),
+         Ogre::Vector3(0.0f, 1.0f, 0.0f));
 
    /* Init Farso */
    Farso::Controller::init(Farso::RENDERER_TYPE_OGRE3D, DEFAULT_WINDOW_WIDTH,

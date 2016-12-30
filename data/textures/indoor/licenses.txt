@@ -3,6 +3,11 @@ All Textures used in DNT are free (as in free speech).
 Here are the licenses for those at the current directory.
 
 ===========================================================================
+*_n.png (normal maps) CC0
+
+   All of them generated with Gimp's normal map plugin by DNTeam.
+
+===========================================================================
 DNTeam GPLv3 Textures
 
 ametista.png, carpete.png, steel1.png, steel3.png, stone2.png, 

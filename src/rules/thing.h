@@ -205,6 +205,13 @@ class Thing : public Kobold::ListElement
        * \return if was successful */
       virtual bool doSpecificSave(std::ofstream& file) = 0;
 
+      /*! Get the animation names list for the AnimatedModel, if the thing's 
+       * implementation support it.
+       * \note those supporting it, should override this function.
+       * \param total total names on vector.
+       * \return animation names vector */ 
+      virtual Kobold::String* getAnimationList();
+
       /*! \return distance can move each frame when walking */
       float getWalkInterval(); 
       /*! \return distance can rotate each frame */

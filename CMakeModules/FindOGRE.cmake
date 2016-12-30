@@ -31,7 +31,8 @@
 #  RenderSystem_GL, RenderSystem_GL3Plus,
 #  RenderSystem_GLES, RenderSystem_GLES2,
 #  RenderSystem_Direct3D9, RenderSystem_Direct3D11
-#  Paging, Terrain, Volume, Overlay, MeshLodGenerator, HLMS
+#  Paging, Terrain, Volume, Overlay, MeshLodGenerator, HlmsUnlit,
+#  HlmsPbs
 #
 # For each of these components, the following variables are defined:
 #
@@ -148,7 +149,8 @@ else()
 endif ()
 
 # redo search if any of the environmental hints changed
-set(OGRE_COMPONENTS Paging Terrain Volume Overlay MeshLodGenerator HLMS
+set(OGRE_COMPONENTS Paging Terrain Volume Overlay MeshLodGenerator HlmsUnlit
+  HlmsPbs
   Plugin_BSPSceneManager Plugin_CgProgramManager Plugin_OctreeSceneManager
   Plugin_OctreeZone Plugin_PCZSceneManager Plugin_ParticleFX
   RenderSystem_Direct3D11 RenderSystem_Direct3D9 RenderSystem_GL RenderSystem_GL3Plus RenderSystem_GLES RenderSystem_GLES2)
@@ -346,10 +348,10 @@ endif()
     endif ()
   endif ()
 if (OGRE_STATIC)
-  if (NOT OGRE_DEPS_FOUND)
-    pkg_message(OGRE "Could not find all required dependencies for the Ogre package.")
-    set(OGRE_FOUND FALSE)
-  endif ()
+   #if (NOT OGRE_DEPS_FOUND)
+   # pkg_message(OGRE "Could not find all required dependencies for the Ogre package.")
+   # set(OGRE_FOUND FALSE)
+   #endif ()
 endif ()
 
 if (NOT OGRE_FOUND)
@@ -426,7 +428,8 @@ ogre_find_component(Overlay OgreOverlaySystem.h)
 # look for MeshLodGenerator component
 ogre_find_component(MeshLodGenerator OgreMeshLodGenerator.h)
 # look for HLMS component
-ogre_find_component(HLMS OgreHlmsManager.h)
+ogre_find_component(HlmsUnlit Hlms/Unlit/OgreHlmsUnlit.h)
+ogre_find_component(HlmsPbs Hlms/Pbs/OgreHlmsPbs.h)
 
 #########################################################
 # Find Ogre plugins

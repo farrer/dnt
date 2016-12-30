@@ -18,14 +18,26 @@
   along with DNT.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define INDOOR_SUBDIVISIONS         2
+#define INDOOR_SUBDIVISIONS         1
 #define INDOOR_SUBDIV_P1     (INDOOR_SUBDIVISIONS + 1)
 #define INDOOR_VERTICES_PER_SQUARE  (INDOOR_SUBDIV_P1) * (INDOOR_SUBDIV_P1)
+#define INDOOR_INDEXES_PER_SQUARE 6 * INDOOR_SUBDIVISIONS * INDOOR_SUBDIVISIONS
+
+/*! Number of floats per vertex definition */
+#define VERTEX_NUM_FLOATS   12
 
 #include "indoortexturemesh.h"
 #include "../core/game.h"
 
-#include <OGRE/OgreMeshManager.h>
+#include <OGRE/OgreMeshManager2.h>
+#include <OGRE/OgreMesh2.h>
+#include <OGRE/OgreSubMesh2.h>
+
+#include <OGRE/OgreRoot.h>
+#include <OGRE/OgreRenderSystem.h>
+
+#include <kobold/log.h>
+#include <goblin/vertexutils.h>
 
 using namespace DNT;
 
@@ -53,32 +65,67 @@ IndoorTextureSquare::~IndoorTextureSquare()
 /**************************************************************************
  *                                   define                               *
  **************************************************************************/
-void IndoorTextureSquare::define(Ogre::ManualObject* manualObject, int curIndex)
+void IndoorTextureSquare::define(float* vertices, int& curVert, int& curIndex, 
+      Ogre::uint16* faces, int& curFace)
 {
    Ogre::Real textureDelta = MAP_SQUARE_SIZE;
    if(bottomLeft.y == topRight.y)
    {
       /* Square at Y plane */
-      defineAtY(manualObject, curIndex, textureDelta);
+      defineAtY(vertices, curVert, curIndex, faces, curFace, textureDelta);
    }
    else if(bottomLeft.x == topRight.x)
    {
       /* Square at X plane */
-      defineAtX(manualObject, curIndex, textureDelta);
+      defineAtX(vertices, curVert, curIndex, faces, curFace, textureDelta);
    }
    else if(bottomLeft.z == topRight.z)
    {
       /* Square at Z plane */
-      defineAtZ(manualObject, curIndex, textureDelta);
+      defineAtZ(vertices, curVert, curIndex, faces, curFace, textureDelta);
    }
    //else TODO non-planar square.
 }
 
 /**************************************************************************
+ *                                setVertex                               *
+ **************************************************************************/
+void IndoorTextureSquare::setVertex(float* vertices, int& curVert, 
+      Ogre::Vector3 pos, Ogre::Vector3 normal, Ogre::Vector2 uv)
+{
+   /* Position */
+   vertices[curVert] = pos.x;
+   vertices[curVert + 1] = pos.y;
+   vertices[curVert + 2] = pos.z;
+
+   /* Normal */
+   vertices[curVert + 3] = normal.x;
+   vertices[curVert + 4] = normal.y;
+   vertices[curVert + 5] = normal.z;
+
+   /* Texture coordinates */
+   vertices[curVert + 6] = uv.x;
+   vertices[curVert + 7] = uv.y;
+
+   /* Tangents (inited with 0) */
+   vertices[curVert + 8] = 0.0f;
+   vertices[curVert + 9] = 0.0f;
+   vertices[curVert + 10] = 0.0f;
+   vertices[curVert + 11] = 0.0f;
+
+   /* Increment to next vertice */
+   curVert += VERTEX_NUM_FLOATS;
+}
+
+//FIXME: define positions centered and use the SceneNode to translate!
+//TODO: Define with different LODs
+
+/**************************************************************************
  *                                   define                               *
  **************************************************************************/
-void IndoorTextureSquare::defineAtY(Ogre::ManualObject* manualObject,
-      int curIndex, Ogre::Real textureDelta)
+void IndoorTextureSquare::defineAtY(float* vertices, int& curVert, 
+      int& curIndex, Ogre::uint16* faces, int& curFace, 
+      Ogre::Real textureDelta)
 {
    Ogre::Real maxU = (topRight.x - bottomLeft.x) / textureDelta;
    Ogre::Real maxV = (topRight.z - bottomLeft.z) / textureDelta;
@@ -106,10 +153,8 @@ void IndoorTextureSquare::defineAtY(Ogre::ManualObject* manualObject,
             cur.z = topRight.z;
             uv.y = maxV;
          }
-         manualObject->position(cur);
-         manualObject->normal(normal);
-         manualObject->textureCoord(uv);
-         
+         setVertex(vertices, curVert, cur, normal, uv);
+                  
          uv.y += incUv.y;
          cur.z += inc.z;
       }
@@ -117,14 +162,15 @@ void IndoorTextureSquare::defineAtY(Ogre::ManualObject* manualObject,
       uv.x += incUv.x;
    }
 
-   defineTriangles(manualObject, curIndex, normal.y);
+   defineTriangles(curIndex, faces, curFace, normal.y);
 }
 
 /**************************************************************************
  *                                   define                               *
  **************************************************************************/
-void IndoorTextureSquare::defineAtX(Ogre::ManualObject* manualObject,
-      int curIndex, Ogre::Real textureDelta)
+void IndoorTextureSquare::defineAtX(float* vertices, int& curVert, 
+      int& curIndex, Ogre::uint16* faces, int& curFace, 
+      Ogre::Real textureDelta)
 {
    Ogre::Real maxU = (topRight.z - bottomLeft.z) / textureDelta;
    Ogre::Real maxV = (topRight.y - bottomLeft.y) / textureDelta;
@@ -143,7 +189,7 @@ void IndoorTextureSquare::defineAtX(Ogre::ManualObject* manualObject,
          cur.z = topRight.z;
          uv.x = maxU;
       }
-      uv.y = textureDelta - maxV;
+      uv.y = maxV;
       cur.y = bottomLeft.y;
 
       for(int j = 0; j <= INDOOR_SUBDIVISIONS; j++)
@@ -151,28 +197,27 @@ void IndoorTextureSquare::defineAtX(Ogre::ManualObject* manualObject,
          if(j == INDOOR_SUBDIVISIONS)
          {
             cur.y = topRight.y;
-            uv.y = textureDelta;
+            uv.y = 0.0f;
          }
-         manualObject->position(cur);
-         manualObject->normal(normal);
-         manualObject->textureCoord(uv);
+         setVertex(vertices, curVert, cur, normal, uv);
          
-         uv.y += incUv.y;
+         uv.y -= incUv.y;
          cur.y += inc.y;
       }
       cur.z += inc.z;
       uv.x += incUv.x;
    }
 
-   defineTriangles(manualObject, curIndex, normal.x);
+   defineTriangles(curIndex, faces, curFace, normal.x);
 }
 
 
 /**************************************************************************
  *                                   define                               *
  **************************************************************************/
-void IndoorTextureSquare::defineAtZ(Ogre::ManualObject* manualObject,
-      int curIndex, Ogre::Real textureDelta)
+void IndoorTextureSquare::defineAtZ(float* vertices, int& curVert, 
+      int& curIndex, Ogre::uint16* faces, int& curFace, 
+      Ogre::Real textureDelta)
 {
    Ogre::Real maxU = (topRight.x - bottomLeft.x) / textureDelta;
    Ogre::Real maxV = (topRight.y - bottomLeft.y) / textureDelta;
@@ -192,7 +237,7 @@ void IndoorTextureSquare::defineAtZ(Ogre::ManualObject* manualObject,
          cur.x = topRight.x;
          uv.x = maxU;
       }
-      uv.y = textureDelta - maxV;
+      uv.y = maxV;
       cur.y = bottomLeft.y;
 
       for(int j = 0; j <= INDOOR_SUBDIVISIONS; j++)
@@ -200,13 +245,11 @@ void IndoorTextureSquare::defineAtZ(Ogre::ManualObject* manualObject,
          if(j == INDOOR_SUBDIVISIONS)
          {
             cur.y = topRight.y;
-            uv.y = textureDelta;
+            uv.y = 0.0f;
          }
-         manualObject->position(cur);
-         manualObject->normal(normal);
-         manualObject->textureCoord(uv);
+         setVertex(vertices, curVert, cur, normal, uv);
          
-         uv.y += incUv.y;
+         uv.y -= incUv.y;
          cur.y += inc.y;
       }
       cur.x += inc.x;
@@ -214,41 +257,44 @@ void IndoorTextureSquare::defineAtZ(Ogre::ManualObject* manualObject,
    }
 
    /* Let's define its triangles */
-   defineTriangles(manualObject, curIndex, -normal.z);
+   defineTriangles(curIndex, faces, curFace, -normal.z);
 }
 
 /**************************************************************************
  *                              defineTriangles                           *
  **************************************************************************/
-void IndoorTextureSquare::defineTriangles(Ogre::ManualObject* manualObject,
-      int index, int nValue)
+void IndoorTextureSquare::defineTriangles(int& curIndex, Ogre::uint16* faces, 
+      int& curFace, int nValue)
 {
-   int curIndex; 
+   int index; 
    for(int i = 0; i < INDOOR_SUBDIVISIONS; i++)
    {
       /* Define index of first element on row */
-      curIndex = index + ((INDOOR_SUBDIVISIONS + 1)  * i);
+      index = curIndex + ((INDOOR_SUBDIVISIONS + 1)  * i);
 
       /* Let's define the 'row' */
       for(int j = 0; j < INDOOR_SUBDIVISIONS; j++)
       {
          if(nValue < 0)
          {
-            manualObject->triangle(curIndex + INDOOR_SUBDIVISIONS + 1, 
-                                   curIndex + 1, curIndex);
-            manualObject->triangle(curIndex + 1, 
-                                   curIndex + INDOOR_SUBDIVISIONS + 1, 
-                                   curIndex + INDOOR_SUBDIVISIONS + 2);
+            faces[curFace] = index + INDOOR_SUBDIVISIONS + 1;
+            faces[curFace+1] = index + 1;
+            faces[curFace+2] = index;
+            faces[curFace+3] = index + 1;
+            faces[curFace+4] = index + INDOOR_SUBDIVISIONS + 1;
+            faces[curFace+5] = index + INDOOR_SUBDIVISIONS + 2;
          }
          else
          {
-            manualObject->triangle(curIndex, curIndex + 1, 
-                                   curIndex + INDOOR_SUBDIVISIONS + 1);
-            manualObject->triangle(curIndex + INDOOR_SUBDIVISIONS + 2, 
-                                   curIndex + INDOOR_SUBDIVISIONS + 1, 
-                                   curIndex + 1);
+            faces[curFace] = index;
+            faces[curFace+1] = index + 1;
+            faces[curFace+2] = index + INDOOR_SUBDIVISIONS + 1;
+            faces[curFace+3] = index + INDOOR_SUBDIVISIONS + 2;
+            faces[curFace+4] = index + INDOOR_SUBDIVISIONS + 1;
+            faces[curFace+5] = index + 1;
          }
-         curIndex += 1;
+         index += 1;
+         curFace += 6;
       }
    }
 }
@@ -273,48 +319,120 @@ Ogre::Vector3 IndoorTextureSquare::getTopRightCorner()
 /**************************************************************************
  *                                 Constructor                            *
  **************************************************************************/
-IndoorTextureMesh::IndoorTextureMesh(Ogre::ManualObject* manualObject,
-      Ogre::String materialName, bool castShadows)
+MapSubMesh::MapSubMesh(Ogre::MeshPtr mesh, Ogre::String datablockName)
 {
-   this->materialName = materialName;
-   this->manualObject = manualObject;
+   this->mesh = mesh;
+   this->datablockName = datablockName;
    this->dirty = false;
-   this->castShadows = castShadows;
+   this->subMesh = NULL;
+   this->subMeshIndex = -1;
 }
 
 /**************************************************************************
  *                                 Destructor                             *
  **************************************************************************/
-
-IndoorTextureMesh::~IndoorTextureMesh()
+MapSubMesh::~MapSubMesh()
 {
+   /* Must destroy if created the submesh */
+   if(this->subMesh)
+   {
+      this->mesh->destroySubMesh(this->subMeshIndex);
+      //FIXME: the destroy isn't freeing it all!
+   }
+
+   /* let's destroy VAO related buffers */
+   Ogre::VaoManager* vaoManager = 
+      Ogre::Root::getSingletonPtr()->getRenderSystem()->getVaoManager();
+   if(vao)
+   {
+      vaoManager->destroyVertexArrayObject(vao);
+      vao = NULL;
+   }
+   if(vertexBuffer)
+   {
+      //if defined to dynamic.
+      //vertexBuffer->map( 0, vertexBuffer->getNumElements());
+      //vertexBuffer->unmap(Ogre::UO_UNMAP_ALL);
+
+      vaoManager->destroyVertexBuffer(vertexBuffer);
+      vertexBuffer = NULL;
+   }
+   if(indexBuffer)
+   {
+      vaoManager->destroyIndexBuffer(indexBuffer);
+      indexBuffer = NULL;
+   }
 }
 
 /**************************************************************************
- *                               getMaterialName                          *
+ *                               getDatablockName                          *
  **************************************************************************/
-Ogre::String IndoorTextureMesh::getMaterialName()
+Ogre::String MapSubMesh::getDatablockName()
 {
-   return materialName;
+   return datablockName;
 }
 
 /**************************************************************************
  *                                 addSquare                              *
  **************************************************************************/
-void IndoorTextureMesh::addSquare(Ogre::Real x1, Ogre::Real y1, Ogre::Real z1,
+void MapSubMesh::addSquare(Ogre::Real x1, Ogre::Real y1, Ogre::Real z1,
       Ogre::Real x2, Ogre::Real y2, Ogre::Real z2,
       Ogre::Real normX, Ogre::Real normY, Ogre::Real normZ)
 {
+   /* Check and define new bounds */
+   if(getTotal() == 0)
+   {
+      /* No squares yet. Must set our min and max as this one */
+      min[0] = x1;
+      min[1] = y1;
+      min[2] = z1;
+      max[0] = x2;
+      max[1] = y2;
+      max[2] = z2;
+   }
+   else
+   {
+      /* Check current bound values */
+      if(x1 < min[0])
+      {
+         min[0] = x1;
+      }
+      if(y1 < min[1])
+      {
+         min[1] = y1;
+      }
+      if(z2 < min[2])
+      {
+         min[2] = z2;
+      }
+      if(x2 > max[0])
+      {
+         max[0] = x2;
+      }
+      if(y2 > max[1])
+      {
+         max[1] = y2;
+      }
+      if(z2 > max[2])
+      {
+         max[2] = z2;
+      }
+   }
+
+   /* Mark the submesh as dirty and add the square */
    dirty = true;
-   insert(new IndoorTextureSquare(x1, y1, z1, x2, y2, z2, 
+   insertAtEnd(new IndoorTextureSquare(x1, y1, z1, x2, y2, z2, 
             normX, normY, normZ));
 }
 
 /**************************************************************************
- *                             updateSceneNode                            *
+ *                                 update                                 *
  **************************************************************************/
-void IndoorTextureMesh::updateManualObject(Ogre::String baseName)
+void MapSubMesh::update()
 {
+   float* vertices = NULL;
+   Ogre::uint16* faces = NULL;;
+
    if(dirty)
    {
       dirty = false;
@@ -322,67 +440,181 @@ void IndoorTextureMesh::updateManualObject(Ogre::String baseName)
       /* Only create the manual object if have some square defined. */
       if(getTotal() > 0)
       {
-         manualObject->begin(materialName, 
-               Ogre::RenderOperation::OT_TRIANGLE_LIST);
+         if(subMesh == NULL)
+         {
+            subMeshIndex = mesh->getNumSubMeshes();
+            subMesh = mesh->createSubMesh();
+            subMesh->mMaterialName = datablockName;
 
-         int curVertIndex = 0;
+            /* Alloc vertices and indexes vectors */
+            vertices = new float[getTotal() * INDOOR_VERTICES_PER_SQUARE * 
+               VERTEX_NUM_FLOATS];
+            faces = new Ogre::uint16[getTotal() * INDOOR_INDEXES_PER_SQUARE];
+         }
+         else
+         {
+            //TODO
+            Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+                  "Warning: MapSupMesh update isn't implemented!");
+            return;
+         }
 
-         /* Define each square as two triangles */
+         int curVert = 0, curIndex = 0, curFaceIndex = 0;
+
+         /* Define each square */
          IndoorTextureSquare* square = static_cast<IndoorTextureSquare*>
             (getFirst());
          for(int i = 0; i < getTotal(); i++)
          {
-            square->define(manualObject, curVertIndex);
-            curVertIndex += INDOOR_VERTICES_PER_SQUARE;
+            square->define(vertices, curVert, curIndex, faces, curFaceIndex);
+
+            curIndex += INDOOR_VERTICES_PER_SQUARE;
 
             /* Done, let's check next square */
             square = static_cast<IndoorTextureSquare*>(square->getNext());
          }
 
-         manualObject->end();
+         /* Let's make sure total vertices and face indexes where defined */
+         assert((getTotal() * INDOOR_VERTICES_PER_SQUARE * VERTEX_NUM_FLOATS) 
+               == curVert);
+         assert((getTotal() * INDOOR_INDEXES_PER_SQUARE) == curFaceIndex);
+
+         createVao(vertices, faces);
       }
    }
+   /* Clean up (FIXME: vertices and faces shouldn't be members?) */
+   if(vertices != NULL)
+   {
+      delete[] vertices;
+   }
+   if(faces != NULL)
+   {
+      delete[] faces;
+   }
+}
+
+/**************************************************************************
+ *                                  createVao                             *
+ **************************************************************************/
+void MapSubMesh::createVao(float* verts, Ogre::uint16* faces)
+{
+   Ogre::VaoManager* vaoManager = 
+      Ogre::Root::getSingletonPtr()->getRenderSystem()->getVaoManager();
+
+   /* Let's calculate our tangents */
+   int numVertices = getTotal() * INDOOR_VERTICES_PER_SQUARE;
+   int numIndices = getTotal() * INDOOR_INDEXES_PER_SQUARE;
+   Goblin::VertexUtils::generateTangents(verts, faces, 
+         VERTEX_NUM_FLOATS, numVertices, numIndices,  
+         0, 3, 8, 6);
+
+   /* Copy it to a SIMD array (the memory will be managed by the vao */
+   Ogre::uint16* faceIndices = reinterpret_cast<Ogre::uint16*>(
+         OGRE_MALLOC_SIMD(sizeof(Ogre::uint16) * numIndices,
+            Ogre::MEMCATEGORY_GEOMETRY) );
+   memcpy(faceIndices, faces, sizeof(Ogre::uint16) * numIndices);
+
+   /* Let's create the index buffer */
+   try
+   {
+      indexBuffer = vaoManager->createIndexBuffer(
+            Ogre::IndexBufferPacked::IT_16BIT, numIndices, Ogre::BT_IMMUTABLE,
+            faceIndices, true);
+   }
+   catch(Ogre::Exception& e)
+   {
+      /* With exceptions, we should need to free it */
+      OGRE_FREE_SIMD(indexBuffer, Ogre::MEMCATEGORY_GEOMETRY);
+      indexBuffer = NULL;
+      throw e;
+   }
+
+   /* Define our vertices elements: Position, Normal and UVs */
+   Ogre::VertexElement2Vec vertexElements;
+   vertexElements.push_back(Ogre::VertexElement2(Ogre::VET_FLOAT3,
+            Ogre::VES_POSITION));
+   vertexElements.push_back(Ogre::VertexElement2(Ogre::VET_FLOAT3,
+            Ogre::VES_NORMAL));
+   vertexElements.push_back(Ogre::VertexElement2(Ogre::VET_FLOAT2,
+            Ogre::VES_TEXTURE_COORDINATES));
+   vertexElements.push_back(Ogre::VertexElement2(Ogre::VET_FLOAT4,
+            Ogre::VES_TANGENT));
+
+   /* Let's copy it to a SIMD array */
+   float* vertices = reinterpret_cast<float*>(OGRE_MALLOC_SIMD(
+            sizeof(float) * numVertices * VERTEX_NUM_FLOATS, 
+            Ogre::MEMCATEGORY_GEOMETRY));
+   memcpy(vertices, verts, sizeof(float) * numVertices * VERTEX_NUM_FLOATS);
+
+   /* And create our packed vertex buffer */
+   try
+   {
+      vertexBuffer = vaoManager->createVertexBuffer(vertexElements, 
+            numVertices, Ogre::BT_IMMUTABLE, vertices, true);
+   }
+   catch(Ogre::Exception &e)
+   {
+      OGRE_FREE_SIMD(vertexBuffer, Ogre::MEMCATEGORY_GEOMETRY);
+      vertexBuffer = NULL;
+      throw e;
+   }
+
+   /* Finally, the Vao. */
+   Ogre::VertexBufferPackedVec vertexBuffers;
+   vertexBuffers.push_back(vertexBuffer);
+
+   vao = vaoManager->createVertexArrayObject(vertexBuffers, indexBuffer,
+         Ogre::OT_TRIANGLE_LIST);
+
+   //TODO: must set various LOD.
+   subMesh->mVao[Ogre::VpNormal].push_back(vao);
+   subMesh->mVao[Ogre::VpShadow].push_back(vao);
 }
 
 /**************************************************************************
  *                                 Constructor                            *
  **************************************************************************/
-IndoorTextureMeshes::IndoorTextureMeshes(Ogre::String baseName, 
-      bool castShadows)
+MapMesh::MapMesh(Ogre::String baseName)
 {
-#if OGRE_VERSION_MAJOR == 1
-   this->manualObject = Game::getSceneManager()->createManualObject(baseName);
-#else
-   this->manualObject = Game::getSceneManager()->createManualObject();
-#endif
+   this->mesh = Ogre::MeshManager::getSingleton().createManual(baseName,
+         Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
    this->sceneNode = NULL;
-   this->entity = NULL;
+   this->item = NULL;
 
    this->baseName = baseName;
-   this->castShadows = castShadows;
 }
 
 /**************************************************************************
  *                                 Destructor                             *
  **************************************************************************/
-IndoorTextureMeshes::~IndoorTextureMeshes()
+MapMesh::~MapMesh()
 {
-   Game::getSceneManager()->destroyManualObject(manualObject);
+   /* Remove item and scene node */
    deleteSceneNode();
+
+   /* Let's clear the submesh list from back to front (as the submesh deletion
+    * in the mesh is made by its index and removing a previous will change 
+    * subsequent indexes). */
+   while(getLast() != NULL)
+   {
+      remove(getLast());
+   }
+
+   /* Finally, bye mesh. */
+   Ogre::MeshManager::getSingleton().remove(this->mesh->getHandle());
 }
 
 /**************************************************************************
  *                                deleteObjects                           *
  **************************************************************************/
-void IndoorTextureMeshes::deleteSceneNode()
+void MapMesh::deleteSceneNode()
 {
    if(sceneNode != NULL)
    {
       /* Remove from scene and delete */
-      sceneNode->detachObject(entity);
+      sceneNode->detachObject(item);
       Game::getSceneManager()->destroySceneNode(sceneNode);
-      Game::getSceneManager()->destroyEntity(entity);
-      Ogre::MeshManager::getSingleton().remove(ogreMesh->getName());
+      Game::getSceneManager()->destroyItem(item);
 
       /* Nullify */
       sceneNode = NULL;
@@ -393,29 +625,26 @@ void IndoorTextureMeshes::deleteSceneNode()
 /**************************************************************************
  *                              createTextureMesh                         *
  **************************************************************************/
-IndoorTextureMesh* IndoorTextureMeshes::createTextureMesh(
-      Ogre::String materialName)
+MapSubMesh* MapMesh::createSubMesh(Ogre::String datablockName)
 {
-   IndoorTextureMesh* mesh = new IndoorTextureMesh(manualObject, 
-         materialName, castShadows);
-   insert(mesh);
-   return mesh;
+   MapSubMesh* subMesh = new MapSubMesh(mesh, datablockName);
+   insert(subMesh);
+   return subMesh;
 }
 
 /**************************************************************************
  *                                getTextureMesh                          *
  **************************************************************************/
-IndoorTextureMesh* IndoorTextureMeshes::getTextureMesh(
-      Ogre::String materialName)
+MapSubMesh* MapMesh::getSubMesh(Ogre::String datablockName)
 {
-   IndoorTextureMesh* mesh = static_cast<IndoorTextureMesh*>(getFirst());
+   MapSubMesh* subMesh = static_cast<MapSubMesh*>(getFirst());
    for(int i = 0; i < getTotal(); i++)
    {
-      if(mesh->getMaterialName() == materialName)
+      if(subMesh->getDatablockName() == datablockName)
       {
-         return mesh;
+         return subMesh;
       }
-      mesh = static_cast<IndoorTextureMesh*>(mesh->getNext());
+      subMesh = static_cast<MapSubMesh*>(subMesh->getNext());
    }
 
    return NULL;
@@ -424,36 +653,104 @@ IndoorTextureMesh* IndoorTextureMeshes::getTextureMesh(
 /**************************************************************************
  *                                hasTextureMesh                          *
  **************************************************************************/
-bool IndoorTextureMeshes::hasTextureMesh(Ogre::String materialName)
+bool MapMesh::hasTextureMesh(Ogre::String datablockName)
 {
-   return getTextureMesh(materialName) != NULL;
+   return getSubMesh(datablockName) != NULL;
+}
+
+/**************************************************************************
+ *                              defineBounds                              *
+ **************************************************************************/
+void MapMesh::defineBounds()
+{
+   /* Initial: define our current to the first submesh values.
+    * Note that if called defineBounds is that we assured we have
+    * at last one submesh. */
+   MapSubMesh* subMesh = static_cast<MapSubMesh*>(getFirst());
+   Ogre::Vector3 min = subMesh->getMin();
+   Ogre::Vector3 max = subMesh->getMax();
+   for(int i = 1; i < getTotal(); i++)
+   {
+      Ogre::Vector3 subMeshMin = subMesh->getMin();
+      Ogre::Vector3 subMeshMax = subMesh->getMax();
+
+      /* Check if lesser than current min */
+      if(min.x > subMeshMin.x)
+      {
+         min.x = subMeshMin.x;
+      }
+      if(min.y > subMeshMin.y)
+      {
+         min.y = subMeshMin.y;
+      }
+      if(min.z > subMeshMin.z)
+      {
+         min.z = subMeshMin.z;
+      }
+
+      /* Check if greater than current max */
+      if(max.x < subMeshMax.x)
+      {
+         max.x = subMeshMax.x;
+      }
+      if(max.y < subMeshMax.y)
+      {
+         max.y = subMeshMax.y;
+      }
+      if(max.z < subMeshMax.z)
+      {
+         max.z = subMeshMax.z;
+      }
+
+      /* Check next */
+      subMesh = static_cast<MapSubMesh*>(subMesh->getNext());
+   }
+
+   /* Define Aaabb */
+   Ogre::Vector3 half = (max - min) / 2;
+   Ogre::Vector3 center = min + half; 
+   mesh->_setBounds(Ogre::Aabb(center, half));
+
+   /* define radius, by max half incremented a few */
+   Ogre::Real radius = half[0];
+   if((half.y > radius) && (half.z <= radius))
+   {
+      radius = half.y;
+   }
+   else if(half.z > radius)
+   {
+      radius = half.z;
+   }
+   radius += 1.0f;
+   mesh->_setBoundingSphereRadius(radius);
 }
 
 /**************************************************************************
  *                              updateAllDirty                            *
  **************************************************************************/
-void IndoorTextureMeshes::updateAllDirty()
+void MapMesh::updateAllDirty()
 {
    if(getTotal() > 0)
    {
       deleteSceneNode();
 
-      IndoorTextureMesh* mesh = static_cast<IndoorTextureMesh*>(getFirst());
+      MapSubMesh* subMesh = static_cast<MapSubMesh*>(getFirst());
       for(int i = 0; i < getTotal(); i++)
       {
-         mesh->updateManualObject(baseName);
-         mesh = static_cast<IndoorTextureMesh*>(mesh->getNext());
+         subMesh->update();
+         subMesh = static_cast<MapSubMesh*>(subMesh->getNext());
       }
 
-      /* Define mesh */
-      ogreMesh = manualObject->convertToMesh(baseName);
-      entity = Game::getSceneManager()->createEntity(ogreMesh);
-      entity->setCastShadows(castShadows);
+      /* Define Mesh bounding box */
+      defineBounds();
+
+      /* Add mesh to its Item */
+      item = Game::getSceneManager()->createItem(mesh);
 
       /* Create the scene node and attach to the scene with manual object */
       sceneNode = 
          Game::getSceneManager()->getRootSceneNode()->createChildSceneNode();
-      sceneNode->attachObject(entity);
+      sceneNode->attachObject(item);
       sceneNode->setPosition(0.0f, 0.0f, 0.0f);
    }
 }

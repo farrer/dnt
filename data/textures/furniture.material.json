@@ -1,0 +1,422 @@
+{
+   "samplers" :
+   {
+      "SamplerBlock_furniture1" :
+      {
+         "min" : "linear",
+         "mag" : "linear",
+         "u" : "wrap",
+         "v" : "wrap"
+      }
+   },
+   "macroblocks" :
+   {
+      "MacroBlock_furniture1" :
+      {
+         "depth_check" : true,
+         "depth_write" : true,
+         "polygon_mode" : "solid"
+      }
+   },
+   "blendblocks" : 
+   {
+      "Blendblock_furniture1" :
+      {
+      }
+   },
+   "pbs" :
+   {
+      "bookshelf":
+      {
+         "macroblock" : "Macroblock_furniture1",
+         "blendblock" : "Blendblock_furniture1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "furniture/bookshelf.png",
+            "sampler" : "SamplerBlock_furniture1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "cadeira":
+      {
+         "macroblock" : "Macroblock_furniture1",
+         "blendblock" : "Blendblock_furniture1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "furniture/cadeira.png",
+            "sampler" : "SamplerBlock_furniture1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "calendar":
+      {
+         "macroblock" : "Macroblock_furniture1",
+         "blendblock" : "Blendblock_furniture1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "furniture/calendar.png",
+            "sampler" : "SamplerBlock_furniture1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "dinner_chair":
+      {
+         "macroblock" : "Macroblock_furniture1",
+         "blendblock" : "Blendblock_furniture1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "furniture/dinner_chair.png",
+            "sampler" : "SamplerBlock_furniture1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "dinner_table":
+      {
+         "macroblock" : "Macroblock_furniture1",
+         "blendblock" : "Blendblock_furniture1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "furniture/dinner_table.png",
+            "sampler" : "SamplerBlock_furniture1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "estante":
+      {
+         "macroblock" : "Macroblock_furniture1",
+         "blendblock" : "Blendblock_furniture1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "furniture/estante.png",
+            "sampler" : "SamplerBlock_furniture1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "fridge":
+      {
+         "macroblock" : "Macroblock_furniture1",
+         "blendblock" : "Blendblock_furniture1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "furniture/fridge.png",
+            "sampler" : "SamplerBlock_furniture1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "letto":
+      {
+         "macroblock" : "Macroblock_furniture1",
+         "blendblock" : "Blendblock_furniture1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "furniture/letto.png",
+            "sampler" : "SamplerBlock_furniture1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "mesa_redonda":
+      {
+         "macroblock" : "Macroblock_furniture1",
+         "blendblock" : "Blendblock_furniture1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "furniture/mesa_redonda.png",
+            "sampler" : "SamplerBlock_furniture1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "meuble":
+      {
+         "macroblock" : "Macroblock_furniture1",
+         "blendblock" : "Blendblock_furniture1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "furniture/meuble.png",
+            "sampler" : "SamplerBlock_furniture1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "microwave":
+      {
+         "macroblock" : "Macroblock_furniture1",
+         "blendblock" : "Blendblock_furniture1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "furniture/microwave.png",
+            "sampler" : "SamplerBlock_furniture1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "oven":
+      {
+         "macroblock" : "Macroblock_furniture1",
+         "blendblock" : "Blendblock_furniture1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "furniture/oven.png",
+            "sampler" : "SamplerBlock_furniture1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "papel_higienico":
+      {
+         "macroblock" : "Macroblock_furniture1",
+         "blendblock" : "Blendblock_furniture1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "furniture/papel_higienico.png",
+            "sampler" : "SamplerBlock_furniture1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "pc_chair":
+      {
+         "macroblock" : "Macroblock_furniture1",
+         "blendblock" : "Blendblock_furniture1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "furniture/pc_chair.png",
+            "sampler" : "SamplerBlock_furniture1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "pc_table":
+      {
+         "macroblock" : "Macroblock_furniture1",
+         "blendblock" : "Blendblock_furniture1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "furniture/pc_table.png",
+            "sampler" : "SamplerBlock_furniture1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "pia":
+      {
+         "macroblock" : "Macroblock_furniture1",
+         "blendblock" : "Blendblock_furniture1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "furniture/pia.png",
+            "sampler" : "SamplerBlock_furniture1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "pillow":
+      {
+         "macroblock" : "Macroblock_furniture1",
+         "blendblock" : "Blendblock_furniture1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "furniture/sofa.png",
+            "sampler" : "SamplerBlock_furniture1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "poster":
+      {
+         "macroblock" : "Macroblock_furniture1",
+         "blendblock" : "Blendblock_furniture1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "furniture/poster.png",
+            "sampler" : "SamplerBlock_furniture1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "privada":
+      {
+         "macroblock" : "Macroblock_furniture1",
+         "blendblock" : "Blendblock_furniture1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "furniture/privada.png",
+            "sampler" : "SamplerBlock_furniture1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "privada2":
+      {
+         "macroblock" : "Macroblock_furniture1",
+         "blendblock" : "Blendblock_furniture1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "furniture/privada2.png",
+            "sampler" : "SamplerBlock_furniture1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "rug":
+      {
+         "macroblock" : "Macroblock_furniture1",
+         "blendblock" : "Blendblock_furniture1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "furniture/rug.png",
+            "sampler" : "SamplerBlock_furniture1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      },
+      "sofa":
+      {
+         "macroblock" : "Macroblock_furniture1",
+         "blendblock" : "Blendblock_furniture1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.80, 0.80, 0.80],
+            "texture" : "furniture/sofa.png",
+            "sampler" : "SamplerBlock_furniture1"
+         },
+         "specular":
+         {
+            "value": [0.5, 0.5, 0.5]
+         }
+      },
+      "wardrobe":
+      {
+         "macroblock" : "Macroblock_furniture1",
+         "blendblock" : "Blendblock_furniture1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "furniture/wardrobe.png",
+            "sampler" : "SamplerBlock_furniture1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      }
+   }
+}
+

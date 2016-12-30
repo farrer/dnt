@@ -37,6 +37,8 @@
 
 #include <goblin/camera.h>
 
+#include <OGRE/Compositor/OgreCompositorManager2.h>
+
 using namespace DNTMapEditor;
 
 /***********************************************************************
@@ -72,16 +74,6 @@ MapEditor::~MapEditor()
    Farso::Controller::finish();
 }
 
-#if OGRE_VERSION_MAJOR == 1
-/***********************************************************************
- *                          getShadowTechnique                         *
- ***********************************************************************/
-Ogre::ShadowTechnique MapEditor::getShadowTechnique()
-{
-   return Ogre::SHADOWTYPE_STENCIL_ADDITIVE;
-}
-#endif
-
 /***********************************************************************
  *                               doInit                                *
  ***********************************************************************/
@@ -112,6 +104,17 @@ bool MapEditor::doInit()
 
    /* Set camera initial position */
    Goblin::Camera::set(200.0f, 30.0f, 120.0f, 0.0f, 89.0f, 410.0f);
+
+   /* FIXME: should not be here, but at map load. */
+   /* Change workspace to cdefine map type */
+   Ogre::CompositorManager2 *compositorManager =
+         ogreRoot->getCompositorManager2();
+   //compositorManager->removeWorkspace(ogreWorkspace);
+   ogreWorkspace = compositorManager->addWorkspace(ogreSceneManager,
+         ogreWindow, Goblin::Camera::getOgreCamera(), 
+         "DNTIndoorWorkspace", true);
+
+   getSceneManager()->setForward3D(true, 4, 4, 4, 32, 3, 2000);
 
    return true;
 }

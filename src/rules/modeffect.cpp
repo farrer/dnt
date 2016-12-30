@@ -24,6 +24,8 @@
 #include "skills.h"
 #include "character.h"
 
+#include "../lang/translate.h"
+
 #include <kobold/log.h>
 
 using namespace DNT;

@@ -84,8 +84,8 @@ using namespace DNT;
  *                                Constructor                             *
  **************************************************************************/
 Map::Map()
-    :floor("floor", false),
-     walls("wall", true)
+    :floor("floor"),
+     walls("wall")
 {
    this->name = "";
    this->filename = "";
@@ -181,7 +181,7 @@ void Map::create(int sizeX, int sizeZ)
    //walls.createTextureMesh(MAP_UPPER_WALL_MATERIAL);
 
    /* Create the mesh for default texture */
-   IndoorTextureMesh* mesh = floor.createTextureMesh("concrete6");
+   MapSubMesh* mesh = floor.createSubMesh("concrete6");
    for(int squareZ = 0; squareZ < sizeZ; squareZ++)
    {
       for(int squareX = 0; squareX < sizeX; squareX++)
@@ -242,7 +242,7 @@ bool Map::load(Ogre::String mapFileName, bool fullPath)
    sscanf(value.c_str(), "%dx%d", &xSize, &zSize);
 
    /* Define the upper wall texture */
-   walls.createTextureMesh(MAP_UPPER_WALL_MATERIAL);
+   walls.createSubMesh(MAP_UPPER_WALL_MATERIAL);
 
    /* Reset square position counters */
    int squareX = -1;
@@ -279,12 +279,12 @@ bool Map::load(Ogre::String mapFileName, bool fullPath)
       /* Square texture definition */
       else if(key == MAP_TOKEN_USE_TEXTURE)
       {
-         IndoorTextureMesh* mesh = floor.getTextureMesh(value);
-         if(!mesh)
+         MapSubMesh* subMesh = floor.getSubMesh(value);
+         if(!subMesh)
          {
-            mesh = floor.createTextureMesh(value);
+            subMesh = floor.createSubMesh(value);
          }
-         mesh->addSquare(squareX * MAP_SQUARE_SIZE, 0.0f, 
+         subMesh->addSquare(squareX * MAP_SQUARE_SIZE, 0.0f, 
                          squareZ * MAP_SQUARE_SIZE, 
                          (squareX + 1) * MAP_SQUARE_SIZE, 0.0f,
                          (squareZ + 1) * MAP_SQUARE_SIZE,
@@ -318,17 +318,16 @@ bool Map::load(Ogre::String mapFileName, bool fullPath)
          }
 
          /* Define the upper wall square */
-         IndoorTextureMesh* mesh = walls.getTextureMesh(
-               MAP_UPPER_WALL_MATERIAL);
-         if(mesh)
+         MapSubMesh* subMesh = walls.getSubMesh(MAP_UPPER_WALL_MATERIAL);
+         if(subMesh)
          {
-            mesh->addSquare(wX1, wY2, wZ1, 
+            subMesh->addSquare(wX1, wY2, wZ1, 
                             wX2, wY2, wZ2,
                             0.0f, 1.0f, 0.0f);
             if(wY1 != 0.0f)
             {
                /* Also define a square for bottom, as not at floor */
-               mesh->addSquare(wX1, wY1, wZ1,
+               subMesh->addSquare(wX1, wY1, wZ1,
                                wX2, wY1, wZ2,
                                0.0f, -1.0f, 0.0f);
             }
@@ -338,45 +337,45 @@ bool Map::load(Ogre::String mapFileName, bool fullPath)
       /* Define Current Wall Front Texture */
       else if(key == MAP_TOKEN_WALL_TEXTURE_FRONT)
       {
-         IndoorTextureMesh* mesh = walls.getTextureMesh(value);
-         if(!mesh)
+         MapSubMesh* subMesh = walls.getSubMesh(value);
+         if(!subMesh)
          {
-            mesh = walls.createTextureMesh(value);
+            subMesh = walls.createSubMesh(value);
          }
-         mesh->addSquare(wX1, wY1, wZ1, wX2, wY2, wZ1,
+         subMesh->addSquare(wX1, wY1, wZ1, wX2, wY2, wZ1,
                0.0f, 0.0f, -1.0f);
       }
       /* Define Current Wall Back Texture */
       else if(key == MAP_TOKEN_WALL_TEXTURE_BACK)
       {
-         IndoorTextureMesh* mesh = walls.getTextureMesh(value);
-         if(!mesh)
+         MapSubMesh* subMesh = walls.getSubMesh(value);
+         if(!subMesh)
          {
-            mesh = walls.createTextureMesh(value);
+            subMesh = walls.createSubMesh(value);
          }
-         mesh->addSquare(wX1, wY1, wZ2, wX2, wY2, wZ2,
+         subMesh->addSquare(wX1, wY1, wZ2, wX2, wY2, wZ2,
                0.0f, 0.0f, 1.0f);
       }
       /* Define Current Wall Left Texture */
       else if(key == MAP_TOKEN_WALL_TEXTURE_LEFT)
       {
-         IndoorTextureMesh* mesh = walls.getTextureMesh(value);
-         if(!mesh)
+         MapSubMesh* subMesh = walls.getSubMesh(value);
+         if(!subMesh)
          {
-            mesh = walls.createTextureMesh(value);
+            subMesh = walls.createSubMesh(value);
          }
-         mesh->addSquare(wX1, wY1, wZ1, wX1, wY2, wZ2,
+         subMesh->addSquare(wX1, wY1, wZ1, wX1, wY2, wZ2,
                -1.0f, 0.0f, 0.0f);
       }
       /* Define Current Wall Left Texture */
       else if(key == MAP_TOKEN_WALL_TEXTURE_RIGHT)
       {
-         IndoorTextureMesh* mesh = walls.getTextureMesh(value);
-         if(!mesh)
+         MapSubMesh* subMesh = walls.getSubMesh(value);
+         if(!subMesh)
          {
-            mesh = walls.createTextureMesh(value);
+            subMesh = walls.createSubMesh(value);
          }
-         mesh->addSquare(wX2, wY1, wZ1, wX2, wY2, wZ2,
+         subMesh->addSquare(wX2, wY1, wZ1, wX2, wY2, wZ2,
                1.0f, 0.0f, 0.0f);
       }
       /* Define a thing (object, item, scenery, etc) on the map */

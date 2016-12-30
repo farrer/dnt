@@ -33,7 +33,7 @@ LightInfo::LightInfo(Ogre::Light::LightTypes type)
 {
    this->type = type;
    this->direction = Ogre::Vector3(0.0f, -1.0f, 0.0f);
-   this->outerAngle = 80.0f;
+   this->outerAngle = 120.0f;
    this->range = 325;
    this->constant = 1.0;
    this->linear = 0.014; 
@@ -132,34 +132,34 @@ bool LightInfo::isInner(int pX, int pZ)
  **************************************************************************/
 void LightInfo::setLight(Ogre::Light* light, Ogre::SceneNode* sceneNode)
 {
+   light->setPowerScale(Ogre::Math::PI); 
+
+   /*light->setShadowNearClipDistance(2.2f);
+   light->setShadowFarClipDistance(2200.0f);
+   light->setShadowFarDistance(2000.0f);*/
    /* Define common light elements */
    light->setType(type);
-#if OGRE_VERSION_MAJOR == 1
-   light->setPosition(position);
-#else
    sceneNode->setPosition(position);
-#endif
    light->setDiffuseColour(diffuse);
    light->setSpecularColour(specular);
 
    if(type != Ogre::Light::LT_POINT)
    {
       /* Use direction */
-#if OGRE_VERSION_MAJOR == 1
-      light->setDirection(direction);
-#else
       sceneNode->setDirection(direction);
-#endif
    }
-   else
+   //else
    {
       /* Use attenuation */
       light->setAttenuation(range, constant, linear, quadratic);
    }
+
    if(type == Ogre::Light::LT_SPOTLIGHT)
    {
       /* Set spotlight outer angle */
-      light->setSpotlightRange(Ogre::Degree(0), outerAngle);
+      light->setSpotlightRange(Ogre::Degree(0), Ogre::Degree(outerAngle));
+      //FIXME: define radius attenuation by parameter
+      //light->setAttenuationBasedOnRadius(10.0f, 0.01f);
    }
 }
 
@@ -171,11 +171,9 @@ MapLights::MapLights()
    light = Game::getSceneManager()->createLight();
    light->setType(Ogre::Light::LT_POINT);
 
-#if OGRE_VERSION_MAJOR != 1
    lightSceneNode = 
       Game::getSceneManager()->getRootSceneNode()->createChildSceneNode();
    lightSceneNode->attachObject(light);
-#endif
 
    lastX = -1;
    lastZ = -1;
@@ -187,13 +185,11 @@ MapLights::MapLights()
  **************************************************************************/
 MapLights::~MapLights()
 {
-#if OGRE_VERSION_MAJOR != 1
    if(lightSceneNode)
    {
       lightSceneNode->detachObject(light);
       Game::getSceneManager()->destroySceneNode(lightSceneNode);
    }
-#endif
    if(light)
    {
       Game::getSceneManager()->destroyLight(light);
@@ -234,11 +230,7 @@ void MapLights::setActiveLight(float pX, float pZ)
             if(curLight != info)
             {
                curLight = info;
-#if OGRE_VERSION_MAJOR == 1
-               info->setLight(light, NULL);
-#else
                info->setLight(light, lightSceneNode);
-#endif
             }
             return;
          }
@@ -251,11 +243,7 @@ void MapLights::setActiveLight(float pX, float pZ)
       if(curLight != info)
       {
          curLight = info;
-#if OGRE_VERSION_MAJOR == 1
-         info->setLight(light, NULL);
-#else
          info->setLight(light, lightSceneNode);
-#endif
       }
    }
 }
