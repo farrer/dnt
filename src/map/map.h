@@ -24,6 +24,7 @@
 #include "dntconfig.h"
 
 #include "indoortexturemesh.h"
+#include "wall.h"
 
 #include <kobold/list.h>
 #include <kobold/kstring.h>
@@ -82,9 +83,11 @@ class Map
       void setMusicFilename(Kobold::String filename);
 
    private:
+      /*! Update all dirty wall meshes */
+      void updateAllDirtyWalls();
 
       MapMesh floor; /**< The indoor floor meshes */
-      MapMesh walls; /**< The indoor wall meshes */
+      Kobold::List walls; /**< The indoor walls */
 
       Kobold::String name;     /**< Map's name */
       Kobold::String filename; /**< Map's filename */

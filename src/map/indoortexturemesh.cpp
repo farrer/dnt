@@ -66,23 +66,26 @@ IndoorTextureSquare::~IndoorTextureSquare()
  *                                   define                               *
  **************************************************************************/
 void IndoorTextureSquare::define(float* vertices, int& curVert, int& curIndex, 
-      Ogre::uint16* faces, int& curFace)
+      Ogre::uint16* faces, int& curFace, const Ogre::Vector3 meshMin)
 {
    Ogre::Real textureDelta = MAP_SQUARE_SIZE;
    if(bottomLeft.y == topRight.y)
    {
       /* Square at Y plane */
-      defineAtY(vertices, curVert, curIndex, faces, curFace, textureDelta);
+      defineAtY(vertices, curVert, curIndex, faces, curFace, textureDelta,
+                meshMin);
    }
    else if(bottomLeft.x == topRight.x)
    {
       /* Square at X plane */
-      defineAtX(vertices, curVert, curIndex, faces, curFace, textureDelta);
+      defineAtX(vertices, curVert, curIndex, faces, curFace, textureDelta,
+                meshMin);
    }
    else if(bottomLeft.z == topRight.z)
    {
       /* Square at Z plane */
-      defineAtZ(vertices, curVert, curIndex, faces, curFace, textureDelta);
+      defineAtZ(vertices, curVert, curIndex, faces, curFace, textureDelta,
+                meshMin);
    }
    //else TODO non-planar square.
 }
@@ -91,12 +94,13 @@ void IndoorTextureSquare::define(float* vertices, int& curVert, int& curIndex,
  *                                setVertex                               *
  **************************************************************************/
 void IndoorTextureSquare::setVertex(float* vertices, int& curVert, 
-      Ogre::Vector3 pos, Ogre::Vector3 normal, Ogre::Vector2 uv)
+      Ogre::Vector3 pos, Ogre::Vector3 normal, Ogre::Vector2 uv, 
+      const Ogre::Vector3 meshMin)
 {
    /* Position */
-   vertices[curVert] = pos.x;
-   vertices[curVert + 1] = pos.y;
-   vertices[curVert + 2] = pos.z;
+   vertices[curVert] = pos.x - meshMin.x;
+   vertices[curVert + 1] = pos.y - meshMin.y;
+   vertices[curVert + 2] = pos.z - meshMin.z;
 
    /* Normal */
    vertices[curVert + 3] = normal.x;
@@ -125,7 +129,7 @@ void IndoorTextureSquare::setVertex(float* vertices, int& curVert,
  **************************************************************************/
 void IndoorTextureSquare::defineAtY(float* vertices, int& curVert, 
       int& curIndex, Ogre::uint16* faces, int& curFace, 
-      Ogre::Real textureDelta)
+      Ogre::Real textureDelta, const Ogre::Vector3 meshMin)
 {
    Ogre::Real maxU = (topRight.x - bottomLeft.x) / textureDelta;
    Ogre::Real maxV = (topRight.z - bottomLeft.z) / textureDelta;
@@ -153,7 +157,7 @@ void IndoorTextureSquare::defineAtY(float* vertices, int& curVert,
             cur.z = topRight.z;
             uv.y = maxV;
          }
-         setVertex(vertices, curVert, cur, normal, uv);
+         setVertex(vertices, curVert, cur, normal, uv, meshMin);
                   
          uv.y += incUv.y;
          cur.z += inc.z;
@@ -170,7 +174,7 @@ void IndoorTextureSquare::defineAtY(float* vertices, int& curVert,
  **************************************************************************/
 void IndoorTextureSquare::defineAtX(float* vertices, int& curVert, 
       int& curIndex, Ogre::uint16* faces, int& curFace, 
-      Ogre::Real textureDelta)
+      Ogre::Real textureDelta, const Ogre::Vector3 meshMin)
 {
    Ogre::Real maxU = (topRight.z - bottomLeft.z) / textureDelta;
    Ogre::Real maxV = (topRight.y - bottomLeft.y) / textureDelta;
@@ -199,7 +203,7 @@ void IndoorTextureSquare::defineAtX(float* vertices, int& curVert,
             cur.y = topRight.y;
             uv.y = 0.0f;
          }
-         setVertex(vertices, curVert, cur, normal, uv);
+         setVertex(vertices, curVert, cur, normal, uv, meshMin);
          
          uv.y -= incUv.y;
          cur.y += inc.y;
@@ -217,7 +221,7 @@ void IndoorTextureSquare::defineAtX(float* vertices, int& curVert,
  **************************************************************************/
 void IndoorTextureSquare::defineAtZ(float* vertices, int& curVert, 
       int& curIndex, Ogre::uint16* faces, int& curFace, 
-      Ogre::Real textureDelta)
+      Ogre::Real textureDelta, const Ogre::Vector3 meshMin)
 {
    Ogre::Real maxU = (topRight.x - bottomLeft.x) / textureDelta;
    Ogre::Real maxV = (topRight.y - bottomLeft.y) / textureDelta;
@@ -247,7 +251,7 @@ void IndoorTextureSquare::defineAtZ(float* vertices, int& curVert,
             cur.y = topRight.y;
             uv.y = 0.0f;
          }
-         setVertex(vertices, curVert, cur, normal, uv);
+         setVertex(vertices, curVert, cur, normal, uv, meshMin);
          
          uv.y -= incUv.y;
          cur.y += inc.y;
@@ -401,9 +405,9 @@ void MapSubMesh::addSquare(Ogre::Real x1, Ogre::Real y1, Ogre::Real z1,
       {
          min[1] = y1;
       }
-      if(z2 < min[2])
+      if(z1 < min[2])
       {
-         min[2] = z2;
+         min[2] = z1;
       }
       if(x2 > max[0])
       {
@@ -428,7 +432,7 @@ void MapSubMesh::addSquare(Ogre::Real x1, Ogre::Real y1, Ogre::Real z1,
 /**************************************************************************
  *                                 update                                 *
  **************************************************************************/
-void MapSubMesh::update()
+void MapSubMesh::update(const Ogre::Vector3 meshMin)
 {
    float* vertices = NULL;
    Ogre::uint16* faces = NULL;;
@@ -437,7 +441,7 @@ void MapSubMesh::update()
    {
       dirty = false;
 
-      /* Only create the manual object if have some square defined. */
+      /* Only create the submesh if have at last one square defined. */
       if(getTotal() > 0)
       {
          if(subMesh == NULL)
@@ -466,7 +470,8 @@ void MapSubMesh::update()
             (getFirst());
          for(int i = 0; i < getTotal(); i++)
          {
-            square->define(vertices, curVert, curIndex, faces, curFaceIndex);
+            square->define(vertices, curVert, curIndex, faces, curFaceIndex,
+                           meshMin);
 
             curIndex += INDOOR_VERTICES_PER_SQUARE;
 
@@ -667,8 +672,11 @@ void MapMesh::defineBounds()
     * Note that if called defineBounds is that we assured we have
     * at last one submesh. */
    MapSubMesh* subMesh = static_cast<MapSubMesh*>(getFirst());
-   Ogre::Vector3 min = subMesh->getMin();
-   Ogre::Vector3 max = subMesh->getMax();
+   min = subMesh->getMin();
+   max = subMesh->getMax();
+  
+   /* Let's compare with sequential submeshes bounds */
+   subMesh = static_cast<MapSubMesh*>(subMesh->getNext());
    for(int i = 1; i < getTotal(); i++)
    {
       Ogre::Vector3 subMeshMin = subMesh->getMin();
@@ -708,7 +716,7 @@ void MapMesh::defineBounds()
 
    /* Define Aaabb */
    Ogre::Vector3 half = (max - min) / 2;
-   Ogre::Vector3 center = min + half; 
+   Ogre::Vector3 center = half; 
    mesh->_setBounds(Ogre::Aabb(center, half));
 
    /* define radius, by max half incremented a few */
@@ -734,15 +742,15 @@ void MapMesh::updateAllDirty()
    {
       deleteSceneNode();
 
+      /* Define Mesh bounding box */
+      defineBounds();
+
       MapSubMesh* subMesh = static_cast<MapSubMesh*>(getFirst());
       for(int i = 0; i < getTotal(); i++)
       {
-         subMesh->update();
+         subMesh->update(min);
          subMesh = static_cast<MapSubMesh*>(subMesh->getNext());
       }
-
-      /* Define Mesh bounding box */
-      defineBounds();
 
       /* Add mesh to its Item */
       item = Game::getSceneManager()->createItem(mesh);
@@ -751,7 +759,7 @@ void MapMesh::updateAllDirty()
       sceneNode = 
          Game::getSceneManager()->getRootSceneNode()->createChildSceneNode();
       sceneNode->attachObject(item);
-      sceneNode->setPosition(0.0f, 0.0f, 0.0f);
+      sceneNode->setPosition(min);
    }
 }
 

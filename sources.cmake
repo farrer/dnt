@@ -38,12 +38,14 @@ set(MAP_SOURCES
    src/map/light.cpp
    src/map/map.cpp
    src/map/npcfile.cpp
+   src/map/wall.cpp
 )
 set(MAP_HEADERS
    src/map/indoortexturemesh.h
    src/map/map.h
    src/map/light.h
    src/map/npcfile.h
+   src/map/wall.h
 )
 set(RULES_SOURCES
    src/rules/actions.cpp

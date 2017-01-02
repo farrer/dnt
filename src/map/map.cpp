@@ -36,7 +36,6 @@
 using namespace DNT;
 
 #define MAP_WALL_HEIGHT                 64
-#define MAP_UPPER_WALL_MATERIAL         "upper_wall"
 
 #define MAP_TOKEN_SIZE                  "size"
 
@@ -84,8 +83,7 @@ using namespace DNT;
  *                                Constructor                             *
  **************************************************************************/
 Map::Map()
-    :floor("floor"),
-     walls("wall")
+    :floor("floor")
 {
    this->name = "";
    this->filename = "";
@@ -194,8 +192,21 @@ void Map::create(int sizeX, int sizeZ)
       }
    }
    floor.updateAllDirty();
-   walls.updateAllDirty();
+   updateAllDirtyWalls();
    lights->setActiveLight(0.0f, 0.0f);
+}
+
+/**************************************************************************
+ *                        updateAllDirtyWalls                             *
+ **************************************************************************/
+void Map::updateAllDirtyWalls()
+{
+   Wall* wall = static_cast<Wall*>(walls.getFirst());
+   for(int i = 0; i < walls.getTotal(); i++)
+   {
+      wall->updateMeshIfDirty();
+      wall = static_cast<Wall*>(wall->getNext());
+   }
 }
 
 /**************************************************************************
@@ -223,6 +234,7 @@ bool Map::load(Ogre::String mapFileName, bool fullPath)
    Ogre::String key, value;
    LightInfo* lastLight = NULL;
    Thing* lastThing = NULL;
+   Wall* lastWall = NULL;
 
    this->filename = mapFileName;
 
@@ -240,9 +252,6 @@ bool Map::load(Ogre::String mapFileName, bool fullPath)
       return false;
    }
    sscanf(value.c_str(), "%dx%d", &xSize, &zSize);
-
-   /* Define the upper wall texture */
-   walls.createSubMesh(MAP_UPPER_WALL_MATERIAL);
 
    /* Reset square position counters */
    int squareX = -1;
@@ -317,65 +326,46 @@ bool Map::load(Ogre::String mapFileName, bool fullPath)
             wY1 = tmp;
          }
 
-         /* Define the upper wall square */
-         MapSubMesh* subMesh = walls.getSubMesh(MAP_UPPER_WALL_MATERIAL);
-         if(subMesh)
-         {
-            subMesh->addSquare(wX1, wY2, wZ1, 
-                            wX2, wY2, wZ2,
-                            0.0f, 1.0f, 0.0f);
-            if(wY1 != 0.0f)
-            {
-               /* Also define a square for bottom, as not at floor */
-               subMesh->addSquare(wX1, wY1, wZ1,
-                               wX2, wY1, wZ2,
-                               0.0f, -1.0f, 0.0f);
-            }
-         }
+         /* Create the wall and add it to the list */
+         lastWall = new Wall();
+         walls.insert(lastWall);
 
+         /* Define the upper wall face */
+         lastWall->addFace(MAP_UPPER_WALL_MATERIAL,
+               wX1, wY2, wZ1, wX2, wY2, wZ2, 0.0f, 1.0f, 0.0f);
+         if(wY1 != 0.0f)
+         {
+            /* Also define a square for bottom, as not at floor */
+            lastWall->addFace(MAP_UPPER_WALL_MATERIAL,
+                  wX1, wY1, wZ1, wX2, wY1, wZ2, 0.0f, -1.0f, 0.0f);
+         }
       }
       /* Define Current Wall Front Texture */
       else if(key == MAP_TOKEN_WALL_TEXTURE_FRONT)
       {
-         MapSubMesh* subMesh = walls.getSubMesh(value);
-         if(!subMesh)
-         {
-            subMesh = walls.createSubMesh(value);
-         }
-         subMesh->addSquare(wX1, wY1, wZ1, wX2, wY2, wZ1,
+         assert(lastWall != NULL);
+         lastWall->addFace(value, wX1, wY1, wZ1, wX2, wY2, wZ1,
                0.0f, 0.0f, -1.0f);
       }
       /* Define Current Wall Back Texture */
       else if(key == MAP_TOKEN_WALL_TEXTURE_BACK)
       {
-         MapSubMesh* subMesh = walls.getSubMesh(value);
-         if(!subMesh)
-         {
-            subMesh = walls.createSubMesh(value);
-         }
-         subMesh->addSquare(wX1, wY1, wZ2, wX2, wY2, wZ2,
+         assert(lastWall != NULL);
+         lastWall->addFace(value, wX1, wY1, wZ2, wX2, wY2, wZ2,
                0.0f, 0.0f, 1.0f);
       }
       /* Define Current Wall Left Texture */
       else if(key == MAP_TOKEN_WALL_TEXTURE_LEFT)
       {
-         MapSubMesh* subMesh = walls.getSubMesh(value);
-         if(!subMesh)
-         {
-            subMesh = walls.createSubMesh(value);
-         }
-         subMesh->addSquare(wX1, wY1, wZ1, wX1, wY2, wZ2,
+         assert(lastWall != NULL);
+         lastWall->addFace(value, wX1, wY1, wZ1, wX1, wY2, wZ2,
                -1.0f, 0.0f, 0.0f);
       }
       /* Define Current Wall Left Texture */
       else if(key == MAP_TOKEN_WALL_TEXTURE_RIGHT)
       {
-         MapSubMesh* subMesh = walls.getSubMesh(value);
-         if(!subMesh)
-         {
-            subMesh = walls.createSubMesh(value);
-         }
-         subMesh->addSquare(wX2, wY1, wZ1, wX2, wY2, wZ2,
+         assert(lastWall != NULL);
+         lastWall->addFace(value, wX2, wY1, wZ1, wX2, wY2, wZ2,
                1.0f, 0.0f, 0.0f);
       }
       /* Define a thing (object, item, scenery, etc) on the map */
@@ -570,7 +560,7 @@ bool Map::load(Ogre::String mapFileName, bool fullPath)
 
    /* Update our floor and walls */
    floor.updateAllDirty();
-   walls.updateAllDirty();
+   updateAllDirtyWalls();
 
    /* Define an active light */
    lights->setActiveLight(0.0f, 0.0f);

@@ -65,9 +65,10 @@ class IndoorTextureSquare : public Kobold::ListElement
        * \param vertices current Ogre vertex info to define
        * \param curVert current (first) vertex info index to define here
        * \param faces current Ogre face Index do define
-       * \param curFace current face (first) index to define here  */
+       * \param curFace current face (first) index to define here 
+       * \param meshMin minimum bounds of the mesh */
       void define(float* vertices, int& curVert, int& curIndex, 
-            Ogre::uint16* faces, int& curFace);
+            Ogre::uint16* faces, int& curFace, const Ogre::Vector3 meshMin);
 
       /*! \return bottom left coordinates */
       Ogre::Vector3 getBottomLeftCorner();
@@ -76,24 +77,29 @@ class IndoorTextureSquare : public Kobold::ListElement
 
    private:
       void defineAtX(float* vertices, int& curVert, int& curIndex, 
-            Ogre::uint16* faces, int& curFace, Ogre::Real textureDelta);
+            Ogre::uint16* faces, int& curFace, Ogre::Real textureDelta, 
+            const Ogre::Vector3 meshMin);
       void defineAtY(float* vertices, int& curVert, int& curIndex, 
-            Ogre::uint16* faces, int& curFace, Ogre::Real textureDelta);
+            Ogre::uint16* faces, int& curFace, Ogre::Real textureDelta, 
+            const Ogre::Vector3 meshMin);
       void defineAtZ(float* vertices, int& curVert, int& curIndex, 
-            Ogre::uint16* faces, int& curFace, Ogre::Real textureDelta);
+            Ogre::uint16* faces, int& curFace, Ogre::Real textureDelta, 
+            const Ogre::Vector3 meshMin);
       void defineTriangles(int& curIndex, Ogre::uint16* faces, 
             int& curFace, int nValue);
 
       void setVertex(float* vertices, int& curVert, Ogre::Vector3 pos, 
-                     Ogre::Vector3 normal, Ogre::Vector2 uv);
+                     Ogre::Vector3 normal, Ogre::Vector2 uv, 
+                     const Ogre::Vector3 meshMin);
 
       Ogre::Vector3 bottomLeft; /**< Bottom Left Corner */
       Ogre::Vector3 topRight;  /**< Top Right Corner */
       Ogre::Vector3 normal; /**< Normal */
 };
 
-/*! This class represents a Manual Object for all indoor vertices
- * of a single texture (being them a floor square or a wall face). */
+/*! This class represents a SubMesh for all indoor vertices
+ * of a single texture (being them a floor square or a wall face) for
+ * a MapMesh. */
 class MapSubMesh : public Kobold::List, public Kobold::ListElement
 {
    public:
@@ -109,7 +115,7 @@ class MapSubMesh : public Kobold::List, public Kobold::ListElement
                      Ogre::Real normX, Ogre::Real nomrY, Ogre::Real normZ);
 
       /*! Create or update manual object if needed */
-      void update();
+      void update(const Ogre::Vector3 meshMin);
 
       /*! \return name of the used datablock for this mesh. */
       Ogre::String getDatablockName();
@@ -137,7 +143,9 @@ class MapSubMesh : public Kobold::List, public Kobold::ListElement
                        must be redefined. */
 };
 
-/*! A List of MapSubMesh'es */
+/*! A List of MapSubMesh'es, representing the floor or a single wall. 
+ * \note the mesh will be created at 0,0,0 (its minimum bounds will be defined
+ * to that) and positionated at desired position with its SceneNode. */
 class MapMesh : public Kobold::List
 {
    public:
@@ -165,6 +173,10 @@ class MapMesh : public Kobold::List
       Ogre::String baseName;  /**< Basic name (usually 'wall' or 'floor') */
       Ogre::Item* item; /**< Item related to the mesh. */
       Ogre::SceneNode* sceneNode; /**< Scene node related to the mesh. */
+
+      Ogre::Vector3 min; /**< Minimum values for x,y,z */
+      Ogre::Vector3 max; /**< Maximum values for x,y,z */
+
 
 };
 
