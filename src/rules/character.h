@@ -139,6 +139,9 @@ namespace DNT
          CharacterAnimation getCurrentAnimation();
 
       protected:
+         /*! \return default character's animation names */
+         virtual Kobold::String* getAnimationList();
+
          /*! Get first available empty class index on character classes vector
           * \return index first empty index or -1 if full. */
          int getEmptyClassIndex();
@@ -186,6 +189,8 @@ namespace DNT
          Kobold::String mapFilename; /**< Filename of Map where Character is */
 
          Ogre::Vector3 initialPos; /**< Initial position on map */
+
+         static Kobold::String animationList[CHARACTER_TOTAL_ANIMATIONS];
    };
 
 

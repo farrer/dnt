@@ -83,6 +83,22 @@ Character::~Character()
 }
 
 /***********************************************************************
+ *                             animationList                           *
+ ***********************************************************************/
+Kobold::String Character::animationList[CHARACTER_TOTAL_ANIMATIONS] =
+{
+   "attack", "dead", "die", "idle", "run", "walk"
+};
+
+/***********************************************************************
+ *                            getAnimationList                         *
+ ***********************************************************************/
+Kobold::String* Character::getAnimationList()
+{
+   return animationList;   
+}
+
+/***********************************************************************
  *                        insertDefaultNeededFeats                     *
  ***********************************************************************/
 void Character::insertDefaultNeededFeats()
