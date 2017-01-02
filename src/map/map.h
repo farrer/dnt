@@ -23,7 +23,7 @@
 
 #include "dntconfig.h"
 
-#include "indoortexturemesh.h"
+#include "mapmesh.h"
 #include "wall.h"
 
 #include <kobold/list.h>

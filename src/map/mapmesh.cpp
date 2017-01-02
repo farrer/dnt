@@ -26,7 +26,7 @@
 /*! Number of floats per vertex definition */
 #define VERTEX_NUM_FLOATS   12
 
-#include "indoortexturemesh.h"
+#include "mapmesh.h"
 #include "../core/game.h"
 
 #include <OGRE/OgreMeshManager2.h>

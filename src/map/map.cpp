@@ -21,7 +21,6 @@
 
 #include "map.h"
 
-#include "indoortexturemesh.h"
 #include "light.h"
 
 #include "../rules/thing.h"

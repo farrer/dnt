@@ -34,15 +34,15 @@ set(CORE_HEADERS
    src/core/util.h
 )
 set(MAP_SOURCES
-   src/map/indoortexturemesh.cpp
    src/map/light.cpp
    src/map/map.cpp
+   src/map/mapmesh.cpp
    src/map/npcfile.cpp
    src/map/wall.cpp
 )
 set(MAP_HEADERS
-   src/map/indoortexturemesh.h
    src/map/map.h
+   src/map/mapmesh.h
    src/map/light.h
    src/map/npcfile.h
    src/map/wall.h
