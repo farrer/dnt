@@ -1,0 +1,48 @@
+{
+   "samplers" :
+   {
+      "SamplerBlock_humans1" :
+      {
+         "min" : "linear",
+         "mag" : "linear",
+         "u" : "wrap",
+         "v" : "wrap"
+      }
+   },
+   "macroblocks" :
+   {
+      "MacroBlock_humans1" :
+      {
+         "depth_check" : true,
+         "depth_write" : true,
+         "polygon_mode" : "solid"
+      }
+   },
+   "blendblocks" : 
+   {
+      "Blendblock_humans1" :
+      {
+      }
+   },
+   "pbs" :
+   {
+      "zedobar":
+      {
+         "macroblock" : "Macroblock_humans1",
+         "blendblock" : "Blendblock_humans1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "humans/zedobar.png",
+            "sampler" : "SamplerBlock_humans1"
+         },
+         "specular":
+         {
+            "value": [0.50, 0.50, 0.50]
+         }
+      }
+   }
+}
+
