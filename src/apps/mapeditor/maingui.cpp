@@ -177,8 +177,8 @@ void MainGui::setLight()
       /* Enable light */
       menuItemToggleLight->setCaption("Disable light");
       DNT::Game::getSceneManager()->setAmbientLight(
-            Ogre::ColourValue(0.1f, 0.1f, 0.1f),
-            Ogre::ColourValue(0.1f, 0.1f, 0.1f),
+            Ogre::ColourValue(0.05f, 0.05f, 0.05f),
+            Ogre::ColourValue(0.05f, 0.05f, 0.05f),
             Ogre::Vector3(0.0f, -1.0f, 0.0f));
 /*
       Ogre::Light *light = DNT::Game::getSceneManager()->createLight();
