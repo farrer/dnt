@@ -34,13 +34,13 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "humans/zedobar.png",
             "sampler" : "SamplerBlock_humans1"
          },
          "specular":
          {
-            "value": [0.50, 0.50, 0.50]
+            "value": [0.01, 0.01, 0.01]
          }
       }
    }
