@@ -1,5 +1,4 @@
-# DNT
-![Logo](http://dnt.dnteam.org/img/dnt_logo.png)
+# ![Logo](http://dnt.dnteam.org/img/dnt_logo.png)
 3D single player RPG in a satirical post-apocalyptical world
 
 This is the Ogre3d port/rewrite of former DNT (http://dnt.dnteam.org).
@@ -21,9 +20,10 @@ This is the Ogre3d port/rewrite of former DNT (http://dnt.dnteam.org).
 
 Usually, you build with the following commands:
 
-**mkdir** build
-**cd** build
-cmake ..
-make
+      **mkdir** build
+      **cd** build
+      cmake ..
+      make
 
+While this is heavly WIP, no make install will be available.
 
