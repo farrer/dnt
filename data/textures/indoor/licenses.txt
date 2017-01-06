@@ -68,9 +68,11 @@ wood_agf81.png
    Source: http://agf81.deviantart.com/gallery/31629552?offset=0#/d2t36ow
 
 siding2.png
+siding2_n.png
    Author: Dim
    License: CC-BY 3.0
-   Source: http://opengameart.org/node/8137
+   Source: http://opengameart.org/node/8160
+           http://opengameart.org/node/8185
 
 upper_wall.png
   Author: qubodup (Iwan Gabovitch) <qubodup@gmail.com>
