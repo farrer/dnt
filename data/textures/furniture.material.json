@@ -40,7 +40,7 @@
          },
          "specular":
          {
-            "value": [0.50, 0.50, 0.50]
+            "value": [0.05, 0.05, 0.05]
          }
       },
       "cadeira":
@@ -57,7 +57,7 @@
          },
          "specular":
          {
-            "value": [0.50, 0.50, 0.50]
+            "value": [0.01, 0.01, 0.01]
          }
       },
       "calendar":
@@ -74,7 +74,7 @@
          },
          "specular":
          {
-            "value": [0.50, 0.50, 0.50]
+            "value": [0.05, 0.05, 0.05]
          }
       },
       "dinner_chair":
@@ -91,7 +91,7 @@
          },
          "specular":
          {
-            "value": [0.50, 0.50, 0.50]
+            "value": [0.05, 0.05, 0.05]
          }
       },
       "dinner_table":
@@ -108,7 +108,7 @@
          },
          "specular":
          {
-            "value": [0.50, 0.50, 0.50]
+            "value": [0.05, 0.05, 0.05]
          }
       },
       "estante":
@@ -123,9 +123,16 @@
             "texture" : "furniture/estante.png",
             "sampler" : "SamplerBlock_furniture1"
          },
+         "normal":
+         {
+            "value" : 1.0,
+            "texture" : "furniture/estante_n.png",
+            "sampler" : "SamplerBlock_furniture1"
+         },
          "specular":
          {
-            "value": [0.50, 0.50, 0.50]
+            "texture" : "furniture/estante_s.png",
+            "sampler" : "SamplerBlock_furniture1"
          }
       },
       "fridge":
@@ -142,7 +149,7 @@
          },
          "specular":
          {
-            "value": [0.50, 0.50, 0.50]
+            "value": [0.05, 0.05, 0.05]
          }
       },
       "letto":
@@ -159,7 +166,7 @@
          },
          "specular":
          {
-            "value": [0.50, 0.50, 0.50]
+            "value": [0.05, 0.05, 0.05]
          }
       },
       "mesa_redonda":
@@ -176,7 +183,7 @@
          },
          "specular":
          {
-            "value": [0.50, 0.50, 0.50]
+            "value": [0.01, 0.01, 0.01]
          }
       },
       "meuble":
@@ -193,7 +200,7 @@
          },
          "specular":
          {
-            "value": [0.50, 0.50, 0.50]
+            "value": [0.05, 0.05, 0.05]
          }
       },
       "microwave":
@@ -210,7 +217,7 @@
          },
          "specular":
          {
-            "value": [0.50, 0.50, 0.50]
+            "value": [0.05, 0.05, 0.05]
          }
       },
       "oven":
@@ -227,7 +234,7 @@
          },
          "specular":
          {
-            "value": [0.50, 0.50, 0.50]
+            "value": [0.05, 0.05, 0.05]
          }
       },
       "papel_higienico":
@@ -244,7 +251,7 @@
          },
          "specular":
          {
-            "value": [0.50, 0.50, 0.50]
+            "value": [0.05, 0.05, 0.05]
          }
       },
       "pc_chair":
@@ -261,7 +268,7 @@
          },
          "specular":
          {
-            "value": [0.50, 0.50, 0.50]
+            "value": [0.01, 0.01, 0.01]
          }
       },
       "pc_table":
@@ -278,7 +285,7 @@
          },
          "specular":
          {
-            "value": [0.50, 0.50, 0.50]
+            "value": [0.03, 0.03, 0.03]
          }
       },
       "pia":
@@ -295,7 +302,7 @@
          },
          "specular":
          {
-            "value": [0.50, 0.50, 0.50]
+            "value": [0.05, 0.05, 0.05]
          }
       },
       "pillow":
@@ -312,7 +319,7 @@
          },
          "specular":
          {
-            "value": [0.50, 0.50, 0.50]
+            "value": [0.05, 0.05, 0.05]
          }
       },
       "poster":
@@ -329,7 +336,7 @@
          },
          "specular":
          {
-            "value": [0.50, 0.50, 0.50]
+            "value": [0.01, 0.01, 0.01]
          }
       },
       "privada":
@@ -346,7 +353,7 @@
          },
          "specular":
          {
-            "value": [0.50, 0.50, 0.50]
+            "value": [0.05, 0.05, 0.05]
          }
       },
       "privada2":
@@ -363,7 +370,7 @@
          },
          "specular":
          {
-            "value": [0.50, 0.50, 0.50]
+            "value": [0.05, 0.05, 0.05]
          }
       },
       "rug":
@@ -380,7 +387,7 @@
          },
          "specular":
          {
-            "value": [0.50, 0.50, 0.50]
+            "value": [0.01, 0.01, 0.01]
          }
       },
       "sofa":
@@ -397,7 +404,7 @@
          },
          "specular":
          {
-            "value": [0.5, 0.5, 0.5]
+            "value": [0.05, 0.05, 0.05]
          }
       },
       "wardrobe":
@@ -414,7 +421,7 @@
          },
          "specular":
          {
-            "value": [0.50, 0.50, 0.50]
+            "value": [0.05, 0.05, 0.05]
          }
       }
    }
