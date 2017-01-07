@@ -232,6 +232,148 @@
          {
             "value": [0.01, 0.01, 0.01]
          }
+      },
+      "wood_planks_2":
+      {
+         "macroblock" : "Macroblock_indoor1",
+         "blendblock" : "Blendblock_indoor1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "indoor/wood_planks_2.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "normal" : 
+         {
+            "value" : 1,
+            "texture" : "indoor/wood_planks_2_n.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "specular":
+         {
+            "value": [0.05, 0.05, 0.05]
+         }
+      },
+      "floor_tile":
+      {
+         "macroblock" : "Macroblock_indoor1",
+         "blendblock" : "Blendblock_indoor1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "indoor/floor_tile.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "normal" : 
+         {
+            "value" : 1,
+            "texture" : "indoor/floor_tile_n.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "specular":
+         {
+            "value": [0.05, 0.05, 0.05]
+         }
+      },
+      "concrete01":
+      {
+         "macroblock" : "Macroblock_indoor1",
+         "blendblock" : "Blendblock_indoor1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "indoor/concrete01.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "normal" : 
+         {
+            "value" : 1,
+            "texture" : "indoor/concrete01_n.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "specular":
+         {
+            "texture" : "indoor/concrete01_s.png",
+            "sampler" : "SamplerBlock_indoor1"
+         }
+      },
+      "rustytiles01":
+      {
+         "macroblock" : "Macroblock_indoor1",
+         "blendblock" : "Blendblock_indoor1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "indoor/rustytiles01.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "normal" : 
+         {
+            "value" : 1,
+            "texture" : "indoor/rustytiles01_n.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "specular":
+         {
+            "texture" : "indoor/rustytiles01_s.png",
+            "sampler" : "SamplerBlock_indoor1"
+         }
+      },
+      "rustytiles01b":
+      {
+         "macroblock" : "Macroblock_indoor1",
+         "blendblock" : "Blendblock_indoor1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "indoor/rustytiles01b.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "normal" : 
+         {
+            "value" : 1,
+            "texture" : "indoor/rustytiles01_n.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "specular":
+         {
+            "texture" : "indoor/rustytiles01_s.png",
+            "sampler" : "SamplerBlock_indoor1"
+         }
+      },
+      "woodfloor":
+      {
+         "macroblock" : "Macroblock_indoor1",
+         "blendblock" : "Blendblock_indoor1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "indoor/woodfloor.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "normal" : 
+         {
+            "value" : 1,
+            "texture" : "indoor/woodfloor_n.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "specular":
+         {
+            "texture" : "indoor/woodfloor_s_z.png",
+            "sampler" : "SamplerBlock_indoor1"
+         }
       }
    }
 }
