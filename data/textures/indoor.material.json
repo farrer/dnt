@@ -92,7 +92,8 @@
          },
          "specular":
          {
-            "value": [0.01, 0.01, 0.01]
+            "texture" : "indoor/wall_crete03b_s.png",
+            "sampler" : "SamplerBlock_indoor1"
          }
       },
       "tile3":
@@ -117,29 +118,6 @@
          {
             "texture" : "indoor/tile3_s.png",
             "sampler" : "SamplerBlock_indoor1"
-         }
-      },
-      "stonetile":
-      {
-         "macroblock" : "Macroblock_indoor1",
-         "blendblock" : "Blendblock_indoor1",
-         "shadow_const_bias" : 0.01,
-         "workflow" : "specular_ogre",
-         "diffuse":
-         {
-            "value" : [0.64, 0.64, 0.64],
-            "texture" : "indoor/stonetile.png",
-            "sampler" : "SamplerBlock_indoor1"
-         },
-         "normal" : 
-         {
-            "value" : 1,
-            "texture" : "indoor/stonetile_n.png",
-            "sampler" : "SamplerBlock_indoor1"
-         },
-         "specular":
-         {
-            "value": [0.02, 0.02, 0.02]
          }
       },
       "wood1":
@@ -186,7 +164,8 @@
          },
          "specular":
          {
-            "value": [0.05, 0.05, 0.05]
+            "texture" : "indoor/wood8_s.png",
+            "sampler" : "SamplerBlock_indoor1"
          }
       },
       "oldwood1":
@@ -209,7 +188,8 @@
          },
          "specular":
          {
-            "value": [0.05, 0.05, 0.05]
+            "texture" : "indoor/oldwood1_s.png",
+            "sampler" : "SamplerBlock_indoor1"
          }
       },
       "plaster3c":
@@ -232,7 +212,8 @@
          },
          "specular":
          {
-            "value": [0.01, 0.01, 0.01]
+            "texture" : "indoor/plaster3c_s.png",
+            "sampler" : "SamplerBlock_indoor1"
          }
       },
       "wood_planks_2":
@@ -255,7 +236,8 @@
          },
          "specular":
          {
-            "value": [0.05, 0.05, 0.05]
+            "texture" : "indoor/wood_planks_2_s.png",
+            "sampler" : "SamplerBlock_indoor1"
          }
       },
       "floor_tile":
@@ -278,7 +260,8 @@
          },
          "specular":
          {
-            "value": [0.05, 0.05, 0.05]
+            "texture" : "indoor/floor_tile_s.png",
+            "sampler" : "SamplerBlock_indoor1"
          }
       },
       "concrete01":
@@ -291,6 +274,30 @@
          {
             "value" : [0.64, 0.64, 0.64],
             "texture" : "indoor/concrete01.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "normal" : 
+         {
+            "value" : 1,
+            "texture" : "indoor/concrete01_n.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "specular":
+         {
+            "texture" : "indoor/concrete01_s.png",
+            "sampler" : "SamplerBlock_indoor1"
+         }
+      },
+      "concrete01b":
+      {
+         "macroblock" : "Macroblock_indoor1",
+         "blendblock" : "Blendblock_indoor1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "indoor/concrete01b.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "normal" : 
@@ -374,6 +381,30 @@
          "specular":
          {
             "texture" : "indoor/woodfloor_s_z.png",
+            "sampler" : "SamplerBlock_indoor1"
+         }
+      },
+      "siding2":
+      {
+         "macroblock" : "Macroblock_indoor1",
+         "blendblock" : "Blendblock_indoor1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [0.64, 0.64, 0.64],
+            "texture" : "indoor/siding2.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "normal" : 
+         {
+            "value" : 1,
+            "texture" : "indoor/siding2_n.png",
+            "sampler" : "SamplerBlock_indoor1"
+         },
+         "specular":
+         {
+            "texture" : "indoor/siding2_s.png",
             "sampler" : "SamplerBlock_indoor1"
          }
       }

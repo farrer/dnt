@@ -2,8 +2,10 @@ All Textures used in DNT are free (as in free speech).
 
 Here are the licenses for those at the current directory.
 
-wood8.png 
 oldwood1.png
+seville.png
+vermont_noir.png
+wood8.png 
    Author: OpenFrag and Lemog3d
    License: CC-BY 3.0
    Source: http://sourceforge.net/projects/openfrag/files/Artwork/
@@ -71,6 +73,7 @@ floor_tile_n.png
       http://opengameart.org/content/wooden-floortile-seamless-with-normalmap
 
 concrete01.png
+concrete01b.png
 concrete01_n.png
 concrete01_s.png
 rustytiles01.png
