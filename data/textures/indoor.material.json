@@ -115,7 +115,8 @@
          },
          "specular":
          {
-            "value": [0.05, 0.05, 0.05]
+            "texture" : "indoor/tile3_s.png",
+            "sampler" : "SamplerBlock_indoor1"
          }
       },
       "stonetile":
@@ -161,7 +162,8 @@
          },
          "specular":
          {
-            "value": [0.05, 0.05, 0.05]
+            "texture" : "indoor/wood1_s.png",
+            "sampler" : "SamplerBlock_indoor1"
          }
       },
       "wood8":
