@@ -3,8 +3,6 @@ All Textures used in DNT are free (as in free speech).
 Here are the licenses for those at the current directory.
 
 oldwood1.png
-seville.png
-vermont_noir.png
 wood8.png 
    Author: OpenFrag and Lemog3d
    License: CC-BY 3.0

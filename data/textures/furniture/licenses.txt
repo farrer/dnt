@@ -5,6 +5,8 @@ pc_char.png pc_table.png, privada2.png:
    source: http://sourceforge.net/projects/erd/
 
 fridge.png
+fridge_n.png
+fridge_s.png
    author: Andrew Kator & Jennifer Legaz
            Some modifications by farrer (DNTeam).
    license: CC-BY 3.0

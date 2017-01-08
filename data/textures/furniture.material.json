@@ -147,9 +147,15 @@
             "texture" : "furniture/fridge.png",
             "sampler" : "SamplerBlock_furniture1"
          },
+         "normal":
+         {
+            "texture" : "furniture/fridge_n.png",
+            "sampler" : "SamplerBlock_furniture1"
+         },
          "specular":
          {
-            "value": [0.05, 0.05, 0.05]
+            "texture" : "furniture/fridge_s.png",
+            "sampler" : "SamplerBlock_furniture1"
          }
       },
       "letto":
