@@ -1,5 +1,0 @@
-name = gettext("Clown Door")
-description = gettext("A door made of wood to close the way to clown rooms.")
-model = doors/porta.mesh
-walkable = false
-

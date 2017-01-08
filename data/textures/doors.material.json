@@ -26,57 +26,6 @@
    },
    "pbs" :
    {
-      "porta":
-      {
-         "macroblock" : "Macroblock_doors1",
-         "blendblock" : "Blendblock_doors1",
-         "shadow_const_bias" : 0.01,
-         "workflow" : "specular_ogre",
-         "diffuse":
-         {
-            "value" : [0.64, 0.64, 0.64],
-            "texture" : "doors/porta1.png",
-            "sampler" : "SamplerBlock_doors1"
-         },
-         "specular":
-         {
-            "value": [0.05, 0.05, 0.05]
-         }
-      },
-      "porta2":
-      {
-         "macroblock" : "Macroblock_doors1",
-         "blendblock" : "Blendblock_doors1",
-         "shadow_const_bias" : 0.01,
-         "workflow" : "specular_ogre",
-         "diffuse":
-         {
-            "value" : [0.64, 0.64, 0.64],
-            "texture" : "doors/porta2.png",
-            "sampler" : "SamplerBlock_doors1"
-         },
-         "specular":
-         {
-            "value": [0.05, 0.05, 0.05]
-         }
-      },
-      "porta3":
-      {
-         "macroblock" : "Macroblock_doors1",
-         "blendblock" : "Blendblock_doors1",
-         "shadow_const_bias" : 0.01,
-         "workflow" : "specular_ogre",
-         "diffuse":
-         {
-            "value" : [0.64, 0.64, 0.64],
-            "texture" : "doors/porta3.png",
-            "sampler" : "SamplerBlock_doors1"
-         },
-         "specular":
-         {
-            "value": [0.05, 0.05, 0.05]
-         }
-      },
       "porta4":
       {
          "macroblock" : "Macroblock_doors1",
@@ -89,9 +38,15 @@
             "texture" : "doors/porta4.png",
             "sampler" : "SamplerBlock_doors1"
          },
+         "normal":
+         {
+            "texture" : "doors/porta4_n.png",
+            "sampler" : "SamplerBlock_doors1"
+         },
          "specular":
          {
-            "value": [0.05, 0.05, 0.05]
+            "texture" : "doors/porta4_s.png",
+            "sampler" : "SamplerBlock_doors1"
          }
       },
       "porta5":
@@ -106,9 +61,15 @@
             "texture" : "doors/porta5.png",
             "sampler" : "SamplerBlock_doors1"
          },
+         "normal":
+         {
+            "texture" : "doors/porta5_n.png",
+            "sampler" : "SamplerBlock_doors1"
+         },
          "specular":
          {
-            "value": [0.05, 0.05, 0.05]
+            "texture" : "doors/porta5_s.png",
+            "sampler" : "SamplerBlock_doors1"
          }
       },
       "porta6":
@@ -123,9 +84,15 @@
             "texture" : "doors/porta6.png",
             "sampler" : "SamplerBlock_doors1"
          },
+         "normal":
+         {
+            "texture" : "doors/porta6_n.png",
+            "sampler" : "SamplerBlock_doors1"
+         },
          "specular":
          {
-            "value": [0.05, 0.05, 0.05]
+            "texture" : "doors/porta6_s.png",
+            "sampler" : "SamplerBlock_doors1"
          }
       },
       "porta7":
