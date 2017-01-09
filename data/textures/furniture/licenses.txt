@@ -1,5 +1,12 @@
-bookshelf.png cadeira.png calendar.png estante.png papel_higienico pia.png
-pc_char.png pc_table.png, privada2.png:
+bookshelf.png 
+calendar.png 
+estante.png 
+mesa_redonda.png
+papel_higienico 
+pc_char.png 
+pc_table.png
+pia.png
+privada2.png:
    author: Estrada Real Digital (ERD)
    license: GPLv2
    source: http://sourceforge.net/projects/erd/
@@ -26,3 +33,13 @@ dinner_char.png, dinner_table.png, sofa.png, wardrobe.png:
    author: Scopia Visual Interfaces
    license: CC-BY 2.5
    source: www.scopia.es
+
+poster.png
+   Author: qubodup (Iwan Gabovitch) <qubodup@gmail.com>
+   License: CC-BY 3.0
+
+====
+
+Other specular (*_s.png) and normal (*_n.png) maps were created by DNTeam and
+should be using the same license as its original diffuse texture (*.png).
+

@@ -1,0 +1,75 @@
+
+Those are the licenses of each model in this directory:
+
+bookshelf.mesh
+cadeira.mesh
+calendar.mesh
+cama.mesh
+comoda.mesh
+escrivaninhas.mesh
+estante.mesh
+mesa_grande.mesh
+mesa_redonda.mesh
+papel_higienico.mesh
+pia.mesh
+pc_chair.mesh
+pc_table.mesh
+sofa2.mesh
+tv_hack.mesh
+   Author: Estrada Real Digital (ERD)
+   License: GPLv2
+   Source: http://sourceforge.net/projects/erd/
+
+fridge.mesh
+   Author: Andrew Kator & Jennifer Legaz
+   License: CC-BY 3.0
+   Source: http://www.katorlegaz.com/3d_models/transport_sidewalks/0206
+
+letto.mesh
+   Author: Tiziana aka TiZeta
+   License: CC-BY 2.0
+   Source: http://www.unbruco.it/offcircle/index.html
+
+chair.mesh
+microwave.mesh
+oven.mesh
+   Author: UFO-AI
+   License: GPLv2 or later
+   Source: http://ufoai.sf.net
+
+dinner_chair.mesh
+dinner_table.mesh
+sofa.mesh
+wardrobe.mesh
+   Author: Scopia Visual Interfaces
+   License: CC-BY 2.5
+   Source: www.scopia.es
+
+bed.mesh
+chair1.mesh
+chair2.mesh
+   Author: soulvalou (Neil dela Merced <solvalou4ever@yahoo.com>)
+   Author-Site: http://solvalou.carbonmade.com
+   License: CC-BY 3.0
+   Source: http://opengameart.org/content/lowpoly-bare-bed
+           http://opengameart.org/content/low-poly-chair
+           http://opengameart.org/content/low-poly-chair-2
+
+poster.mesh
+   Author: qubodup (Iwan Gabovitch) <qubodup@gmail.com>
+   License: CC-BY 3.0
+
+fogaoalenha.mesh
+mesa.mesh
+mesa_braco.mesh
+mictorio.mesh
+privada.mesh
+pillow.mesh
+portinari_*.mesh
+quadro.mesh
+refmachine.mesh
+rug*.mesh
+tarsila_*.mesh
+   Author: farrer (DNTeam)
+   License: GPLv3+
+
