@@ -1,0 +1,14 @@
+barraco*.mesh
+farm_ruin.mesh
+houses*.mesh
+ruin_house*.mesh
+   Author: Farrer (DNTeam)
+   License: GPLv3+
+   Sources: http://opengameart.org/content/dnt-ruined-houses-pack
+            http://opengameart.org/content/ruined-house
+
+galinheiro.mesh
+   Author: Estrada Real Digital (ERD)
+   License: GPLv2
+   Source: http://sourceforge.net/projects/erd/
+

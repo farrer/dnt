@@ -1,0 +1,26 @@
+
+cementery_gate.mesh
+tomb.mesh
+   Author: zerberros
+   License: GPLv3
+   Source: http://dnt.dnteam.org/FoRuM/viewtopic.php?f=4&t=143#p427
+   Source: http://opengameart.org/content/cementery-gate
+   Note: Some modifications and adjusts by farrer (DNTeam).
+
+cementery_fence.mesh
+   Author: Farrer (DNTeam), based on zerberros cementery_gate
+   License: GPLv3
+
+cruz.mesh
+lapide.mesh
+tomb1.mesh
+tomb_column.mesh
+   Author: Silvio (DNTeam)
+   License: GPLv3
+
+ts*.mesh
+   Author: UFO-AI
+   License: GPLv2
+   Source: http://ufoai.sf.net
+
+

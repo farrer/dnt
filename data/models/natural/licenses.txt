@@ -1,0 +1,21 @@
+arvore.mesh
+fogueira.mesh
+jacaranda.mesh
+tree*.mesh
+   Author: Farrer (DNTeam)
+   License: GPLv3+
+
+bananeira.mesh
+bush.mesh
+   Author: UFO-AI
+   License: GPLv2
+   Source: http://ufoai.sf.net
+
+deadtree*.mesh
+   Author: p0ss
+   License: CC-BY 3.0
+   Source: http://opengameart.org/content/3-dead-trees
+
+
+
+

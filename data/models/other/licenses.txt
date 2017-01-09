@@ -1,0 +1,11 @@
+corchea.mesh
+mine_entrance.mesh
+   Author: Farrer (DNTeam)
+   License: GPLv3+
+
+tux_rock_art.mesh
+   Author: Farrer (DNTeam), on top of Scorpio's cave tile from
+           http://opengameart.org/content/3d-dungeon-tileset
+   License: GPLv3+
+
+ 

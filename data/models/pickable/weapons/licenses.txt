@@ -1,0 +1,14 @@
+adaga.mesh
+axe.mesh
+beretta92.mesh
+broom.mesh
+dark_katana.mesh
+faca.mesh
+kalashnikov.mesh
+kalashnikov_small.mesh
+scimitar.mesh
+sw39.mesh
+uzi.mesh
+   Author: Farrer (DNTeam)
+   License: GPLv3+
+   Source: http://opengameart.org/content/dnt-weapons-pack

@@ -1,0 +1,24 @@
+
+computador.mesh
+   Authors: Silvio and Farrer (DNTeam)
+   License: GPLv3+
+
+compdeck.mesh
+monitor.mesh
+notebook.mesh
+snes.mesh
+   Author: Farrer (DNTeam)
+   License: GPLv3+
+
+gabinete.mesh
+   Author: Estrada Real Digital (ERD)
+   License: GPLv2
+   Source: http://sourceforge.net/projects/erd/
+
+tv42.mesh
+   License: CC0 (Public Domain)
+   source:
+      http://e2-productions.com/repository/modules/PDdownloads/singlefile.php?cid=25&lid=199
+
+
+

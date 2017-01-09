@@ -36,7 +36,7 @@ dinner_char.png, dinner_table.png, sofa.png, wardrobe.png:
 
 poster.png
    Author: qubodup (Iwan Gabovitch) <qubodup@gmail.com>
-   License: CC-BY 3.0
+   License: GPLv3+, CC-BY-SAv3+
 
 ====
 

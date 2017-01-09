@@ -1,0 +1,13 @@
+banco_darwin.mesh     
+charango.mesh         
+clara_crocodilo.mesh  
+guitarra.mesh
+henry_cow_western_culture.mesh
+pandeiro.mesh
+zappa_apostrophe.mesh
+   Author: Farrer (DNTeam)
+   License: GPLv3+
+   Sources: http://opengameart.org/content/pandeiro
+            http://opengameart.org/content/charango
+
+

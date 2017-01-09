@@ -1,0 +1,14 @@
+chrono.mesh
+contra.mesh
+dk.mesh
+dnt2_box.mesh
+mariokart.mesh
+mario.mesh
+rrr.mesh
+ruindows_box.mesh
+sf2.mesh
+starfox.mesh
+topgear.mesh
+zelda.mesh
+   Author: Farrer (DNTeam)
+   License: GPLv3+

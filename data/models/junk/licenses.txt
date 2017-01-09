@@ -1,0 +1,21 @@
+
+apple_crate.mesh
+  author: pfunked (Clint Bellanger)
+  license: CC-BY 3.0
+  source: http://opengameart.org/content/wood-apple-crate
+
+
+caixa*.mesh
+bloco*.mesh
+madeira1.mesh
+pneu.mesh
+   Author: Farrer (DNTeam)
+   License: GPLv3+
+
+
+scrap*.mesh
+   Author: UFO-AI
+   License: GPLv2
+   Source: http://ufoai.sf.net
+
+

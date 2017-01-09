@@ -1,0 +1,6 @@
+cave/*
+temple/*
+   Author: Skorpio
+   License: GPLv3
+   Source: http://opengameart.org/content/3d-dungeon-tileset
+

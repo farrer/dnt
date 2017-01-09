@@ -1,6 +1,4 @@
 
-Those are the licenses of each model in this directory:
-
 bookshelf.mesh
 cadeira.mesh
 calendar.mesh
@@ -60,8 +58,6 @@ poster.mesh
    License: CC-BY 3.0
 
 fogaoalenha.mesh
-mesa.mesh
-mesa_braco.mesh
 mictorio.mesh
 privada.mesh
 pillow.mesh
@@ -70,6 +66,12 @@ quadro.mesh
 refmachine.mesh
 rug*.mesh
 tarsila_*.mesh
-   Author: farrer (DNTeam)
+   Author: Farrer (DNTeam)
    License: GPLv3+
+
+mesa.mesh
+mesa_braco.mesh
+   Author: Silvio (DNTeam)
+   License: GPLv3+
+
 

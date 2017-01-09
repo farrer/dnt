@@ -1,0 +1,54 @@
+barrel1.mesh
+barrel2.mesh
+barrel3.mesh
+car1.mesh
+cond.mesh
+container.mesh
+fountain1.mesh
+fountain2.mesh
+golf.mesh
+mixer.mesh
+lorry.mesh
+   author: UFO-AI
+   license: GPLv2
+   source: http://ufoai.sf.net
+
+bench1.mesh
+bench2.mesh
+fence1.mesh
+fence2.mesh
+   Authors: Scott Hsu-Storaker, Evan Tann, The Daggerfall Workshop
+   License: CC-BY
+   Source: http://www.lowpolycoop
+
+hydrant.mesh
+lightpole.mesh
+streetlight1.mesh
+streetlight2.mesh
+streetlight3.mesh
+   Authors: Scott Hsu-Storaker, Terrence M, Evan Tann, Yaniv Pe'er, 
+            Emily Huffman, Clint Herron, Tom Perkins
+   License: CC-BY
+   Source: http://www.lowpolycoop.com
+
+onibus.mesh
+   Author: Estrada Real Digital
+   License: GPLv2
+   Source: http://sourceforge.net/projects/erd/
+
+truck2.mesh
+   Author: Saypen
+   License: GPLv3
+   Source: http://opengameart.org/content/german-ww2-truck
+
+barrel.mesh
+bar_sign.mesh
+carreta.mesh
+escada.mesh
+placa_pare.mesh
+placa_petro.mesh
+santa_barrel.mesh
+school_sign.mesh
+   Author: Farrer (DNTeam)
+   License: GPLv3+
+
