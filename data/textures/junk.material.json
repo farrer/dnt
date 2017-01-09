@@ -38,9 +38,15 @@
             "texture" : "junk/caixa1.png",
             "sampler" : "SamplerBlock_junk1"
          },
+         "normal":
+         {
+            "texture" : "junk/caixa_n.png",
+            "sampler" : "SamplerBlock_junk1"
+         },
          "specular":
          {
-            "value": [0.05, 0.05, 0.05]
+            "texture" : "junk/caixa_s.png",
+            "sampler" : "SamplerBlock_junk1"
          }
       },
       "caixa2":
@@ -55,9 +61,15 @@
             "texture" : "junk/caixa2.png",
             "sampler" : "SamplerBlock_junk1"
          },
+         "normal":
+         {
+            "texture" : "junk/caixa_n.png",
+            "sampler" : "SamplerBlock_junk1"
+         },
          "specular":
          {
-            "value": [0.05, 0.05, 0.05]
+            "texture" : "junk/caixa_s.png",
+            "sampler" : "SamplerBlock_junk1"
          }
       },
       "apple_crate":
@@ -72,9 +84,15 @@
             "texture" : "junk/apple_crate.png",
             "sampler" : "SamplerBlock_junk1"
          },
+         "normal":
+         {
+            "texture" : "junk/apple_crate_n.png",
+            "sampler" : "SamplerBlock_junk1"
+         },
          "specular":
          {
-            "value": [0.05, 0.05, 0.05]
+            "texture" : "junk/apple_crate_s.png",
+            "sampler" : "SamplerBlock_junk1"
          }
       },
       "pneu":
@@ -89,9 +107,15 @@
             "texture" : "junk/pneu.png",
             "sampler" : "SamplerBlock_junk1"
          },
+         "normal":
+         {
+            "texture" : "junk/pneu_n.png",
+            "sampler" : "SamplerBlock_junk1"
+         },
          "specular":
          {
-            "value": [0.05, 0.05, 0.05]
+            "texture" : "junk/pneu_s.png",
+            "sampler" : "SamplerBlock_junk1"
          }
       }
    }

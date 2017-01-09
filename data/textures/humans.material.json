@@ -38,9 +38,15 @@
             "texture" : "humans/zedobar.png",
             "sampler" : "SamplerBlock_humans1"
          },
+         "normal":
+         {
+            "texture" : "humans/zedobar_n.png",
+            "sampler" : "SamplerBlock_humans1"
+         },
          "specular":
          {
-            "value": [0.01, 0.01, 0.01]
+            "texture" : "humans/zedobar_s.png",
+            "sampler" : "SamplerBlock_humans1"
          }
       }
    }
