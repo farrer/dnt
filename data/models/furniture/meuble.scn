@@ -1,5 +1,0 @@
-name = gettext("TV Hack")
-description = gettext("A furniture for your TV and videogame.")
-model = furniture/meuble.mesh
-walkable = false
-
