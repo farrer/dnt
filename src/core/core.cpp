@@ -135,11 +135,13 @@ bool Core::doCycleInit(int callCounter, bool& shouldAbort)
 void Core::getDataDirectories(Ogre::String** dataDirectories,
       Ogre::String** dataGroups, int& total)
 {
-   static Ogre::String dirs[] = {"gui", "textures", "maps", "models", "fonts",
-      "rules", "skeletons"};
+   static Ogre::String dirs[] = {"gui", "textures/doors", "textures/furniture",
+      "textures/general", "textures/humans", "textures/indoor", 
+      "textures/junk", "textures/portraits", "maps", "models", "fonts",
+      "compositors", "rules", "skeletons"};
    (*dataDirectories) = &dirs[0];
    (*dataGroups) = &dirs[0];
-   total = 7;
+   total = 14;
 }
 
 /***********************************************************************
