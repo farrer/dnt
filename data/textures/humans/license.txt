@@ -1,6 +1,13 @@
-
+chico.png
+guri.png
+guri2.png
+guria.png
+padre.png
 zedobar.png
    Author: Estrada Real Digital
    License: GPLv2
    Source: http://sourceforge.net/projects/erd/
+
+All not mentioned specular (*_s.png) and normal (*_n.png) were created by
+DNTeam and follow the license of the original diffuse files.
 

@@ -26,6 +26,144 @@
    },
    "pbs" :
    {
+      "chico":
+      {
+         "macroblock" : "Macroblock_humans1",
+         "blendblock" : "Blendblock_humans1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [1.0, 1.0, 1.0],
+            "texture" : "chico.png",
+            "sampler" : "SamplerBlock_humans1"
+         },
+         "normal":
+         {
+            "texture" : "chico_n.png",
+            "sampler" : "SamplerBlock_humans1"
+         },
+         "specular":
+         {
+            "texture" : "chico_s.png",
+            "sampler" : "SamplerBlock_humans1"
+         }
+      },
+      "guri":
+      {
+         "macroblock" : "Macroblock_humans1",
+         "blendblock" : "Blendblock_humans1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [1.0, 1.0, 1.0],
+            "texture" : "guri.png",
+            "sampler" : "SamplerBlock_humans1"
+         },
+         "normal":
+         {
+            "texture" : "guri_n.png",
+            "sampler" : "SamplerBlock_humans1"
+         },
+         "specular":
+         {
+            "texture" : "guri_s.png",
+            "sampler" : "SamplerBlock_humans1"
+         }
+      },
+      "guri2":
+      {
+         "macroblock" : "Macroblock_humans1",
+         "blendblock" : "Blendblock_humans1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [1.0, 1.0, 1.0],
+            "texture" : "guri2.png",
+            "sampler" : "SamplerBlock_humans1"
+         },
+         "normal":
+         {
+            "texture" : "guri_n.png",
+            "sampler" : "SamplerBlock_humans1"
+         },
+         "specular":
+         {
+            "texture" : "guri_s.png",
+            "sampler" : "SamplerBlock_humans1"
+         }
+      },
+      "guria":
+      {
+         "macroblock" : "Macroblock_humans1",
+         "blendblock" : "Blendblock_humans1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [1.0, 1.0, 1.0],
+            "texture" : "guria.png",
+            "sampler" : "SamplerBlock_humans1"
+         },
+         "normal":
+         {
+            "texture" : "guria_n.png",
+            "sampler" : "SamplerBlock_humans1"
+         },
+         "specular":
+         {
+            "texture" : "guria_s.png",
+            "sampler" : "SamplerBlock_humans1"
+         }
+      },
+      "padre":
+      {
+         "macroblock" : "Macroblock_humans1",
+         "blendblock" : "Blendblock_humans1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [1.0, 1.0, 1.0],
+            "texture" : "padre.png",
+            "sampler" : "SamplerBlock_humans1"
+         },
+         "normal":
+         {
+            "texture" : "padre_n.png",
+            "sampler" : "SamplerBlock_humans1"
+         },
+         "specular":
+         {
+            "texture" : "padre_s.png",
+            "sampler" : "SamplerBlock_humans1"
+         }
+      },
+      "velhaca":
+      {
+         "macroblock" : "Macroblock_humans1",
+         "blendblock" : "Blendblock_humans1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [1.0, 1.0, 1.0],
+            "texture" : "velhaca.png",
+            "sampler" : "SamplerBlock_humans1"
+         },
+         "normal":
+         {
+            "texture" : "velhaca_n.png",
+            "sampler" : "SamplerBlock_humans1"
+         },
+         "specular":
+         {
+            "texture" : "velhaca_s.png",
+            "sampler" : "SamplerBlock_humans1"
+         }
+      },
       "zedobar":
       {
          "macroblock" : "Macroblock_humans1",
