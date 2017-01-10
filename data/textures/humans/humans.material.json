@@ -35,17 +35,17 @@
          "diffuse":
          {
             "value" : [1.0, 1.0, 1.0],
-            "texture" : "humans/zedobar.png",
+            "texture" : "zedobar.png",
             "sampler" : "SamplerBlock_humans1"
          },
          "normal":
          {
-            "texture" : "humans/zedobar_n.png",
+            "texture" : "zedobar_n.png",
             "sampler" : "SamplerBlock_humans1"
          },
          "specular":
          {
-            "texture" : "humans/zedobar_s.png",
+            "texture" : "zedobar_s.png",
             "sampler" : "SamplerBlock_humans1"
          }
       }

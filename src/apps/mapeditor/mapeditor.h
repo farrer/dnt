@@ -58,7 +58,7 @@ class MapEditor : public Goblin::BaseApp
       const bool shouldUseKoboldI18n() const { return false; };
       const bool shouldCreateBasicWorkspace() const { return false; };
 
-      bool doInit();
+      bool doCycleInit(int callCounter, bool& shouldAbort);
       void getDataDirectories(Ogre::String** dataDirectories,
             Ogre::String** dataGroups, int& total);
 

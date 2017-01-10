@@ -35,13 +35,13 @@
          "diffuse":
          {
             "value" : [0.64, 0.64, 0.64],
-            "texture" : "indoor/upper_wall.png",
+            "texture" : "upper_wall.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "normal" : 
          {
             "value" : 1,
-            "texture" : "indoor/upper_wall_n.png",
+            "texture" : "upper_wall_n.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "specular":
@@ -58,13 +58,13 @@
          "diffuse":
          {
             "value" : [0.64, 0.64, 0.64],
-            "texture" : "indoor/concrete6.png",
+            "texture" : "concrete6.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "normal" : 
          {
             "value" : 1,
-            "texture" : "indoor/concrete6_n.png",
+            "texture" : "concrete6_n.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "specular":
@@ -81,18 +81,18 @@
          "diffuse":
          {
             "value" : [0.64, 0.64, 0.64],
-            "texture" : "indoor/wall_crete03b.png",
+            "texture" : "wall_crete03b.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "normal" : 
          {
             "value" : 1,
-            "texture" : "indoor/wall_crete03b_n.png",
+            "texture" : "wall_crete03b_n.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "specular":
          {
-            "texture" : "indoor/wall_crete03b_s.png",
+            "texture" : "wall_crete03b_s.png",
             "sampler" : "SamplerBlock_indoor1"
          }
       },
@@ -105,18 +105,18 @@
          "diffuse":
          {
             "value" : [0.64, 0.64, 0.64],
-            "texture" : "indoor/tile3.png",
+            "texture" : "tile3.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "normal" : 
          {
             "value" : 1,
-            "texture" : "indoor/tile3_n.png",
+            "texture" : "tile3_n.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "specular":
          {
-            "texture" : "indoor/tile3_s.png",
+            "texture" : "tile3_s.png",
             "sampler" : "SamplerBlock_indoor1"
          }
       },
@@ -129,18 +129,18 @@
          "diffuse":
          {
             "value" : [0.64, 0.64, 0.64],
-            "texture" : "indoor/wood1.png",
+            "texture" : "wood1.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "normal" : 
          {
             "value" : 1,
-            "texture" : "indoor/wood1_n.png",
+            "texture" : "wood1_n.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "specular":
          {
-            "texture" : "indoor/wood1_s.png",
+            "texture" : "wood1_s.png",
             "sampler" : "SamplerBlock_indoor1"
          }
       },
@@ -153,18 +153,18 @@
          "diffuse":
          {
             "value" : [0.64, 0.64, 0.64],
-            "texture" : "indoor/wood8.png",
+            "texture" : "wood8.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "normal" : 
          {
             "value" : 1,
-            "texture" : "indoor/wood8_n.png",
+            "texture" : "wood8_n.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "specular":
          {
-            "texture" : "indoor/wood8_s.png",
+            "texture" : "wood8_s.png",
             "sampler" : "SamplerBlock_indoor1"
          }
       },
@@ -177,18 +177,18 @@
          "diffuse":
          {
             "value" : [0.64, 0.64, 0.64],
-            "texture" : "indoor/oldwood1.png",
+            "texture" : "oldwood1.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "normal" : 
          {
             "value" : 1,
-            "texture" : "indoor/oldwood1_n.png",
+            "texture" : "oldwood1_n.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "specular":
          {
-            "texture" : "indoor/oldwood1_s.png",
+            "texture" : "oldwood1_s.png",
             "sampler" : "SamplerBlock_indoor1"
          }
       },
@@ -201,18 +201,18 @@
          "diffuse":
          {
             "value" : [0.64, 0.64, 0.64],
-            "texture" : "indoor/plaster3c.png",
+            "texture" : "plaster3c.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "normal" : 
          {
             "value" : 1,
-            "texture" : "indoor/plaster3c_n.png",
+            "texture" : "plaster3c_n.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "specular":
          {
-            "texture" : "indoor/plaster3c_s.png",
+            "texture" : "plaster3c_s.png",
             "sampler" : "SamplerBlock_indoor1"
          }
       },
@@ -225,18 +225,18 @@
          "diffuse":
          {
             "value" : [0.64, 0.64, 0.64],
-            "texture" : "indoor/wood_planks_2.png",
+            "texture" : "wood_planks_2.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "normal" : 
          {
             "value" : 1,
-            "texture" : "indoor/wood_planks_2_n.png",
+            "texture" : "wood_planks_2_n.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "specular":
          {
-            "texture" : "indoor/wood_planks_2_s.png",
+            "texture" : "wood_planks_2_s.png",
             "sampler" : "SamplerBlock_indoor1"
          }
       },
@@ -249,18 +249,18 @@
          "diffuse":
          {
             "value" : [0.64, 0.64, 0.64],
-            "texture" : "indoor/floor_tile.png",
+            "texture" : "floor_tile.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "normal" : 
          {
             "value" : 1,
-            "texture" : "indoor/floor_tile_n.png",
+            "texture" : "floor_tile_n.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "specular":
          {
-            "texture" : "indoor/floor_tile_s.png",
+            "texture" : "floor_tile_s.png",
             "sampler" : "SamplerBlock_indoor1"
          }
       },
@@ -273,18 +273,18 @@
          "diffuse":
          {
             "value" : [0.64, 0.64, 0.64],
-            "texture" : "indoor/concrete01.png",
+            "texture" : "concrete01.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "normal" : 
          {
             "value" : 1,
-            "texture" : "indoor/concrete01_n.png",
+            "texture" : "concrete01_n.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "specular":
          {
-            "texture" : "indoor/concrete01_s.png",
+            "texture" : "concrete01_s.png",
             "sampler" : "SamplerBlock_indoor1"
          }
       },
@@ -297,18 +297,18 @@
          "diffuse":
          {
             "value" : [0.64, 0.64, 0.64],
-            "texture" : "indoor/concrete01b.png",
+            "texture" : "concrete01b.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "normal" : 
          {
             "value" : 1,
-            "texture" : "indoor/concrete01_n.png",
+            "texture" : "concrete01_n.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "specular":
          {
-            "texture" : "indoor/concrete01_s.png",
+            "texture" : "concrete01_s.png",
             "sampler" : "SamplerBlock_indoor1"
          }
       },
@@ -321,18 +321,18 @@
          "diffuse":
          {
             "value" : [0.64, 0.64, 0.64],
-            "texture" : "indoor/rustytiles01.png",
+            "texture" : "rustytiles01.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "normal" : 
          {
             "value" : 1,
-            "texture" : "indoor/rustytiles01_n.png",
+            "texture" : "rustytiles01_n.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "specular":
          {
-            "texture" : "indoor/rustytiles01_s.png",
+            "texture" : "rustytiles01_s.png",
             "sampler" : "SamplerBlock_indoor1"
          }
       },
@@ -345,18 +345,18 @@
          "diffuse":
          {
             "value" : [0.64, 0.64, 0.64],
-            "texture" : "indoor/rustytiles01b.png",
+            "texture" : "rustytiles01b.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "normal" : 
          {
             "value" : 1,
-            "texture" : "indoor/rustytiles01_n.png",
+            "texture" : "rustytiles01_n.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "specular":
          {
-            "texture" : "indoor/rustytiles01_s.png",
+            "texture" : "rustytiles01_s.png",
             "sampler" : "SamplerBlock_indoor1"
          }
       },
@@ -369,18 +369,18 @@
          "diffuse":
          {
             "value" : [0.64, 0.64, 0.64],
-            "texture" : "indoor/woodfloor.png",
+            "texture" : "woodfloor.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "normal" : 
          {
             "value" : 1,
-            "texture" : "indoor/woodfloor_n.png",
+            "texture" : "woodfloor_n.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "specular":
          {
-            "texture" : "indoor/woodfloor_s_z.png",
+            "texture" : "woodfloor_s_z.png",
             "sampler" : "SamplerBlock_indoor1"
          }
       },
@@ -393,18 +393,18 @@
          "diffuse":
          {
             "value" : [0.64, 0.64, 0.64],
-            "texture" : "indoor/siding2.png",
+            "texture" : "siding2.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "normal" : 
          {
             "value" : 1,
-            "texture" : "indoor/siding2_n.png",
+            "texture" : "siding2_n.png",
             "sampler" : "SamplerBlock_indoor1"
          },
          "specular":
          {
-            "texture" : "indoor/siding2_s.png",
+            "texture" : "siding2_s.png",
             "sampler" : "SamplerBlock_indoor1"
          }
       }

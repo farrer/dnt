@@ -35,17 +35,17 @@
          "diffuse":
          {
             "value" : [0.64, 0.64, 0.64],
-            "texture" : "junk/caixa1.png",
+            "texture" : "caixa1.png",
             "sampler" : "SamplerBlock_junk1"
          },
          "normal":
          {
-            "texture" : "junk/caixa_n.png",
+            "texture" : "caixa_n.png",
             "sampler" : "SamplerBlock_junk1"
          },
          "specular":
          {
-            "texture" : "junk/caixa_s.png",
+            "texture" : "caixa_s.png",
             "sampler" : "SamplerBlock_junk1"
          }
       },
@@ -58,17 +58,17 @@
          "diffuse":
          {
             "value" : [0.64, 0.64, 0.64],
-            "texture" : "junk/caixa2.png",
+            "texture" : "caixa2.png",
             "sampler" : "SamplerBlock_junk1"
          },
          "normal":
          {
-            "texture" : "junk/caixa_n.png",
+            "texture" : "caixa_n.png",
             "sampler" : "SamplerBlock_junk1"
          },
          "specular":
          {
-            "texture" : "junk/caixa_s.png",
+            "texture" : "caixa_s.png",
             "sampler" : "SamplerBlock_junk1"
          }
       },
@@ -81,17 +81,17 @@
          "diffuse":
          {
             "value" : [0.64, 0.64, 0.64],
-            "texture" : "junk/apple_crate.png",
+            "texture" : "apple_crate.png",
             "sampler" : "SamplerBlock_junk1"
          },
          "normal":
          {
-            "texture" : "junk/apple_crate_n.png",
+            "texture" : "apple_crate_n.png",
             "sampler" : "SamplerBlock_junk1"
          },
          "specular":
          {
-            "texture" : "junk/apple_crate_s.png",
+            "texture" : "apple_crate_s.png",
             "sampler" : "SamplerBlock_junk1"
          }
       },
@@ -104,17 +104,17 @@
          "diffuse":
          {
             "value" : [0.64, 0.64, 0.64],
-            "texture" : "junk/pneu.png",
+            "texture" : "pneu.png",
             "sampler" : "SamplerBlock_junk1"
          },
          "normal":
          {
-            "texture" : "junk/pneu_n.png",
+            "texture" : "pneu_n.png",
             "sampler" : "SamplerBlock_junk1"
          },
          "specular":
          {
-            "texture" : "junk/pneu_s.png",
+            "texture" : "pneu_s.png",
             "sampler" : "SamplerBlock_junk1"
          }
       }

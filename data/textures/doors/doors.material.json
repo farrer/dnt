@@ -35,17 +35,17 @@
          "diffuse":
          {
             "value" : [0.64, 0.64, 0.64],
-            "texture" : "doors/porta4.png",
+            "texture" : "porta4.png",
             "sampler" : "SamplerBlock_doors1"
          },
          "normal":
          {
-            "texture" : "doors/porta4_n.png",
+            "texture" : "porta4_n.png",
             "sampler" : "SamplerBlock_doors1"
          },
          "specular":
          {
-            "texture" : "doors/porta4_s.png",
+            "texture" : "porta4_s.png",
             "sampler" : "SamplerBlock_doors1"
          }
       },
@@ -58,17 +58,17 @@
          "diffuse":
          {
             "value" : [0.64, 0.64, 0.64],
-            "texture" : "doors/porta5.png",
+            "texture" : "porta5.png",
             "sampler" : "SamplerBlock_doors1"
          },
          "normal":
          {
-            "texture" : "doors/porta5_n.png",
+            "texture" : "porta5_n.png",
             "sampler" : "SamplerBlock_doors1"
          },
          "specular":
          {
-            "texture" : "doors/porta5_s.png",
+            "texture" : "porta5_s.png",
             "sampler" : "SamplerBlock_doors1"
          }
       },
@@ -81,17 +81,17 @@
          "diffuse":
          {
             "value" : [0.64, 0.64, 0.64],
-            "texture" : "doors/porta6.png",
+            "texture" : "porta6.png",
             "sampler" : "SamplerBlock_doors1"
          },
          "normal":
          {
-            "texture" : "doors/porta6_n.png",
+            "texture" : "porta6_n.png",
             "sampler" : "SamplerBlock_doors1"
          },
          "specular":
          {
-            "texture" : "doors/porta6_s.png",
+            "texture" : "porta6_s.png",
             "sampler" : "SamplerBlock_doors1"
          }
       },
@@ -104,7 +104,7 @@
          "diffuse":
          {
             "value" : [0.64, 0.64, 0.64],
-            "texture" : "doors/porta7.png",
+            "texture" : "porta7.png",
             "sampler" : "SamplerBlock_doors1"
          },
          "specular":
@@ -121,7 +121,7 @@
          "diffuse":
          {
             "value" : [0.64, 0.64, 0.64],
-            "texture" : "doors/porta8.png",
+            "texture" : "porta8.png",
             "sampler" : "SamplerBlock_doors1"
          },
          "specular":

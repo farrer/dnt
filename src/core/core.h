@@ -57,7 +57,7 @@ class Core : public Goblin::BaseApp
       const bool shouldCreateBasicWorkspace() const { return false; };
 
 
-      bool doInit();
+      bool doCycleInit(int callCounter, bool& shouldAbort);
       void getDataDirectories(Ogre::String** dataDirectories,
             Ogre::String** dataGroups, int& total);
 

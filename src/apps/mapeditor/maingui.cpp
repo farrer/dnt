@@ -31,8 +31,11 @@ using namespace DNTMapEditor;
  ***********************************************************************/
 MainGui::MainGui()
 {
-   Farso::Container* cont = new Farso::Container(
-         Farso::Container::TYPE_TOP_LEFT,0, 0, 1024, 23, NULL);
+   /* Create the progress bar */
+   progressBar = new Farso::ProgressBar(412, 374, 200, 20, NULL);
+
+   cont = new Farso::Container(Farso::Container::TYPE_TOP_LEFT, 
+         0, 0, 1024, 23, NULL);
    cont->setFilled();
    
    /* Create File button and its menu */
@@ -98,7 +101,6 @@ MainGui::MainGui()
    mapButton->setMenu(mapMenu);
 
    toggleMenuStatus();
-   setLight();
 }
 
 /***********************************************************************
@@ -108,6 +110,47 @@ MainGui::~MainGui()
 {
    /* Farso::Controller::finish will delete our widgets for us. */
 }
+
+/***********************************************************************
+ *                            hideTopBar                               *
+ ***********************************************************************/
+void MainGui::hideTopBar()
+{
+   cont->hide();
+}
+
+/***********************************************************************
+ *                            showTopBar                               *
+ ***********************************************************************/
+void MainGui::showTopBar()
+{
+   cont->show();
+}
+
+/***********************************************************************
+ *                          showProgressBar                            *
+ ***********************************************************************/
+void MainGui::showProgressBar()
+{
+   progressBar->show();
+}
+
+/***********************************************************************
+ *                           setProgressBar                            *
+ ***********************************************************************/
+void MainGui::setProgressBar(int value)
+{
+   progressBar->setValue(value);
+}
+
+/***********************************************************************
+ *                          hideProgressBar                            *
+ ***********************************************************************/
+void MainGui::hideProgressBar()
+{
+   progressBar->hide();
+}
+
 
 /***********************************************************************
  *                          toggleMenuStatus                           *

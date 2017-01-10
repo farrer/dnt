@@ -42,15 +42,35 @@ namespace DNTMapEditor
 
          /*! \return if light is enabled or not */
          bool isLightEnabled();
+         
+         /*! define light based on current toggle state */
+         void setLight();
+
+         /*! Show the progress bar, initially with value 0 */
+         void showProgressBar();
+
+         /*! Set progress bar value [0,100] */
+         void setProgressBar(int value);
+
+         /*! Hide the progress bar */
+         void hideProgressBar();
+
+         /*! Hide the menu bar */
+         void hideTopBar();
+         /*! Display the menu bar */
+         void showTopBar();
 
       private:
 
          void openLoadOrSaveWindow(bool loading);
          void openNewMapWindow();
          void toggleMenuStatus();
-         void setLight();
          /*! Set current camera to be within map area */
          void setCameraOnMap();
+
+         Farso::ProgressBar* progressBar; /**< A multiple-use progress bar */
+
+         Farso::Container* cont; /**< Top bar menu container */
 
          /* File button and Menu */
          Farso::Button* fileButton;

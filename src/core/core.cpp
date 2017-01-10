@@ -68,9 +68,9 @@ Core::~Core()
 }
 
 /***********************************************************************
- *                               doInit                                *
+ *                            doCycleInit                              *
  ***********************************************************************/
-bool Core::doInit()
+bool Core::doCycleInit(int callCounter, bool& shouldAbort)
 {
    //getSceneManager()->setShadowTextureSelfShadow(true);
    
