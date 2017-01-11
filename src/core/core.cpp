@@ -112,7 +112,8 @@ bool Core::doCycleInit(int callCounter, bool& shouldAbort)
     * initial window. */
    if(!Game::loadMap("tyrol/house1.map"))
    {
-      return false;
+      shouldAbort = true;
+      return true;
    }
    Goblin::Camera::setPosition(pc->getModel()->getPosition());
 
