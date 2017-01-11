@@ -1,4 +1,5 @@
 light_bulb.mesh
+vector.mesh
    Author: Farrer (DNTeam)
    License: GPLv3+
    Source: http://opengameart.org/content/low-poly-light-bulb

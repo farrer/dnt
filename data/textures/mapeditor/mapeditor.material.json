@@ -43,6 +43,27 @@
             "value" : [0.05, 0.05, 0.05]
          }
       }
+   },
+   "unlit" : 
+   {
+      "redVector":
+      {
+         "macroblock" : "Macroblock_mapeditor1",
+         "blendblock" : "Blendblock_mapeditor1",
+         "diffuse": [0.9, 0.0, 0.0]
+      },
+      "greenVector":
+      {
+         "macroblock" : "Macroblock_mapeditor1",
+         "blendblock" : "Blendblock_mapeditor1",
+         "diffuse": [0.0, 0.9, 0.0]
+      },
+      "blueVector":
+      {
+         "macroblock" : "Macroblock_mapeditor1",
+         "blendblock" : "Blendblock_mapeditor1",
+         "diffuse": [0.0, 0.0, 0.9]
+      }
    }
 }
 
