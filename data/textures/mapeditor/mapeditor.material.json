@@ -1,0 +1,48 @@
+{
+   "samplers" :
+   {
+      "SamplerBlock_mapeditor1" :
+      {
+         "min" : "linear",
+         "mag" : "linear",
+         "u" : "wrap",
+         "v" : "wrap"
+      }
+   },
+   "macroblocks" :
+   {
+      "MacroBlock_mapeditor1" :
+      {
+         "depth_check" : true,
+         "depth_write" : true,
+         "polygon_mode" : "solid"
+      }
+   },
+   "blendblocks" : 
+   {
+      "Blendblock_mapeditor1" :
+      {
+      }
+   },
+   "pbs" :
+   {
+      "light_bulb":
+      {
+         "macroblock" : "Macroblock_mapeditor1",
+         "blendblock" : "Blendblock_mapeditor1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [1.0, 1.0, 1.0],
+            "texture" : "light_bulb.png",
+            "sampler" : "SamplerBlock_mapeditor1"
+         },
+         "specular":
+         {
+            "value" : [0.05, 0.05, 0.05]
+         }
+      }
+   }
+}
+

@@ -36,6 +36,7 @@
 #include "../../gui/briefing.h"
 
 #include <goblin/camera.h>
+#include <goblin/model3d.h>
 
 #include <OGRE/Compositor/OgreCompositorManager2.h>
 
@@ -200,6 +201,13 @@ bool MapEditor::doCycleInit(int callCounter, bool& shouldAbort)
       break;
       case 10:
       {
+         /* init mapeditor own textures */
+         Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
+               getDataPath() + "textures/mapeditor", "FileSystem", 
+               "mapeditor_textures", true);
+         Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
+               "mapeditor_textures");
+
          /* Init the Game controller */
          DNT::Game::init(ogreSceneManager);
 
@@ -211,8 +219,9 @@ bool MapEditor::doCycleInit(int callCounter, bool& shouldAbort)
          mainGui->hideProgressBar();
          mainGui->showTopBar();
          Farso::Cursor::show();
+
+         done = true;
       }
-      done = true;
       break;
    }
 
