@@ -373,6 +373,8 @@ bool Map::load(Ogre::String mapFileName, bool fullPath)
          Thing* thing = Game::createObject(value);
          if(thing)
          {
+            /* Insert it at our SceneNodes x Thing map */
+            nodesPerThingMap[thing->getModel()->getSceneNode()] = thing;
             if(thing->getModel()->isStatic())
             {
                staticThings->insert(thing);
@@ -565,6 +567,21 @@ bool Map::load(Ogre::String mapFileName, bool fullPath)
    lights->setActiveLight(0.0f, 0.0f);
 
    return true;
+}
+
+/**************************************************************************
+ *                                  getThing                              *
+ **************************************************************************/
+Thing* Map::getThing(Ogre::SceneNode* sceneNode)
+{
+   std::map<Ogre::SceneNode*, Thing*>::iterator it;
+   it = nodesPerThingMap.find(sceneNode);
+   if (it != nodesPerThingMap.end())
+   {
+      return it->second;
+   }
+
+   return NULL;
 }
 
 /**************************************************************************

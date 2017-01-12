@@ -32,6 +32,7 @@
 #include "../../rules/race.h"
 #include "../../rules/classes.h"
 #include "../../rules/skills.h"
+#include "../../rules/thing.h"
 
 #include "../../gui/briefing.h"
 
@@ -52,6 +53,7 @@ MapEditor::MapEditor()
    lastMouseY = -1;
    floorMouse = Ogre::Vector3(0.0f, 0.0f, 0.0f);
    mainGui = NULL;
+   ogreRaySceneQuery = NULL;
 }
 
 /***********************************************************************
@@ -73,6 +75,11 @@ MapEditor::~MapEditor()
    DNT::FeatsList::finish();
    DNT::Briefing::finish();
    Farso::Controller::finish();
+
+   if(ogreRaySceneQuery)
+   {
+      ogreSceneManager->destroyQuery(ogreRaySceneQuery);
+   }
 }
 
 /***********************************************************************
@@ -220,6 +227,9 @@ bool MapEditor::doCycleInit(int callCounter, bool& shouldAbort)
          mainGui->showTopBar();
          Farso::Cursor::show();
 
+         /* Create a SceneQuery */
+         ogreRaySceneQuery = ogreSceneManager->createRayQuery(Ogre::Ray());
+
          done = true;
       }
       break;
@@ -288,9 +298,9 @@ void MapEditor::doCycle()
           * it's no problem to only update it with mouse movement after all. */
          lastMouseX = mouseX;
          lastMouseY = mouseY;
-         //FIXME: must just use the last collider? Or first collider project
-         // to Y=0? Anyway, the raycast to plane Y=0 isn't the best way for DNT.
+         
          /* Calculate floor mouse coordinates */
+         //FIXME: must use the 'floor point' to later get its height.
          Ogre::Ray mouseRay;
          Goblin::Camera::getCameraToViewportRay(
                mouseX / Ogre::Real(ogreWindow->getWidth()),
@@ -304,7 +314,49 @@ void MapEditor::doCycle()
          {
             floorMouse = mouseRay.getPoint(res.second);
          }
+
+         /* Let's get if there's a 'thing' under mouse at current map */
+         if(DNT::Game::getCurrentMap())
+         {
+            thingUnderCursor = NULL;
+            ogreRaySceneQuery->setRay(mouseRay);
+            ogreRaySceneQuery->setSortByDistance(true);
+            Ogre::RaySceneQueryResult &result = ogreRaySceneQuery->execute();
+            Ogre::RaySceneQueryResult::iterator itr;
+
+            for( itr = result.begin( ); itr != result.end(); itr++ )
+            {
+               /* Note: distance == 0 are our widgets */
+               if((itr->movable) && (itr->distance > 0))
+               {
+                  /* Get the thing related to the sceneNode, if any */
+                  thingUnderCursor = DNT::Game::getCurrentMap()->getThing(
+                        itr->movable->getParentSceneNode());
+                  if(thingUnderCursor)
+                  {
+                     break;
+                  }
+                  else if(itr->movable->getName().substr(0,4) == "wall")
+                  {
+                     /* Pointing at wall. Must end. */
+                     //TODO: select wall
+                     break;
+                  }
+                  else if(itr->movable->getName().substr(0,5) == "floor")
+                  {
+                     /* Note: the floor distance seems lesser than
+                      * the real intersecton point (probably due to the 
+                      * it being a great mesh) */
+                  }
+               }
+            }
+         }
       }
+   }
+
+   if(thingUnderCursor)
+   {
+      Farso::Cursor::setTextualTip(thingUnderCursor->getName());
    }
 }
 

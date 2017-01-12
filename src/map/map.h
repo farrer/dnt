@@ -26,8 +26,12 @@
 #include "mapmesh.h"
 #include "wall.h"
 
+#include "../rules/thing.h"
+
 #include <kobold/list.h>
 #include <kobold/kstring.h>
+
+#include <map>
 
 namespace DNT
 {
@@ -82,6 +86,11 @@ class Map
        * \param filename music filename */
       void setMusicFilename(Kobold::String filename);
 
+      /*! Get a Thing currently at the Map that owns the SceneNode
+       * \param sceneNode sceneNode to get the Thing
+       * \return Thing's pointer or NULL if none */
+      Thing* getThing(Ogre::SceneNode* sceneNode);
+
    private:
       /*! Update all dirty wall meshes */
       void updateAllDirtyWalls();
@@ -104,6 +113,11 @@ class Map
       int zSize;  /**< Map size (in square units) for Z axys */
 
       Ogre::Vector3 initialPos; /**< initial position on map for PCs */
+
+      /*! A map of SceneNodes to theirs respective Things pointers.
+       * this is usually used to get the "Thing" within a SceneNode received
+       * as a result of a RayCast from cursor position */
+      std::map<Ogre::SceneNode*, Thing*> nodesPerThingMap;
 };
 
 }

@@ -79,6 +79,10 @@ class MapEditor : public Goblin::BaseApp
 
       bool shouldExit; /**< exit flag */
 
+      Ogre::RaySceneQuery* ogreRaySceneQuery;/**< To ray cast */
+
+      DNT::Thing* thingUnderCursor; /**< Current Thing under mouse cursor */
+
 };
 
 }

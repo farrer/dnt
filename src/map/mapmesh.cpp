@@ -754,6 +754,7 @@ void MapMesh::updateAllDirty()
 
       /* Add mesh to its Item */
       item = Game::getSceneManager()->createItem(mesh);
+      item->setName(baseName);
 
       /* Create the scene node and attach to the scene with manual object */
       sceneNode = 
