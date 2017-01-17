@@ -78,6 +78,7 @@ void NodesWindow::close()
    if(window)
    {
       window->close();
+      namesCount.clear();
    }
 }
 

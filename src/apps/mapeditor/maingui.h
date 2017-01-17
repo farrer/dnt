@@ -61,6 +61,10 @@ namespace DNTMapEditor
          /*! Display the menu bar */
          void showTopBar();
 
+         /*! Close all map relative opened windows.
+          * \note usually called when a new map will be loaded / created */
+         void closeMapRelatedWindows();
+
       private:
 
          void openLoadOrSaveWindow(bool loading);

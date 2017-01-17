@@ -246,6 +246,15 @@ void MainGui::setLight()
 }
 
 /***********************************************************************
+ *                       closeMapRelatedWindows                        *
+ ***********************************************************************/
+void MainGui::closeMapRelatedWindows()
+{
+   metadataGui.close();
+   nodesWindow.close();
+}
+
+/***********************************************************************
  *                           openLoadOrSave                            *
  ***********************************************************************/
 void MainGui::openLoadOrSaveWindow(bool loading)
@@ -345,6 +354,7 @@ bool MainGui::checkEvents()
       /* Check creation of a new map */
       if(event.getWidget() == buttonNewMapCreate)
       {
+         closeMapRelatedWindows();
          /* Force deletion of any already loaded map */
          DNT::Game::setCurrentMap(NULL);
          /* Create a new map and set it to be the active one */
@@ -363,6 +373,7 @@ bool MainGui::checkEvents()
       {
          if(loadSaveSelector->isLoadType())
          {
+            closeMapRelatedWindows();
             /* Must load the map */
             if(DNT::Game::loadMap(loadSaveSelector->getFilename(), true))
             {
