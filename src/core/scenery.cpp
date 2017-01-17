@@ -6,6 +6,7 @@ using namespace DNT;
  *                               Constructor                              *
  **************************************************************************/
 Scenery::Scenery()
+        :Object(Thing::THING_TYPE_SCENERY)
 {
 }
 

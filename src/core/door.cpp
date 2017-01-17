@@ -27,6 +27,7 @@ using namespace DNT;
  *                               Constructor                              *
  **************************************************************************/
 Door::Door()
+     :Object(Thing::THING_TYPE_DOOR)
 {
    closedAngle = 0.0f;
    /* Default to closed door, but not locked. */

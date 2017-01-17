@@ -126,7 +126,6 @@ namespace DNT
          Ogre::SceneNode* lightSceneNode; /**< Node associated to the light */
 #endif
          LightInfo* curLight; /**< Current active light */
-         Kobold::List lights; /**< Map Lights */
 
          int lastX;  /**< Last X coordinate of the last check */
          int lastZ;  /**< Last Z coordinate of the last chack */

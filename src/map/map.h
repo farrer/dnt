@@ -91,6 +91,12 @@ class Map
        * \return Thing's pointer or NULL if none */
       Thing* getThing(Ogre::SceneNode* sceneNode);
 
+      /*! \return current map lights */
+      MapLights* getLights() { return lights; };
+
+      Kobold::List* getStaticThings() { return staticThings; };
+      Kobold::List* getDynamicThings() { return dynamicThings; };
+
    private:
       /*! Update all dirty wall meshes */
       void updateAllDirtyWalls();

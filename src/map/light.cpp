@@ -202,7 +202,7 @@ MapLights::~MapLights()
 LightInfo* MapLights::createLightInfo(Ogre::Light::LightTypes type)
 {
    LightInfo* info = new LightInfo(type);
-   lights.insertAtEnd(info);
+   insertAtEnd(info);
 
    return info;
 }
@@ -221,8 +221,8 @@ void MapLights::setActiveLight(float pX, float pZ)
       lastZ = iZ;
 
       /* Note: assuming that full map is always covered by at least one area. */
-      LightInfo* info = static_cast<LightInfo*>(lights.getFirst());
-      for(int i = 0; i < lights.getTotal(); i++)
+      LightInfo* info = static_cast<LightInfo*>(getFirst());
+      for(int i = 0; i < getTotal(); i++)
       {
          if(info->isInner(iX, iZ))
          {
@@ -239,7 +239,7 @@ void MapLights::setActiveLight(float pX, float pZ)
       
       /* No light found... must disable current? 
        * For now just using the first one. */
-      info = static_cast<LightInfo*>(lights.getFirst());
+      info = static_cast<LightInfo*>(getFirst());
       if(curLight != info)
       {
          curLight = info;

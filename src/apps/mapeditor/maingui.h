@@ -23,6 +23,7 @@
 
 #include <farso/controller.h>
 #include "metadatagui.h"
+#include "nodeswindow.h"
 
 namespace DNTMapEditor
 {
@@ -106,6 +107,7 @@ namespace DNTMapEditor
          Farso::Button* mapButton;
          Farso::Menu* mapMenu;
          Farso::Menu::MenuItem* menuItemMetadata;
+         Farso::Menu::MenuItem* menuItemNodes;
 
          /* Load / Save window widgets */
          Farso::Window* loadSaveWindow;
@@ -118,6 +120,7 @@ namespace DNTMapEditor
          Farso::Button* buttonNewMapCreate;
 
          MetadataGui metadataGui; /**< Metadata editor gui */
+         NodesWindow nodesWindow; /**< Nodes selector window */
    };
 
 

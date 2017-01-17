@@ -44,6 +44,7 @@ using namespace DNT;
  *                               Constructor                              *
  **************************************************************************/
 Item::Item()
+     :Object(Thing::THING_TYPE_ITEM)
 {
    type = ITEM_TYPE_GENERIC;
 }

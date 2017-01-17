@@ -65,7 +65,10 @@ class Thing : public Kobold::ListElement
          /*! Character derived type */
          THING_TYPE_CHARACTER,
          /*! Object derived type */
-         THING_TYPE_OBJECT
+         THING_TYPE_OBJECT,
+         THING_TYPE_SCENERY,
+         THING_TYPE_DOOR,
+         THING_TYPE_ITEM
       };
 
       /*! Constructor */

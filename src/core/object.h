@@ -32,8 +32,9 @@ namespace DNT
 class Object : public Thing
 {
    public:
-      /*! Constructor */
-      Object();
+      /*! Constructor 
+       * \param thingType type of the object */
+      Object(ThingType type);
       /*! Destructor */
       virtual ~Object();
 

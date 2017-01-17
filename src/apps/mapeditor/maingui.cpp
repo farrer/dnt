@@ -97,6 +97,7 @@ MainGui::MainGui()
    mapMenu = new Farso::Menu(100);
    mapMenu->beginCreate();
    menuItemMetadata = mapMenu->insertItem("Metadata");
+   menuItemNodes = mapMenu->insertItem("Nodes");
    mapMenu->endCreate();
    mapButton->setMenu(mapMenu);
 
@@ -188,6 +189,7 @@ void MainGui::toggleMenuStatus()
       menuItemShowConnections->enable();
 
       menuItemMetadata->enable();
+      menuItemNodes->enable();
    }
    else
    {
@@ -205,6 +207,7 @@ void MainGui::toggleMenuStatus()
       menuItemToggleLight->disable();
       menuItemShowConnections->disable();
       menuItemMetadata->disable();
+      menuItemNodes->disable();
    }
 }
 
@@ -330,6 +333,10 @@ bool MainGui::checkEvents()
          if(mapMenu->getCurrentItem() == menuItemMetadata)
          {
             metadataGui.open();
+         }
+         else if(mapMenu->getCurrentItem() == menuItemNodes)
+         {
+            nodesWindow.open();
          }
       }
    }
