@@ -227,7 +227,7 @@ int Map::getSizeZ()
 /**************************************************************************
  *                                 load                                   *
  **************************************************************************/
-bool Map::load(Ogre::String mapFileName, bool fullPath)
+bool Map::load(Ogre::String mapFileName, bool fullPath, bool forceDynamicModels)
 {
    Kobold::DefParser parser;
    Ogre::String key, value;
@@ -370,7 +370,7 @@ bool Map::load(Ogre::String mapFileName, bool fullPath)
       /* Define a thing (object, item, scenery, etc) on the map */
       else if((key == MAP_TOKEN_THING) || (key == MAP_TOKEN_DOOR))
       {
-         Thing* thing = Game::createObject(value);
+         Thing* thing = Game::createObject(value, forceDynamicModels);
          if(thing)
          {
             /* Insert it at our SceneNodes x Thing map */

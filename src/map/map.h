@@ -58,8 +58,11 @@ class Map
       /*! Open a map to use. 
        * \param mapFileName name of the map file to load.
        * \param fullPath if mapFileName is defined as full path or inner file.
+       * \param forceDynamicModels force loading all models as dynamic ones (
+       *        MapEditor will need that to change their positions).
        * \return if load was successfull or not. */
-      bool load(Kobold::String mapFileName, bool fullPath);
+      bool load(Kobold::String mapFileName, bool fullPath, 
+            bool forceDynamicModels = false);
 
       /*! \return  map's name */
       Kobold::String getName();

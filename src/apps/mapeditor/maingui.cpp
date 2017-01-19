@@ -308,7 +308,7 @@ void MainGui::openNewMapWindow()
 /***********************************************************************
  *                            checkEvents                              *
  ***********************************************************************/
-bool MainGui::checkEvents()
+bool MainGui::checkEvents(PositionEditor* positionEditor)
 {
    Farso::Event event = Farso::Controller::getLastEvent();
    if(event.getType() == Farso::EVENT_MENU_SELECTED)
@@ -375,7 +375,8 @@ bool MainGui::checkEvents()
          {
             closeMapRelatedWindows();
             /* Must load the map */
-            if(DNT::Game::loadMap(loadSaveSelector->getFilename(), true))
+            if(DNT::Game::loadMap(loadSaveSelector->getFilename(), true, 
+                     true, true))
             {
                setCameraOnMap();
             }
@@ -398,7 +399,11 @@ bool MainGui::checkEvents()
       }
    }
    
+   //FIXME: not call when already got the event.
    if(metadataGui.checkEvents())
+   {
+   }
+   else if(nodesWindow.checkEvents(positionEditor))
    {
    }
 

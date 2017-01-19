@@ -23,6 +23,7 @@
 
 #include <farso/controller.h>
 #include <map>
+#include "positioneditor.h"
 
 namespace DNTMapEditor
 {
@@ -44,7 +45,7 @@ namespace DNTMapEditor
 
          /*! Check current Farso::Events for mai gui 
           * \return true if should quit the editor. */
-         bool checkEvents();
+         bool checkEvents(PositionEditor* positionEditor);
 
       private:
          /*! Populate nodes with map ones */

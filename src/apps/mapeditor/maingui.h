@@ -24,6 +24,7 @@
 #include <farso/controller.h>
 #include "metadatagui.h"
 #include "nodeswindow.h"
+#include "positioneditor.h"
 
 namespace DNTMapEditor
 {
@@ -39,7 +40,7 @@ namespace DNTMapEditor
 
          /*! Check current Farso::Events for mai gui 
           * \return true if should quit the editor. */
-         bool checkEvents();
+         bool checkEvents(PositionEditor* positionEditor);
 
          /*! \return if light is enabled or not */
          bool isLightEnabled();

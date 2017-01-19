@@ -26,6 +26,7 @@
 #include <goblin/baseapp.h>
 
 #include "maingui.h"
+#include "positioneditor.h"
 
 namespace DNTMapEditor
 {
@@ -76,6 +77,7 @@ class MapEditor : public Goblin::BaseApp
       int lastMouseY; /**< Last mouse Y coordinate when updated floorMouse */
 
       MainGui* mainGui; /**< Main editor's gui */
+      PositionEditor* positionEditor; /**< Position editor */
 
       bool shouldExit; /**< exit flag */
 

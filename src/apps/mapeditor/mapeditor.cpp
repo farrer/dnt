@@ -53,6 +53,7 @@ MapEditor::MapEditor()
    lastMouseY = -1;
    floorMouse = Ogre::Vector3(0.0f, 0.0f, 0.0f);
    mainGui = NULL;
+   positionEditor = NULL;
    ogreRaySceneQuery = NULL;
 }
 
@@ -64,6 +65,10 @@ MapEditor::~MapEditor()
    if(mainGui)
    {
       delete mainGui;
+   }
+   if(positionEditor)
+   {
+      delete positionEditor;
    }
 
    DNT::Game::finish();
@@ -230,6 +235,9 @@ bool MapEditor::doCycleInit(int callCounter, bool& shouldAbort)
          /* Create a SceneQuery */
          ogreRaySceneQuery = ogreSceneManager->createRayQuery(Ogre::Ray());
 
+         /* define our position editor */
+         positionEditor = new PositionEditor(getSceneManager());
+
          done = true;
       }
       break;
@@ -288,7 +296,7 @@ void MapEditor::doCycle()
    
    if(Farso::Controller::verifyEvents(leftButtonPressed, false, mouseX, mouseY))
    {
-      shouldExit |= mainGui->checkEvents();
+      shouldExit |= mainGui->checkEvents(positionEditor);
    }
    else
    {
@@ -329,9 +337,11 @@ void MapEditor::doCycle()
                /* Note: distance == 0 are our widgets */
                if((itr->movable) && (itr->distance > 0))
                {
+                  Ogre::SceneNode* sceneNode = 
+                     itr->movable->getParentSceneNode();
                   /* Get the thing related to the sceneNode, if any */
                   thingUnderCursor = DNT::Game::getCurrentMap()->getThing(
-                        itr->movable->getParentSceneNode());
+                        sceneNode);
                   if(thingUnderCursor)
                   {
                      break;
@@ -348,10 +358,18 @@ void MapEditor::doCycle()
                       * the real intersecton point (probably due to the 
                       * it being a great mesh) */
                   }
+                  else if(positionEditor->selectAxis(sceneNode))
+                  {
+                     /* We are now editing a position! */
+                     break;
+                  }
                }
             }
          }
       }
+
+      /* Let's update our position editor */
+      positionEditor->update(leftButtonPressed, mouseX, mouseY);
    }
 
    if(thingUnderCursor)

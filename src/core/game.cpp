@@ -97,7 +97,8 @@ void Game::setCurrentMap(Map* map)
 /************************************************************************
  *                               loadMap                                *
  ************************************************************************/
-Map* Game::loadMap(Kobold::String filename, bool fullPath, bool setPCsPositions)
+Map* Game::loadMap(Kobold::String filename, bool fullPath, 
+      bool setPCsPositions, bool forceDynamicModels)
 {
    /* Must freed any loaded map */
    if(currentMap)
@@ -108,7 +109,7 @@ Map* Game::loadMap(Kobold::String filename, bool fullPath, bool setPCsPositions)
 
    /* Create and try to load map */
    Map* map = new DNT::Map();
-   if(!map->load(filename, fullPath))
+   if(!map->load(filename, fullPath, forceDynamicModels))
    {
       /* Must delete the failed to load map */
       delete map;
@@ -174,7 +175,7 @@ Ogre::SceneManager* Game::getSceneManager()
 /************************************************************************
  *                             createObject                             *
  ************************************************************************/
-Object* Game::createObject(Kobold::String filename)
+Object* Game::createObject(Kobold::String filename, bool forceDynamic)
 {
    Object* obj = NULL;
    Goblin::Model3d::Model3dType modelType = Goblin::Model3d::MODEL_DYNAMIC;
@@ -209,7 +210,8 @@ Object* Game::createObject(Kobold::String filename)
    if(obj)
    {
       /* Load the object */
-      obj->load(filename, modelType);
+      obj->load(filename, 
+            (forceDynamic) ? Goblin::Model3d::MODEL_DYNAMIC : modelType);
    }
    else
    {

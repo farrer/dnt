@@ -47,9 +47,10 @@ namespace DNT
           * \param fullPath if filename is defined with full path or as
           *        an inner file.
           * \param setPCsPositions set or not PCs at initial map position.
+          * \param forceDynamicModels true to force load all models as dynamic.
           * \return loaded Map pointer (NULL if fail to load). */
          static Map* loadMap(Kobold::String filename, bool fullPath=false, 
-               bool setPCsPositions=true);
+               bool setPCsPositions=true, bool forceDynamicModels=false);
 
          /*! \return current loaded map */
          static Map* getCurrentMap();
@@ -67,9 +68,12 @@ namespace DNT
          /*! Create a new object (with its specialization type) based on its
           * file extension.
           * \param filename file to create (and load) object 
+          * \param forceDynamic to force load as a dynamic model (MapEditor
+          *   will required that, to it being able to change model's position)
           * \return pointer to the created object
-          * \note object's memory deallocation is caller's respnsability */
-         static Object* createObject(Kobold::String filename);
+          * \note object's memory deallocation is caller's responsability */
+         static Object* createObject(Kobold::String filename, 
+               bool forceDynamic = false);
 
          /*! \return used SceneManager */
          static Ogre::SceneManager* getSceneManager();

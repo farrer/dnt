@@ -20,6 +20,8 @@
 
 #include "nodeswindow.h"
 
+#include <assert.h>
+
 #include "../../core/game.h"
 #include "../../map/map.h"
 #include "../../map/light.h"
@@ -85,10 +87,40 @@ void NodesWindow::close()
 /************************************************************************
  *                             checkEvents                              *
  ************************************************************************/
-bool NodesWindow::checkEvents()
+bool NodesWindow::checkEvents(PositionEditor* positionEditor)
 {
    if((window) && (window->isActive()))
    {
+      Farso::Event event = Farso::Controller::getLastEvent();
+      if((event.getType() == Farso::EVENT_TREEVIEW_SELECTED) &&
+         (event.getWidget() == nodesTree))
+      {
+         /* Get the selected node */
+         Farso::TreeView::TreeViewElement* sel = nodesTree->getSelected();
+         if(sel->getParent() == wallsNode)
+         {
+            /* selected a wall */
+            //positionEditor->selectWall(sel->getData);
+         }
+         else if(sel->getParent() == lightNode)
+         {
+            /* selected a light */
+            //positionEditor->selectLight(sel->getData);
+         }
+         else if(sel->getData())
+         {
+            /* selected a DNT::Thing */
+            positionEditor->selectThing(
+                  static_cast<DNT::Thing*>(sel->getData()));
+         }
+         else
+         {
+            /* Unselect any position editor element */
+            positionEditor->selectThing(NULL);
+         }
+
+         return true;
+      }
    }
 
    return false;
@@ -110,22 +142,22 @@ void NodesWindow::populateNodes()
       light = static_cast<DNT::LightInfo*>(light->getNext());
    }
 
-   /* Define our static things */
-   DNT::Thing* thing = static_cast<DNT::Thing*>(
-         map->getStaticThings()->getFirst());
-   for(int i = 0; i < map->getStaticThings()->getTotal(); i++)
-   {
-      sceneryNode->addChild(getNodeName(thing->getName()), thing);
-      thing = static_cast<DNT::Thing*>(thing->getNext());
-   }
+   /* As map editor will load all models as dynamic, make sure no
+    * static models were loaded. */
+   assert(map->getStaticThings()->getTotal() == 0);
 
    /* Define our dynamic things */
-   thing = static_cast<DNT::Thing*>(map->getDynamicThings()->getFirst());
+   DNT::Thing* thing = static_cast<DNT::Thing*>(
+         map->getDynamicThings()->getFirst());
    for(int i = 0; i < map->getDynamicThings()->getTotal(); i++)
    {
       if(thing->getThingType() == DNT::Thing::THING_TYPE_DOOR)
       {
          doorsNode->addChild(getNodeName(thing->getName()), thing);
+      }
+      else if(thing->getThingType() == DNT::Thing::THING_TYPE_SCENERY)
+      {
+         sceneryNode->addChild(getNodeName(thing->getName()), thing);
       }
       thing = static_cast<DNT::Thing*>(thing->getNext());
    }
