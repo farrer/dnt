@@ -47,7 +47,8 @@ namespace DNTMapEditor
          /*! Select a Thing for position edition */
          void selectThing(DNT::Thing* thing);
 
-         bool update(bool leftButtonPressed, int cursorX, int cursorY);
+         bool update(bool leftButtonPressed, const Ogre::Vector3& floorMouse, 
+               const int mouseY);
 
       private:
 

@@ -109,7 +109,8 @@ bool PositionEditor::selectAxis(Ogre::SceneNode* sceneNode)
 /***********************************************************************
  *                               update                                *
  ***********************************************************************/
-bool PositionEditor::update(bool leftButtonPressed, int cursorX, int cursorY)
+bool PositionEditor::update(bool leftButtonPressed, 
+      const Ogre::Vector3& floorMouse, const int mouseY)
 {
    if((selectedAxis) && (!leftButtonPressed))
    {
@@ -120,7 +121,22 @@ bool PositionEditor::update(bool leftButtonPressed, int cursorX, int cursorY)
 
    if((selectedAxis) && (leftButtonPressed) && (selectedThing))
    {
-      int curValue = (selectedAxis == &yAxis) ? cursorY : cursorX;
+      /* define our current value */
+      int curValue;
+      if(selectedAxis == &xAxis)
+      {
+         curValue = floorMouse.x;
+      }
+      else if(selectedAxis == &yAxis)
+      {
+         curValue = -mouseY;
+      }
+      else 
+      {
+         curValue = floorMouse.z;
+      }
+      
+      /* Check if reference is defined */
       if(reference == -1)
       {
          reference = curValue;

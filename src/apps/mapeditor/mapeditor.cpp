@@ -369,7 +369,7 @@ void MapEditor::doCycle()
       }
 
       /* Let's update our position editor */
-      positionEditor->update(leftButtonPressed, mouseX, mouseY);
+      positionEditor->update(leftButtonPressed, floorMouse, mouseY);
    }
 
    if(thingUnderCursor)
