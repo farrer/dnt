@@ -58,12 +58,7 @@ void LightInfo::setPosition(Ogre::Vector3 pos)
    this->position = pos;
    if((mapLights) && (mapLights->isLightActive(this)) && (lightSceneNode))
    {
-      printf("Will set postition!\n");
       lightSceneNode->setPosition(pos);
-   }
-   else
-   {
-      printf("Oh no!\n");
    }
 }
 
