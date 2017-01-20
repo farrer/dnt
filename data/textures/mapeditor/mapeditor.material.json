@@ -16,6 +16,12 @@
          "depth_check" : true,
          "depth_write" : true,
          "polygon_mode" : "solid"
+      },
+      "MacroBlock_mapeditor_nondepth" :
+      {
+         "depth_check" : false,
+         "depth_write" : true,
+         "polygon_mode" : "solid"
       }
    },
    "blendblocks" : 
@@ -48,19 +54,19 @@
    {
       "redVector":
       {
-         "macroblock" : "Macroblock_mapeditor1",
+         "macroblock" : "MacroBlock_mapeditor_nondepth",
          "blendblock" : "Blendblock_mapeditor1",
          "diffuse": [0.9, 0.0, 0.0]
       },
       "greenVector":
       {
-         "macroblock" : "Macroblock_mapeditor1",
+         "macroblock" : "MacroBlock_mapeditor_nondepth",
          "blendblock" : "Blendblock_mapeditor1",
          "diffuse": [0.0, 0.9, 0.0]
       },
       "blueVector":
       {
-         "macroblock" : "Macroblock_mapeditor1",
+         "macroblock" : "MacroBlock_mapeditor_nondepth",
          "blendblock" : "Blendblock_mapeditor1",
          "diffuse": [0.0, 0.0, 0.9]
       }

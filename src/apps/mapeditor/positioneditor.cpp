@@ -19,6 +19,8 @@
 */
 
 #include "positioneditor.h"
+#include "../../core/game.h"
+#include "../../map/map.h"
 using namespace DNTMapEditor;
 
 /***********************************************************************
@@ -46,7 +48,14 @@ PositionEditor::PositionEditor(Ogre::SceneManager* sceneManager)
    yAxis.setPosition(0.0f, 10.0f, 0.0f);
    zAxis.setPosition(0.0f, 0.0f, 10.0f);
 
+   xAxis.getItem()->setCastShadows(false);
+   yAxis.getItem()->setCastShadows(false);
+   zAxis.getItem()->setCastShadows(false);
+
    reference = -1;
+   selectedThing = NULL;
+   selectedLight = NULL;
+   selectedAxis = NULL;
 
    hide();
 }
@@ -63,11 +72,32 @@ PositionEditor::~PositionEditor()
  ***********************************************************************/
 void PositionEditor::selectThing(DNT::Thing* thing)
 {
+   selectedLight = NULL;
    selectedThing = thing;
    if(thing)
    {
       setPosition(thing->getModel()->getPosition());
       show();
+   }
+   else
+   {
+      hide();
+   }
+}
+
+/***********************************************************************
+ *                           selectLight                               *
+ ***********************************************************************/
+void PositionEditor::selectLight(DNT::LightInfo* light)
+{
+   selectedThing = NULL;
+   selectedLight = light;
+   if(light)
+   {
+      setPosition(light->getPosition());
+      show();
+      DNT::Game::getCurrentMap()->getLights()->setActiveLight(
+            selectedLight);
    }
    else
    {
@@ -107,6 +137,34 @@ bool PositionEditor::selectAxis(Ogre::SceneNode* sceneNode)
 }
 
 /***********************************************************************
+ *                                clear                                *
+ ***********************************************************************/
+void PositionEditor::clear()
+{
+   selectedAxis = NULL;
+   selectedLight = NULL;
+   selectedThing = NULL;
+   reference = -1;
+   hide();
+}
+
+/***********************************************************************
+ *                           hasSelection                              *
+ ***********************************************************************/
+bool PositionEditor::hasSelection()
+{
+   return selectedThing != NULL || selectedLight != NULL;
+}
+
+/***********************************************************************
+ *                             isMoving                                *
+ ***********************************************************************/
+bool PositionEditor::isMoving()
+{
+   return reference != -1;
+}
+
+/***********************************************************************
  *                               update                                *
  ***********************************************************************/
 bool PositionEditor::update(bool leftButtonPressed, 
@@ -116,10 +174,11 @@ bool PositionEditor::update(bool leftButtonPressed,
    {
       /* Not pressing, should release the axis selection */
       selectedAxis = NULL;
+      reference = -1;
       return true;
    }
 
-   if((selectedAxis) && (leftButtonPressed) && (selectedThing))
+   if((selectedAxis) && (leftButtonPressed) && (hasSelection()))
    {
       /* define our current value */
       int curValue;
@@ -146,7 +205,15 @@ bool PositionEditor::update(bool leftButtonPressed,
          /* Must move */
          int totalToMove = curValue - reference;
 
-         Ogre::Vector3 curPos = selectedThing->getModel()->getPosition();
+         Ogre::Vector3 curPos;
+         if(selectedThing)
+         {
+            curPos = selectedThing->getModel()->getPosition();
+         }
+         else if(selectedLight)
+         {
+            curPos = selectedLight->getPosition();
+         }
 
          if(selectedAxis == &xAxis)
          {
@@ -155,8 +222,9 @@ bool PositionEditor::update(bool leftButtonPressed,
          }
          else if(selectedAxis == &yAxis)
          {
-            /* Move on Y */
-            curPos.y += totalToMove;
+            /* Move on Y (with div factor, as not using real world 
+             * coordinates to the cursor position) */
+            curPos.y += (totalToMove / 2.0f);
          }
          else if(selectedAxis == &zAxis)
          {
@@ -164,8 +232,15 @@ bool PositionEditor::update(bool leftButtonPressed,
             curPos.z += totalToMove;
          }
 
-         /* Define new thing position */
-         selectedThing->getModel()->setPosition(curPos);
+         /* Define new position */
+         if(selectedThing)
+         {
+            selectedThing->getModel()->setPosition(curPos);
+         }
+         else if(selectedLight)
+         {
+            selectedLight->setPosition(curPos);
+         }
 
          /* Redefine axis position, based on Thing's. */
          setPosition(curPos);

@@ -48,6 +48,7 @@ using namespace DNTMapEditor;
  ***********************************************************************/
 MapEditor::MapEditor()
 {
+   thingUnderCursor = NULL;
    shouldExit = false;
    lastMouseX = -1;
    lastMouseY = -1;
@@ -289,8 +290,10 @@ void MapEditor::doSendToForeground()
  ***********************************************************************/
 void MapEditor::doCycle()
 {
-   if((DNT::Game::getCurrentMap()) && (mainGui->isLightEnabled()))
+   if((DNT::Game::getCurrentMap()) && (mainGui->isLightEnabled()) &&
+      (!positionEditor->hasSelection()))
    {
+      /* update active light by mouse world position */
       DNT::Game::getCurrentMap()->update(floorMouse);
    }
    
@@ -324,7 +327,7 @@ void MapEditor::doCycle()
          }
 
          /* Let's get if there's a 'thing' under mouse at current map */
-         if(DNT::Game::getCurrentMap())
+         if((DNT::Game::getCurrentMap()) && (!positionEditor->isMoving()))
          {
             thingUnderCursor = NULL;
             ogreRaySceneQuery->setRay(mouseRay);
@@ -339,18 +342,18 @@ void MapEditor::doCycle()
                {
                   Ogre::SceneNode* sceneNode = 
                      itr->movable->getParentSceneNode();
-                  /* Get the thing related to the sceneNode, if any */
-                  thingUnderCursor = DNT::Game::getCurrentMap()->getThing(
-                        sceneNode);
-                  if(thingUnderCursor)
+
+                  if(!thingUnderCursor)
                   {
-                     break;
+                     /* Get the thing related to the sceneNode, if any */
+                     thingUnderCursor = DNT::Game::getCurrentMap()->getThing(
+                           sceneNode);
                   }
-                  else if(itr->movable->getName().substr(0,4) == "wall")
+                  
+                  if(itr->movable->getName().substr(0,4) == "wall")
                   {
                      /* Pointing at wall. Must end. */
                      //TODO: select wall
-                     break;
                   }
                   else if(itr->movable->getName().substr(0,5) == "floor")
                   {

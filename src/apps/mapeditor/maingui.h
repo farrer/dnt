@@ -64,7 +64,7 @@ namespace DNTMapEditor
 
          /*! Close all map relative opened windows.
           * \note usually called when a new map will be loaded / created */
-         void closeMapRelatedWindows();
+         void closeMapRelatedWindows(PositionEditor* positionEditor);
 
       private:
 

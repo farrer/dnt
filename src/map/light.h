@@ -33,19 +33,20 @@
 
 namespace DNT
 {
-   
    /*! Keep light information in a map */
    class LightInfo : public Kobold::ListElement
    {
       public:
          /*! Constructor */
-         LightInfo(Ogre::Light::LightTypes type);
+         LightInfo(Ogre::Light::LightTypes type, MapLights* lights);
          /*! Destructor */
          ~LightInfo();
 
          /*! Set light position
           * \param pos new light position */
          void setPosition(Ogre::Vector3 pos);
+         /*! \return current lifght position */
+         const Ogre::Vector3 getPosition() const { return position; };
 
          /*! Set light direction
           * \param dir new light direction */
@@ -79,6 +80,9 @@ namespace DNT
             public:
                Farso::Rect rect;  /**< Area where the light will act */
          };
+         
+         Ogre::Light* ogreLight;  /**< Current active light (Ogre) */
+         Ogre::SceneNode* lightSceneNode; /**< Node associated to the light */
          Ogre::ColourValue diffuse;   /**< Diffuse color */
          Ogre::ColourValue specular;  /**< Specular color */
 
@@ -90,6 +94,8 @@ namespace DNT
          Ogre::Light::LightTypes type; /**< Type of the light used */
 
          Kobold::List areas; /**< Afftecting areas */
+
+         MapLights* mapLights; /**< Current lights */
 
          /* Attenuation values */
          Ogre::Real range,
@@ -120,11 +126,15 @@ namespace DNT
           *       overlapped areas), the first one is used */
          void setActiveLight(float pX, float pZ);
 
+         /*! Set the active light to an specific one */
+         void setActiveLight(LightInfo* lightInfo);
+
+         /*! \return if lightInfo is an active light or not */
+         const bool isLightActive(LightInfo* lightInfo) const;
+
       private:
          Ogre::Light* light;  /**< Current active light (Ogre) */
-#if OGRE_VERSION_MAJOR != 1
          Ogre::SceneNode* lightSceneNode; /**< Node associated to the light */
-#endif
          LightInfo* curLight; /**< Current active light */
 
          int lastX;  /**< Last X coordinate of the last check */

@@ -105,7 +105,8 @@ bool NodesWindow::checkEvents(PositionEditor* positionEditor)
          else if(sel->getParent() == lightNode)
          {
             /* selected a light */
-            //positionEditor->selectLight(sel->getData);
+            positionEditor->selectLight(
+                  static_cast<DNT::LightInfo*>(sel->getData()));
          }
          else if(sel->getData())
          {

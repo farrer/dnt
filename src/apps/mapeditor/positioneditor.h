@@ -24,6 +24,7 @@
 #include <OGRE/OgreSceneManager.h>
 #include <goblin/model3d.h>
 #include "../../rules/thing.h"
+#include "../../map/light.h"
 
 namespace DNTMapEditor
 {
@@ -47,6 +48,20 @@ namespace DNTMapEditor
          /*! Select a Thing for position edition */
          void selectThing(DNT::Thing* thing);
 
+         /*! Select a Light for position edition
+          * \note must not be a directional (ie: without position) light. */
+         void selectLight(DNT::LightInfo* light);
+
+         /*! \return if a Thing, Wall or Light is selected */
+         bool hasSelection();
+
+         /*! \return if is moving the selection */
+         bool isMoving();
+
+         /*! Clear all selctions and hide the editor. Usually called
+          * when created a new map or loaded another one */
+         void clear();
+
          bool update(bool leftButtonPressed, const Ogre::Vector3& floorMouse, 
                const int mouseY);
 
@@ -64,6 +79,7 @@ namespace DNTMapEditor
 
          Goblin::Model3d* selectedAxis;
          DNT::Thing* selectedThing;
+         DNT::LightInfo* selectedLight;
 
          int reference;
 

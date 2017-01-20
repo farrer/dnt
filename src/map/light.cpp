@@ -29,9 +29,12 @@ using namespace DNT;
 /**************************************************************************
  *                                Constructor                             *
  **************************************************************************/
-LightInfo::LightInfo(Ogre::Light::LightTypes type)
+LightInfo::LightInfo(Ogre::Light::LightTypes type, MapLights* lights)
 {
+   this->ogreLight = NULL;
+   this->lightSceneNode = NULL;
    this->type = type;
+   this->mapLights = lights;
    this->direction = Ogre::Vector3(0.0f, -1.0f, 0.0f);
    this->outerAngle = 120.0f;
    this->range = 325;
@@ -53,6 +56,15 @@ LightInfo::~LightInfo()
 void LightInfo::setPosition(Ogre::Vector3 pos)
 {
    this->position = pos;
+   if((mapLights) && (mapLights->isLightActive(this)) && (lightSceneNode))
+   {
+      printf("Will set postition!\n");
+      lightSceneNode->setPosition(pos);
+   }
+   else
+   {
+      printf("Oh no!\n");
+   }
 }
 
 /**************************************************************************
@@ -132,6 +144,9 @@ bool LightInfo::isInner(int pX, int pZ)
  **************************************************************************/
 void LightInfo::setLight(Ogre::Light* light, Ogre::SceneNode* sceneNode)
 {
+   ogreLight = light;
+   lightSceneNode = sceneNode;
+
    light->setPowerScale(Ogre::Math::PI); 
 
    /*light->setShadowNearClipDistance(2.2f);
@@ -201,7 +216,7 @@ MapLights::~MapLights()
  **************************************************************************/
 LightInfo* MapLights::createLightInfo(Ogre::Light::LightTypes type)
 {
-   LightInfo* info = new LightInfo(type);
+   LightInfo* info = new LightInfo(type, this);
    insertAtEnd(info);
 
    return info;
@@ -246,6 +261,26 @@ void MapLights::setActiveLight(float pX, float pZ)
          info->setLight(light, lightSceneNode);
       }
    }
+}
+
+/**************************************************************************
+ *                             setActiveLight                             *
+ **************************************************************************/
+void MapLights::setActiveLight(LightInfo* lightInfo)
+{
+   if((lightInfo) && (curLight != lightInfo))
+   {
+      curLight = lightInfo;
+      lightInfo->setLight(light, lightSceneNode);
+   }
+}
+
+/**************************************************************************
+ *                              isLightActive                             *
+ **************************************************************************/
+const bool MapLights::isLightActive(LightInfo* lightInfo) const
+{
+   return lightInfo == curLight;
 }
 
 
