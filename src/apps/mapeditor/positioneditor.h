@@ -48,6 +48,9 @@ namespace DNTMapEditor
          /*! Select a Thing for position edition */
          void selectThing(DNT::Thing* thing);
 
+         /*! \return current selected thing pointer, if any */
+         DNT::Thing* getSelectedThing() const { return selectedThing; };
+
          /*! Select a Light for position edition
           * \note must not be a directional (ie: without position) light. */
          void selectLight(DNT::LightInfo* light);

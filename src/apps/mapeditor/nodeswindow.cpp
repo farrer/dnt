@@ -165,6 +165,17 @@ void NodesWindow::populateNodes()
 }
 
 /************************************************************************
+ *                       setSelectedNodeByData                          *
+ ************************************************************************/
+void NodesWindow::setSelectedNodeByData(void* data)
+{
+   if(window)
+   {
+      nodesTree->selectNodeByData(data);
+   }
+}
+
+/************************************************************************
  *                            getNodeName                               *
  ************************************************************************/
 Kobold::String NodesWindow::getNodeName(Kobold::String name)

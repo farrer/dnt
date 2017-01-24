@@ -364,6 +364,7 @@ void MapEditor::doCycle()
                   else if(positionEditor->selectAxis(sceneNode))
                   {
                      /* We are now editing a position! */
+                     thingUnderCursor = NULL;
                      break;
                   }
                }
@@ -378,6 +379,15 @@ void MapEditor::doCycle()
    if(thingUnderCursor)
    {
       Farso::Cursor::setTextualTip(thingUnderCursor->getName());
+      if(Farso::Cursor::checkButtonRelease(0))
+      {
+         /* Must select it! */
+         if(positionEditor->getSelectedThing() != thingUnderCursor)
+         {
+            positionEditor->selectThing(thingUnderCursor);
+            mainGui->getNodesWindow()->setSelectedNodeByData(thingUnderCursor);
+         }
+      }
    }
 }
 

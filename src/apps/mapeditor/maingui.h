@@ -66,6 +66,9 @@ namespace DNTMapEditor
           * \note usually called when a new map will be loaded / created */
          void closeMapRelatedWindows(PositionEditor* positionEditor);
 
+         /*! \return nodes window pointer */
+         NodesWindow* getNodesWindow() { return &nodesWindow; };
+
       private:
 
          void openLoadOrSaveWindow(bool loading);

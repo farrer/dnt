@@ -47,6 +47,10 @@ namespace DNTMapEditor
           * \return true if should quit the editor. */
          bool checkEvents(PositionEditor* positionEditor);
 
+         /*! Set the current selected node by its data
+          * \param data pointer to the data to define the node */
+         void setSelectedNodeByData(void* data);
+
       private:
          /*! Populate nodes with map ones */
          void populateNodes();
