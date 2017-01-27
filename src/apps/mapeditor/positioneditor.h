@@ -68,6 +68,9 @@ namespace DNTMapEditor
          bool update(bool leftButtonPressed, const Ogre::Vector3& floorMouse, 
                const int mouseY);
 
+         /*! Update axis position to current selected position */
+         void updateAxisPosition();
+
       private:
 
          void hide();

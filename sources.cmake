@@ -144,6 +144,7 @@ set(DNT_MAP_EDITOR_SOURCES
    src/apps/mapeditor/metadatagui.cpp
    src/apps/mapeditor/nodeswindow.cpp
    src/apps/mapeditor/positioneditor.cpp
+   src/apps/mapeditor/transformwindow.cpp
    ${WIN_SOURCES}
 )
 set(DNT_MAP_EDITOR_HEADERS
@@ -152,5 +153,6 @@ set(DNT_MAP_EDITOR_HEADERS
    src/apps/mapeditor/metadatagui.h
    src/apps/mapeditor/nodeswindow.h
    src/apps/mapeditor/positioneditor.h
+   src/apps/mapeditor/transformwindow.h
 )
 

@@ -76,30 +76,12 @@ MainGui::MainGui()
    dialogsButton = new Farso::Button(161, 1, 80, 21, "Dialogs", cont);
    dialogsMenu = new Farso::Menu(120);
    dialogsMenu->beginCreate();
-   menuItemLights = dialogsMenu->insertItem("Lights");
-   menuItemSounds = dialogsMenu->insertItem("Sounds");
+   menuItemMetadata = dialogsMenu->insertItem("Metadata");
    dialogsMenu->insertSeparator();
-   menuItemTerrain = dialogsMenu->insertItem("Terrain");
-   menuItemWall = dialogsMenu->insertItem("Wall");
-   menuItemTileWall = dialogsMenu->insertItem("Tile Wall");
-   dialogsMenu->insertSeparator();
-   menuItemObjects = dialogsMenu->insertItem("Objects");
-   menuItemCharacters = dialogsMenu->insertItem("Characters");
-   dialogsMenu->insertSeparator();
-   menuItemPortal = dialogsMenu->insertItem("Portal");
-   dialogsMenu->insertSeparator();
-   menuItemParticles = dialogsMenu->insertItem("Particles");
+   menuItemNodes = dialogsMenu->insertItem("Nodes");
+   menuItemTransform = dialogsMenu->insertItem("Transform");
    dialogsMenu->endCreate();
    dialogsButton->setMenu(dialogsMenu);
-
-   /* Create map button and menu */
-   mapButton = new Farso::Button(241, 1, 80, 21, "Map", cont);
-   mapMenu = new Farso::Menu(100);
-   mapMenu->beginCreate();
-   menuItemMetadata = mapMenu->insertItem("Metadata");
-   menuItemNodes = mapMenu->insertItem("Nodes");
-   mapMenu->endCreate();
-   mapButton->setMenu(mapMenu);
 
    toggleMenuStatus();
 }
@@ -175,15 +157,7 @@ void MainGui::toggleMenuStatus()
          menuItemSave->enable();
       }
       menuItemSaveAs->enable();
-      menuItemLights->enable();
-      menuItemSounds->enable();
-      menuItemTerrain->enable();
-      menuItemWall->enable();
-      menuItemTileWall->enable();
-      menuItemObjects->enable();
-      menuItemCharacters->enable();
-      menuItemPortal->enable();
-      menuItemParticles->enable();
+      menuItemTransform->enable();
 
       menuItemToggleLight->enable();
       menuItemShowConnections->enable();
@@ -195,17 +169,7 @@ void MainGui::toggleMenuStatus()
    {
       menuItemSave->disable();
       menuItemSaveAs->disable();
-      menuItemLights->disable();
-      menuItemSounds->disable();
-      menuItemTerrain->disable();
-      menuItemWall->disable();
-      menuItemTileWall->disable();
-      menuItemObjects->disable();
-      menuItemCharacters->disable();
-      menuItemPortal->disable();
-      menuItemParticles->disable();
-      menuItemToggleLight->disable();
-      menuItemShowConnections->disable();
+      menuItemTransform->disable();
       menuItemMetadata->disable();
       menuItemNodes->disable();
    }
@@ -252,6 +216,7 @@ void MainGui::closeMapRelatedWindows(PositionEditor* positionEditor)
 {
    metadataGui.close();
    nodesWindow.close();
+   transformWindow.close();
    if(positionEditor)
    {
       positionEditor->clear();
@@ -310,6 +275,14 @@ void MainGui::openNewMapWindow()
 }
 
 /***********************************************************************
+ *                               update                                *
+ ***********************************************************************/
+void MainGui::update(PositionEditor* positionEditor)
+{
+   transformWindow.update(positionEditor);
+}
+
+/***********************************************************************
  *                            checkEvents                              *
  ***********************************************************************/
 bool MainGui::checkEvents(PositionEditor* positionEditor)
@@ -341,15 +314,19 @@ bool MainGui::checkEvents(PositionEditor* positionEditor)
             setLight();
          }
       }
-      else if(event.getWidget() == mapMenu)
+      else if(event.getWidget() == dialogsMenu)
       {
-         if(mapMenu->getCurrentItem() == menuItemMetadata)
+         if(dialogsMenu->getCurrentItem() == menuItemMetadata)
          {
             metadataGui.open();
          }
-         else if(mapMenu->getCurrentItem() == menuItemNodes)
+         else if(dialogsMenu->getCurrentItem() == menuItemNodes)
          {
             nodesWindow.open();
+         }
+         if(dialogsMenu->getCurrentItem() == menuItemTransform)
+         {
+            transformWindow.open();
          }
       }
    }
@@ -408,6 +385,9 @@ bool MainGui::checkEvents(PositionEditor* positionEditor)
    {
    }
    else if(nodesWindow.checkEvents(positionEditor))
+   {
+   }
+   else if(transformWindow.checkEvents(positionEditor))
    {
    }
 

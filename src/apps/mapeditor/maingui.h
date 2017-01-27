@@ -25,6 +25,7 @@
 #include "metadatagui.h"
 #include "nodeswindow.h"
 #include "positioneditor.h"
+#include "transformwindow.h"
 
 namespace DNTMapEditor
 {
@@ -38,9 +39,12 @@ namespace DNTMapEditor
          /*! Destructor */
          ~MainGui();
 
-         /*! Check current Farso::Events for mai gui 
+         /*! Check current Farso::Events for main gui 
           * \return true if should quit the editor. */
          bool checkEvents(PositionEditor* positionEditor);
+
+         /*! Update any needed gui with current values */
+         void update(PositionEditor* positionEditor);
 
          /*! \return if light is enabled or not */
          bool isLightEnabled();
@@ -94,15 +98,9 @@ namespace DNTMapEditor
          /* Dialogs button and Menu */
          Farso::Button* dialogsButton;
          Farso::Menu* dialogsMenu;
-         Farso::Menu::MenuItem* menuItemLights;
-         Farso::Menu::MenuItem* menuItemSounds;
-         Farso::Menu::MenuItem* menuItemTerrain;
-         Farso::Menu::MenuItem* menuItemWall;
-         Farso::Menu::MenuItem* menuItemTileWall;
-         Farso::Menu::MenuItem* menuItemObjects;
-         Farso::Menu::MenuItem* menuItemCharacters;
-         Farso::Menu::MenuItem* menuItemPortal;
-         Farso::Menu::MenuItem* menuItemParticles;
+         Farso::Menu::MenuItem* menuItemMetadata;
+         Farso::Menu::MenuItem* menuItemNodes;
+         Farso::Menu::MenuItem* menuItemTransform;
 
          /* View button and Menu */
          Farso::Button* viewButton;
@@ -110,12 +108,6 @@ namespace DNTMapEditor
          Farso::Menu::MenuItem* menuItemToggleLight;
          bool lightEnabled;
          Farso::Menu::MenuItem* menuItemShowConnections;
-
-         /* Map button and Menu */
-         Farso::Button* mapButton;
-         Farso::Menu* mapMenu;
-         Farso::Menu::MenuItem* menuItemMetadata;
-         Farso::Menu::MenuItem* menuItemNodes;
 
          /* Load / Save window widgets */
          Farso::Window* loadSaveWindow;
@@ -129,6 +121,7 @@ namespace DNTMapEditor
 
          MetadataGui metadataGui; /**< Metadata editor gui */
          NodesWindow nodesWindow; /**< Nodes selector window */
+         TransformWindow transformWindow; /**< Node transform window */
    };
 
 

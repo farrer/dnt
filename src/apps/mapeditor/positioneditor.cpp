@@ -255,8 +255,25 @@ bool PositionEditor::update(bool leftButtonPressed,
 }
 
 /***********************************************************************
+ *                       updateAxisPosition                            *
+ ***********************************************************************/
+void PositionEditor::updateAxisPosition()
+{
+   Ogre::Vector3 curPos;
+   if(selectedThing)
+   {
+      curPos = selectedThing->getModel()->getPosition();
+   }
+   else if(selectedLight)
+   {
+      curPos = selectedLight->getPosition();
+   }
+   setPosition(curPos);
+}
+
+/***********************************************************************
  *                           setPosition                               *
- ***********************************************************************/ 
+ ***********************************************************************/
 void PositionEditor::setPosition(Ogre::Vector3 pos)
 {
    xAxis.setPosition(pos.x + 10.0f, pos.y, pos.z);

@@ -36,15 +36,15 @@ namespace DNTMapEditor
          /*! Destructor */
          ~NodesWindow();
 
-         /*! Open metadata window (closing it if already opened before 
+         /*! Open nodes window (closing it if already opened before 
           *  opening again). */
          void open();
 
-         /*! Close the all metadata windows if some are opened */
+         /*! Close the node window, if opened. */
          void close();
 
-         /*! Check current Farso::Events for mai gui 
-          * \return true if should quit the editor. */
+         /*! Check current Farso::Events for nodes window .
+          * \return true treated some event. */
          bool checkEvents(PositionEditor* positionEditor);
 
          /*! Set the current selected node by its data

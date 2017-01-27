@@ -303,6 +303,7 @@ void MapEditor::doCycle()
    }
    else
    {
+      mainGui->update(positionEditor);
       if((lastMouseX != mouseX) || (lastMouseY != mouseY))
       {
          /* The floor mouse could change with camera move too, but I believe
