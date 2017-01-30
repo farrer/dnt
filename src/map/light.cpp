@@ -158,11 +158,9 @@ void LightInfo::setLight(Ogre::Light* light, Ogre::SceneNode* sceneNode)
       /* Use direction */
       sceneNode->setDirection(direction);
    }
-   //else
-   {
-      /* Use attenuation */
-      light->setAttenuation(range, constant, linear, quadratic);
-   }
+
+   /* Define attenuation */
+   light->setAttenuation(range, constant, linear, quadratic);
 
    if(type == Ogre::Light::LT_SPOTLIGHT)
    {
@@ -248,12 +246,24 @@ void MapLights::setActiveLight(float pX, float pZ)
       }
       
       /* No light found... must disable current? 
-       * For now just using the first one. */
+       * For now just using the first one, if any. */
       info = static_cast<LightInfo*>(getFirst());
-      if(curLight != info)
+      if(info)
       {
-         curLight = info;
-         info->setLight(light, lightSceneNode);
+         if(curLight != info)
+         {
+            curLight = info;
+            if(!light->isVisible())
+            {
+               light->setVisible(true);
+            }
+            info->setLight(light, lightSceneNode);
+         }
+      }
+      else
+      {
+         light->setVisible(false);
+         curLight = NULL;
       }
    }
 }
@@ -278,4 +288,16 @@ const bool MapLights::isLightActive(LightInfo* lightInfo) const
    return lightInfo == curLight;
 }
 
+/**************************************************************************
+ *                               removeLight                              *
+ **************************************************************************/
+void MapLights::removeLight(LightInfo* light)
+{
+   bool shouldResetActive = light == curLight;
+   remove(light);
+   if(shouldResetActive)
+   {
+      setActiveLight(0, 0);
+   }
+}
 

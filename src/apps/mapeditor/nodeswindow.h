@@ -51,6 +51,14 @@ namespace DNTMapEditor
           * \param data pointer to the data to define the node */
          void setSelectedNodeByData(void* data);
 
+         /*! If the window is opened, remove a node defined by its data 
+          * \param data pointer to the node's data.
+          * \note It will not remove the data, just the tree's node. */
+         void removeNodeByData(void* data);
+
+         /*! Unselect any selected node if the window is opened */
+         void unselect();
+
       private:
          /*! Populate nodes with map ones */
          void populateNodes();

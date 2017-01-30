@@ -132,6 +132,9 @@ namespace DNT
          /*! \return if lightInfo is an active light or not */
          const bool isLightActive(LightInfo* lightInfo) const;
 
+         /*! Remove a light from the list (and delete its pointer */
+         void removeLight(LightInfo* light);
+
       private:
          Ogre::Light* light;  /**< Current active light (Ogre) */
          Ogre::SceneNode* lightSceneNode; /**< Node associated to the light */

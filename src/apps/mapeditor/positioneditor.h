@@ -55,6 +55,9 @@ namespace DNTMapEditor
           * \note must not be a directional (ie: without position) light. */
          void selectLight(DNT::LightInfo* light);
 
+         /*! \return current selected light */
+         DNT::LightInfo* getSelectedLight() const { return selectedLight; };
+
          /*! \return if a Thing, Wall or Light is selected */
          bool hasSelection();
 

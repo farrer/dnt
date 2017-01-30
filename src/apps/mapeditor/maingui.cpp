@@ -354,10 +354,37 @@ bool MainGui::checkEvents(PositionEditor* positionEditor)
             openLoadOrSaveWindow(true);
          }
       }
+      /* Edit Menu */
       else if(event.getWidget() == editMenu)
       {
          if(editMenu->getCurrentItem() == menuItemUnselect)
          {
+            /* Unselect current selection */
+            positionEditor->selectThing(NULL);
+            nodesWindow.unselect();
+         } 
+         else if(editMenu->getCurrentItem() == menuItemDuplicate)
+         {
+            //TODO
+         }
+         else if(editMenu->getCurrentItem() == menuItemRemove)
+         {
+            /* Remove current selection (both from nodeWindow and map) */
+            if(positionEditor->getSelectedThing())
+            {
+               nodesWindow.removeNodeByData(static_cast<void*>(
+                     positionEditor->getSelectedThing()));
+               DNT::Game::getCurrentMap()->removeThing(
+                     positionEditor->getSelectedThing());
+            }
+            else if(positionEditor->getSelectedLight())
+            {
+               nodesWindow.removeNodeByData(static_cast<void*>(
+                     positionEditor->getSelectedLight()));
+               DNT::Game::getCurrentMap()->getLights()->removeLight(
+                     positionEditor->getSelectedLight());
+            }
+            /* And unselect it */
             positionEditor->selectThing(NULL);
          }
       }

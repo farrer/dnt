@@ -585,6 +585,25 @@ Thing* Map::getThing(Ogre::SceneNode* sceneNode)
 }
 
 /**************************************************************************
+ *                               removeThing                              *
+ **************************************************************************/
+void Map::removeThing(Thing* thing)
+{
+   /* Remove from nodesPerThing */
+   nodesPerThingMap[thing->getModel()->getSceneNode()] = NULL;
+
+   /* Remove from respective list */
+   if(dynamicThings->hasElement(thing))
+   {
+      dynamicThings->remove(thing);
+   }
+   else
+   { 
+      staticThings->remove(thing);
+   }
+}
+
+/**************************************************************************
  *                             getInitialPosition                         *
  **************************************************************************/
 Ogre::Vector3 Map::getInitialPosition()

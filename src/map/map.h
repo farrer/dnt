@@ -94,6 +94,11 @@ class Map
        * \return Thing's pointer or NULL if none */
       Thing* getThing(Ogre::SceneNode* sceneNode);
 
+      /*! Remove a Thing from the map.
+       * \note this function will delete the Thing's pointer. 
+       * \param thing pointer to the Thing to be removed. */
+      void removeThing(Thing* thing);
+
       /*! \return current map lights */
       MapLights* getLights() { return lights; };
 

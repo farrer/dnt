@@ -176,6 +176,30 @@ void NodesWindow::setSelectedNodeByData(void* data)
 }
 
 /************************************************************************
+ *                          removeNodeByData                            *
+ ************************************************************************/
+void NodesWindow::removeNodeByData(void* data)
+{
+   if(window)
+   {
+      Farso::TreeView::TreeViewElement* el = nodesTree->getNodeByData(data);
+      assert(el != NULL);
+      nodesTree->remove(el);
+   }
+}
+
+/************************************************************************
+ *                              unselect                                *
+ ************************************************************************/
+void NodesWindow::unselect()
+{
+   if(window)
+   {
+      nodesTree->unselect();
+   }
+}
+
+/************************************************************************
  *                            getNodeName                               *
  ************************************************************************/
 Kobold::String NodesWindow::getNodeName(Kobold::String name)
