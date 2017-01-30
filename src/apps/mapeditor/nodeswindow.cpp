@@ -133,6 +133,7 @@ bool NodesWindow::checkEvents(PositionEditor* positionEditor)
 void NodesWindow::populateNodes()
 {
    DNT::Map* map = DNT::Game::getCurrentMap();
+   namesCount.clear();
    
    /* Define our lights */
    DNT::LightInfo* light = static_cast<DNT::LightInfo*>(
