@@ -78,6 +78,10 @@ namespace DNTMapEditor
          void openLoadOrSaveWindow(bool loading);
          void openNewMapWindow();
          void toggleMenuStatus();
+
+         void enableEditItems();
+         void disableEditItems();
+
          /*! Set current camera to be within map area */
          void setCameraOnMap();
 
@@ -94,6 +98,13 @@ namespace DNTMapEditor
          Farso::Menu::MenuItem* menuItemSave;
          Farso::Menu::MenuItem* menuItemSaveAs;
          Farso::Menu::MenuItem* menuItemExit;
+
+         /*! Edit Menu */
+         Farso::Button* editButton;
+         Farso::Menu* editMenu;
+         Farso::Menu::MenuItem* menuItemUnselect;
+         Farso::Menu::MenuItem* menuItemDuplicate;
+         Farso::Menu::MenuItem* menuItemRemove;
 
          /* Dialogs button and Menu */
          Farso::Button* dialogsButton;

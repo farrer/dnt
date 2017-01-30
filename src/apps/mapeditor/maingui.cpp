@@ -31,6 +31,14 @@ using namespace DNTMapEditor;
  ***********************************************************************/
 MainGui::MainGui()
 {
+   /* Nullify Load/Save window things */
+   loadSaveWindow = NULL;
+   loadSaveSelector = NULL;
+   newMapWindow = NULL;
+   spinNewMapSizeX = NULL;
+   spinNewMapSizeZ = NULL;
+   buttonNewMapCreate = NULL;
+
    /* Create the progress bar */
    progressBar = new Farso::ProgressBar(412, 374, 200, 20, NULL);
 
@@ -39,7 +47,8 @@ MainGui::MainGui()
    cont->setFilled();
    
    /* Create File button and its menu */
-   fileButton = new Farso::Button(1, 1, 80, 21, "File", cont);
+   int pX = 1;
+   fileButton = new Farso::Button(pX, 1, 80, 21, "File", cont);
    fileMenu = new Farso::Menu(100);
    fileMenu->beginCreate();
    menuItemNewIndoor = fileMenu->insertItem("New Indoor Map...");
@@ -52,17 +61,22 @@ MainGui::MainGui()
    menuItemExit = fileMenu->insertItem("Exit");
    fileMenu->endCreate();
    fileButton->setMenu(fileMenu);
+   pX += 80;
 
-   /* Nullify Load/Save window things */
-   loadSaveWindow = NULL;
-   loadSaveSelector = NULL;
-   newMapWindow = NULL;
-   spinNewMapSizeX = NULL;
-   spinNewMapSizeZ = NULL;
-   buttonNewMapCreate = NULL;
+   /* Create edit button and menu */
+   editButton = new Farso::Button(pX, 1, 80, 21, "Edit", cont);
+   editMenu = new Farso::Menu(120);
+   editMenu->beginCreate();
+   menuItemUnselect = editMenu->insertItem("Unselect");
+   menuItemDuplicate = editMenu->insertItem("Duplicate");
+   editMenu->insertSeparator();
+   menuItemRemove = editMenu->insertItem("Remove");
+   editMenu->endCreate();
+   editButton->setMenu(editMenu);
+   pX += 80;
    
    /* Create view button and menu */
-   viewButton = new Farso::Button(81, 1, 80, 21, "View", cont);
+   viewButton = new Farso::Button(pX, 1, 80, 21, "View", cont);
    viewMenu = new Farso::Menu();
    viewMenu->beginCreate();
    menuItemToggleLight = viewMenu->insertItem("Disable light");
@@ -71,9 +85,10 @@ MainGui::MainGui()
    menuItemShowConnections = viewMenu->insertItem("Show connections");
    viewMenu->endCreate();
    viewButton->setMenu(viewMenu);
+   pX += 80;
 
    /* Create dialogs button and menu */
-   dialogsButton = new Farso::Button(161, 1, 80, 21, "Dialogs", cont);
+   dialogsButton = new Farso::Button(pX, 1, 80, 21, "Dialogs", cont);
    dialogsMenu = new Farso::Menu(120);
    dialogsMenu->beginCreate();
    menuItemMetadata = dialogsMenu->insertItem("Metadata");
@@ -172,7 +187,28 @@ void MainGui::toggleMenuStatus()
       menuItemTransform->disable();
       menuItemMetadata->disable();
       menuItemNodes->disable();
+      disableEditItems();
    }
+}
+
+/***********************************************************************
+ *                            enableEditItems                          *
+ ***********************************************************************/
+void MainGui::enableEditItems()
+{
+   menuItemUnselect->enable();
+   menuItemDuplicate->enable();
+   menuItemRemove->enable();
+}
+
+/***********************************************************************
+ *                           disableEditItems                          *
+ ***********************************************************************/
+void MainGui::disableEditItems()
+{
+   menuItemUnselect->disable();
+   menuItemDuplicate->disable();
+   menuItemRemove->disable();
 }
 
 /***********************************************************************
@@ -287,6 +323,18 @@ void MainGui::update(PositionEditor* positionEditor)
  ***********************************************************************/
 bool MainGui::checkEvents(PositionEditor* positionEditor)
 {
+   /* Check if need to change EditItems available status */
+   if((menuItemUnselect->isEnabled()) && (!positionEditor->hasSelection()))
+   {
+      disableEditItems();
+   }
+   else if((!menuItemUnselect->isEnabled()) && 
+           (positionEditor->hasSelection()))
+   {
+      enableEditItems();
+   }
+
+   /* Let's check any event */
    Farso::Event event = Farso::Controller::getLastEvent();
    if(event.getType() == Farso::EVENT_MENU_SELECTED)
    {
@@ -304,6 +352,13 @@ bool MainGui::checkEvents(PositionEditor* positionEditor)
          else if(fileMenu->getCurrentItem() == menuItemLoad)
          {
             openLoadOrSaveWindow(true);
+         }
+      }
+      else if(event.getWidget() == editMenu)
+      {
+         if(editMenu->getCurrentItem() == menuItemUnselect)
+         {
+            positionEditor->selectThing(NULL);
          }
       }
       else if(event.getWidget() == viewMenu)
