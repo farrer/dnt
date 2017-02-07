@@ -225,6 +225,45 @@ int Map::getSizeZ()
 }
 
 /**************************************************************************
+ *                           insertThing                                  *
+ **************************************************************************/
+Thing* Map::insertThing(Kobold::String filename, bool forceDynamic)
+{
+   Thing* thing = Game::createObject(filename, forceDynamic);
+   if(thing)
+   {
+      /* Insert it at our SceneNodes x Thing map */
+      nodesPerThingMap[thing->getModel()->getSceneNode()] = thing;
+      if(thing->getModel()->isStatic())
+      {
+         staticThings->insert(thing);
+      }
+      else
+      {
+         dynamicThings->insert(thing);
+      }
+   }
+
+   return thing;
+}
+
+/**************************************************************************
+ *                           insertThing                                  *
+ **************************************************************************/
+Thing* Map::insertThing(Kobold::String filename, bool forceDynamic,
+      const Ogre::Vector3& pos, const Ogre::Vector3& ori)
+{
+   Thing* thing = insertThing(filename, forceDynamic);
+   if(thing)
+   {
+      thing->getModel()->setPosition(pos);
+      thing->getModel()->setOrientation(ori.x, ori.y, ori.z);
+   }
+
+   return thing;
+}
+
+/**************************************************************************
  *                                 load                                   *
  **************************************************************************/
 bool Map::load(Ogre::String mapFileName, bool fullPath, bool forceDynamicModels)
@@ -370,24 +409,16 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool forceDynamicModels)
       /* Define a thing (object, item, scenery, etc) on the map */
       else if((key == MAP_TOKEN_THING) || (key == MAP_TOKEN_DOOR))
       {
-         Thing* thing = Game::createObject(value, forceDynamicModels);
+         Thing* thing = insertThing(value, forceDynamicModels);
          if(thing)
          {
-            /* Insert it at our SceneNodes x Thing map */
-            nodesPerThingMap[thing->getModel()->getSceneNode()] = thing;
-            if(thing->getModel()->isStatic())
-            {
-               staticThings->insert(thing);
-            }
-            else
-            {
-               dynamicThings->insert(thing);
-            }
             /* Notify last thing dirty state, if needed. */
             if((lastThing) && (lastThing->getModel()->isStatic()))
             {
                lastThing->getModel()->notifyStaticDirty();
             }
+            
+            /* Set new lastThing */
             lastThing = thing;
          }
       }

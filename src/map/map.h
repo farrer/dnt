@@ -99,6 +99,16 @@ class Map
        * \param thing pointer to the Thing to be removed. */
       void removeThing(Thing* thing);
 
+      /*! Insert a new thing on the map
+       * \param filename filename of the thing to insert
+       * \param forceDynamic true to force static models to be dynamic
+       *        (usually on editors).
+       * \param pos position to put the thing on
+       * \param ori orientation to set the thing.
+       * \return pointer to the inserted thing */
+      Thing* insertThing(Kobold::String filename, bool forceDynamic,
+            const Ogre::Vector3& pos, const Ogre::Vector3& ori);
+
       /*! \return current map lights */
       MapLights* getLights() { return lights; };
 
@@ -108,6 +118,9 @@ class Map
    private:
       /*! Update all dirty wall meshes */
       void updateAllDirtyWalls();
+
+      /*! Insert a new thing on the map */
+      Thing* insertThing(Kobold::String filename, bool forceDynamic);
 
       MapMesh floor; /**< The indoor floor meshes */
       Kobold::List walls; /**< The indoor walls */

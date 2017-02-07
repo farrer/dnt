@@ -365,7 +365,24 @@ bool MainGui::checkEvents(PositionEditor* positionEditor)
          } 
          else if(editMenu->getCurrentItem() == menuItemDuplicate)
          {
-            //TODO
+            /* Duplicate selection */
+            if(positionEditor->getSelectedThing())
+            {
+               DNT::Thing* thing = positionEditor->getSelectedThing();
+               Ogre::Vector3 pos = thing->getModel()->getPosition();
+               pos.x += 10;
+               //TODO: check if new position is inner the map!
+               DNT::Game::getCurrentMap()->insertThing(
+                     thing->getFilename(), true, pos, 
+                     Ogre::Vector3(thing->getModel()->getPitch(),
+                                   thing->getModel()->getYaw(),
+                                   thing->getModel()->getRoll()));
+            }
+            else if(positionEditor->getSelectedLight())
+            {
+            }
+            //TODO must add to the nodes window, if opened.
+            //TODO: must set it as the new selection.
          }
          else if(editMenu->getCurrentItem() == menuItemRemove)
          {
