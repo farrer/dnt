@@ -73,6 +73,13 @@ namespace DNTMapEditor
          /*! \return nodes window pointer */
          NodesWindow* getNodesWindow() { return &nodesWindow; };
 
+         /*! Duplicate current selected node, if any. */
+         void duplicateSelection(PositionEditor* positionEditor);
+         /*! Remove current selection, if any, from both editor and map */
+         void removeSelection(PositionEditor* positionEditor);
+         /*! Unselect current selection, if any. */
+         void unselect(PositionEditor* positionEditor);
+
       private:
 
          void openLoadOrSaveWindow(bool loading);

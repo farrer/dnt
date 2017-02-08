@@ -71,6 +71,8 @@ class MapEditor : public Goblin::BaseApp
       bool shouldQuit();
 
    private:
+      /*! Check keyboard input for editor */
+      void checkKeyboardInput();
 
       Ogre::Vector3 floorMouse; /**< Coordinates of mouse on floor */ 
       int lastMouseX; /**< Last mouse X coordinate when updated floorMouse */
@@ -84,6 +86,8 @@ class MapEditor : public Goblin::BaseApp
       Ogre::RaySceneQuery* ogreRaySceneQuery;/**< To ray cast */
 
       DNT::Thing* thingUnderCursor; /**< Current Thing under mouse cursor */
+
+      Kobold::KeyCodes lastKey; /**< Last action key checked */
 
 };
 

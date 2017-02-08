@@ -67,10 +67,10 @@ MainGui::MainGui()
    editButton = new Farso::Button(pX, 1, 80, 21, "Edit", cont);
    editMenu = new Farso::Menu(120);
    editMenu->beginCreate();
-   menuItemUnselect = editMenu->insertItem("Unselect");
-   menuItemDuplicate = editMenu->insertItem("Duplicate");
+   menuItemUnselect = editMenu->insertItem("Unselect (CTRL+U)");
+   menuItemDuplicate = editMenu->insertItem("Duplicate (CTRL+D)");
    editMenu->insertSeparator();
-   menuItemRemove = editMenu->insertItem("Remove");
+   menuItemRemove = editMenu->insertItem("Remove (CTRL+BACKSPACE)");
    editMenu->endCreate();
    editButton->setMenu(editMenu);
    pX += 80;
@@ -327,6 +327,83 @@ void MainGui::update(PositionEditor* positionEditor)
 }
 
 /***********************************************************************
+ *                        duplicateSelection                           *
+ ***********************************************************************/
+void MainGui::duplicateSelection(PositionEditor* positionEditor)
+{
+   if(positionEditor->getSelectedThing())
+   {
+      DNT::Thing* thing = positionEditor->getSelectedThing();
+      Ogre::Vector3 pos = thing->getModel()->getPosition();
+      pos.x += 10;
+      //TODO: check if new position is inner the map!
+      DNT::Thing* newThing = DNT::Game::getCurrentMap()->insertThing(
+            thing->getFilename(), true, pos, 
+            Ogre::Vector3(thing->getModel()->getPitch(),
+               thing->getModel()->getYaw(),
+               thing->getModel()->getRoll()));
+      /* Add to node's tree, if opened */
+      if(nodesWindow.isOpened())
+      {
+         nodesWindow.addThing(newThing);
+         nodesWindow.setSelectedNodeByData(newThing);
+      }
+      positionEditor->selectThing(newThing);
+   }
+   else if(positionEditor->getSelectedLight())
+   {
+      DNT::LightInfo* lightInfo = positionEditor->getSelectedLight();
+      Ogre::Vector3 pos = lightInfo->getPosition();
+      pos.x += 10;
+      //TODO: check if new position is inner the map!
+      DNT::LightInfo* newLight = DNT::Game::getCurrentMap()->
+         getLights()->createLightInfo(lightInfo->getType());
+      newLight->set(lightInfo);
+      newLight->setPosition(pos);
+
+      /* Add to node's tree, if opened */
+      if(nodesWindow.isOpened())
+      {
+         nodesWindow.addLight(newLight);
+         nodesWindow.setSelectedNodeByData(newLight);
+      }
+      positionEditor->selectLight(newLight);
+   }
+}
+
+/***********************************************************************
+ *                          removeSelection                            *
+ ***********************************************************************/
+void MainGui::removeSelection(PositionEditor* positionEditor)
+{
+   if(positionEditor->getSelectedThing())
+   {
+      nodesWindow.removeNodeByData(static_cast<void*>(
+               positionEditor->getSelectedThing()));
+      DNT::Game::getCurrentMap()->removeThing(
+            positionEditor->getSelectedThing());
+   }
+   else if(positionEditor->getSelectedLight())
+   {
+      nodesWindow.removeNodeByData(static_cast<void*>(
+               positionEditor->getSelectedLight()));
+      DNT::Game::getCurrentMap()->getLights()->removeLight(
+            positionEditor->getSelectedLight());
+   }
+   /* And unselect it */
+   positionEditor->selectThing(NULL);
+}
+
+/***********************************************************************
+ *                              unselect                               *
+ ***********************************************************************/
+void MainGui::unselect(PositionEditor* positionEditor)
+{
+   positionEditor->selectThing(NULL);
+   nodesWindow.unselect();
+}
+
+/***********************************************************************
  *                            checkEvents                              *
  ***********************************************************************/
 bool MainGui::checkEvents(PositionEditor* positionEditor)
@@ -368,70 +445,17 @@ bool MainGui::checkEvents(PositionEditor* positionEditor)
          if(editMenu->getCurrentItem() == menuItemUnselect)
          {
             /* Unselect current selection */
-            positionEditor->selectThing(NULL);
-            nodesWindow.unselect();
+            unselect(positionEditor);
          } 
          else if(editMenu->getCurrentItem() == menuItemDuplicate)
          {
             /* Duplicate selection */
-            if(positionEditor->getSelectedThing())
-            {
-               DNT::Thing* thing = positionEditor->getSelectedThing();
-               Ogre::Vector3 pos = thing->getModel()->getPosition();
-               pos.x += 10;
-               //TODO: check if new position is inner the map!
-               DNT::Thing* newThing = DNT::Game::getCurrentMap()->insertThing(
-                     thing->getFilename(), true, pos, 
-                     Ogre::Vector3(thing->getModel()->getPitch(),
-                                   thing->getModel()->getYaw(),
-                                   thing->getModel()->getRoll()));
-               /* Add to node's tree, if opened */
-               if(nodesWindow.isOpened())
-               {
-                  nodesWindow.addThing(newThing);
-                  nodesWindow.setSelectedNodeByData(newThing);
-               }
-               positionEditor->selectThing(newThing);
-            }
-            else if(positionEditor->getSelectedLight())
-            {
-               DNT::LightInfo* lightInfo = positionEditor->getSelectedLight();
-               Ogre::Vector3 pos = lightInfo->getPosition();
-               pos.x += 10;
-               //TODO: check if new position is inner the map!
-               DNT::LightInfo* newLight = DNT::Game::getCurrentMap()->
-                  getLights()->createLightInfo(lightInfo->getType());
-               newLight->set(lightInfo);
-               newLight->setPosition(pos);
-
-               /* Add to node's tree, if opened */
-               if(nodesWindow.isOpened())
-               {
-                  nodesWindow.addLight(newLight);
-                  nodesWindow.setSelectedNodeByData(newLight);
-               }
-               positionEditor->selectLight(newLight);
-            }
+            duplicateSelection(positionEditor);
          }
          else if(editMenu->getCurrentItem() == menuItemRemove)
          {
             /* Remove current selection (both from nodeWindow and map) */
-            if(positionEditor->getSelectedThing())
-            {
-               nodesWindow.removeNodeByData(static_cast<void*>(
-                     positionEditor->getSelectedThing()));
-               DNT::Game::getCurrentMap()->removeThing(
-                     positionEditor->getSelectedThing());
-            }
-            else if(positionEditor->getSelectedLight())
-            {
-               nodesWindow.removeNodeByData(static_cast<void*>(
-                     positionEditor->getSelectedLight()));
-               DNT::Game::getCurrentMap()->getLights()->removeLight(
-                     positionEditor->getSelectedLight());
-            }
-            /* And unselect it */
-            positionEditor->selectThing(NULL);
+            removeSelection(positionEditor);
          }
       }
       else if(event.getWidget() == viewMenu)

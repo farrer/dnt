@@ -56,6 +56,7 @@ MapEditor::MapEditor()
    mainGui = NULL;
    positionEditor = NULL;
    ogreRaySceneQuery = NULL;
+   lastKey = Kobold::KOBOLD_KEY_UNKNOWN;
 }
 
 /***********************************************************************
@@ -286,6 +287,44 @@ void MapEditor::doSendToForeground()
 }
 
 /***********************************************************************
+ *                          checkKeyboardInput                         *
+ ***********************************************************************/
+void MapEditor::checkKeyboardInput()
+{
+   if((Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_LCTRL)) ||
+      (Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_RCTRL)))
+   {
+      if((lastKey != Kobold::KOBOLD_KEY_D) && 
+         (Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_D)))
+      {
+         /* Should duplicate current selection */
+         mainGui->duplicateSelection(positionEditor);
+         lastKey = Kobold::KOBOLD_KEY_D;
+      }
+      else if((lastKey != Kobold::KOBOLD_KEY_BACKSPACE) && 
+              (Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_BACKSPACE)))
+      {
+         /* Should unselect current selection */
+         mainGui->removeSelection(positionEditor);
+         lastKey = Kobold::KOBOLD_KEY_BACKSPACE;
+      }
+      else if((lastKey != Kobold::KOBOLD_KEY_U) && 
+              (Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_U)))
+      {
+         /* Should unselect current selection */
+         mainGui->unselect(positionEditor);
+         lastKey = Kobold::KOBOLD_KEY_U;
+      }
+      else if((lastKey != Kobold::KOBOLD_KEY_UNKNOWN) && 
+              (!Kobold::Keyboard::isKeyPressed(lastKey)))
+      {
+         /* Last key no more pressed, must clear it */
+         lastKey = Kobold::KOBOLD_KEY_UNKNOWN;
+      }
+   }
+}
+
+/***********************************************************************
  *                              doCycle                                *
  ***********************************************************************/
 void MapEditor::doCycle()
@@ -304,6 +343,9 @@ void MapEditor::doCycle()
    else
    {
       mainGui->update(positionEditor);
+
+      /* Let's check keyboard input for selections */
+      checkKeyboardInput();
 
       if(!Farso::Controller::wasMouseOverWidget())
       {
