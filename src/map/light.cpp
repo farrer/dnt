@@ -36,7 +36,7 @@ LightInfo::LightInfo(Ogre::Light::LightTypes type, MapLights* lights)
    this->type = type;
    this->mapLights = lights;
    this->direction = Ogre::Vector3(0.0f, -1.0f, 0.0f);
-   this->outerAngle = 120.0f;
+   this->outerAngle = Ogre::Degree(120.0f);
    this->range = 325;
    this->constant = 1.0;
    this->linear = 0.014; 
@@ -187,6 +187,7 @@ void LightInfo::setLight(Ogre::Light* light, Ogre::SceneNode* sceneNode)
    if(type != Ogre::Light::LT_POINT)
    {
       /* Use direction */
+      sceneNode->resetOrientation();
       sceneNode->setDirection(direction);
    }
 
@@ -196,7 +197,7 @@ void LightInfo::setLight(Ogre::Light* light, Ogre::SceneNode* sceneNode)
    if(type == Ogre::Light::LT_SPOTLIGHT)
    {
       /* Set spotlight outer angle */
-      light->setSpotlightRange(Ogre::Degree(0), Ogre::Degree(outerAngle));
+      light->setSpotlightRange(Ogre::Degree(0), outerAngle);
       //FIXME: define radius attenuation by parameter
       //light->setAttenuationBasedOnRadius(10.0f, 0.01f);
    }
