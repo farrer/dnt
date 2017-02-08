@@ -67,10 +67,10 @@ MainGui::MainGui()
    editButton = new Farso::Button(pX, 1, 80, 21, "Edit", cont);
    editMenu = new Farso::Menu(120);
    editMenu->beginCreate();
-   menuItemUnselect = editMenu->insertItem("Unselect (CTRL+U)");
-   menuItemDuplicate = editMenu->insertItem("Duplicate (CTRL+D)");
+   menuItemUnselect = editMenu->insertItem("Unselect", "(CTRL+U)");
+   menuItemDuplicate = editMenu->insertItem("Duplicate", "(CTRL+D)");
    editMenu->insertSeparator();
-   menuItemRemove = editMenu->insertItem("Remove (CTRL+BACKSPACE)");
+   menuItemRemove = editMenu->insertItem("Remove", "(CTRL+BACKSPACE)");
    editMenu->endCreate();
    editButton->setMenu(editMenu);
    pX += 80;
