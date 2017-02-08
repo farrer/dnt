@@ -106,7 +106,15 @@ MainGui::MainGui()
  ***********************************************************************/
 MainGui::~MainGui()
 {
-   /* Farso::Controller::finish will delete our widgets for us. */
+   closeMapRelatedWindows(NULL);
+   if(loadSaveWindow)
+   {
+      loadSaveWindow->close();
+   }
+   if(newMapWindow)
+   {
+      newMapWindow->close();
+   }
 }
 
 /***********************************************************************
@@ -372,17 +380,38 @@ bool MainGui::checkEvents(PositionEditor* positionEditor)
                Ogre::Vector3 pos = thing->getModel()->getPosition();
                pos.x += 10;
                //TODO: check if new position is inner the map!
-               DNT::Game::getCurrentMap()->insertThing(
+               DNT::Thing* newThing = DNT::Game::getCurrentMap()->insertThing(
                      thing->getFilename(), true, pos, 
                      Ogre::Vector3(thing->getModel()->getPitch(),
                                    thing->getModel()->getYaw(),
                                    thing->getModel()->getRoll()));
+               /* Add to node's tree, if opened */
+               if(nodesWindow.isOpened())
+               {
+                  nodesWindow.addThing(newThing);
+                  nodesWindow.setSelectedNodeByData(newThing);
+               }
+               positionEditor->selectThing(newThing);
             }
             else if(positionEditor->getSelectedLight())
             {
+               DNT::LightInfo* lightInfo = positionEditor->getSelectedLight();
+               Ogre::Vector3 pos = lightInfo->getPosition();
+               pos.x += 10;
+               //TODO: check if new position is inner the map!
+               DNT::LightInfo* newLight = DNT::Game::getCurrentMap()->
+                  getLights()->createLightInfo(lightInfo->getType());
+               newLight->set(lightInfo);
+               newLight->setPosition(pos);
+
+               /* Add to node's tree, if opened */
+               if(nodesWindow.isOpened())
+               {
+                  nodesWindow.addLight(newLight);
+                  nodesWindow.setSelectedNodeByData(newLight);
+               }
+               positionEditor->selectLight(newLight);
             }
-            //TODO must add to the nodes window, if opened.
-            //TODO: must set it as the new selection.
          }
          else if(editMenu->getCurrentItem() == menuItemRemove)
          {

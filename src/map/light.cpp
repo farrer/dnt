@@ -51,6 +51,37 @@ LightInfo::~LightInfo()
 }
 
 /**************************************************************************
+ *                                   set                                  *
+ **************************************************************************/
+void LightInfo::set(LightInfo* lightInfo)
+{
+   assert(type == lightInfo->type);
+   if(type == lightInfo->type)
+   {
+      /* Clone parameters */
+      this->position = lightInfo->position;
+      this->direction = lightInfo->direction;
+      this->diffuse = lightInfo->diffuse;
+      this->specular = lightInfo->specular;
+      this->outerAngle = lightInfo->outerAngle;
+      this->range = lightInfo->range;
+      this->constant = lightInfo->constant;
+      this->linear = lightInfo->linear;
+      this->quadratic = lightInfo->quadratic;
+
+      /* Clone areas */
+      this->areas.clear();
+      Area* area = static_cast<Area*>(lightInfo->areas.getFirst());
+      for(int i = 0; i < lightInfo->areas.getTotal(); i++)
+      {
+         addArea(area->rect.getX1(), area->rect.getY1(), 
+                 area->rect.getX2(), area->rect.getY2());
+         area = static_cast<Area*>(area->getNext());
+      }
+   }
+}
+
+/**************************************************************************
  *                               setPosition                              *
  **************************************************************************/
 void LightInfo::setPosition(Ogre::Vector3 pos)

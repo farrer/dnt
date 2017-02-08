@@ -128,6 +128,35 @@ bool NodesWindow::checkEvents(PositionEditor* positionEditor)
 }
 
 /************************************************************************
+ *                               addThing                               *
+ ************************************************************************/
+void NodesWindow::addThing(DNT::Thing* thing)
+{
+   assert(window != NULL);
+   assert(thing != NULL);
+   
+   if(thing->getThingType() == DNT::Thing::THING_TYPE_DOOR)
+   {
+      doorsNode->addChild(getNodeName(thing->getName()), thing);
+   }
+   else if(thing->getThingType() == DNT::Thing::THING_TYPE_SCENERY)
+   {
+      sceneryNode->addChild(getNodeName(thing->getName()), thing);
+   }
+}
+
+/************************************************************************
+ *                               addLight                               *
+ ************************************************************************/
+void NodesWindow::addLight(DNT::LightInfo* light)
+{
+   assert(window != NULL);
+   assert(light != NULL);
+
+   lightNode->addChild(getNodeName("Light"), light);
+}
+
+/************************************************************************
  *                            populateEvents                            *
  ************************************************************************/
 void NodesWindow::populateNodes()
@@ -140,7 +169,7 @@ void NodesWindow::populateNodes()
          map->getLights()->getFirst());
    for(int i = 0; i < map->getLights()->getTotal(); i++)
    {
-      lightNode->addChild(getNodeName("Light"), light);
+      addLight(light);
       light = static_cast<DNT::LightInfo*>(light->getNext());
    }
 
@@ -153,14 +182,7 @@ void NodesWindow::populateNodes()
          map->getDynamicThings()->getFirst());
    for(int i = 0; i < map->getDynamicThings()->getTotal(); i++)
    {
-      if(thing->getThingType() == DNT::Thing::THING_TYPE_DOOR)
-      {
-         doorsNode->addChild(getNodeName(thing->getName()), thing);
-      }
-      else if(thing->getThingType() == DNT::Thing::THING_TYPE_SCENERY)
-      {
-         sceneryNode->addChild(getNodeName(thing->getName()), thing);
-      }
+      addThing(thing);
       thing = static_cast<DNT::Thing*>(thing->getNext());
    }
 }

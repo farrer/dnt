@@ -43,6 +43,16 @@ namespace DNTMapEditor
          /*! Close the node window, if opened. */
          void close();
 
+         /*! \return if node window is opened or nor */
+         const bool isOpened() const { return window != NULL; };
+
+         /*! Add a thing to the node's tree 
+          * \note window must be opened */
+         void addThing(DNT::Thing* thing);
+         /*! Add a light to the node's tree.
+          * \note window must be opened */
+         void addLight(DNT::LightInfo* light);
+
          /*! Check current Farso::Events for nodes window .
           * \return true treated some event. */
          bool checkEvents(PositionEditor* positionEditor);

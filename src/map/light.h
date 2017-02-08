@@ -42,6 +42,14 @@ namespace DNT
          /*! Destructor */
          ~LightInfo();
 
+         /*! Set light to be exactly like the light info defined.
+          * \note both must be of the same type 
+          * \param lightInfo pointer to LightInfo to clone its information. */
+         void set(LightInfo* lightInfo);
+
+         /*! \return Light type of this light */
+         const Ogre::Light::LightTypes getType() const { return type; };
+
          /*! Set light position
           * \param pos new light position */
          void setPosition(Ogre::Vector3 pos);
@@ -51,6 +59,8 @@ namespace DNT
          /*! Set light direction
           * \param dir new light direction */
          void setDirection(Ogre::Vector3 dir);
+         /*! \return light direction */
+         const Ogre::Vector3 getDirection() const { return direction; };
 
          /*! Set diffuse light color */
          void setDiffuse(float r, float g, float b);
