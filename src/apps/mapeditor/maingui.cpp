@@ -67,10 +67,10 @@ MainGui::MainGui()
    editButton = new Farso::Button(pX, 1, 80, 21, "Edit", cont);
    editMenu = new Farso::Menu(120);
    editMenu->beginCreate();
-   menuItemUnselect = editMenu->insertItem("Unselect", "(CTRL+U)");
-   menuItemDuplicate = editMenu->insertItem("Duplicate", "(CTRL+D)");
+   menuItemUnselect = editMenu->insertItem("Unselect", "CTRL+U");
+   menuItemDuplicate = editMenu->insertItem("Duplicate", "CTRL+D");
    editMenu->insertSeparator();
-   menuItemRemove = editMenu->insertItem("Remove", "(CTRL+BACKSPACE)");
+   menuItemRemove = editMenu->insertItem("Remove", "CTRL+BACKSPACE");
    editMenu->endCreate();
    editButton->setMenu(editMenu);
    pX += 80;
@@ -91,10 +91,10 @@ MainGui::MainGui()
    dialogsButton = new Farso::Button(pX, 1, 80, 21, "Dialogs", cont);
    dialogsMenu = new Farso::Menu(120);
    dialogsMenu->beginCreate();
-   menuItemMetadata = dialogsMenu->insertItem("Metadata");
+   menuItemMetadata = dialogsMenu->insertItem("Metadata", "ALT+M");
    dialogsMenu->insertSeparator();
-   menuItemNodes = dialogsMenu->insertItem("Nodes");
-   menuItemTransform = dialogsMenu->insertItem("Transform");
+   menuItemNodes = dialogsMenu->insertItem("Nodes", "ALT+N");
+   menuItemTransform = dialogsMenu->insertItem("Transform", "ALT+T");
    dialogsMenu->endCreate();
    dialogsButton->setMenu(dialogsMenu);
 
@@ -264,6 +264,66 @@ void MainGui::closeMapRelatedWindows(PositionEditor* positionEditor)
    if(positionEditor)
    {
       positionEditor->clear();
+   }
+}
+
+/***********************************************************************
+ *                          toggleNodeWindow                           *
+ ***********************************************************************/
+void MainGui::toggleNodeWindow()
+{
+   if(!DNT::Game::getCurrentMap())
+   {
+      return;
+   }
+
+   if(nodesWindow.isOpened())
+   {
+      nodesWindow.close();
+   }
+   else
+   {
+      nodesWindow.open();
+   }
+}
+
+/***********************************************************************
+ *                       toggleMetadataWindow                          *
+ ***********************************************************************/
+void MainGui::toggleMetadataWindow()
+{
+   if(!DNT::Game::getCurrentMap())
+   {
+      return;
+   }
+
+   if(metadataGui.isOpened())
+   {
+      metadataGui.close();
+   }
+   else
+   {
+      metadataGui.open();
+   }
+}
+
+/***********************************************************************
+ *                       toggleTransformWindow                         *
+ ***********************************************************************/
+void MainGui::toggleTransformWindow()
+{
+   if(!DNT::Game::getCurrentMap())
+   {
+      return;
+   }
+
+   if(transformWindow.isOpened())
+   {
+      transformWindow.close();
+   }
+   else
+   {
+      transformWindow.open();
    }
 }
 

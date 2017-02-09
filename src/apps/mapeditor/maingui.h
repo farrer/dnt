@@ -80,6 +80,13 @@ namespace DNTMapEditor
          /*! Unselect current selection, if any. */
          void unselect(PositionEditor* positionEditor);
 
+         /*! Open/Close the Node Window */
+         void toggleNodeWindow();
+         /*! Open/Close the metadata window */
+         void toggleMetadataWindow();
+         /*! Open/Close the transform window */
+         void toggleTransformWindow();
+
       private:
 
          void openLoadOrSaveWindow(bool loading);

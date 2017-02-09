@@ -44,6 +44,9 @@ namespace DNTMapEditor
          /*! Close the window, if opened */
          void close();
 
+         /*! \return if transform window is opened */
+         const bool isOpened() const { return window != NULL; };
+
          /*! Check current Farso::Events for the window 
           * \return true if treated some event. */
          bool checkEvents(PositionEditor* positionEditor);

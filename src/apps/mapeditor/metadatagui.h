@@ -46,6 +46,9 @@ namespace DNTMapEditor
           * \return true if should quit the editor. */
          bool checkEvents();
 
+         /*! \return if metadata window is opened */
+         const bool isOpened() const { return metadataWindow != NULL; };
+
       private:
          /*! Open a window to select music file */
          void openSelectMusicWindow();

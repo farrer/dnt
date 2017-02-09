@@ -315,12 +315,38 @@ void MapEditor::checkKeyboardInput()
          mainGui->unselect(positionEditor);
          lastKey = Kobold::KOBOLD_KEY_U;
       }
-      else if((lastKey != Kobold::KOBOLD_KEY_UNKNOWN) && 
-              (!Kobold::Keyboard::isKeyPressed(lastKey)))
+   }
+   else if((Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_LALT)) ||
+           (Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_RALT)))
+   {
+      if((lastKey != Kobold::KOBOLD_KEY_N) && 
+         (Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_N)))
       {
-         /* Last key no more pressed, must clear it */
-         lastKey = Kobold::KOBOLD_KEY_UNKNOWN;
+         /* Node window toggle */
+         mainGui->toggleNodeWindow();
+         lastKey = Kobold::KOBOLD_KEY_N;
       }
+      else if((lastKey != Kobold::KOBOLD_KEY_T) && 
+         (Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_T)))
+      {
+         /* Transform window toggle */
+         mainGui->toggleTransformWindow();
+         lastKey = Kobold::KOBOLD_KEY_T;
+      }
+      else if((lastKey != Kobold::KOBOLD_KEY_M) && 
+         (Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_M)))
+      {
+         /* Metadata window toggle */
+         mainGui->toggleMetadataWindow();
+         lastKey = Kobold::KOBOLD_KEY_M;
+      }
+   }
+   
+   if((lastKey != Kobold::KOBOLD_KEY_UNKNOWN) && 
+      (!Kobold::Keyboard::isKeyPressed(lastKey)))
+   {
+      /* Last key no more pressed, must clear it */
+      lastKey = Kobold::KOBOLD_KEY_UNKNOWN;
    }
 }
 
