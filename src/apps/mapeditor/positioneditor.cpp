@@ -32,25 +32,44 @@ PositionEditor::PositionEditor(Ogre::SceneManager* sceneManager)
          yAxis("yAxys", "mapeditor/vector.mesh", sceneManager, 
                Goblin::Model3d::MODEL_DYNAMIC), 
          zAxis("zAxys", "mapeditor/vector.mesh", sceneManager, 
-               Goblin::Model3d::MODEL_DYNAMIC) 
+               Goblin::Model3d::MODEL_DYNAMIC),
+         xRot("xRot", "mapeditor/rotation_circle.mesh", sceneManager, 
+               Goblin::Model3d::MODEL_DYNAMIC),
+         yRot("yRot", "mapeditor/rotation_circle.mesh", sceneManager, 
+               Goblin::Model3d::MODEL_DYNAMIC),
+         zRot("zRot", "mapeditor/rotation_circle.mesh", sceneManager, 
+               Goblin::Model3d::MODEL_DYNAMIC)
 {
    xAxis.setScale(10.0f, 10.0f, 10.0f);
    yAxis.setScale(10.0f, 10.0f, 10.0f);
    zAxis.setScale(10.0f, 10.0f, 10.0f);
+   xRot.setScale(8.0f, 8.0f, 8.0f);
+   yRot.setScale(8.0f, 8.0f, 8.0f);
+   zRot.setScale(8.0f, 8.0f, 8.0f);
 
    yAxis.setMaterial("greenVector");
+   yRot.setMaterial("greenVector");
    zAxis.setMaterial("blueVector");
+   zRot.setMaterial("blueVector");
 
    xAxis.setOrientation(0.0f, 0.0f, 270.0f);
+   xRot.setOrientation(0.0f, 0.0f, 270.0f);
    zAxis.setOrientation(0.0f, 90.0f, 90.0f);
+   zRot.setOrientation(0.0f, 90.0f, 90.0f);
 
    xAxis.setPosition(10.0f, 0.0f, 0.0f);
+   xRot.setPosition(12.0f, 0.0f, 0.0f);
    yAxis.setPosition(0.0f, 10.0f, 0.0f);
+   yRot.setPosition(0.0f, 12.0f, 0.0f);
    zAxis.setPosition(0.0f, 0.0f, 10.0f);
+   zRot.setPosition(0.0f, 0.0f, 12.0f);
 
    xAxis.getItem()->setCastShadows(false);
+   xRot.getItem()->setCastShadows(false);
    yAxis.getItem()->setCastShadows(false);
+   yRot.getItem()->setCastShadows(false);
    zAxis.getItem()->setCastShadows(false);
+   zRot.getItem()->setCastShadows(false);
 
    reference = -1;
    selectedThing = NULL;
@@ -132,6 +151,21 @@ bool PositionEditor::selectAxis(Ogre::SceneNode* sceneNode)
       selectedAxis = &zAxis;
       return true;
    }
+   else if(xRot.ownSceneNode(sceneNode))
+   {
+      selectedAxis = &xRot;
+      return true;
+   }
+   else if(yRot.ownSceneNode(sceneNode))
+   {
+      selectedAxis = &yRot;
+      return true;
+   }
+   else if(zRot.ownSceneNode(sceneNode))
+   {
+      selectedAxis = &zRot;
+      return true;
+   }
 
    return false;
 }
@@ -168,7 +202,7 @@ bool PositionEditor::isMoving()
  *                               update                                *
  ***********************************************************************/
 bool PositionEditor::update(bool leftButtonPressed, 
-      const Ogre::Vector3& floorMouse, const int mouseY)
+      const Ogre::Vector3& floorMouse, const int mouseX, const int mouseY)
 {
    if((selectedAxis) && (!leftButtonPressed))
    {
@@ -190,9 +224,21 @@ bool PositionEditor::update(bool leftButtonPressed,
       {
          curValue = -mouseY;
       }
-      else 
+      else if(selectedAxis == &zAxis)
       {
          curValue = floorMouse.z;
+      }
+      else if(selectedAxis == &xRot)
+      {
+         curValue = -mouseY;
+      }
+      else if(selectedAxis == &yRot)
+      {
+         curValue = mouseX;
+      }
+      else if(selectedAxis == &zRot)
+      {
+         curValue = -mouseY;
       }
       
       /* Check if reference is defined */
@@ -206,9 +252,13 @@ bool PositionEditor::update(bool leftButtonPressed,
          int totalToMove = curValue - reference;
 
          Ogre::Vector3 curPos;
+         Ogre::Vector3 ori;
          if(selectedThing)
          {
             curPos = selectedThing->getModel()->getPosition();
+            ori.x = selectedThing->getModel()->getPitch();
+            ori.y = selectedThing->getModel()->getYaw();
+            ori.z = selectedThing->getModel()->getRoll();
          }
          else if(selectedLight)
          {
@@ -231,11 +281,48 @@ bool PositionEditor::update(bool leftButtonPressed,
             /* Move on Z */
             curPos.z += totalToMove;
          }
+         else if(selectedAxis == &xRot)
+         {
+            ori.x += totalToMove;
+            if(ori.x >= 360.0f)
+            {
+               ori.x -= 360.0f;
+            }
+            else if(ori.x < 0.0f)
+            {
+               ori.x += 360.0f;
+            }
+         }
+         else if(selectedAxis == &yRot)
+         {
+            ori.y += totalToMove;
+            if(ori.y >= 360.0f)
+            {
+               ori.y -= 360.0f;
+            }
+            else if(ori.y < 0.0f)
+            {
+               ori.y += 360.0f;
+            }
+         }
+         else if(selectedAxis == &zRot)
+         {
+            ori.z += totalToMove;
+            if(ori.z >= 360.0f)
+            {
+               ori.z -= 360.0f;
+            }
+            else if(ori.z < 0.0f)
+            {
+               ori.z += 360.0f;
+            }
+         }
 
          /* Define new position */
          if(selectedThing)
          {
             selectedThing->getModel()->setPosition(curPos);
+            selectedThing->getModel()->setOrientation(ori.x, ori.y, ori.z);
          }
          else if(selectedLight)
          {
@@ -277,8 +364,11 @@ void PositionEditor::updateAxisPosition()
 void PositionEditor::setPosition(Ogre::Vector3 pos)
 {
    xAxis.setPosition(pos.x + 10.0f, pos.y, pos.z);
+   xRot.setPosition(pos.x + 12.0f, pos.y, pos.z);
    yAxis.setPosition(pos.x, pos.y + 10.0f, pos.z);
+   yRot.setPosition(pos.x, pos.y + 12.0f, pos.z);
    zAxis.setPosition(pos.x, pos.y, pos.z + 10.0f);
+   zRot.setPosition(pos.x, pos.y, pos.z + 12.0f);
 }
 
 /***********************************************************************
@@ -287,8 +377,11 @@ void PositionEditor::setPosition(Ogre::Vector3 pos)
 void PositionEditor::hide()
 {
    xAxis.hide();
+   xRot.hide();
    yAxis.hide();
+   yRot.hide();
    zAxis.hide();
+   zRot.hide();
 }
 
 /***********************************************************************
@@ -297,8 +390,13 @@ void PositionEditor::hide()
 void PositionEditor::show()
 {
    xAxis.show();
+   xRot.show();
+   yAxis.show();
+   yRot.show();
    yAxis.show();
    zAxis.show();
+   zRot.show();
+   yAxis.show();
 }
 
 

@@ -69,7 +69,7 @@ namespace DNTMapEditor
          void clear();
 
          bool update(bool leftButtonPressed, const Ogre::Vector3& floorMouse, 
-               const int mouseY);
+               const int mouseX, const int mouseY);
 
          /*! Update axis position to current selected position */
          void updateAxisPosition();
@@ -85,6 +85,10 @@ namespace DNTMapEditor
          Goblin::Model3d xAxis;
          Goblin::Model3d yAxis;
          Goblin::Model3d zAxis;
+
+         Goblin::Model3d xRot;
+         Goblin::Model3d yRot;
+         Goblin::Model3d zRot;
 
          Goblin::Model3d* selectedAxis;
          DNT::Thing* selectedThing;

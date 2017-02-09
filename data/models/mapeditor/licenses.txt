@@ -1,4 +1,5 @@
 light_bulb.mesh
+rotation_circle.mesh
 vector.mesh
    Author: Farrer (DNTeam)
    License: GPLv3+
