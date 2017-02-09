@@ -307,6 +307,7 @@ void MapEditor::checkKeyboardInput()
          /* Should unselect current selection */
          mainGui->removeSelection(positionEditor);
          lastKey = Kobold::KOBOLD_KEY_BACKSPACE;
+         thingUnderCursor = NULL;
       }
       else if((lastKey != Kobold::KOBOLD_KEY_U) && 
               (Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_U)))
