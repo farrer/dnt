@@ -40,12 +40,12 @@ PositionEditor::PositionEditor(Ogre::SceneManager* sceneManager)
          zRot("zRot", "mapeditor/rotation_circle.mesh", sceneManager, 
                Goblin::Model3d::MODEL_DYNAMIC)
 {
-   xAxis.setScale(10.0f, 10.0f, 10.0f);
-   yAxis.setScale(10.0f, 10.0f, 10.0f);
-   zAxis.setScale(10.0f, 10.0f, 10.0f);
-   xRot.setScale(8.0f, 8.0f, 8.0f);
-   yRot.setScale(8.0f, 8.0f, 8.0f);
-   zRot.setScale(8.0f, 8.0f, 8.0f);
+   xAxis.setScale(5.0f, 5.0f, 5.0f);
+   yAxis.setScale(5.0f, 5.0f, 5.0f);
+   zAxis.setScale(5.0f, 5.0f, 5.0f);
+   xRot.setScale(4.0f, 4.0f, 4.0f);
+   yRot.setScale(4.0f, 4.0f, 4.0f);
+   zRot.setScale(4.0f, 4.0f, 4.0f);
 
    yAxis.setMaterial("greenVector");
    yRot.setMaterial("greenVector");
