@@ -75,6 +75,7 @@ PositionEditor::PositionEditor(Ogre::SceneManager* sceneManager)
    selectedThing = NULL;
    selectedLight = NULL;
    selectedAxis = NULL;
+   coloredAxis = NULL;
 
    hide();
 }
@@ -139,35 +140,66 @@ bool PositionEditor::selectAxis(Ogre::SceneNode* sceneNode)
    if(xAxis.ownSceneNode(sceneNode))
    {
       selectedAxis = &xAxis;
-      return true;
    }
    else if(yAxis.ownSceneNode(sceneNode))
    {
       selectedAxis = &yAxis;
-      return true;
    }
    else if(zAxis.ownSceneNode(sceneNode))
    {
       selectedAxis = &zAxis;
-      return true;
    }
    else if(xRot.ownSceneNode(sceneNode))
    {
       selectedAxis = &xRot;
-      return true;
    }
    else if(yRot.ownSceneNode(sceneNode))
    {
       selectedAxis = &yRot;
-      return true;
    }
    else if(zRot.ownSceneNode(sceneNode))
    {
       selectedAxis = &zRot;
-      return true;
    }
 
-   return false;
+   if(selectedAxis)
+   {
+      /* Must set it as grey */
+      if(coloredAxis)
+      {
+         restoreAxisMaterial();
+      }
+      coloredAxis = selectedAxis;
+      selectedAxis->setMaterial("greyVector");
+   }
+   else if(coloredAxis)
+   {
+      /* No selection and no more under cursor, must unset the
+       * grey color on previous axis. */
+      restoreAxisMaterial();
+   }
+
+   return selectedAxis;
+}
+
+/***********************************************************************
+ *                         restoreAxisMaterial                         *
+ ***********************************************************************/
+void PositionEditor::restoreAxisMaterial()
+{
+   if((coloredAxis == &xAxis) || (coloredAxis == &xRot))
+   {
+      coloredAxis->setMaterial("redVector");
+   }
+   else if((coloredAxis == &yAxis) || (coloredAxis == &yRot))
+   {
+      coloredAxis->setMaterial("greenVector");
+   }
+   else if((coloredAxis == &zAxis) || (coloredAxis == &zRot))
+   {
+      coloredAxis->setMaterial("blueVector");
+   }
+   coloredAxis = NULL;
 }
 
 /***********************************************************************
@@ -175,6 +207,10 @@ bool PositionEditor::selectAxis(Ogre::SceneNode* sceneNode)
  ***********************************************************************/
 void PositionEditor::clear()
 {
+   /* Restore material */
+   restoreAxisMaterial();
+
+   /* Clear selections */
    selectedAxis = NULL;
    selectedLight = NULL;
    selectedThing = NULL;

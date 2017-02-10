@@ -82,6 +82,9 @@ namespace DNTMapEditor
          /*! Set axis positions to be relative to */
          void setPosition(Ogre::Vector3 pos);
 
+         /*! Restore selected axis to its original material */
+         void restoreAxisMaterial();
+
          Goblin::Model3d xAxis;
          Goblin::Model3d yAxis;
          Goblin::Model3d zAxis;
@@ -91,6 +94,7 @@ namespace DNTMapEditor
          Goblin::Model3d zRot;
 
          Goblin::Model3d* selectedAxis;
+         Goblin::Model3d* coloredAxis;
          DNT::Thing* selectedThing;
          DNT::LightInfo* selectedLight;
 
