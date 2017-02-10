@@ -168,6 +168,11 @@ bool TransformWindow::checkEvents(PositionEditor* positionEditor)
       Farso::Event event = Farso::Controller::getLastEvent();
       if(event.getType() == Farso::EVENT_TEXTENTRY_EDITION_DONE)
       {
+         Ogre::Vector3 ori;
+         ori.x = thing->getModel()->getPitch();
+         ori.y = thing->getModel()->getYaw();
+         ori.z = thing->getModel()->getRoll();
+
          /* Check positions */
          if(event.getWidget() == position[0])
          {
@@ -196,25 +201,22 @@ bool TransformWindow::checkEvents(PositionEditor* positionEditor)
          /* Check rotations */
          else if(event.getWidget() == rotation[0])
          {
+            thing->getModel()->clearOrientation();
             thing->getModel()->setOrientation(
-                  parse(rotation[0], thing->getModel()->getPitch()),
-                  thing->getModel()->getYaw(),
-                  thing->getModel()->getRoll());
+                  parse(rotation[0], ori.x), ori.y, ori.z);
             positionEditor->updateAxisPosition();
          }
          else if(event.getWidget() == rotation[1])
          {
+            thing->getModel()->clearOrientation();
             thing->getModel()->setOrientation(
-                  thing->getModel()->getPitch(),
-                  parse(rotation[1], thing->getModel()->getYaw()),
-                  thing->getModel()->getRoll());
+                  ori.x, parse(rotation[1], ori.y), ori.z);
          }
          else if(event.getWidget() == rotation[2])
          {
+            thing->getModel()->clearOrientation();
             thing->getModel()->setOrientation(
-                  thing->getModel()->getPitch(),
-                  thing->getModel()->getYaw(),
-                  parse(rotation[2], thing->getModel()->getRoll()));
+                  ori.x, ori.y, parse(rotation[2], ori.z));
          }
          /* Check scale */
          else if(event.getWidget() == scale[0])

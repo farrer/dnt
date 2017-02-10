@@ -358,6 +358,7 @@ bool PositionEditor::update(bool leftButtonPressed,
          if(selectedThing)
          {
             selectedThing->getModel()->setPosition(curPos);
+            selectedThing->getModel()->clearOrientation();
             selectedThing->getModel()->setOrientation(ori.x, ori.y, ori.z);
          }
          else if(selectedLight)
