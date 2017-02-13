@@ -77,7 +77,8 @@ PositionEditor::PositionEditor(Ogre::SceneManager* sceneManager)
    selectedAxis = NULL;
    coloredAxis = NULL;
 
-   hide();
+   hideTranslationAxis();
+   hideRotationAxis();
 }
 
 /***********************************************************************
@@ -97,11 +98,13 @@ void PositionEditor::selectThing(DNT::Thing* thing)
    if(thing)
    {
       setPosition(thing->getModel()->getPosition());
-      show();
+      showTranslationAxis();
+      showRotationAxis();
    }
    else
    {
-      hide();
+      hideTranslationAxis();
+      hideRotationAxis();
    }
 }
 
@@ -115,13 +118,15 @@ void PositionEditor::selectLight(DNT::LightInfo* light)
    if(light)
    {
       setPosition(light->getPosition());
-      show();
+      showTranslationAxis();
+      hideRotationAxis();
       DNT::Game::getCurrentMap()->getLights()->setActiveLight(
             selectedLight);
    }
    else
    {
-      hide();
+      hideRotationAxis();
+      hideTranslationAxis();
    }
 }
 
@@ -215,7 +220,8 @@ void PositionEditor::clear()
    selectedLight = NULL;
    selectedThing = NULL;
    reference = -1;
-   hide();
+   hideRotationAxis();
+   hideTranslationAxis();
 }
 
 /***********************************************************************
@@ -411,29 +417,42 @@ void PositionEditor::setPosition(Ogre::Vector3 pos)
 /***********************************************************************
  *                                hide                                 *
  ***********************************************************************/
-void PositionEditor::hide()
+void PositionEditor::hideRotationAxis()
+{
+   xRot.hide();
+   yRot.hide();
+   zRot.hide();
+}
+
+/***********************************************************************
+ *                                hide                                 *
+ ***********************************************************************/
+void PositionEditor::hideTranslationAxis()
 {
    xAxis.hide();
-   xRot.hide();
    yAxis.hide();
-   yRot.hide();
    zAxis.hide();
-   zRot.hide();
+}
+
+
+/***********************************************************************
+ *                                hide                                 *
+ ***********************************************************************/
+void PositionEditor::showRotationAxis()
+{
+   xRot.show();
+   yRot.show();
+   zRot.show();
 }
 
 /***********************************************************************
  *                                show                                 *
  ***********************************************************************/
-void PositionEditor::show()
+void PositionEditor::showTranslationAxis()
 {
    xAxis.show();
-   xRot.show();
-   yAxis.show();
-   yRot.show();
    yAxis.show();
    zAxis.show();
-   zRot.show();
-   yAxis.show();
 }
 
 

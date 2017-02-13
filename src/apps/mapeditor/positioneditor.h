@@ -76,8 +76,11 @@ namespace DNTMapEditor
 
       private:
 
-         void hide();
-         void show();
+         void hideTranslationAxis();
+         void showTranslationAxis();
+
+         void hideRotationAxis();
+         void showRotationAxis();
 
          /*! Set axis positions to be relative to */
          void setPosition(Ogre::Vector3 pos);
