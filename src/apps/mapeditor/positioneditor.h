@@ -87,10 +87,14 @@ namespace DNTMapEditor
 
          /*! Restore selected axis to its original material */
          void restoreAxisMaterial();
+         
+         Ogre::Real addOnLimit(Ogre::Real value, Ogre::Real addVal);
 
          Goblin::Model3d xAxis;
          Goblin::Model3d yAxis;
          Goblin::Model3d zAxis;
+         
+         Goblin::Model3d lightDirAxis;
 
          Goblin::Model3d xRot;
          Goblin::Model3d yRot;

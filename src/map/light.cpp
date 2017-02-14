@@ -99,6 +99,12 @@ void LightInfo::setPosition(Ogre::Vector3 pos)
 void LightInfo::setDirection(Ogre::Vector3 dir)
 {
    this->direction = dir;
+   if((type != Ogre::Light::LT_POINT) &&
+      (mapLights) && (mapLights->isLightActive(this)) && (lightSceneNode))
+   {
+      lightSceneNode->resetOrientation();
+      lightSceneNode->setDirection(direction);
+   }
 }
 
 /**************************************************************************

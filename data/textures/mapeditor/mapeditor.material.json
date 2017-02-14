@@ -75,6 +75,12 @@
          "macroblock" : "MacroBlock_mapeditor_nondepth",
          "blendblock" : "Blendblock_mapeditor1",
          "diffuse": [0.8, 0.8, 0.8]
+      },
+      "yellowVector":
+      {
+         "macroblock" : "MacroBlock_mapeditor_nondepth",
+         "blendblock" : "Blendblock_mapeditor1",
+         "diffuse": [0.8, 0.8, 0.0]
       }
    }
 }

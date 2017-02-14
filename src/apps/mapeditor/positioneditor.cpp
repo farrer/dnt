@@ -33,6 +33,8 @@ PositionEditor::PositionEditor(Ogre::SceneManager* sceneManager)
                Goblin::Model3d::MODEL_DYNAMIC), 
          zAxis("zAxys", "mapeditor/vector.mesh", sceneManager, 
                Goblin::Model3d::MODEL_DYNAMIC),
+         lightDirAxis("lightDirAxys", "mapeditor/vector.mesh", sceneManager, 
+               Goblin::Model3d::MODEL_DYNAMIC),
          xRot("xRot", "mapeditor/rotation_circle.mesh", sceneManager, 
                Goblin::Model3d::MODEL_DYNAMIC),
          yRot("yRot", "mapeditor/rotation_circle.mesh", sceneManager, 
@@ -43,6 +45,9 @@ PositionEditor::PositionEditor(Ogre::SceneManager* sceneManager)
    xAxis.setScale(5.0f, 5.0f, 5.0f);
    yAxis.setScale(5.0f, 5.0f, 5.0f);
    zAxis.setScale(5.0f, 5.0f, 5.0f);
+
+   lightDirAxis.setScale(5.0f, 5.0f, 5.0f);
+
    xRot.setScale(4.0f, 4.0f, 4.0f);
    yRot.setScale(4.0f, 4.0f, 4.0f);
    zRot.setScale(4.0f, 4.0f, 4.0f);
@@ -51,6 +56,7 @@ PositionEditor::PositionEditor(Ogre::SceneManager* sceneManager)
    yRot.setMaterial("greenVector");
    zAxis.setMaterial("blueVector");
    zRot.setMaterial("blueVector");
+   lightDirAxis.setMaterial("yellowVector");
 
    xAxis.setOrientation(0.0f, 0.0f, 270.0f);
    xRot.setOrientation(0.0f, 0.0f, 270.0f);
@@ -63,6 +69,7 @@ PositionEditor::PositionEditor(Ogre::SceneManager* sceneManager)
    yRot.setPosition(0.0f, 12.0f, 0.0f);
    zAxis.setPosition(0.0f, 0.0f, 10.0f);
    zRot.setPosition(0.0f, 0.0f, 12.0f);
+   lightDirAxis.setPosition(0.0f, 0.0f, 0.0f);
 
    xAxis.getItem()->setCastShadows(false);
    xRot.getItem()->setCastShadows(false);
@@ -70,6 +77,7 @@ PositionEditor::PositionEditor(Ogre::SceneManager* sceneManager)
    yRot.getItem()->setCastShadows(false);
    zAxis.getItem()->setCastShadows(false);
    zRot.getItem()->setCastShadows(false);
+   lightDirAxis.getItem()->setCastShadows(false);
 
    reference = -1;
    selectedThing = NULL;
@@ -79,6 +87,7 @@ PositionEditor::PositionEditor(Ogre::SceneManager* sceneManager)
 
    hideTranslationAxis();
    hideRotationAxis();
+   lightDirAxis.hide();
 }
 
 /***********************************************************************
@@ -100,11 +109,13 @@ void PositionEditor::selectThing(DNT::Thing* thing)
       setPosition(thing->getModel()->getPosition());
       showTranslationAxis();
       showRotationAxis();
+      lightDirAxis.hide();
    }
    else
    {
       hideTranslationAxis();
       hideRotationAxis();
+      lightDirAxis.hide();
    }
 }
 
@@ -119,14 +130,29 @@ void PositionEditor::selectLight(DNT::LightInfo* light)
    {
       setPosition(light->getPosition());
       showTranslationAxis();
-      hideRotationAxis();
+
       DNT::Game::getCurrentMap()->getLights()->setActiveLight(
             selectedLight);
+      if(light->getType() != Ogre::Light::LT_POINT)
+      {
+         lightDirAxis.show();
+         lightDirAxis.clearOrientation();
+         lightDirAxis.getSceneNode()->setDirection(
+               light->getDirection(), Ogre::Node::TS_LOCAL,
+               Ogre::Vector3::UNIT_Y);
+         showRotationAxis();
+      }
+      else
+      {
+         lightDirAxis.hide();
+         hideRotationAxis();
+      }
    }
    else
    {
       hideRotationAxis();
       hideTranslationAxis();
+      lightDirAxis.hide();
    }
 }
 
@@ -241,6 +267,41 @@ bool PositionEditor::isMoving()
 }
 
 /***********************************************************************
+ *                            addOnLimit                               *
+ ***********************************************************************/
+Ogre::Real PositionEditor::addOnLimit(Ogre::Real value, Ogre::Real addVal)
+{
+   Ogre::Real res = value;
+
+   if(selectedThing)
+   {
+      res += addVal;
+      if(res >= 360.0f)
+      {
+         res -= 360.0f;
+      }
+      else if(res < 0.0f)
+      {
+         res += 360.0f;
+      }
+   }
+   else if(selectedLight)
+   {
+      res += (addVal / 360.0f);
+      if(res > 1.0f)
+      {
+         res = 1.0f;
+      }
+      else if(res < -1.0f)
+      {
+         res = -1.0f;
+      }
+   }
+
+   return res;
+}
+
+/***********************************************************************
  *                               update                                *
  ***********************************************************************/
 bool PositionEditor::update(bool leftButtonPressed, 
@@ -305,6 +366,7 @@ bool PositionEditor::update(bool leftButtonPressed,
          else if(selectedLight)
          {
             curPos = selectedLight->getPosition();
+            ori = selectedLight->getDirection();
          }
 
          if(selectedAxis == &xAxis)
@@ -325,39 +387,15 @@ bool PositionEditor::update(bool leftButtonPressed,
          }
          else if(selectedAxis == &xRot)
          {
-            ori.x += totalToMove;
-            if(ori.x >= 360.0f)
-            {
-               ori.x -= 360.0f;
-            }
-            else if(ori.x < 0.0f)
-            {
-               ori.x += 360.0f;
-            }
+            ori.x = addOnLimit(ori.x, totalToMove);
          }
          else if(selectedAxis == &yRot)
          {
-            ori.y += totalToMove;
-            if(ori.y >= 360.0f)
-            {
-               ori.y -= 360.0f;
-            }
-            else if(ori.y < 0.0f)
-            {
-               ori.y += 360.0f;
-            }
+            ori.y = addOnLimit(ori.y, totalToMove);
          }
          else if(selectedAxis == &zRot)
          {
-            ori.z += totalToMove;
-            if(ori.z >= 360.0f)
-            {
-               ori.z -= 360.0f;
-            }
-            else if(ori.z < 0.0f)
-            {
-               ori.z += 360.0f;
-            }
+            ori.z = addOnLimit(ori.z, totalToMove);
          }
 
          /* Define new position */
@@ -370,6 +408,11 @@ bool PositionEditor::update(bool leftButtonPressed,
          else if(selectedLight)
          {
             selectedLight->setPosition(curPos);
+            lightDirAxis.clearOrientation();
+            lightDirAxis.getSceneNode()->setDirection(
+               ori.normalisedCopy(), Ogre::Node::TS_LOCAL,
+               Ogre::Vector3::UNIT_Y);
+            selectedLight->setDirection(ori.normalisedCopy());
          }
 
          /* Redefine axis position, based on Thing's. */
@@ -412,6 +455,8 @@ void PositionEditor::setPosition(Ogre::Vector3 pos)
    yRot.setPosition(pos.x, pos.y + 12.0f, pos.z);
    zAxis.setPosition(pos.x, pos.y, pos.z + 10.0f);
    zRot.setPosition(pos.x, pos.y, pos.z + 12.0f);
+
+   lightDirAxis.setPosition(pos);
 }
 
 /***********************************************************************
