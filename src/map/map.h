@@ -74,7 +74,7 @@ class Map
        * \note only valid after load. */
       Kobold::String getFilename();
 
-      /*! Update everithing related to the map for curent frame.
+      /*! Update everything related to the map for curent frame.
        * \param refPos reference position for active lights. */
       void update(Ogre::Vector3 refPos);
 
@@ -141,7 +141,7 @@ class Map
 
       Ogre::Vector3 initialPos; /**< initial position on map for PCs */
 
-      /*! A map of SceneNodes to theirs respective Things pointers.
+      /*! A map of SceneNode to respective Thing's pointer.
        * this is usually used to get the "Thing" within a SceneNode received
        * as a result of a RayCast from cursor position */
       std::map<Ogre::SceneNode*, Thing*> nodesPerThingMap;
