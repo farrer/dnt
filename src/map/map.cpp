@@ -28,6 +28,7 @@
 #include "../core/door.h"
 #include "../core/game.h"
 #include "../lang/translate.h"
+#include "../collision/collision.h"
 
 #include <kobold/defparser.h>
 #include <kobold/log.h>
@@ -99,6 +100,7 @@ Map::Map()
  **************************************************************************/
 Map::~Map()
 {
+  Collision::finish();
   delete this->staticThings;
   delete this->dynamicThings;
   delete this->lights;
@@ -173,6 +175,8 @@ void Map::create(int sizeX, int sizeZ)
    /* Define its size */
    xSize = sizeX;
    zSize = sizeZ;
+
+   Collision::init(xSize, zSize, MAP_SQUARE_SIZE);
 
    /* Define the upper wall texture */
    //walls.createTextureMesh(MAP_UPPER_WALL_MATERIAL);
@@ -258,6 +262,7 @@ Thing* Map::insertThing(Kobold::String filename, bool forceDynamic,
    {
       thing->getModel()->setPosition(pos);
       thing->getModel()->setOrientation(ori.x, ori.y, ori.z);
+      Collision::addElement(thing);
    }
 
    return thing;
@@ -290,6 +295,7 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool forceDynamicModels)
       return false;
    }
    sscanf(value.c_str(), "%dx%d", &xSize, &zSize);
+   Collision::init(xSize, zSize, MAP_SQUARE_SIZE);
 
    /* Reset square position counters */
    int squareX = -1;
@@ -364,9 +370,11 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool forceDynamicModels)
             wY1 = tmp;
          }
 
-         /* Create the wall and add it to the list */
+         /* Create the wall and add it to the list and collision system */
          lastWall = new Wall();
          walls.insert(lastWall);
+         Collision::addElement(Ogre::Vector3(wX1, wY1, wZ1),
+               Ogre::Vector3(wX2, wY2, wZ2));
 
          /* Define the upper wall face */
          lastWall->addFace(MAP_UPPER_WALL_MATERIAL,
@@ -441,6 +449,9 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool forceDynamicModels)
             Ogre::Real oX=0.0f, oY=0.0f, oZ=0.0f;
             sscanf(value.c_str(), "%f,%f,%f", &oX, &oY, &oZ);
             lastThing->getModel()->setOrientation(oX, oY, oZ);
+            /* Note: thingOri must be the last parameter to define a thing,
+             * and should be mandatory to all thing declarations on map. */
+            Collision::addElement(lastThing);
          }
       }
       else if(key == MAP_TOKEN_THING_WALKABLE)
@@ -461,6 +472,7 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool forceDynamicModels)
             sscanf(value.c_str(), "%f", &oY);
             last->getModel()->setOrientation(0.0f, oY, 0.0f);
             last->setClosedAngle(oY);
+            Collision::addElement(last);
          }
       }
       else if(key == MAP_TOKEN_DOOR_LOCK)

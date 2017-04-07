@@ -103,7 +103,7 @@ bool Core::doCycleInit(int callCounter, bool& shouldAbort)
 
    /* Load a PC */
    PlayableCharacter* pc = new PlayableCharacter();
-   pc->load("humans/zedobar.npc");
+   pc->load("humans/velhaca.npc");
    pc->setAnimation(Character::CHARACTER_ANIMATION_IDLE, true);
 
    Game::getPcs()->insertCharacter(pc);

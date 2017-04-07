@@ -21,6 +21,7 @@
 
 #include "playablecharacter.h"
 #include "../rules/classes.h"
+#include "../collision/collision.h"
 
 #include <goblin/camera.h>
 
@@ -124,6 +125,7 @@ bool PlayableCharacter::checkInputForMovement()
    //TODO: Run.
 
    bool triedToMove = false;
+   bool moved = false;
    Ogre::Vector3 curPos = getModel()->getPosition();
    float curYaw = getModel()->getYaw();
    float curWalk = getWalkInterval();
@@ -149,10 +151,30 @@ bool PlayableCharacter::checkInputForMovement()
       }
 
       /* TODO: check if can walk to the new position */
-      curPos.x += varX;
-      curPos.z += varZ;
-      getModel()->setPosition(curPos);
-      Goblin::Camera::setPosition(curPos);
+      if(Collision::canMove(this, Ogre::Vector3(varX, 0.0f, varZ), 0.0f))
+      {
+         moved = true;
+         curPos.x += varX;
+         curPos.z += varZ;
+      }
+      /* If can't move, let's try with only a single component */
+      else if(Collision::canMove(this, Ogre::Vector3(varX, 0.0f, 0.0f), 0.0f))
+      {
+         moved = true;
+         curPos.x += varX;
+      }
+      else if(Collision::canMove(this, Ogre::Vector3(0.0f, 0.0f, varZ), 0.0f))
+      {
+         moved = true;
+         curPos.z += varZ;
+      }
+
+      if(moved)
+      {
+         getModel()->setPosition(curPos);
+         Goblin::Camera::setPosition(curPos);
+      }
+
    }
 
    /* Rotate left and rotate right */
@@ -180,17 +202,17 @@ bool PlayableCharacter::checkInputForMovement()
       }
 
       //TODO: check if can turn around!
+      moved = true;
 
       /* Apply new yaw */
       getModel()->setOrientation(curYaw);
    }
 
-   if((triedToMove) && (getCurrentAnimation() != CHARACTER_ANIMATION_WALK))
+   if((moved) && (getCurrentAnimation() != CHARACTER_ANIMATION_WALK))
    {
       setAnimation(CHARACTER_ANIMATION_WALK, true);
    }
-   else if((!triedToMove) && 
-          (getCurrentAnimation() == CHARACTER_ANIMATION_WALK))
+   else if((!moved) && (getCurrentAnimation() == CHARACTER_ANIMATION_WALK))
    {
       setAnimation(CHARACTER_ANIMATION_IDLE, true);
    }

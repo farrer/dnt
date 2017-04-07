@@ -169,7 +169,6 @@ namespace DNT
          virtual bool doCharacterSpecializationParse(Kobold::String key, 
                Kobold::String value) = 0;
 
-
          Alignment* curAlign;    /**< Current character alignment */
          /*! Character classes */
          Class* classes[CHARACTER_MAX_DISTINCT_CLASSES];

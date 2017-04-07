@@ -33,6 +33,8 @@
 #include <kobold/log.h>
 #include <kobold/userinfo.h>
 
+#include <OGRE/OgreWireAabb.h>
+
 using namespace DNT;
 
 #define THING_KEY_NAME                 "name"
@@ -45,6 +47,7 @@ using namespace DNT;
 #define THING_KEY_WALK_INTERVAL        "walkInterval"
 #define THING_KEY_TURN_AROUND_INTERVAL "turnAroundInterval"
 #define THING_KEY_CONVERSATION         "conversation"
+#define THING_KEY_REDEFINE_BOUNDS      "redefineBounds"
 
 #define THING_VALUE_TRUE               "true"
 #define THING_VALUE_FALSE              "false"
@@ -61,7 +64,7 @@ Thing::Thing(ThingType type, int totalAnimations)
    this->displacement =  WALK_PER_MOVE_ACTION;
    this->walkInterval = 1.2f; 
    this->turnAroundInterval = 3.5f; 
-   this->model3d = NULL;
+   this->model = NULL;
    this->conversation = NULL;
    this->state = 0;
    this->walkable = false;
@@ -83,9 +86,9 @@ Thing::~Thing()
       delete conversation;
    }
    /* Delete model, if defined */
-   if(model3d)
+   if(model)
    {
-      delete model3d;
+      delete model;
    }
 }
 
@@ -189,26 +192,46 @@ bool Thing::load(Kobold::String fileName,
       }
       else if(key == THING_KEY_MODEL)
       {
-         assert(model3d == NULL);
+         assert(model == NULL);
          assert(totalAnimations == 0);
-         if(model3d == NULL)
+         if(model == NULL)
          {
             modelFileName = value;
-            model3d = new Goblin::Model3d(modelName, modelFileName, 
+            model = new Goblin::Model3d(modelName, modelFileName, 
                   Game::getSceneManager(), modelType);
          }
       }
       else if(key == THING_KEY_ANIMATED_MODEL)
       {
-         assert(model3d == NULL);
+         assert(model == NULL);
          assert(totalAnimations > 0);
-         if(model3d == NULL)
+         if(model == NULL)
          {
             modelFileName = value;
-            model3d = new Goblin::AnimatedModel3d(modelName, modelFileName,
+            model = new Goblin::AnimatedModel3d(modelName, modelFileName,
                     Game::getSceneManager(), getAnimationList(),
                     totalAnimations);
          }
+      }
+      else if(key == THING_KEY_REDEFINE_BOUNDS)
+      {
+         /* Redefine the bounding, to be squared. This is needed for humanoid
+          * models, where the bounding box of its 'pose' is a lot larger than
+          * the one for walking or idle (due to arms opened on pose, and down
+          * or idle and walk). */
+         assert(model != NULL);
+         float factor=0.0f;
+         sscanf(value.c_str(), "%f", &factor);
+         Ogre::Aabb aabb = model->getItem()->getLocalAabb();
+         if(aabb.mHalfSize.x < aabb.mHalfSize.z)
+         {
+            aabb.mHalfSize.z = aabb.mHalfSize.x * factor;
+         }
+         else
+         {
+            aabb.mHalfSize.x = aabb.mHalfSize.z * factor;
+         }
+         model->getItem()->setLocalAabb(aabb);
       }
       else if(key == THING_KEY_SCALE)
       {
@@ -247,10 +270,19 @@ bool Thing::load(Kobold::String fileName,
       }
    }
 
-   /* Apply our scale */
-   if(getModel() != NULL)
+
+   if(model != NULL)
    {
-      getModel()->setScale(scale, scale, scale);
+      /* Apply our scale */
+      model->setScale(scale, scale, scale);
+      if(thingType != Thing::THING_TYPE_CHARACTER)
+      {
+         /* And cache our vertices for depth collision check. */
+         model->updateCachedMeshInformation();
+      }
+      // Uncomment for bounding box debug. XXX: Note that will leak (lazy!).
+      Ogre::WireAabb* wire = Game::getSceneManager()->createWireAabb();
+      wire->track(model->getItem());
    }
 
    return true;
@@ -309,7 +341,7 @@ bool Thing::save(Kobold::String filename, bool fullPath)
  **************************************************************************/
 Goblin::Model3d* Thing::getModel()
 {
-   return model3d;
+   return model;
 }
 
 /**************************************************************************

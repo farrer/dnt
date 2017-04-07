@@ -240,7 +240,7 @@ class Thing : public Kobold::ListElement
       bool walkable; /**< If the thing could be walkable through or not. */
 
       Kobold::String modelFileName; /**< File name of the 3d model */
-      Goblin::Model3d* model3d; /**< The 3d model representing the thing */
+      Goblin::Model3d* model; /**< The 3d model representing the thing */
 
       Kobold::String conversationFile; /**< Conversation file, if any. */
       Conversation* conversation; /**< Conversation loaded. */

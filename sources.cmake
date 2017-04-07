@@ -95,6 +95,14 @@ set(LANG_SOURCES
 set(LANG_HEADERS
    src/lang/translate.h
 )
+set(COLLISION_SOURCES
+   src/collision/collision.cpp
+   src/collision/element.cpp
+   src/collision/square.cpp
+)
+set(COLLISION_HEADERS
+   src/collision/collision.h
+)
 
 IF(${APPLE})
    set(APPLE_CONFIG_SOURCES
@@ -114,6 +122,7 @@ set(DNT_LIB_HEADERS
    ${RULES_HEADERS}
    ${FIGHT_HEADERS}
    ${LANG_HEADERS}
+   ${COLLISION_HEADERS}
    ${GUI_HEADERS}
    ${APPLE_CONFIG_HEADERS}
 )
@@ -124,6 +133,7 @@ set(DNT_LIB_SOURCES
    ${RULES_SOURCES}
    ${FIGHT_SOURCES}
    ${LANG_SOURCES}
+   ${COLLISION_SOURCES}
    ${GUI_SOURCES}
    ${APPLE_CONFIG_SOURCES}
 )

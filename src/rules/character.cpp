@@ -312,7 +312,12 @@ bool Character::doSpecificParse(Kobold::String key, Kobold::String value)
  ***********************************************************************/
 bool Character::load(Kobold::String filename)
 {
-   return Thing::load(filename, Goblin::Model3d::MODEL_DYNAMIC);
+   if(Thing::load(filename, Goblin::Model3d::MODEL_DYNAMIC))
+   {
+      return true;
+   }
+
+   return false;
 }
 
 /***********************************************************************
@@ -339,6 +344,9 @@ void Character::doAfterLoad(Kobold::String& mapFilename)
 
    /* Apply cost to skills */
    applySkillCosts();
+   
+   /* Set as idle by default */
+   setAnimation(CHARACTER_ANIMATION_IDLE, true);
 }
 
 /***********************************************************************
@@ -466,7 +474,6 @@ void Character::applyBonusAndSaves()
       }
    }
 }
-
 
 /***************************************************************************
  ***************************************************************************
