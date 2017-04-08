@@ -194,6 +194,13 @@ class Thing : public Kobold::ListElement
       /*! Set current armature class
        * \param value armature class value */
       void setArmatureClass(int value);
+
+      /* \return our 'playable character walking bounding box':
+       * This is a regular squared one, in which rotations will never happen,
+       * avoiding the character being 'stucked' when can't move, rotate a bit
+       * (maybe increasing regular bound size), an try to move. With a regular
+       * immutable one, this won't happen. */
+      Ogre::Aabb getWalkableBounds() const { return walkableBounds; };
       
    protected:
 
@@ -258,6 +265,8 @@ class Thing : public Kobold::ListElement
       float walkInterval; /**< Distance can move each frame */
       float turnAroundInterval; /**< Distance can rotate each frame */
 
+      Ogre::Aabb walkableBounds; /**< Bounds when is a playable thing to use
+                                      when walking */
 
       /*! Map to avoid name's clash with multiple intances of the same 
        * thing model */

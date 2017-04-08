@@ -78,15 +78,11 @@ bool Collision::canMove(Thing* actor, const Ogre::Vector3& varPos,
    assert(actor != NULL);
 
    /* Apply position change */
-   Ogre::Aabb aabb = actor->getModel()->getItem()->getWorldAabb();
-   aabb.mCenter += varPos;
+   Ogre::Aabb worldAabb = actor->getModel()->getItem()->getWorldAabb();
+   Ogre::Aabb walkableAabb = actor->getWalkableBounds();
+   walkableAabb.mCenter = worldAabb.mCenter + varPos;
 
-   /* TODO: Apply orientation change */
-   if(varOri > 0)
-   {
-   }
-
-   return canBeAt(aabb.getMinimum(), aabb.getMaximum());
+   return canBeAt(walkableAabb.getMinimum(), walkableAabb.getMaximum());
 }
 
 /***********************************************************************

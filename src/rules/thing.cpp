@@ -275,6 +275,16 @@ bool Thing::load(Kobold::String fileName,
    {
       /* Apply our scale */
       model->setScale(scale, scale, scale);
+      /* Define our 'playable character walking bounding box' */
+      walkableBounds = model->getItem()->getLocalAabb();
+      if(walkableBounds.mHalfSize.x > walkableBounds.mHalfSize.z)
+      {
+         walkableBounds.mHalfSize.z = walkableBounds.mHalfSize.x;
+      }
+      else
+      {
+         walkableBounds.mHalfSize.x = walkableBounds.mHalfSize.z;
+      }
       /* And cache our vertices for depth collision check. */
       model->updateCachedMeshInformation();
       /* Uncomment for bounding box debug. XXX: Note that will leak (lazy!). */
