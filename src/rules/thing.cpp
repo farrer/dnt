@@ -275,11 +275,8 @@ bool Thing::load(Kobold::String fileName,
    {
       /* Apply our scale */
       model->setScale(scale, scale, scale);
-      if(thingType != Thing::THING_TYPE_CHARACTER)
-      {
-         /* And cache our vertices for depth collision check. */
-         model->updateCachedMeshInformation();
-      }
+      /* And cache our vertices for depth collision check. */
+      model->updateCachedMeshInformation();
       /* Uncomment for bounding box debug. XXX: Note that will leak (lazy!). */
       //Ogre::WireAabb* wire = Game::getSceneManager()->createWireAabb();
       //wire->track(model->getItem());
