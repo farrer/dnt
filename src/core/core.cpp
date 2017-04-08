@@ -117,6 +117,15 @@ void Core::doSendToForeground()
 }
 
 /***********************************************************************
+ *                           specialSelect                             *
+ ***********************************************************************/
+bool Core::specialSelect(Ogre::SceneNode* sceneNode)
+{
+   return false;
+}
+
+
+/***********************************************************************
  *                              doCycle                                *
  ***********************************************************************/
 void Core::doCycle()
@@ -134,33 +143,21 @@ void Core::doCycle()
    }
    else
    {
-      if((lastMouseX != mouseX) && (lastMouseY != mouseY))
-      {
-         /* The floor mouse could change with camera move too, but I believe
-          * it's no problem to only update it with mouse movement after all. */
-         lastMouseX = mouseX;
-         lastMouseY = mouseY;
-         //FIXME: must just use the last collider? Or first collider project
-         // to Y=0? Anyway, the raycast to plane Y=0 isn't the best way for DNT.
-         /* Calculate floor mouse coordinates */
-         Ogre::Ray mouseRay;
-         Goblin::Camera::getCameraToViewportRay(
-               mouseX / Ogre::Real(ogreWindow->getWidth()),
-               mouseY / Ogre::Real(ogreWindow->getHeight()), &mouseRay);
-
-         /* with a ray cast to Y=0 plane */
-         std::pair< bool, Ogre::Real > res;
-         res = Ogre::Math::intersects(mouseRay, 
-               Ogre::Plane(Ogre::Vector3(0.0f, 1.0f, 0.0f), 0.0f));
-         if(res.first)
-         {
-            floorMouse = mouseRay.getPoint(res.second);
-         }
-      }
-
+      /* Update mouse world and thing under mouse */
+      updateMouseWorld(true);
 
       /* Check current PC movement input */
       curPc->checkInputForMovement();
+   }
+ 
+   /* Check actions with things under mouse */
+   if(thingUnderCursor)
+   {
+      Farso::Cursor::setTextualTip(thingUnderCursor->getName());
+      if(Farso::Cursor::checkButtonRelease(0))
+      {
+         /* TODO: action with the thing! */
+      }
    }
 }
 

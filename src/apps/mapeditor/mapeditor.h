@@ -55,6 +55,7 @@ class MapEditor : public DNT::CommonApp
 
       void doCycle();
       bool shouldQuit();
+      bool specialSelect(Ogre::SceneNode* sceneNode);
 
    private:
       /*! Check keyboard input for editor */

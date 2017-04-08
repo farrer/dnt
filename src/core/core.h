@@ -52,6 +52,7 @@ class Core : public CommonApp
 
       void doCycle();
       bool shouldQuit();
+      bool specialSelect(Ogre::SceneNode* sceneNode);
 
    private:
 

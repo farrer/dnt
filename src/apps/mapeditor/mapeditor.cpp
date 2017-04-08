@@ -187,6 +187,14 @@ void MapEditor::checkKeyboardInput()
 }
 
 /***********************************************************************
+ *                           specialSelect                             *
+ ***********************************************************************/
+bool MapEditor::specialSelect(Ogre::SceneNode* sceneNode)
+{
+   return positionEditor->selectAxis(sceneNode);
+}
+
+/***********************************************************************
  *                              doCycle                                *
  ***********************************************************************/
 void MapEditor::doCycle()
@@ -208,84 +216,9 @@ void MapEditor::doCycle()
 
       /* Let's check keyboard input for selections */
       checkKeyboardInput();
-
-      if(!Farso::Controller::wasMouseOverWidget())
-      {
-         if((lastMouseX != mouseX) || (lastMouseY != mouseY))
-         {
-            /* The floor mouse could change with camera move too, but I 
-             * believe it's no problem to only update it with mouse movement
-             * after all. */
-            lastMouseX = mouseX;
-            lastMouseY = mouseY;
-
-            /* Calculate floor mouse coordinates */
-            //FIXME: must use the 'floor point' to later get its height.
-            Ogre::Ray mouseRay;
-            Goblin::Camera::getCameraToViewportRay(
-                  mouseX / Ogre::Real(ogreWindow->getWidth()),
-                  mouseY / Ogre::Real(ogreWindow->getHeight()), &mouseRay);
-
-            /* with a ray cast to Y=0 plane */
-            std::pair< bool, Ogre::Real > res;
-            res = Ogre::Math::intersects(mouseRay, 
-                  Ogre::Plane(Ogre::Vector3(0.0f, 1.0f, 0.0f), 0.0f));
-            if(res.first)
-            {
-               floorMouse = mouseRay.getPoint(res.second);
-            }
-
-            /* Let's get if there's a 'thing' under mouse at current map */
-            if((DNT::Game::getCurrentMap()) && (!positionEditor->isMoving()))
-            {
-               thingUnderCursor = NULL;
-               ogreRaySceneQuery->setRay(mouseRay);
-               ogreRaySceneQuery->setSortByDistance(true);
-               Ogre::RaySceneQueryResult &result = ogreRaySceneQuery->execute();
-               Ogre::RaySceneQueryResult::iterator itr;
-
-               for( itr = result.begin( ); itr != result.end(); itr++ )
-               {
-                  /* Note: distance == 0 are our widgets */
-                  if((itr->movable) && (itr->distance > 0))
-                  {
-                     Ogre::SceneNode* sceneNode = 
-                        itr->movable->getParentSceneNode();
-
-                     if(!thingUnderCursor)
-                     {
-                        /* Get the thing related to the sceneNode, if any */
-                        thingUnderCursor = DNT::Game::getCurrentMap()->getThing(
-                              sceneNode);
-                     }
-
-                     if(itr->movable->getName().substr(0,4) == "wall")
-                     {
-                        /* Pointing at wall. Must end. */
-                        //TODO: select wall
-                     }
-                     else if(itr->movable->getName().substr(0,5) == "floor")
-                     {
-                        /* Note: the floor distance seems lesser than
-                         * the real intersecton point (probably due to the 
-                         * it being a great mesh) */
-                     }
-                     else if(positionEditor->selectAxis(sceneNode))
-                     {
-                        /* We are now editing a position! */
-                        thingUnderCursor = NULL;
-                        break;
-                     }
-                  }
-               }
-            }
-         }
-      }
-      else
-      {
-         /* Mouse is over a widget, so shouldn't have any thing under it */
-         thingUnderCursor = NULL;
-      }
+ 
+      /* Update mouse world and thing under mouse */
+      updateMouseWorld(!positionEditor->isMoving());
 
       /* Let's update our position editor */
       positionEditor->update(leftButtonPressed, floorMouse, mouseX, mouseY);

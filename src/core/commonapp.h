@@ -45,6 +45,10 @@ class CommonApp : public Goblin::BaseApp
       virtual ~CommonApp();
    protected:
       virtual const Ogre::String getSkin() const = 0;
+
+      virtual bool specialSelect(Ogre::SceneNode* sceneNode) = 0;
+
+      /* From Goblin::BaseApp */
       const int getDefaultWindowWidth() const { return DEFAULT_WINDOW_WIDTH; };
       const int getDefaultWindowHeight() const { return DEFAULT_WINDOW_HEIGHT;};
       const Orientation getDefaultOrientation() const { return LANDSCAPE; };
@@ -55,12 +59,12 @@ class CommonApp : public Goblin::BaseApp
       const Ogre::String getBaseDataDir() const {return BASE_DATA_DIR;};
       const bool shouldUseKoboldI18n() const { return false; };
       const bool shouldCreateBasicWorkspace() const { return false; };
-
-      bool doCommonCycleInit(int callCounter, bool& shouldAbort);
       void getDataDirectories(Ogre::String** dataDirectories,
             Ogre::String** dataGroups, int& total);
+      /* Done with Goblin::BaseApp */
 
-      void doCommonCycle();
+      bool doCommonCycleInit(int callCounter, bool& shouldAbort);
+      void updateMouseWorld(bool updateThingUnderMouse);
 
       Ogre::Vector3 floorMouse; /**< Coordinates of mouse on floor */ 
       int lastMouseX; /**< Last mouse X coordinate when updated floorMouse */
