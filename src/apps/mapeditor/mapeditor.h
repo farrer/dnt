@@ -23,7 +23,7 @@
 #define _dnt_mapeditor_h
 
 #include "dntconfig.h"
-#include <goblin/baseapp.h>
+#include "../../core/commonapp.h"
 
 #include "maingui.h"
 #include "positioneditor.h"
@@ -32,13 +32,10 @@ namespace DNTMapEditor
 {
 
 #define APP_NAME                "dntMapEditor"
-#define DEFAULT_WINDOW_WIDTH     1024
-#define DEFAULT_WINDOW_HEIGHT     768
-#define WIDTH_TO_DOUBLE_SIZE     2000
-#define BASE_DATA_DIR           "../data"
+#define APP_SKIN                "skins/clean.skin"
 
 /*! The BaseApp implementation for DNTMapDitor */
-class MapEditor : public Goblin::BaseApp
+class MapEditor : public DNT::CommonApp
 {
    public:
       /*! Constructor */
@@ -48,20 +45,9 @@ class MapEditor : public Goblin::BaseApp
    protected:
 
       const Ogre::String getApplicationUnixName() const { return APP_NAME; };
-      const int getDefaultWindowWidth() const { return DEFAULT_WINDOW_WIDTH; };
-      const int getDefaultWindowHeight() const { return DEFAULT_WINDOW_HEIGHT;};
-      const Orientation getDefaultOrientation() const { return LANDSCAPE; };
-      const int getMinWidthToUseDoubleSizedGui() const
-      { 
-         return WIDTH_TO_DOUBLE_SIZE; 
-      };
-      const Ogre::String getBaseDataDir() const {return BASE_DATA_DIR;};
-      const bool shouldUseKoboldI18n() const { return false; };
-      const bool shouldCreateBasicWorkspace() const { return false; };
+      const Ogre::String getSkin() const {return APP_SKIN;};
 
       bool doCycleInit(int callCounter, bool& shouldAbort);
-      void getDataDirectories(Ogre::String** dataDirectories,
-            Ogre::String** dataGroups, int& total);
 
       void doLowMemoryClean();
       void doSendToBackground();
@@ -74,18 +60,10 @@ class MapEditor : public Goblin::BaseApp
       /*! Check keyboard input for editor */
       void checkKeyboardInput();
 
-      Ogre::Vector3 floorMouse; /**< Coordinates of mouse on floor */ 
-      int lastMouseX; /**< Last mouse X coordinate when updated floorMouse */
-      int lastMouseY; /**< Last mouse Y coordinate when updated floorMouse */
-
       MainGui* mainGui; /**< Main editor's gui */
       PositionEditor* positionEditor; /**< Position editor */
 
       bool shouldExit; /**< exit flag */
-
-      Ogre::RaySceneQuery* ogreRaySceneQuery;/**< To ray cast */
-
-      DNT::Thing* thingUnderCursor; /**< Current Thing under mouse cursor */
 
       Kobold::KeyCodes lastKey; /**< Last action key checked */
 

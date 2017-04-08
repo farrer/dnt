@@ -48,14 +48,9 @@ using namespace DNTMapEditor;
  ***********************************************************************/
 MapEditor::MapEditor()
 {
-   thingUnderCursor = NULL;
    shouldExit = false;
-   lastMouseX = -1;
-   lastMouseY = -1;
-   floorMouse = Ogre::Vector3(0.0f, 0.0f, 0.0f);
    mainGui = NULL;
    positionEditor = NULL;
-   ogreRaySceneQuery = NULL;
    lastKey = Kobold::KOBOLD_KEY_UNKNOWN;
 }
 
@@ -72,21 +67,6 @@ MapEditor::~MapEditor()
    {
       delete positionEditor;
    }
-
-   DNT::Game::finish();
-
-   DNT::Alignments::finish();
-   DNT::SkillsDefinitions::finish();
-   DNT::Races::finish();
-   DNT::Classes::finish();
-   DNT::FeatsList::finish();
-   DNT::Briefing::finish();
-   Farso::Controller::finish();
-
-   if(ogreRaySceneQuery)
-   {
-      ogreSceneManager->destroyQuery(ogreRaySceneQuery);
-   }
 }
 
 /***********************************************************************
@@ -94,175 +74,30 @@ MapEditor::~MapEditor()
  ***********************************************************************/
 bool MapEditor::doCycleInit(int callCounter, bool& shouldAbort)
 {
-   bool done = false;
-   switch(callCounter)
-   {
-      case 0:
-      {
-         /* FIXME: should not be here, but at map load. */
-         /* Change workspace to cdefine map type */
-         Ogre::CompositorManager2 *compositorManager =
-            ogreRoot->getCompositorManager2();
-         //compositorManager->removeWorkspace(ogreWorkspace);
-         ogreWorkspace = compositorManager->addWorkspace(ogreSceneManager,
-               ogreWindow, Goblin::Camera::getOgreCamera(), 
-               "DNTIndoorWorkspace", true);
+   if(doCommonCycleInit(callCounter, shouldAbort))
+   {  
+      /* Done with common init, let's init common map things */
 
-         getSceneManager()->setForward3D(true, 4, 4, 4, 32, 3, 2000);
+      /* init mapeditor own textures */
+      Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
+            getDataPath() + "textures/mapeditor", "FileSystem", 
+            "mapeditor_textures", true);
+      Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
+            "mapeditor_textures");
 
-         /* Init Farso */
-         Farso::Controller::init(Farso::RENDERER_TYPE_OGRE3D, 
-               DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, 32, "",
-               getSceneManager());
-         Farso::FontManager::setDefaultFont("LiberationSans-Regular.ttf");
-         Farso::Controller::loadSkin("skins/clean.skin");
-         Farso::Controller::setCursor("cursor/sel.png");
+      /* Create Map Editor's GUI */
+      mainGui = new MainGui();
+      mainGui->hideProgressBar();
+      mainGui->showTopBar();
+      mainGui->setLight();
 
-         /* Create Map Editor's GUI */
-         mainGui = new MainGui();
+      /* define our position editor */
+      positionEditor = new PositionEditor(getSceneManager());
 
-         /* Define our progress bar */
-         mainGui->hideTopBar();
-         mainGui->showProgressBar();
-         mainGui->setProgressBar(10);
-         Farso::Cursor::hide();
-      }
-      break;
-      case 1:
-      {
-         /* Init our widgets */
-         DNT::Briefing::init();
-
-         /* Init our rules */
-         DNT::Alignments::init();
-         DNT::SkillsDefinitions::init();
-         DNT::FeatsList::init("feats/", "feats.ftl");
-         DNT::Races::init();
-         DNT::Classes::init();
-         mainGui->setProgressBar(20);
-      }
-      break;
-      case 3:
-      {
-         Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
-               getDataPath() + "textures/doors", "FileSystem", 
-               "doors_textures", true);
-         Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
-               "doors_textures");
-         mainGui->setProgressBar(30);
-      }
-      break;
-      case 4:
-      {
-         Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
-               getDataPath() + "textures/furniture", "FileSystem", 
-               "furniture_textures", true);
-         Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
-               "furniture_textures");
-         mainGui->setProgressBar(40);
-      }
-      break;
-      case 5:
-      {
-         Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
-               getDataPath() + "textures/general", "FileSystem", 
-               "general_textures", true);
-         Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
-               "general_textures");
-         mainGui->setProgressBar(50);
-      }
-      break;
-      case 6:
-      {
-         Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
-               getDataPath() + "textures/humans", "FileSystem", 
-               "humans_textures", true);
-         Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
-               "humans_textures");
-         mainGui->setProgressBar(60);
-      }
-      break;
-      case 7:
-      {
-         Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
-               getDataPath() + "textures/portraits", "FileSystem", 
-               "portraits_textures", true);
-         Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
-               "portraits_textures");
-         mainGui->setProgressBar(70);
-      }
-      break;
-      case 8:
-      {
-         Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
-               getDataPath() + "textures/junk", "FileSystem", 
-               "junk_textures", true);
-         Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
-               "junk_textures");
-         mainGui->setProgressBar(80);
-      }
-      break;
-      case 9:
-      {
-         Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
-               getDataPath() + "textures/indoor", "FileSystem", 
-               "indoor_textures", true);
-         Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
-               "indoor_textures");
-         mainGui->setProgressBar(90);
-
-      }
-      break;
-      case 10:
-      {
-         /* init mapeditor own textures */
-         Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
-               getDataPath() + "textures/mapeditor", "FileSystem", 
-               "mapeditor_textures", true);
-         Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
-               "mapeditor_textures");
-
-         /* Init the Game controller */
-         DNT::Game::init(ogreSceneManager);
-
-         /* Set camera initial position */
-         Goblin::Camera::set(200.0f, 30.0f, 120.0f, 0.0f, 89.0f, 410.0f);
-
-         /* set lights */
-         mainGui->setLight();
-         mainGui->hideProgressBar();
-         mainGui->showTopBar();
-         Farso::Cursor::show();
-
-         /* Create a SceneQuery */
-         ogreRaySceneQuery = ogreSceneManager->createRayQuery(Ogre::Ray());
-
-         /* define our position editor */
-         positionEditor = new PositionEditor(getSceneManager());
-
-         done = true;
-      }
-      break;
+      return true;
    }
 
-   if(!done)
-   {
-      Farso::Controller::verifyEvents(leftButtonPressed, false, mouseX, mouseY);
-   }
-   return done;
-}
-
-/***********************************************************************
- *                        getDataDirectories                           *
- ***********************************************************************/
-void MapEditor::getDataDirectories(Ogre::String** dataDirectories,
-      Ogre::String** dataGroups, int& total)
-{
-   static Ogre::String dirs[] = {"gui", "compositors", "maps", "models", 
-      "fonts", "rules"};
-   (*dataDirectories) = &dirs[0];
-   (*dataGroups) = &dirs[0];
-   total = 6;
+   return false;
 }
 
 /***********************************************************************

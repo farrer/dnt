@@ -23,19 +23,16 @@
 #define _dnt_core_h
 
 #include "dntconfig.h"
-#include <goblin/baseapp.h>
+#include "commonapp.h"
 
 namespace DNT
 {
 
-#define APP_NAME                "dnt"
-#define DEFAULT_WINDOW_WIDTH     1024
-#define DEFAULT_WINDOW_HEIGHT     768
-#define WIDTH_TO_DOUBLE_SIZE     2000
-#define BASE_DATA_DIR           "../data"
+#define APP_NAME "dnt"
+#define APP_SKIN "skins/moderna.skin"
 
 /*! The core (main entry) implementation of DNT. */
-class Core : public Goblin::BaseApp
+class Core : public CommonApp
 {
    public:
       /*! Constructor */
@@ -45,21 +42,9 @@ class Core : public Goblin::BaseApp
    protected:
 
       const Ogre::String getApplicationUnixName() const { return APP_NAME; };
-      const int getDefaultWindowWidth() const { return DEFAULT_WINDOW_WIDTH; };
-      const int getDefaultWindowHeight() const {return DEFAULT_WINDOW_HEIGHT;};
-      const Orientation getDefaultOrientation() const { return LANDSCAPE; };
-      const int getMinWidthToUseDoubleSizedGui() const 
-      { 
-         return WIDTH_TO_DOUBLE_SIZE; 
-      };
-      const Ogre::String getBaseDataDir() const {return BASE_DATA_DIR;};
-      const bool shouldUseKoboldI18n() const { return false; };
-      const bool shouldCreateBasicWorkspace() const { return false; };
-
+      const Ogre::String getSkin() const {return APP_SKIN;};
 
       bool doCycleInit(int callCounter, bool& shouldAbort);
-      void getDataDirectories(Ogre::String** dataDirectories,
-            Ogre::String** dataGroups, int& total);
 
       void doLowMemoryClean();
       void doSendToBackground();
@@ -70,9 +55,6 @@ class Core : public Goblin::BaseApp
 
    private:
 
-      Ogre::Vector3 floorMouse; /**< Coordinates of mouse on floor */ 
-      int lastMouseX; /**< Last mouse X coordinate when updated floorMouse */
-      int lastMouseY; /**< Last mouse Y coordinate when updated floorMouse */
 
 };
 

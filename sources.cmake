@@ -5,6 +5,7 @@
 # Files related to the core engine
 ########################################################################
 set(CORE_SOURCES
+   src/core/commonapp.cpp
    src/core/dialog.cpp
    src/core/door.cpp
    src/core/game.cpp
@@ -19,6 +20,7 @@ set(CORE_SOURCES
    src/core/util.cpp
 )
 set(CORE_HEADERS
+   src/core/commonapp.h
    src/core/dialog.h
    src/core/door.h
    src/core/game.h

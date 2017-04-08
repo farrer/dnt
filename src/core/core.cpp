@@ -46,9 +46,6 @@ using namespace DNT;
  ***********************************************************************/
 Core::Core()
 {
-   lastMouseX = -1;
-   lastMouseY = -1;
-   floorMouse = Ogre::Vector3(0.0f, 0.0f, 0.0f);
 }
 
 /***********************************************************************
@@ -56,15 +53,6 @@ Core::Core()
  ***********************************************************************/
 Core::~Core()
 {
-   Game::finish();
-
-   Alignments::finish();
-   SkillsDefinitions::finish();
-   Races::finish();
-   Classes::finish();
-   FeatsList::finish();
-   Briefing::finish();
-   Farso::Controller::finish();
 }
 
 /***********************************************************************
@@ -72,77 +60,36 @@ Core::~Core()
  ***********************************************************************/
 bool Core::doCycleInit(int callCounter, bool& shouldAbort)
 {
-   //getSceneManager()->setShadowTextureSelfShadow(true);
-   
-   //FIXME: for outdoor maps, must define the hemisphere colors with
-   //       different values.
-   getSceneManager()->setAmbientLight(
-         Ogre::ColourValue(0.1f, 0.1f, 0.1f),
-         Ogre::ColourValue(0.1f, 0.1f, 0.1f),
-         Ogre::Vector3(0.0f, 1.0f, 0.0f));
-
-   /* Init Farso */
-   Farso::Controller::init(Farso::RENDERER_TYPE_OGRE3D, DEFAULT_WINDOW_WIDTH,
-       DEFAULT_WINDOW_HEIGHT, 32, "", getSceneManager());
-   Farso::FontManager::setDefaultFont("LiberationSans-Regular.ttf");
-   Farso::Controller::loadSkin("skins/moderna.skin");
-   Farso::Controller::setCursor("cursor/sel.png");
-
-   /* Init our widgets */
-   Briefing::init();
-
-   /* Init our rules */
-   Alignments::init();
-   SkillsDefinitions::init();
-   FeatsList::init("feats/", "feats.ftl");
-   Races::init();
-   Classes::init();
-
-   Game::init(ogreSceneManager);
-   Goblin::Camera::disableTranslations();
-
-   /* Load a PC */
-   PlayableCharacter* pc = new PlayableCharacter();
-   pc->load("humans/padre.npc");
-   pc->setAnimation(Character::CHARACTER_ANIMATION_IDLE, true);
-
-   Game::getPcs()->insertCharacter(pc);
-
-   /* Load a map to test. FIXME: remove from here when reimplemented our
-    * initial window. */
-   if(!Game::loadMap("tyrol/house1.map"))
+   if(doCommonCycleInit(callCounter, shouldAbort))
    {
-      shouldAbort = true;
+      //FIXME: for outdoor maps, must define the hemisphere colors with
+      //       different values.
+      getSceneManager()->setAmbientLight(
+            Ogre::ColourValue(0.1f, 0.1f, 0.1f),
+            Ogre::ColourValue(0.1f, 0.1f, 0.1f),
+            Ogre::Vector3(0.0f, 1.0f, 0.0f));
+      Goblin::Camera::disableTranslations();
+
+      /* Load a PC */
+      PlayableCharacter* pc = new PlayableCharacter();
+      pc->load("humans/padre.npc");
+      pc->setAnimation(Character::CHARACTER_ANIMATION_IDLE, true);
+
+      Game::getPcs()->insertCharacter(pc);
+
+      /* Load a map to test. FIXME: remove from here when reimplemented our
+       * initial window. */
+      if(!Game::loadMap("tyrol/house1.map"))
+      {
+         shouldAbort = true;
+         return true;
+      }
+      Goblin::Camera::setPosition(pc->getModel()->getPosition());
+
       return true;
    }
-   Goblin::Camera::setPosition(pc->getModel()->getPosition());
 
-   /* FIXME: should not be here, but at map load. */
-   /* Change workspace to cdefine map type */
-   Ogre::CompositorManager2 *compositorManager =
-      ogreRoot->getCompositorManager2();
-   ogreWorkspace = compositorManager->addWorkspace(ogreSceneManager,
-         ogreWindow, Goblin::Camera::getOgreCamera(),
-         "DNTIndoorWorkspace", true);
-
-   getSceneManager()->setForward3D(true, 4, 4, 4, 32, 3, 2000);
-
-   return true;
-}
-
-/***********************************************************************
- *                        getDataDirectories                           *
- ***********************************************************************/
-void Core::getDataDirectories(Ogre::String** dataDirectories,
-      Ogre::String** dataGroups, int& total)
-{
-   static Ogre::String dirs[] = {"gui", "textures/doors", "textures/furniture",
-      "textures/general", "textures/humans", "textures/indoor", 
-      "textures/junk", "textures/portraits", "maps", "models", "fonts",
-      "compositors", "rules", "skeletons"};
-   (*dataDirectories) = &dirs[0];
-   (*dataGroups) = &dirs[0];
-   total = 14;
+   return false;
 }
 
 /***********************************************************************
