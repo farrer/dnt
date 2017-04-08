@@ -280,9 +280,9 @@ bool Thing::load(Kobold::String fileName,
          /* And cache our vertices for depth collision check. */
          model->updateCachedMeshInformation();
       }
-      // Uncomment for bounding box debug. XXX: Note that will leak (lazy!).
-      Ogre::WireAabb* wire = Game::getSceneManager()->createWireAabb();
-      wire->track(model->getItem());
+      /* Uncomment for bounding box debug. XXX: Note that will leak (lazy!). */
+      //Ogre::WireAabb* wire = Game::getSceneManager()->createWireAabb();
+      //wire->track(model->getItem());
    }
 
    return true;

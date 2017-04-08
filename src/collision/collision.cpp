@@ -65,6 +65,7 @@ void Collision::finish()
          delete[] grid[x];
       }
       delete[] grid;
+      grid = NULL;
    }
 }
 
