@@ -55,6 +55,9 @@ class PlayableCharacter : public Character
        *          and can take a level at the specified class */
       void getNewClassLevel(Class* cl);
 
+      /*! Overriden from Character class */
+      void doAfterLoad();
+
    protected:
 
       /*! Parse key/value pairs related to the PlayableCharacter */
@@ -92,6 +95,8 @@ class PlayableCharacter : public Character
 
       bool canMove;   /**< If still have movements at current fight's turn */
       bool canAttack; /**< If still have actions at current fight's turn */
+
+      Goblin::Model3d* direction; /**< Direction when moving with mouse */
 };
 
 }

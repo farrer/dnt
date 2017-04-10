@@ -314,6 +314,7 @@ bool Character::load(Kobold::String filename)
 {
    if(Thing::load(filename, Goblin::Model3d::MODEL_DYNAMIC))
    {
+      doAfterLoad();
       return true;
    }
 
@@ -323,10 +324,8 @@ bool Character::load(Kobold::String filename)
 /***********************************************************************
  *                            doAfterLoad                              *
  ***********************************************************************/
-void Character::doAfterLoad(Kobold::String& mapFilename)
+void Character::doAfterLoad()
 {
-   this->mapFilename = mapFilename;
-
    /* Define the AC if not yet defined at the file */
    if(getArmatureClass() == 0)
    {

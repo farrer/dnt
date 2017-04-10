@@ -119,9 +119,8 @@ namespace DNT
          bool load(Kobold::String filename);
          
          /*! Called after loaded the character, to set some of its 
-          * definitions 
-          * \param mapFilename filename of the Map where the Character is */
-         void doAfterLoad(Kobold::String& mapFilename);
+          * definitions */ 
+         virtual void doAfterLoad();
 
          /*! \return pointer to character's inventory */
          Inventory* getInventory();
@@ -184,8 +183,6 @@ namespace DNT
          DiceInfo bareHandsDice; /**< Damage dice for barehands fight */
 
          Inventory* inventory; /**< Character inventory */
-
-         Kobold::String mapFilename; /**< Filename of Map where Character is */
 
          Ogre::Vector3 initialPos; /**< Initial position on map */
 

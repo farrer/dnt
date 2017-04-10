@@ -135,6 +135,11 @@ bool CommonApp::doCommonCycleInit(int callCounter, bool& shouldAbort)
                "doors_textures", true);
          Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
                "doors_textures");
+         Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
+               getDataPath() + "textures/other", "FileSystem", 
+               "other_textures", true);
+         Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
+               "other_textures");
          progressBar->setValue(30);
       }
       break;

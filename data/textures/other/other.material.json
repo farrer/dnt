@@ -1,0 +1,43 @@
+{
+   "samplers" :
+   {
+      "SamplerBlock_other1" :
+      {
+         "min" : "linear",
+         "mag" : "linear",
+         "u" : "wrap",
+         "v" : "wrap"
+      }
+   },
+   "macroblocks" :
+   {
+      "MacroBlock_other1" :
+      {
+         "depth_check" : true,
+         "depth_write" : true,
+         "polygon_mode" : "solid"
+      },
+      "MacroBlock_other_nondepth" :
+      {
+         "depth_check" : false,
+         "depth_write" : true,
+         "polygon_mode" : "solid"
+      }
+   },
+   "blendblocks" : 
+   {
+      "Blendblock_other1" :
+      {
+      }
+   },
+   "unlit" : 
+   {
+      "DirecMaterial":
+      {
+         "macroblock" : "MacroBlock_other1",
+         "blendblock" : "Blendblock_other1",
+         "diffuse": [0.8, 0.8, 0.0]
+      }
+   }
+}
+

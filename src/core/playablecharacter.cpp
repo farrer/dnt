@@ -19,6 +19,7 @@
 */
 
 #include "playablecharacter.h"
+#include "game.h"
 #include "util.h"
 #include "../rules/classes.h"
 #include "../collision/collision.h"
@@ -47,6 +48,7 @@ PlayableCharacter::PlayableCharacter()
    this->xp = 0;
    this->walkState = WALK_KEYBOARD;
    this->walkPressTimer.pause();
+   this->direction = NULL;
 }
 
 /*********************************************************************
@@ -54,6 +56,23 @@ PlayableCharacter::PlayableCharacter()
  *********************************************************************/
 PlayableCharacter::~PlayableCharacter()
 {
+   if(direction)
+   {
+      delete direction;
+   }
+}
+
+/*********************************************************************
+ *                            doAfterLoad                            *
+ *********************************************************************/
+void PlayableCharacter::doAfterLoad()
+{
+   Character::doAfterLoad();
+   direction = new Goblin::Model3d("directMesh", 
+         "other/direc.mesh", Game::getSceneManager(),
+         Goblin::Model3d::MODEL_DYNAMIC);
+   direction->setScale(2.6f, 2.6f, 2.6f);
+   direction->hide();
 }
 
 /*********************************************************************
@@ -133,17 +152,14 @@ bool PlayableCharacter::doCharacterSpecializationSave(std::ofstream& file)
 bool PlayableCharacter::doMovementByMouse(const Ogre::Vector3& floorMouse,
       bool& run)
 {
-   //TODO: Define Cursor
    Ogre::Vector3 curPos = getModel()->getPosition();
+   Ogre::Vector2 dir(floorMouse.x - curPos.x, floorMouse.z - curPos.z);
    /* Set character orientation (if mouse is far from character,
     * because if it is too near, some weird angles appears) */
-   float dist = Ogre::Math::Sqrt( (floorMouse.x - curPos.x) *
-         (floorMouse.x - curPos.x) +
-         (floorMouse.z - curPos.z) *
-         (floorMouse.z - curPos.z) );
+   float dist = dir.length();
+   dir.normalise();
 
-   float walkAngle = Util::getAngle(
-         floorMouse.x, floorMouse.z,
+   float walkAngle = Util::getAngle(floorMouse.x, floorMouse.z,
          curPos.x, curPos.z);
    if(dist > MIN_DISTANCE_TO_CHANGE_ANGLE)
    {
@@ -155,8 +171,17 @@ bool PlayableCharacter::doMovementByMouse(const Ogre::Vector3& floorMouse,
       /* Keep the direction angle */
       walkAngle = this->getModel()->getOrientation();
    }
+
    /* Verify if is running or walking */
    run = dist >= CONTINUOUS_RUN_DISTANCE;
+
+   /* define direction model angle and position */
+   float deltaRadius = (run) ? 30.0f : 12.0f;
+   direction->setOrientation(-90.0f, 0.0f, walkAngle - 180);
+   Ogre::Aabb aabb = getWalkableBounds();
+   direction->setPosition(curPos.x + (aabb.mCenter.x + deltaRadius) * dir[0], 
+         curPos.y + 10.0f, 
+         curPos.z + (aabb.mCenter.z + deltaRadius) * dir[1]);
    
    /* Reset, now for the continuous walk, the interval */
    float curWalk = getWalkInterval();
@@ -194,6 +219,7 @@ bool PlayableCharacter::checkMouseInputForMovement(
          else if(walkPressTimer.getMilliseconds() >= WALK_ACTION_DELAY)
          {
             walkState = WALK_MOUSE;
+            direction->show();
             //TODO: clear any A* from the character
          }
       }
@@ -218,6 +244,7 @@ bool PlayableCharacter::checkMouseInputForMovement(
       {
          /* Done with mouse walking. */ 
          walkState = WALK_KEYBOARD;
+         direction->hide();
       }
    }
    else if(walkState == WALK_ASTAR)
