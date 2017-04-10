@@ -18,14 +18,25 @@
   along with DNT.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "playablecharacter.h"
+#include "util.h"
 #include "../rules/classes.h"
 #include "../collision/collision.h"
 
 #include <goblin/camera.h>
 
 using namespace DNT;
+
+/*! Delay before defining if is an A* or continous mouse move */
+#define WALK_ACTION_DELAY   250
+/*! How faster run is than walk */
+#define RUN_MULTIPLIER 2.8f 
+/*! Distance to toggle walk/run in constinous mouse move */
+#define CONTINUOUS_RUN_DISTANCE 60 
+/*! Minimum distance floorMouse should be to the character pos to change its
+ * angle (too near and some indecision happens) */
+#define MIN_DISTANCE_TO_CHANGE_ANGLE 10
+
 
 /*********************************************************************
  *                          PlayableCharacter                        *
@@ -34,6 +45,8 @@ PlayableCharacter::PlayableCharacter()
 {
    this->upLevels = 0;
    this->xp = 0;
+   this->walkState = WALK_KEYBOARD;
+   this->walkPressTimer.pause();
 }
 
 /*********************************************************************
@@ -114,25 +127,169 @@ bool PlayableCharacter::doCharacterSpecializationSave(std::ofstream& file)
    return true;
 }
 
+/***********************************************************************
+ *                           doMovementByMouse                         *
+ ***********************************************************************/
+bool PlayableCharacter::doMovementByMouse(const Ogre::Vector3& floorMouse,
+      bool& run)
+{
+   //TODO: Define Cursor
+   Ogre::Vector3 curPos = getModel()->getPosition();
+   /* Set character orientation (if mouse is far from character,
+    * because if it is too near, some weird angles appears) */
+   float dist = Ogre::Math::Sqrt( (floorMouse.x - curPos.x) *
+         (floorMouse.x - curPos.x) +
+         (floorMouse.z - curPos.z) *
+         (floorMouse.z - curPos.z) );
+
+   float walkAngle = Util::getAngle(
+         floorMouse.x, floorMouse.z,
+         curPos.x, curPos.z);
+   if(dist > MIN_DISTANCE_TO_CHANGE_ANGLE)
+   {
+      /* Change the angle */
+      this->getModel()->setOrientation(walkAngle);
+   }
+   else
+   {
+      /* Keep the direction angle */
+      walkAngle = this->getModel()->getOrientation();
+   }
+   /* Verify if is running or walking */
+   run = dist >= CONTINUOUS_RUN_DISTANCE;
+   
+   /* Reset, now for the continuous walk, the interval */
+   float curWalk = getWalkInterval();
+   if(run)
+   {
+      curWalk = curWalk * RUN_MULTIPLIER;
+   }
+
+   /* Try to move it forward the angle */
+   Ogre::Radian angleRad = Ogre::Radian(Ogre::Degree(walkAngle));
+   float varX = curWalk * Ogre::Math::Sin(angleRad);
+   float varZ = curWalk * Ogre::Math::Cos(angleRad);
+   return tryWalk(varX, varZ);
+}
 
 /***********************************************************************
- *                           checkInputForMovement                     *
+ *                      checkMouseInputForMovement                     *
  ***********************************************************************/
-bool PlayableCharacter::checkInputForMovement()
+bool PlayableCharacter::checkMouseInputForMovement(
+      const Ogre::Vector3& floorMouse, bool& moved, bool& run)
 {
-   //TODO: get keys from options!
+   moved = false;
+   if(walkState == WALK_KEYBOARD)
+   {
+      /* Not yet walking with mouse, check init */
+      if(Farso::Cursor::isRightButtonPressed())
+      {
+         /* Init mouse press time (if not yet) */
+         if(walkPressTimer.isPaused())
+         {
+            walkPressTimer.reset();
+            return true;
+         }
+         /* verify if should start or continue to walk */
+         else if(walkPressTimer.getMilliseconds() >= WALK_ACTION_DELAY)
+         {
+            walkState = WALK_MOUSE;
+            //TODO: clear any A* from the character
+         }
+      }
+      else if(!walkPressTimer.isPaused())
+      {
+         /* Clicked with mouse right button and released before
+          * start a continous walk move by mouse: we should init
+          * our A* search to walk. */
+         //TODO findPath
+         walkState = WALK_ASTAR;
+      }
+   }
 
-   //TODO: Run.
+   if(walkState == WALK_MOUSE)
+   {
+      if(Farso::Cursor::isRightButtonPressed())
+      {
+         moved = doMovementByMouse(floorMouse, run);
+         return true;
+      }
+      else
+      {
+         /* Done with mouse walking. */ 
+         walkState = WALK_KEYBOARD;
+      }
+   }
+   else if(walkState == WALK_ASTAR)
+   {
+      //TODO: check if ASTAR done and walk, etc.
+      //for now, just going back to KEYBOARD mode
+      walkState = WALK_KEYBOARD;
+   }
 
-   bool triedToMove = false;
+   return false;
+}
+
+/***********************************************************************
+ *                                 tryWalk                             *
+ ***********************************************************************/
+bool PlayableCharacter::tryWalk(float varX, float varZ)
+{
    bool moved = false;
    Ogre::Vector3 curPos = getModel()->getPosition();
+   
+   /* Check if can walk to the new position */
+   if(Collision::canMove(this, Ogre::Vector3(varX, 0.0f, varZ), 0.0f))
+   {
+      moved = true;
+      curPos.x += varX;
+      curPos.z += varZ;
+   }
+   /* If can't move, let's try with only a single component */
+   else if((varX > 0) && 
+           (Collision::canMove(this, Ogre::Vector3(varX, 0.0f, 0.0f), 0.0f)))
+   {
+      moved = true;
+      curPos.x += varX;
+   }
+   else if((varZ > 0) && 
+           (Collision::canMove(this, Ogre::Vector3(0.0f, 0.0f, varZ), 0.0f)))
+   {
+      moved = true;
+      curPos.z += varZ;
+   }
+
+   if(moved)
+   {
+      getModel()->setPosition(curPos);
+      Goblin::Camera::setPosition(curPos);
+   }
+
+   return moved;
+}
+
+/***********************************************************************
+ *                     checkKeyboardInputForMovement                   *
+ ***********************************************************************/
+bool PlayableCharacter::checkKeyboardInputForMovement(bool& moved, bool& run)
+{
+   //TODO: get keys from options!
+   bool triedToMove = false;
    float curYaw = getModel()->getYaw();
    float curWalk = getWalkInterval();
    float curTurnAround = getTurnAroundInterval();
    float varX, varZ, varOri;
-
+   
    /* Let's check for keyboard movement */
+   run = false;
+   if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_LSHIFT))
+   {
+      run = true;
+   }
+   if(run)
+   {
+      curWalk *= RUN_MULTIPLIER; 
+   }
 
    /* Forward and backward movement */
    if((Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_W)) ||
@@ -150,31 +307,8 @@ bool PlayableCharacter::checkInputForMovement()
          varZ *= -1.0f;
       }
 
-      /* TODO: check if can walk to the new position */
-      if(Collision::canMove(this, Ogre::Vector3(varX, 0.0f, varZ), 0.0f))
-      {
-         moved = true;
-         curPos.x += varX;
-         curPos.z += varZ;
-      }
-      /* If can't move, let's try with only a single component */
-      else if(Collision::canMove(this, Ogre::Vector3(varX, 0.0f, 0.0f), 0.0f))
-      {
-         moved = true;
-         curPos.x += varX;
-      }
-      else if(Collision::canMove(this, Ogre::Vector3(0.0f, 0.0f, varZ), 0.0f))
-      {
-         moved = true;
-         curPos.z += varZ;
-      }
-
-      if(moved)
-      {
-         getModel()->setPosition(curPos);
-         Goblin::Camera::setPosition(curPos);
-      }
-
+      /* Check if can walk to the new position */
+      moved = tryWalk(varX, varZ);
    }
 
    /* Rotate left and rotate right */
@@ -201,18 +335,44 @@ bool PlayableCharacter::checkInputForMovement()
          curYaw -= 360.0f;
       }
 
-      //TODO: check if can turn around!
+      /* Note: as using a fixed bouding box (for more fluid movement),
+       * always can turn around (avoiding hangs when colliding) */
       moved = true;
 
       /* Apply new yaw */
       getModel()->setOrientation(curYaw);
    }
 
-   if((moved) && (getCurrentAnimation() != CHARACTER_ANIMATION_WALK))
+   return triedToMove;
+}
+
+/***********************************************************************
+ *                           checkInputForMovement                     *
+ ***********************************************************************/
+bool PlayableCharacter::checkInputForMovement(const Ogre::Vector3& floorMouse)
+{
+   bool triedToMove = false;
+   bool moved = false;
+   bool run = false;
+  
+   /* First check if tryed to move if mouse, and if not, check keyboard */
+   triedToMove = checkMouseInputForMovement(floorMouse, moved, run);
+   if((!triedToMove) && (walkState == WALK_KEYBOARD))
+   {
+      triedToMove = checkKeyboardInputForMovement(moved, run);
+   }
+ 
+   if((moved) && (!run) && (getCurrentAnimation() != CHARACTER_ANIMATION_WALK))
    {
       setAnimation(CHARACTER_ANIMATION_WALK, true);
    }
-   else if((!moved) && (getCurrentAnimation() == CHARACTER_ANIMATION_WALK))
+   else if((moved) && (run) && 
+           (getCurrentAnimation() != CHARACTER_ANIMATION_RUN))
+   {
+      setAnimation(CHARACTER_ANIMATION_RUN, true);
+   }
+   else if((!moved) && ((getCurrentAnimation() == CHARACTER_ANIMATION_WALK) ||
+                        (getCurrentAnimation() == CHARACTER_ANIMATION_RUN)) )
    {
       setAnimation(CHARACTER_ANIMATION_IDLE, true);
    }

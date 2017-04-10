@@ -147,7 +147,7 @@ void Core::doCycle()
       updateMouseWorld(true);
 
       /* Check current PC movement input */
-      if(curPc->checkInputForMovement())
+      if(curPc->checkInputForMovement(floorMouse))
       {
          /* Mus disable thngUnderCursor if trying to move */
          thingUnderCursor = NULL;
