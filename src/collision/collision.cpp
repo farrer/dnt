@@ -82,13 +82,14 @@ bool Collision::canMove(Thing* actor, const Ogre::Vector3& varPos,
    Ogre::Aabb walkableAabb = actor->getWalkableBounds();
    walkableAabb.mCenter = worldAabb.mCenter + varPos;
 
-   return canBeAt(walkableAabb.getMinimum(), walkableAabb.getMaximum());
+   return canBeAt(walkableAabb.getMinimum(), walkableAabb.getMaximum(), actor);
 }
 
 /***********************************************************************
  *                                canBeAt                              *
  ***********************************************************************/
-bool Collision::canBeAt(const Ogre::Vector3& min, const Ogre::Vector3& max)
+bool Collision::canBeAt(const Ogre::Vector3& min, const Ogre::Vector3& max,
+      Thing* actor)
 {
    Ogre::AxisAlignedBox actorBox(min, max);
 
@@ -105,7 +106,7 @@ bool Collision::canBeAt(const Ogre::Vector3& min, const Ogre::Vector3& max)
          Square* square = getSquare(x, z);
          if(square)
          {
-            if(square->hasCollisions(actorBox))
+            if(square->hasCollisions(actorBox, actor))
             {
                return false;
             }
@@ -140,7 +141,7 @@ bool Collision::canOccupy(Thing* actor, const Ogre::Vector3& pos)
    Ogre::Aabb aabb = actor->getModel()->getItem()->getWorldAabb();
    aabb.mCenter = pos;
    
-   return canBeAt(aabb.getMinimum(), aabb.getMaximum());
+   return canBeAt(aabb.getMinimum(), aabb.getMaximum(), actor);
 }
 
 /***********************************************************************

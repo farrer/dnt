@@ -64,7 +64,8 @@ void Collision::Square::removeElement(Thing* thing)
 /***********************************************************************
  *                          hasCollisions                              *
  ***********************************************************************/
-bool Collision::Square::hasCollisions(const Ogre::AxisAlignedBox& actorBox)
+bool Collision::Square::hasCollisions(const Ogre::AxisAlignedBox& actorBox,
+   Thing* actor, Thing* ignore)
 {
    /* Check if have some intersection with the square */
    if(!actorBox.intersects(bounds))
@@ -77,14 +78,19 @@ bool Collision::Square::hasCollisions(const Ogre::AxisAlignedBox& actorBox)
          elements.getFirst());
    for(int i = 0; i < elements.getTotal(); i++)
    {
-      if(actorBox.intersects(el->bounds))
+      if(((actor == NULL) || (el->thing != actor)) &&
+         ((ignore == NULL) || (el->thing != ignore)))
       {
-         //TODO: when verifying if can walk, sometimes the element could be
-         //'walkable', for example, when its not so taller (a wood plank on the
-         //floor, for example). 
-         //TODO: depth collision check, if desired. 
-         /* Collided */
-         return true;
+         /* Only check if not the actor itself or a ignore (target) thing */
+         if(actorBox.intersects(el->bounds))
+         {
+            //TODO: when verifying if can walk, sometimes the element could be
+            //'walkable', for example, when its not so taller (a wood plank 
+            //on the floor, for example). 
+            //TODO: depth collision check, if desired. 
+            /* Collided */
+            return true;
+         }
       }
       el = static_cast<Collision::Element*>(el->getNext());
    }
@@ -96,18 +102,23 @@ bool Collision::Square::hasCollisions(const Ogre::AxisAlignedBox& actorBox)
 /***********************************************************************
  *                          hasCollisions                              *
  ***********************************************************************/
-bool Collision::Square::hasCollisions(const Ogre::Ray& ray, const float dist)
+bool Collision::Square::hasCollisions(const Ogre::Ray& ray, const float dist,
+   Thing* actor, Thing* ignore)
 {
    Collision::Element* el = static_cast<Collision::Element*>(
          elements.getFirst());
    for(int i = 0; i < elements.getTotal(); i++)
    {
-      std::pair<bool, Ogre::Real> res = ray.intersects(el->bounds);
-      if((res.first) && (res.second <= dist))
+      if(((actor == NULL) || (el->thing != actor)) &&
+         ((ignore == NULL) || (el->thing != ignore)))
       {
-         //TODO: depth collision check, if desired. 
-         /* Collided */
-         return true;
+         std::pair<bool, Ogre::Real> res = ray.intersects(el->bounds);
+         if((res.first) && (res.second <= dist))
+         {
+            //TODO: depth collision check, if desired. 
+            /* Collided */
+            return true;
+         }
       }
       el = static_cast<Collision::Element*>(el->getNext());
    }

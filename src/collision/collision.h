@@ -129,14 +129,22 @@ namespace DNT
                /*! Verify if the bounding box collide with some element within
                 * this square.
                 * \param actorBox -> translated and rotated bounding box 
+                * \param actor -> pointer to the actor, if any (will ignore
+                *                 collisions with itself)
+                * \param ignore -> pointer to a thing to ignore collisions to
                 * \return true if collided, false if no collisions got */
-               bool hasCollisions(const Ogre::AxisAlignedBox& actorBox);
+               bool hasCollisions(const Ogre::AxisAlignedBox& actorBox,
+                     Thing* actor = NULL, Thing* ignore = NULL);
 
                /*! Verify if a Ray collide with some element within this square
                 * \param ray -> ray to verify
                 * \param dist -> distance from ray origin to accept collisions.
+                * \param actor -> pointer to the actor, if any (will ignore
+                *                 collisions with itself)
+                * \param ignore -> pointer to a thing to ignore collisions to
                 * \return true if collided, false if got no collisions */
-               bool hasCollisions(const Ogre::Ray& ray, const float dist);
+               bool hasCollisions(const Ogre::Ray& ray, const float dist,
+                     Thing* actor = NULL, Thing* ignore = NULL);
 
             private:
                Kobold::List elements; /**< Current CollisionElements */
@@ -157,7 +165,7 @@ namespace DNT
          /*! Verify if bounding box defined by min,max doesn't collide with 
           * any square element */
          static bool canBeAt(const Ogre::Vector3& min, 
-               const Ogre::Vector3& max);
+               const Ogre::Vector3& max, Thing* actor);
 
 
          static Square** grid; /**< The grid matrix */
