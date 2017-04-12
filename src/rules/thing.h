@@ -90,6 +90,9 @@ class Thing : public Kobold::ListElement
        *        definition, if false, will save filename to DNT user's
        *        home as root. */
       bool save(Kobold::String filename, bool fullPath=false);
+ 
+      /*! Do the per-frame thing's update */
+      virtual void update();
 
       /*! \return 3d representation of the thing, if any, or NULL. */
       Goblin::Model3d* getModel();

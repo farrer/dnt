@@ -90,6 +90,9 @@ namespace DNT
          /*! Add an element with a related Thing */ 
          static void addElement(Thing* thing);
 
+         /*! Remove all elements related to a Thing from the collisions */
+         static void removeElement(Thing* thing);
+
       private:
 
          /* This subclass implements an element that should have 

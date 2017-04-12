@@ -70,6 +70,9 @@ class Door : public Object
        * defining to open its conversation to unlock it, if locked. */
       Object::InteractResult interact(Character* actor);
 
+      /*! Overriden from Thing. */
+      void update();
+
    protected:
       /*! Parse specific door attributes */
       bool doObjectSpecializationParse(Ogre::String key, Ogre::String value);
@@ -84,6 +87,8 @@ class Door : public Object
       bool flip();
 
       Ogre::Real closedAngle; /**< Angle to use when the door is closed */
+      bool shouldResetCollision; /**< If should reset collision after completed
+                                      a door orientation flip */
 };
 
 }

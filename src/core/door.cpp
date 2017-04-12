@@ -19,6 +19,7 @@
 */
 
 #include "door.h"
+#include "../collision/collision.h"
 #include <kosound/sound.h>
 
 using namespace DNT;
@@ -30,6 +31,7 @@ Door::Door()
      :Object(Thing::THING_TYPE_DOOR)
 {
    closedAngle = 0.0f;
+   shouldResetCollision = false;
    /* Default to closed door, but not locked. */
    setOpenStatus(DOOR_CLOSED);
 }
@@ -76,6 +78,7 @@ bool Door::flip()
    {
       /* Must open it */
       setOpenStatus(DOOR_OPENED);
+      shouldResetCollision = true;
 
       /* Set opening animation */
       getModel()->setTargetOrientation(0.0f, closedAngle + 90.0f, 0.0f);
@@ -90,6 +93,7 @@ bool Door::flip()
    {
       /* Must close it */
       setOpenStatus(DOOR_CLOSED);
+      shouldResetCollision = true;
 
       /* Opened, we can always close the door */
       getModel()->setTargetOrientation(0.0f, closedAngle, 0.0f);
@@ -139,6 +143,19 @@ Object::InteractResult Door::interact(Character* actor)
       /* Just flip our open/close status */
       flip();
       return Object::INTERACTION_DONE;
+   }
+}
+
+/**************************************************************************
+ *                                update                                  *
+ **************************************************************************/
+void Door::update()
+{
+   if((!getModel()->update()) && (shouldResetCollision))
+   {
+      Collision::removeElement(this);
+      Collision::addElement(this);
+      shouldResetCollision = false;
    }
 }
 

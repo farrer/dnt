@@ -118,11 +118,7 @@ void Map::update(Ogre::Vector3 refPos)
    Thing* thing = static_cast<Thing*>(dynamicThings->getFirst());
    for(int i = 0; i < dynamicThings->getTotal(); i++)
    {
-      Goblin::Model3d* model = thing->getModel();
-      if(model)
-      {
-         model->update();
-      }
+      thing->update();
       thing = static_cast<Thing*>(thing->getNext());
    }
 }

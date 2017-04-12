@@ -293,7 +293,20 @@ void Collision::addElement(const Ogre::Vector3& min,
          }
       }
    }
+}
 
+/***********************************************************************
+ *                           removeElement                             *
+ ***********************************************************************/
+void Collision::removeElement(Thing* thing)
+{
+   for(int x = 0; x < xSize; x++)
+   {
+      for(int z = 0; z < zSize; z++)
+      {
+         grid[x][z].removeElement(thing);
+      }
+   }
 }
 
 /***********************************************************************
