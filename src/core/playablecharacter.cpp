@@ -49,6 +49,7 @@ PlayableCharacter::PlayableCharacter()
    this->walkState = WALK_KEYBOARD;
    this->walkPressTimer.pause();
    this->direction = NULL;
+   this->wasRunning = false;
 }
 
 /*********************************************************************
@@ -170,10 +171,25 @@ bool PlayableCharacter::doMovementByMouse(const Ogre::Vector3& floorMouse,
    {
       /* Keep the direction angle */
       walkAngle = this->getModel()->getOrientation();
+      Ogre::Vector3 cDir = this->direction->getPosition() - curPos; 
+      dir = Ogre::Vector2(cDir.x, cDir.z);
+      dir.normalise();
    }
 
    /* Verify if is running or walking */
-   run = dist >= CONTINUOUS_RUN_DISTANCE;
+   if(wasRunning)
+   {
+      /* if was running, avoid toggling to walk too early, puting
+       * the toggle distance nearer the character. This way, we avoid
+       * unwanted effects of run/walk/run/walk glitches when mouse
+       * is near CONTINUOUS_RUN_DISTANCE. */
+      run = dist >= CONTINUOUS_RUN_DISTANCE - 10.0f;
+   }
+   else
+   {
+      run = dist >= CONTINUOUS_RUN_DISTANCE;
+   }
+   wasRunning = run;
 
    /* define direction model angle and position */
    float deltaRadius = (run) ? 30.0f : 12.0f;

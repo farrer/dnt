@@ -95,6 +95,7 @@ class PlayableCharacter : public Character
 
       bool canMove;   /**< If still have movements at current fight's turn */
       bool canAttack; /**< If still have actions at current fight's turn */
+      bool wasRunning; /**< If was running at continuous mouse walk */
 
       Goblin::Model3d* direction; /**< Direction when moving with mouse */
 };
