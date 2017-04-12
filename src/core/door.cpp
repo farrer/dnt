@@ -82,7 +82,7 @@ bool Door::flip()
 
       /* Call opening sound */
       Kosound::Sound::addSoundEffect(pos.x, pos.y, pos.z, SOUND_NO_LOOP,
-            "sndfx/objects/door_open.ogg");
+            "objects/door_open.ogg");
 
       return true;
    } 
@@ -96,7 +96,7 @@ bool Door::flip()
 
       /* Call closing sound */
       Kosound::Sound::addSoundEffect(pos.x, pos.y, pos.z, SOUND_NO_LOOP,
-            "sndfx/objects/door_close.ogg");
+            "objects/door_close.ogg");
 
       return true;
    }
