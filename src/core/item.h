@@ -65,7 +65,7 @@ class Item : public Object
       bool isUsable();
 
       /* \return true. Itens are interactive. */
-      bool canInteract();
+      const bool canInteract() const { return true; };
 
       /* Interact with the item: pick it. */
       Object::InteractResult interact(Character* actor);

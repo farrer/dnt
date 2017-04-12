@@ -423,3 +423,12 @@ bool PlayableCharacter::checkInputForMovement(const Ogre::Vector3& floorMouse)
    return triedToMove;
 }
 
+/***********************************************************************
+ *                                 interact                            *
+ ***********************************************************************/
+Thing::InteractResult PlayableCharacter::interact(Character* actor)
+{
+   //TODO
+   return INTERACTION_DONE;
+}
+

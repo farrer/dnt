@@ -137,6 +137,9 @@ namespace DNT
          /*! Get current character animation */
          CharacterAnimation getCurrentAnimation();
 
+         /*! \return true. Characters are interactive. */
+         const bool canInteract() const { return true; };
+
       protected:
          /*! \return default character's animation names */
          virtual Kobold::String* getAnimationList();

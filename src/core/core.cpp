@@ -175,7 +175,12 @@ void Core::doCycle()
          Farso::Cursor::setTextualTip(thingUnderCursor->getName());
          if(Farso::Cursor::checkButtonRelease(0))
          {
-            /* TODO: action with the thing! */
+            // TODO: Check action range; 
+            // TODO: Check if have actions when on battle mode.
+            if(thingUnderCursor->canInteract())
+            {
+               thingUnderCursor->interact(curPc);
+            }
          }
       }
    }

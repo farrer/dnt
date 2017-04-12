@@ -78,6 +78,12 @@ class PlayableCharacter : public Character
        * \return true if walked */
       bool tryWalk(float varX, float varZ);
 
+      /*! Interact with the character.
+       * \param actor pointer to the character that is interacting with
+       * \return interaction result */
+      InteractResult interact(Character* actor);
+
+
    private:
       enum WalkStatus
       {

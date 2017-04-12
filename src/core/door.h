@@ -64,7 +64,7 @@ class Door : public Object
       bool lock(int unlockChallenge, int forceChallenge);
 
       /* \return true. Doors are interactive. */
-      bool canInteract();
+      const bool canInteract() const {return true;};
 
       /* Interact with the door, opening/closing it if unlocked, or 
        * defining to open its conversation to unlock it, if locked. */

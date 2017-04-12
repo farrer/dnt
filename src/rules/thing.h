@@ -201,6 +201,27 @@ class Thing : public Kobold::ListElement
        * (maybe increasing regular bound size), an try to move. With a regular
        * immutable one, this won't happen. */
       Ogre::Aabb getWalkableBounds() const { return walkableBounds; };
+
+      /*! \return if interaction between the object and characters 
+       * is possible. */
+      virtual const bool canInteract() const = 0;
+
+      enum InteractResult
+      {
+         /* The interaction is done. */
+         INTERACTION_DONE,
+         /* Should open a conversation with object's conversation file
+          * to allow the interaction */
+         INTERACTION_OPEN_CONVERSATION
+      };
+
+      /*! Interact with the object.
+       * \note this function is usually called when player's is in range
+       *       and clicked into the object (and the object is, by itself,
+       *       interactive - catInteract() with true result).
+       * \param actor pointer to the character that is interacting with
+       * \return interaction result */
+      virtual InteractResult interact(Character* actor) = 0;
       
    protected:
 

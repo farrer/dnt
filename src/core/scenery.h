@@ -38,7 +38,7 @@ class Scenery : public Object
       ~Scenery();
 
       /*! \return false. Scenery is static. */
-      bool canInteract();
+      const bool canInteract() const { return false; };
 
       /*! Interact with Scenery: nothing to do. */
       Object::InteractResult interact(Character* actor);
