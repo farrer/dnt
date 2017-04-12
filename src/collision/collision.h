@@ -24,6 +24,7 @@
 #include "dntconfig.h"
 #include <OGRE/OgreAxisAlignedBox.h>
 #include <kobold/list.h>
+#include <utility>
 
 namespace DNT
 {
@@ -132,20 +133,27 @@ namespace DNT
                 * \param actor -> pointer to the actor, if any (will ignore
                 *                 collisions with itself)
                 * \param ignore -> pointer to a thing to ignore collisions to
-                * \return true if collided, false if no collisions got */
-               bool hasCollisions(const Ogre::AxisAlignedBox& actorBox,
+                * \return pair, first true if collided, false if no 
+                * collisions got, second, pointer to the collider element */
+               std::pair<bool, Element*> hasCollisions(
+                     const Ogre::AxisAlignedBox& actorBox,
                      Thing* actor = NULL, Thing* ignore = NULL);
 
                /*! Verify if a Ray collide with some element within this square
                 * \param ray -> ray to verify
                 * \param dist -> distance from ray origin to accept collisions.
+                * \param collidedDist -> will receive the distance along ray
+                *               where the collision happened.
                 * \param actor -> pointer to the actor, if any (will ignore
                 *                 collisions with itself)
                 * \param ignore -> pointer to a thing to ignore collisions to
-                * \return true if collided, false if got no collisions */
-               bool hasCollisions(const Ogre::Ray& ray, const float dist,
+                * \return pair, first true if collided, false if no 
+                * collisions got, second, pointer to the collider element */
+               std::pair<bool, Element*> hasCollisions(
+                     const Ogre::Ray& ray, const float dist,
+                     float& collidedDist,
                      Thing* actor = NULL, Thing* ignore = NULL);
-
+               
             private:
                Kobold::List elements; /**< Current CollisionElements */
                Ogre::AxisAlignedBox bounds; /**< Square bounding box */
@@ -167,6 +175,10 @@ namespace DNT
          static bool canBeAt(const Ogre::Vector3& min, 
                const Ogre::Vector3& max, Thing* actor);
 
+         /*! Internal at sight check */
+         static bool isAtSight(Thing* actor, Thing* target, 
+               const Ogre::Ray& ray, const float& dist, 
+               int initSqX, int initSqZ, int endSqX, int endSqZ);
 
          static Square** grid; /**< The grid matrix */
          static int xSize; /**< Grid X axis size */

@@ -64,13 +64,13 @@ void Collision::Square::removeElement(Thing* thing)
 /***********************************************************************
  *                          hasCollisions                              *
  ***********************************************************************/
-bool Collision::Square::hasCollisions(const Ogre::AxisAlignedBox& actorBox,
-   Thing* actor, Thing* ignore)
+std::pair<bool, Collision::Element*> Collision::Square::hasCollisions(
+      const Ogre::AxisAlignedBox& actorBox, Thing* actor, Thing* ignore)
 {
    /* Check if have some intersection with the square */
    if(!actorBox.intersects(bounds))
    {
-      return false;
+      return std::pair<bool, Collision::Element*>(false, NULL);
    }
 
    /* Check each element for collision */
@@ -89,22 +89,33 @@ bool Collision::Square::hasCollisions(const Ogre::AxisAlignedBox& actorBox,
             //on the floor, for example). 
             //TODO: depth collision check, if desired. 
             /* Collided */
-            return true;
+            return std::pair<bool, Collision::Element*>(true, el);
          }
       }
       el = static_cast<Collision::Element*>(el->getNext());
    }
 
    /* No collisions  */
-   return false;
+   return std::pair<bool, Collision::Element*>(false, NULL);
 }
 
 /***********************************************************************
  *                          hasCollisions                              *
  ***********************************************************************/
-bool Collision::Square::hasCollisions(const Ogre::Ray& ray, const float dist,
-   Thing* actor, Thing* ignore)
+std::pair<bool, Collision::Element*> Collision::Square::hasCollisions(
+      const Ogre::Ray& ray, const float dist, float& collidedDist, 
+      Thing* actor, Thing* ignore)
 {
+   std::pair<bool, Ogre::Real> res;
+   /* Check collision with the square bounds */
+   res = ray.intersects(bounds);
+   if(!res.first)
+   {
+      /* No collisions within the square, should not check inner 
+       * elements. */
+      return std::pair<bool, Collision::Element*>(false, NULL);
+   }
+
    Collision::Element* el = static_cast<Collision::Element*>(
          elements.getFirst());
    for(int i = 0; i < elements.getTotal(); i++)
@@ -112,18 +123,19 @@ bool Collision::Square::hasCollisions(const Ogre::Ray& ray, const float dist,
       if(((actor == NULL) || (el->thing != actor)) &&
          ((ignore == NULL) || (el->thing != ignore)))
       {
-         std::pair<bool, Ogre::Real> res = ray.intersects(el->bounds);
+         res = ray.intersects(el->bounds);
          if((res.first) && (res.second <= dist))
          {
             //TODO: depth collision check, if desired. 
             /* Collided */
-            return true;
+            collidedDist = res.second;
+            return std::pair<bool, Collision::Element*>(true, el);
          }
       }
       el = static_cast<Collision::Element*>(el->getNext());
    }
 
    /* No collisions  */
-   return false;
+   return std::pair<bool, Collision::Element*>(false, NULL);
 }
 

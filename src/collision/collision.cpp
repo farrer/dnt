@@ -91,13 +91,14 @@ bool Collision::canMove(Thing* actor, const Ogre::Vector3& varPos,
 bool Collision::canBeAt(const Ogre::Vector3& min, const Ogre::Vector3& max,
       Thing* actor)
 {
+   std::pair<bool, Element*> res;
    Ogre::AxisAlignedBox actorBox(min, max);
 
    /* Check all potentially occuped squares */
-   int minqx = (int)((min.x) / squareSize);
-   int minqz = (int)((min.z) / squareSize);
-   int maxqx = (int)((max.x) / squareSize);
-   int maxqz = (int)((max.z) / squareSize);
+   int minqx = static_cast<int>((min.x) / squareSize);
+   int minqz = static_cast<int>((min.z) / squareSize);
+   int maxqx = static_cast<int>((max.x) / squareSize);
+   int maxqz = static_cast<int>((max.z) / squareSize);
 
    for(int x = minqx; x <= maxqx; x++)
    {
@@ -106,7 +107,8 @@ bool Collision::canBeAt(const Ogre::Vector3& min, const Ogre::Vector3& max,
          Square* square = getSquare(x, z);
          if(square)
          {
-            if(square->hasCollisions(actorBox, actor))
+            res =square->hasCollisions(actorBox, actor);
+            if(res.first)
             {
                return false;
             }
@@ -147,12 +149,106 @@ bool Collision::canOccupy(Thing* actor, const Ogre::Vector3& pos)
 /***********************************************************************
  *                              isAtSight                              *
  ***********************************************************************/
+bool Collision::isAtSight(Thing* actor, Thing* target, const Ogre::Ray& ray, 
+      const float& dist, int initSqX, int initSqZ, int endSqX, int endSqZ)
+{
+   std::pair<bool, Element*> res;
+   bool collidedWithTarget = false;
+   float curDist = dist;
+   float collidedDist = dist;
+
+   /* Check all potential squares for collisions */
+   for(int x = initSqX; x <= endSqX; x++)
+   {
+      for(int z = initSqZ; z <= endSqZ; z++)
+      {
+         Square* square = getSquare(x, z);
+         if(square)
+         {
+            res = square->hasCollisions(ray, curDist, collidedDist, actor);
+            if(res.first)
+            {
+               /* Collided. For next checks we must use this as the 
+                * minimum collision */
+               curDist = collidedDist;
+               /* Check if nearest collision was with the target. */
+               collidedWithTarget = (res.second->thing == target);
+#if 0
+               if(res.second->thing)
+               {
+                  printf("Collided with: %s\n", 
+                        res.second->thing->getName().c_str());
+               }
+               else
+               {
+                  printf("Collided with wall\n");
+               }
+               printf("CurDist: %.3f\n", curDist);
+#endif
+            }
+         }
+      }
+   }
+
+   return collidedWithTarget;
+}
+
+/***********************************************************************
+ *                              isAtSight                              *
+ ***********************************************************************/
 bool Collision::isAtSight(Thing* actor, Thing* target)
 {
    assert(actor != NULL);
    assert(target != NULL);
+   assert(actor != target);
 
-   //TODO
+   /* Define positions and direction */
+   Ogre::Aabb aabb = actor->getWalkableBounds();
+   Ogre::Vector3 actorPos = actor->getModel()->getPosition();
+   Ogre::Vector3 targetPos = 
+      target->getModel()->getItem()->getWorldAabb().mCenter;
+   Ogre::Vector3 diffPos = targetPos - actorPos;
+   float dist = diffPos.length();
+   diffPos.normalise();
+
+   /* Define squares to check */
+   int initSqX = static_cast<int>(actorPos.x / squareSize);
+   int initSqZ = static_cast<int>(actorPos.z / squareSize);
+   int endSqX = static_cast<int>(targetPos.x / squareSize);
+   int endSqZ = static_cast<int>(targetPos.z / squareSize);
+
+   /* Make sure end is greater than init */
+   if(endSqX < initSqX)
+   {
+      int tmp = endSqX;
+      endSqX = initSqX;
+      initSqX = tmp;
+   }
+   if(endSqZ < initSqZ)
+   {
+      int tmp = endSqZ;
+      endSqZ = initSqZ;
+      initSqZ = tmp;
+   }
+
+   /* Check lower actor to object's center */
+   Ogre::Ray ray(actorPos, diffPos);
+   if(isAtSight(actor, target, ray, dist, initSqX, initSqZ, endSqX, endSqZ))
+   {
+      /* Already got is at sight */
+      return true;
+   }
+   /* Must check upper actor to object's center */
+   Ogre::Vector3 upperActor(actorPos.x, 
+         actorPos.y + aabb.mCenter.y + aabb.mHalfSize.y, actorPos.z);
+   diffPos = targetPos - upperActor;
+   diffPos.normalise();
+   ray = Ogre::Ray(upperActor, diffPos);
+   if(isAtSight(actor, target, ray, dist, initSqX, initSqZ, endSqX, endSqZ))
+   {
+      return true;
+   }
+
    return false;
 }
 
@@ -181,10 +277,10 @@ void Collision::addElement(const Ogre::Vector3& min,
       const Ogre::Vector3& max, Thing* thing)
 {
    /* Should add the element on all squares it potentially is */
-   int minqx = (int)((min.x) / squareSize);
-   int minqz = (int)((min.z) / squareSize);
-   int maxqx = (int)((max.x) / squareSize);
-   int maxqz = (int)((max.z) / squareSize);
+   int minqx = static_cast<int>((min.x) / squareSize);
+   int minqz = static_cast<int>((min.z) / squareSize);
+   int maxqx = static_cast<int>((max.x) / squareSize);
+   int maxqz = static_cast<int>((max.z) / squareSize);
 
    for(int x = minqx; x <= maxqx; x++)
    {
@@ -218,8 +314,8 @@ Collision::Square* Collision::getSquare(int x, int z)
  ***********************************************************************/
 Collision::Square* Collision::getRelativeSquare(float x, float z)
 {
-   int sqX = (int)x / squareSize;
-   int sqZ = (int)z / squareSize;
+   int sqX = static_cast<int>(x / squareSize);
+   int sqZ = static_cast<int>(z / squareSize);
 
    return getSquare(sqX, sqZ);
 }

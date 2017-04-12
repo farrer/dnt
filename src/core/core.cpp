@@ -35,6 +35,7 @@
 #include "../gui/briefing.h"
 
 #include "../core/playablecharacter.h"
+#include "../collision/collision.h"
 
 #include <goblin/camera.h>
 #include <OGRE/Compositor/OgreCompositorManager2.h>
@@ -157,10 +158,15 @@ void Core::doCycle()
    /* Check actions with things under mouse */
    if(thingUnderCursor)
    {
+      //TODO only set textual tip if at sight. Also, avoid checking
+      //multiple times for the same thingUnderCursor at the same character
+      //position. 
       Farso::Cursor::setTextualTip(thingUnderCursor->getName());
       if(Farso::Cursor::checkButtonRelease(0))
       {
          /* TODO: action with the thing! */
+         printf("%s isAtSight: %d\n", thingUnderCursor->getName().c_str(),
+               Collision::isAtSight(curPc, thingUnderCursor));
       }
    }
 }
