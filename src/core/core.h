@@ -56,6 +56,9 @@ class Core : public CommonApp
 
    private:
 
+      Thing* testedThingUnderCursor; /**< Thing under cursor of the last 
+                                          atSight test */
+      bool testedAtSightResult;  /**< Result of the atSight for last test */
 
 };
 

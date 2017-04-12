@@ -47,6 +47,8 @@ using namespace DNT;
  ***********************************************************************/
 Core::Core()
 {
+   testedThingUnderCursor = NULL;
+   testedAtSightResult = false;
 }
 
 /***********************************************************************
@@ -150,23 +152,31 @@ void Core::doCycle()
       /* Check current PC movement input */
       if(curPc->checkInputForMovement(floorMouse))
       {
-         /* Mus disable thngUnderCursor if trying to move */
+         /* Must disable thngUnderCursor if trying to move */
          thingUnderCursor = NULL;
+         testedThingUnderCursor = NULL;
       }
    }
  
    /* Check actions with things under mouse */
    if(thingUnderCursor)
    {
-      //TODO only set textual tip if at sight. Also, avoid checking
-      //multiple times for the same thingUnderCursor at the same character
-      //position. 
-      Farso::Cursor::setTextualTip(thingUnderCursor->getName());
-      if(Farso::Cursor::checkButtonRelease(0))
+      /* Verify if we need to check atSight again or use the cached result */
+      if(thingUnderCursor != testedThingUnderCursor)
       {
-         /* TODO: action with the thing! */
-         printf("%s isAtSight: %d\n", thingUnderCursor->getName().c_str(),
-               Collision::isAtSight(curPc, thingUnderCursor));
+         /* Recheck */
+         testedAtSightResult = Collision::isAtSight(curPc, thingUnderCursor);
+         testedThingUnderCursor = thingUnderCursor;
+      }
+      
+      /* Only set textual tip (and act on the thingUnderCursor) if at sight */
+      if(testedAtSightResult)
+      {
+         Farso::Cursor::setTextualTip(thingUnderCursor->getName());
+         if(Farso::Cursor::checkButtonRelease(0))
+         {
+            /* TODO: action with the thing! */
+         }
       }
    }
 }
