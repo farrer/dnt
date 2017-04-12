@@ -139,7 +139,8 @@ namespace DNT
                      const Ogre::AxisAlignedBox& actorBox,
                      Thing* actor = NULL, Thing* ignore = NULL);
 
-               /*! Verify if a Ray collide with some element within this square
+               /*! Verify if a Ray collide with some element within this square,
+                * always returning the nearest collider got.
                 * \param ray -> ray to verify
                 * \param dist -> distance from ray origin to accept collisions.
                 * \param collidedDist -> will receive the distance along ray
@@ -148,10 +149,20 @@ namespace DNT
                 *                 collisions with itself)
                 * \param ignore -> pointer to a thing to ignore collisions to
                 * \return pair, first true if collided, false if no 
-                * collisions got, second, pointer to the collider element */
+                * collisions got, second, pointer to the nearest collider 
+                * element */
                std::pair<bool, Element*> hasCollisions(
                      const Ogre::Ray& ray, const float dist,
                      float& collidedDist,
+                     Thing* actor = NULL, Thing* ignore = NULL);
+               /*! Verify if a Ray collide with some element within this square.
+                * \param ray -> ray to verify
+                * \param dist -> distance from ray origin to accept collisions.
+                * \param actor -> pointer to the actor, if any (will ignore
+                *                 collisions with itself)
+                * \param ignore -> pointer to a thing to ignore collisions to
+                * \return true if collided */
+               bool hasCollisions(const Ogre::Ray& ray, const float dist,
                      Thing* actor = NULL, Thing* ignore = NULL);
                
             private:

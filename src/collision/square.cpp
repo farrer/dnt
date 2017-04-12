@@ -106,9 +106,6 @@ std::pair<bool, Collision::Element*> Collision::Square::hasCollisions(
       const Ogre::Ray& ray, const float dist, float& collidedDist, 
       Thing* actor, Thing* ignore)
 {
-   //FIXME: for A* we should call another version of this function,
-   //where collided dist isn't important (and where we could stop checking
-   //as soon as finding a collision).
    std::pair<bool, Collision::Element*> got(false, NULL);
    std::pair<bool, Ogre::Real> res;
    /* Check collision with the square bounds */
@@ -120,7 +117,7 @@ std::pair<bool, Collision::Element*> Collision::Square::hasCollisions(
       return got;
    }
 
-   /* Note; we must check if all, as collidedDist is relevant. */
+   /* Note; we must check all, as collidedDist is relevant. */
    Collision::Element* el = static_cast<Collision::Element*>(
          elements.getFirst());
    for(int i = 0; i < elements.getTotal(); i++)
@@ -144,5 +141,40 @@ std::pair<bool, Collision::Element*> Collision::Square::hasCollisions(
    }
 
    return got;
+}
+
+/***********************************************************************
+ *                          hasCollisions                              *
+ ***********************************************************************/
+bool Collision::Square::hasCollisions(const Ogre::Ray& ray, const float dist,
+      Thing* actor, Thing* ignore)
+{
+   std::pair<bool, Ogre::Real> res;
+   
+   /* Check collision with the square bounds */
+   res = ray.intersects(bounds);
+   if(!res.first)
+   {
+      return false;
+   }
+
+   Collision::Element* el = static_cast<Collision::Element*>(
+         elements.getFirst());
+   for(int i = 0; i < elements.getTotal(); i++)
+   {
+      if(((actor == NULL) || (el->thing != actor)) &&
+         ((ignore == NULL) || (el->thing != ignore)))
+      {
+         res = ray.intersects(el->bounds);
+         if((res.first) && (res.second <= dist))
+         {
+            /* Collided */
+            return true;
+         }
+      }
+      el = static_cast<Collision::Element*>(el->getNext());
+   }
+
+   return false;
 }
 
