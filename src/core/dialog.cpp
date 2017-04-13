@@ -42,6 +42,7 @@
 #include <OGRE/OgreResourceGroupManager.h>
 
 #include <stdlib.h>
+#include <assert.h>
 
 using namespace DNT;
 
@@ -231,7 +232,6 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
       case TALK_ACTION_GIVE_ITEM:
       {
          /* Only give item if the owner is a Character */
-         //TODO: Container object type
          if(owner->getThingType() == Thing::THING_TYPE_CHARACTER)
          {
             Character* ownerNPC = static_cast<Character*>(owner);
@@ -263,7 +263,6 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
       case TALK_ACTION_RECEIVE_ITEM:
       {
          /* Only receive items from characters */
-         //TODO: Container object type
          if(owner->getThingType() == Thing::THING_TYPE_CHARACTER)
          {
             Character* ownerNPC = static_cast<Character*>(owner);
@@ -606,7 +605,7 @@ bool TalkTest::doTest(PlayableCharacter* pc, Thing* owner)
    {
       /* Verify if mission is at current state */
       missionsController missions;
-      return(missions.getCurrentMission(test) != NULL);
+      return missions.getCurrentMission(test) != NULL;
    }
 #endif
 
@@ -986,7 +985,7 @@ Kobold::String Conversation::getString(int& initialPosition,
    }
    initialPosition = (i);
 
-   return(ret);
+   return ret;
 }
 
 /*************************************************************************
@@ -1009,73 +1008,74 @@ TalkActionType Conversation::getActionType(Kobold::String token,
    
    if(token == TK_ACTION_GO_TO_DIALOG)
    {
-     return(TALK_ACTION_GO_TO_DIALOG);
+     return TALK_ACTION_GO_TO_DIALOG;
    }
    else if(token == TK_ACTION_INIT_FIGHT)
    {
-      return(TALK_ACTION_INIT_FIGHT);
+      return TALK_ACTION_INIT_FIGHT;
    }
    else if(token == TK_ACTION_FINISH_DIALOG)
    {
-      return(TALK_ACTION_FINISH_DIALOG);
+      return TALK_ACTION_FINISH_DIALOG;
    }
    else if(token == TK_ACTION_DIALOG_INIT)
    {
-      return(TALK_ACTION_DIALOG_INIT);
+      return TALK_ACTION_DIALOG_INIT;
    }
    else if(token == TK_ACTION_CALL_SCRIPT)
    {
-      return(TALK_ACTION_CALL_SCRIPT);
+      return TALK_ACTION_CALL_SCRIPT;
    }
    else if(token == TK_ACTION_ADD_MISSION)
    {
-      return(TALK_ACTION_ADD_MISSION);
+      return TALK_ACTION_ADD_MISSION;
    }
    else if(token == TK_ACTION_COMPLETE_MISSION)
    {
-      return(TALK_ACTION_COMPLETE_MISSION);
+      return TALK_ACTION_COMPLETE_MISSION;
    }
    else if(token == TK_ACTION_GIVE_ITEM)
    {
-      return(TALK_ACTION_GIVE_ITEM);
+      return TALK_ACTION_GIVE_ITEM;
    }
    else if(token == TK_ACTION_RECEIVE_ITEM)
    {
-      return(TALK_ACTION_RECEIVE_ITEM);
+      return TALK_ACTION_RECEIVE_ITEM;
    }
    else if(token == TK_ACTION_RECEIVE_MONEY)
    {
-      return(TALK_ACTION_RECEIVE_MONEY);
+      return TALK_ACTION_RECEIVE_MONEY;
    }
    else if(token == TK_ACTION_GIVE_MONEY)
    {
-      return(TALK_ACTION_GIVE_MONEY);
+      return TALK_ACTION_GIVE_MONEY;
    }
    else if(token == TK_ACTION_CHANGE_OBJECT_STATE)
    {
-      return(TALK_ACTION_CHANGE_OBJECT_STATE);
+      return TALK_ACTION_CHANGE_OBJECT_STATE;
    }
    else if(token == TK_ACTION_RECEIVE_XP)
    {
-      return(TALK_ACTION_RECEIVE_XP);
+      return TALK_ACTION_RECEIVE_XP;
    }
    else if(token == TK_ACTION_KILL_ALL)
    {
-      return(TALK_ACTION_KILL_ALL);
+      return TALK_ACTION_KILL_ALL;
    }
    else if(token == TK_ACTION_MAP_TRAVEL)
    {
-      return(TALK_ACTION_MAP_TRAVEL);
+      return TALK_ACTION_MAP_TRAVEL;
    }
    else if(token == TK_ACTION_OPEN)
    {
-      return(TALK_ACTION_OPEN);
+      return TALK_ACTION_OPEN;
    }
    else if(token == TK_ACTION_PLAY_SOUND)
    {
-      return(TALK_ACTION_PLAY_SOUND);
+      return TALK_ACTION_PLAY_SOUND;
    }
 
+   assert(false);
    printError(fileName, "Unknow action!", line);
    return TALK_ACTION_GO_TO_DIALOG;
 }
