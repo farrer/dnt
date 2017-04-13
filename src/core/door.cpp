@@ -21,6 +21,7 @@
 #include "door.h"
 #include "../collision/collision.h"
 #include <kosound/sound.h>
+#include <assert.h>
 
 using namespace DNT;
 
@@ -72,6 +73,7 @@ void Door::setOpenStatus(OpenStatus openStatus)
  **************************************************************************/
 bool Door::flip()
 {
+   assert(getOpenStatus() != DOOR_LOCKED);
    Ogre::Vector3 pos = getModel()->getPosition();
 
    if(getOpenStatus() == DOOR_CLOSED)
@@ -126,6 +128,37 @@ bool Door::flip()
 
    /* Door is opened, and couldn't be locked! */
    return false;
+}
+
+/**************************************************************************
+ *                                  unlock                                *
+ **************************************************************************/
+void Door::unlock()
+{
+   assert(getOpenStatus() == DOOR_LOCKED);
+   setOpenStatus(DOOR_CLOSED);
+}
+
+/**************************************************************************
+ *                                   open                                 *
+ **************************************************************************/
+void Door::open()
+{
+   if(getOpenStatus() == DOOR_CLOSED)
+   {
+      flip();
+   }
+}
+
+/**************************************************************************
+ *                                  close                                 *
+ **************************************************************************/
+void Door::close()
+{
+   if(getOpenStatus() == DOOR_OPENED)
+   {
+      flip();
+   }
 }
 
 /**************************************************************************

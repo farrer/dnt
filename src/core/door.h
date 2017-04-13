@@ -63,6 +63,16 @@ class Door : public Object
        * \note only can lock a closed door */
       bool lock(int unlockChallenge, int forceChallenge);
 
+      /*! Unlock a locked door but do not open it yet.
+       * \note door must be locked. */
+      void unlock();
+
+      /*! Open a closed door */
+      void open();
+      
+      /*! CLose an opened door */
+      void close();
+
       /* \return true. Doors are interactive. */
       const bool canInteract() const {return true;};
 

@@ -109,6 +109,8 @@ namespace DNT
    class ItemSlot;
    class Inventory;
 
+   class Collision;
+
 }
 
 #endif

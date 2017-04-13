@@ -24,6 +24,7 @@
 #include "item.h"
 #include "inventory.h"
 #include "modstate.h"
+#include "door.h"
 
 #include "../rules/thing.h"
 #include "../lang/translate.h"
@@ -137,27 +138,18 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
          conv->setInitialDialog(att);
       }
       break;
-      /* Open the door or container
-       * TODO: container when - and if - implemented. */
+      /* Open the door */
       case TALK_ACTION_OPEN:
       {
-//TODO: door
-#if 0
-         /* Open the door */
-         if(owner->getThingType() == THING_TYPE_DOOR)
+         if(owner->getThingType() == Thing::THING_TYPE_DOOR)
          {
-            object* ownerObj = (object*)owner;
-            door* d;
- 
-            /* Get the door related to the object */
-            d = ((engine*)curEngine)->getCurrentMap()->getDoor(
-                  ownerObj->scNode);
-            if( (d) && (d->getStatus() == DOOR_STATUS_CLOSED) )
+            Door* d = static_cast<Door*>(owner);
+            if(d->getOpenStatus() == Door::DOOR_LOCKED)
             {
-               d->flip();
+               d->unlock();
             }
+            d->open();
          }
-#endif
       }
       break;
 
