@@ -27,7 +27,7 @@ using namespace DNT;
 /***********************************************************************
  *                            Constructor                              *
  ***********************************************************************/
-void Collision::Square::setBoundingBox(const Ogre::Vector3& min,
+void Square::setBoundingBox(const Ogre::Vector3& min,
       const Ogre::Vector3& max)
 {
    this->bounds = Ogre::AxisAlignedBox(min, max);
@@ -36,45 +36,33 @@ void Collision::Square::setBoundingBox(const Ogre::Vector3& min,
 /***********************************************************************
  *                             addElement                              *
  ***********************************************************************/
-void Collision::Square::addElement(const Ogre::Vector3& min, 
+void Square::addElement(const Ogre::Vector3& min, 
       const Ogre::Vector3& max, Thing* thing)
 {
-   elements.insert(new Collision::Element(min, max, thing));
-}
-
-/***********************************************************************
- *                           removeElement                             *
- ***********************************************************************/
-void Collision::Square::removeElement(Thing* thing)
-{
-   Collision::Element* el = static_cast<Collision::Element*>(
-         elements.getFirst());
-   for(int i = 0; i < elements.getTotal(); i++)
+   Element* el = new Element(this, min, max, thing);
+   elements.insert(el);
+   if(thing)
    {
-      if(el->thing == thing)
-      {
-         /* Found the element owner, must remove it and done. */
-         elements.remove(el);
-         break;
-      }
-      el = static_cast<Collision::Element*>(el->getNext());
+      Thing::ColElement* colEl = new Thing::ColElement();
+      colEl->element = el;
+      thing->getColElements()->insert(colEl);
    }
 }
 
 /***********************************************************************
  *                          hasCollisions                              *
  ***********************************************************************/
-std::pair<bool, Collision::Element*> Collision::Square::hasCollisions(
+std::pair<bool, Element*> Square::hasCollisions(
       const Ogre::AxisAlignedBox& actorBox, Thing* actor, Thing* ignore)
 {
    /* Check if have some intersection with the square */
    if(!actorBox.intersects(bounds))
    {
-      return std::pair<bool, Collision::Element*>(false, NULL);
+      return std::pair<bool, Element*>(false, NULL);
    }
 
    /* Check each element for collision */
-   Collision::Element* el = static_cast<Collision::Element*>(
+   Element* el = static_cast<Element*>(
          elements.getFirst());
    for(int i = 0; i < elements.getTotal(); i++)
    {
@@ -89,24 +77,24 @@ std::pair<bool, Collision::Element*> Collision::Square::hasCollisions(
             //on the floor, for example). 
             //TODO: depth collision check, if desired. 
             /* Collided */
-            return std::pair<bool, Collision::Element*>(true, el);
+            return std::pair<bool, Element*>(true, el);
          }
       }
-      el = static_cast<Collision::Element*>(el->getNext());
+      el = static_cast<Element*>(el->getNext());
    }
 
    /* No collisions  */
-   return std::pair<bool, Collision::Element*>(false, NULL);
+   return std::pair<bool, Element*>(false, NULL);
 }
 
 /***********************************************************************
  *                          hasCollisions                              *
  ***********************************************************************/
-std::pair<bool, Collision::Element*> Collision::Square::hasCollisions(
+std::pair<bool, Element*> Square::hasCollisions(
       const Ogre::Ray& ray, const float dist, float& collidedDist, 
       Thing* actor, Thing* ignore)
 {
-   std::pair<bool, Collision::Element*> got(false, NULL);
+   std::pair<bool, Element*> got(false, NULL);
    std::pair<bool, Ogre::Real> res;
    /* Check collision with the square bounds */
    res = ray.intersects(bounds);
@@ -118,7 +106,7 @@ std::pair<bool, Collision::Element*> Collision::Square::hasCollisions(
    }
 
    /* Note; we must check all, as collidedDist is relevant. */
-   Collision::Element* el = static_cast<Collision::Element*>(
+   Element* el = static_cast<Element*>(
          elements.getFirst());
    for(int i = 0; i < elements.getTotal(); i++)
    {
@@ -133,20 +121,32 @@ std::pair<bool, Collision::Element*> Collision::Square::hasCollisions(
             if(res.second <= collidedDist)
             {
                collidedDist = res.second;
-               got = std::pair<bool, Collision::Element*>(true, el);
+               got = std::pair<bool, Element*>(true, el);
             }
          }
       }
-      el = static_cast<Collision::Element*>(el->getNext());
+      el = static_cast<Element*>(el->getNext());
    }
 
    return got;
 }
 
 /***********************************************************************
+ *                             remove                                  *
+ ***********************************************************************/
+void Square::remove(Element* element)
+{
+   assert(element != NULL);
+   assert(element->square == this);
+
+   elements.remove(element);
+}
+
+
+/***********************************************************************
  *                          hasCollisions                              *
  ***********************************************************************/
-bool Collision::Square::hasCollisions(const Ogre::Ray& ray, const float dist,
+bool Square::hasCollisions(const Ogre::Ray& ray, const float dist,
       Thing* actor, Thing* ignore)
 {
    std::pair<bool, Ogre::Real> res;
@@ -158,7 +158,7 @@ bool Collision::Square::hasCollisions(const Ogre::Ray& ray, const float dist,
       return false;
    }
 
-   Collision::Element* el = static_cast<Collision::Element*>(
+   Element* el = static_cast<Element*>(
          elements.getFirst());
    for(int i = 0; i < elements.getTotal(); i++)
    {
@@ -172,7 +172,7 @@ bool Collision::Square::hasCollisions(const Ogre::Ray& ray, const float dist,
             return true;
          }
       }
-      el = static_cast<Collision::Element*>(el->getNext());
+      el = static_cast<Element*>(el->getNext());
    }
 
    return false;

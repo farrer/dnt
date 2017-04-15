@@ -50,8 +50,14 @@ namespace DNT
 class Thing : public Kobold::ListElement
 {
    public:
+      /*! CollisionElement container for Thing */
+      class ColElement : public Kobold::ListElement
+      {
+         public:
+            Element* element;
+      };
 
-      /*i! Thing's State to Playable Characters */
+      /*! Thing's State to Playable Characters */
       enum PsychoState
       {
          PSYCHO_HOSTILE,
@@ -225,6 +231,9 @@ class Thing : public Kobold::ListElement
        * \param actor pointer to the character that is interacting with
        * \return interaction result */
       virtual InteractResult interact(Character* actor) = 0;
+
+      /*! \return list of thing's collision elements */
+      Kobold::List* getColElements() { return colElements; };
       
    protected:
 
@@ -295,6 +304,8 @@ class Thing : public Kobold::ListElement
       /*! Map to avoid name's clash with multiple intances of the same 
        * thing model */
       static std::map<Kobold::String, int> namesMap;
+
+      Kobold::List* colElements; /**< List of ColElements */
 };
 
 }

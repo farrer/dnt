@@ -28,10 +28,11 @@ using namespace DNT;
 /***********************************************************************
  *                          Constructor                                *
  ***********************************************************************/
-Collision::Element::Element(const Ogre::Vector3& min, const Ogre::Vector3& max,
-                            Thing* thing)
-                   :bounds(min, max)
+Element::Element(Square* square, 
+      const Ogre::Vector3& min, const Ogre::Vector3& max, Thing* thing)
+   :bounds(min, max)
 {
    this->thing = thing;
+   this->square = square;
 }
 

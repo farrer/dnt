@@ -300,19 +300,24 @@ void Collision::addElement(const Ogre::Vector3& min,
  ***********************************************************************/
 void Collision::removeElement(Thing* thing)
 {
-   for(int x = 0; x < xSize; x++)
+   assert(thing != NULL);
+
+   /* Remove all related Elements to the Thing */
+   Kobold::List* colElements = thing->getColElements();
+   Thing::ColElement* colEl = static_cast<Thing::ColElement*>(
+         colElements->getFirst());
+   for(int i = 0; i < colElements->getTotal(); i++)
    {
-      for(int z = 0; z < zSize; z++)
-      {
-         grid[x][z].removeElement(thing);
-      }
+      colEl->element->square->remove(colEl->element);
+      colEl = static_cast<Thing::ColElement*>(colEl->getNext());
    }
+   colElements->clear();
 }
 
 /***********************************************************************
  *                              getSquare                              *
  ***********************************************************************/
-Collision::Square* Collision::getSquare(int x, int z)
+Square* Collision::getSquare(int x, int z)
 {
    if((x >= 0) && (x < xSize) && (z >= 0) && (z < zSize))
    {
@@ -325,7 +330,7 @@ Collision::Square* Collision::getSquare(int x, int z)
 /***********************************************************************
  *                          getRelativeSquare                          *
  ***********************************************************************/
-Collision::Square* Collision::getRelativeSquare(float x, float z)
+Square* Collision::getRelativeSquare(float x, float z)
 {
    int sqX = static_cast<int>(x / squareSize);
    int sqZ = static_cast<int>(z / squareSize);
@@ -336,7 +341,7 @@ Collision::Square* Collision::getRelativeSquare(float x, float z)
 /***********************************************************************
  *                          static attributes                          *
  ***********************************************************************/
-Collision::Square** Collision::grid = NULL;
+Square** Collision::grid = NULL;
 int Collision::xSize = 0;
 int Collision::zSize = 0;
 float Collision::squareSize = 0;

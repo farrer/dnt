@@ -73,6 +73,7 @@ Thing::Thing(ThingType type, int totalAnimations)
    this->filename = "";
    this->thingType = type;
    this->totalAnimations = totalAnimations;
+   this->colElements = new Kobold::List();
 }
 
 /**************************************************************************
@@ -89,6 +90,10 @@ Thing::~Thing()
    if(model)
    {
       delete model;
+   }
+   if(colElements)
+   {
+      delete colElements;
    }
 }
 

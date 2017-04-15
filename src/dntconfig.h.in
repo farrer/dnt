@@ -110,6 +110,8 @@ namespace DNT
    class Inventory;
 
    class Collision;
+   class Square;
+   class Element;
 
 }
 

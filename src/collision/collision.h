@@ -29,6 +29,87 @@
 namespace DNT
 {
 
+   /* Implements an element that should have collision enabled. */
+   class Element : public Kobold::ListElement
+   {
+      public:
+         /*! Constructor
+          * \param min minimum corner of the box
+          * \param max maximum corner of the box 
+          * \param thing pointer to the related thing, if any. */
+         Element(Square* square, const Ogre::Vector3& min, 
+               const Ogre::Vector3& max, Thing* thing);
+
+         Ogre::AxisAlignedBox bounds; /**< Current element bounds */
+         Square* square; /**< Square who owns the element */
+         Thing* thing;  /**< Pointer to its related Thing, if any */
+   };
+
+   /*! The World is equally subdivided in a grid of squares for collision
+    * detection. This subclass represents a single square in this grid,
+    * containing all static objects that are currently on it.
+    * \note An object could be on more than a single square at the same
+    *       time. */
+   class Square
+   {
+      public:
+         /*! Set square bounding box, to early intersect checks. */
+         void setBoundingBox(const Ogre::Vector3& min,
+               const Ogre::Vector3& max);
+         /*! Add an element to the Square. See Collision::Element 
+          * for info */
+         void addElement(const Ogre::Vector3& min, 
+               const Ogre::Vector3& max, Thing* thing);
+
+         /*! Verify if the bounding box collide with some element within
+          * this square.
+          * \param actorBox -> translated and rotated bounding box 
+          * \param actor -> pointer to the actor, if any (will ignore
+          *                 collisions with itself)
+          * \param ignore -> pointer to a thing to ignore collisions to
+          * \return pair, first true if collided, false if no 
+          * collisions got, second, pointer to the collider element */
+         std::pair<bool, Element*> hasCollisions(
+               const Ogre::AxisAlignedBox& actorBox,
+               Thing* actor = NULL, Thing* ignore = NULL);
+
+         /*! Verify if a Ray collide with some element within this square,
+          * always returning the nearest collider got.
+          * \param ray -> ray to verify
+          * \param dist -> distance from ray origin to accept collisions.
+          * \param collidedDist -> will receive the distance along ray
+          *               where the collision happened.
+          * \param actor -> pointer to the actor, if any (will ignore
+          *                 collisions with itself)
+          * \param ignore -> pointer to a thing to ignore collisions to
+          * \return pair, first true if collided, false if no 
+          * collisions got, second, pointer to the nearest collider 
+          * element */
+         std::pair<bool, Element*> hasCollisions(
+               const Ogre::Ray& ray, const float dist,
+               float& collidedDist,
+               Thing* actor = NULL, Thing* ignore = NULL);
+         /*! Verify if a Ray collide with some element within this square.
+          * \param ray -> ray to verify
+          * \param dist -> distance from ray origin to accept collisions.
+          * \param actor -> pointer to the actor, if any (will ignore
+          *                 collisions with itself)
+          * \param ignore -> pointer to a thing to ignore collisions to
+          * \return true if collided */
+         bool hasCollisions(const Ogre::Ray& ray, const float dist,
+               Thing* actor = NULL, Thing* ignore = NULL);
+
+         /*! Remove a collision element from the square */
+         void remove(Element* element);
+
+      private:
+         Kobold::List elements; /**< Current CollisionElements */
+         Ogre::AxisAlignedBox bounds; /**< Square bounding box */
+
+   };
+
+
+
    /*! The class which controls the collision system for DNT, checking for
     * collisions, both on walk tentatives and on sigh and free-area ahead 
     * checks. */
@@ -94,85 +175,6 @@ namespace DNT
          static void removeElement(Thing* thing);
 
       private:
-
-         /* This subclass implements an element that should have 
-          * collision enabled. */
-         class Element : public Kobold::ListElement
-         {
-            public:
-               /*! Constructor
-                * \param min minimum corner of the box
-                * \param max maximum corner of the box 
-                * \param thing pointer to the related thing, if any. */
-               Element(const Ogre::Vector3& min, const Ogre::Vector3& max,
-                     Thing* thing);
-
-               Ogre::AxisAlignedBox bounds; /**< Current element bounds */
-               Thing* thing;  /**< Pointer to its related Thing, if any */
-         };
-
-         /*! The World is equally subdivided in a grid of squares for collision
-          * detection. This subclass represents a single square in this grid,
-          * containing all static objects that are currently on it.
-          * \note An object could be on more than a single square at the same
-          *       time. */
-         class Square
-         {
-            public:
-               /*! Set square bounding box, to early intersect checks. */
-               void setBoundingBox(const Ogre::Vector3& min,
-                     const Ogre::Vector3& max);
-               /*! Add an element to the Square. See Collision::Element 
-                * for info */
-               void addElement(const Ogre::Vector3& min, 
-                     const Ogre::Vector3& max, Thing* thing);
-
-               /*! Remove an element related to a thing from the Square */
-               void removeElement(Thing* thing);
-
-               /*! Verify if the bounding box collide with some element within
-                * this square.
-                * \param actorBox -> translated and rotated bounding box 
-                * \param actor -> pointer to the actor, if any (will ignore
-                *                 collisions with itself)
-                * \param ignore -> pointer to a thing to ignore collisions to
-                * \return pair, first true if collided, false if no 
-                * collisions got, second, pointer to the collider element */
-               std::pair<bool, Element*> hasCollisions(
-                     const Ogre::AxisAlignedBox& actorBox,
-                     Thing* actor = NULL, Thing* ignore = NULL);
-
-               /*! Verify if a Ray collide with some element within this square,
-                * always returning the nearest collider got.
-                * \param ray -> ray to verify
-                * \param dist -> distance from ray origin to accept collisions.
-                * \param collidedDist -> will receive the distance along ray
-                *               where the collision happened.
-                * \param actor -> pointer to the actor, if any (will ignore
-                *                 collisions with itself)
-                * \param ignore -> pointer to a thing to ignore collisions to
-                * \return pair, first true if collided, false if no 
-                * collisions got, second, pointer to the nearest collider 
-                * element */
-               std::pair<bool, Element*> hasCollisions(
-                     const Ogre::Ray& ray, const float dist,
-                     float& collidedDist,
-                     Thing* actor = NULL, Thing* ignore = NULL);
-               /*! Verify if a Ray collide with some element within this square.
-                * \param ray -> ray to verify
-                * \param dist -> distance from ray origin to accept collisions.
-                * \param actor -> pointer to the actor, if any (will ignore
-                *                 collisions with itself)
-                * \param ignore -> pointer to a thing to ignore collisions to
-                * \return true if collided */
-               bool hasCollisions(const Ogre::Ray& ray, const float dist,
-                     Thing* actor = NULL, Thing* ignore = NULL);
-               
-            private:
-               Kobold::List elements; /**< Current CollisionElements */
-               Ogre::AxisAlignedBox bounds; /**< Square bounding box */
-            
-         };
 
          /*! Common function for addElement */
          static void addElement(const Ogre::Vector3& min, 
