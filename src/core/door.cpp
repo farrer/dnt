@@ -33,6 +33,7 @@ Door::Door()
 {
    closedAngle = 0.0f;
    shouldResetCollision = false;
+   portraitFile = "lock.png";
    /* Default to closed door, but not locked. */
    setOpenStatus(DOOR_CLOSED);
 }

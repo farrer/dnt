@@ -34,6 +34,7 @@
 #include "../map/npcfile.h"
 
 #include "../gui/briefing.h"
+#include "../gui/dialogwindow.h"
 
 #include <kobold/log.h>
 #include <kosound/sound.h>
@@ -122,10 +123,7 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
       break;
       /* Close the Dialog */
       case TALK_ACTION_FINISH_DIALOG:
-//TODO: DialogWindow
-#if 0
-         dlgWindow.close();
-#endif
+         DialogWindow::close();
       break;
       case TALK_ACTION_MOD_PC:
          //TODO
@@ -380,8 +378,8 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
 TalkTest::TalkTest(Kobold::String token, Kobold::String t, Kobold::String a)
 {
    /* Set test and against */
-   this->test = test;
-   this->against = against;
+   this->test = t;
+   this->against = a;
 
    /* translate token Kobold::String to id */
 
@@ -1102,7 +1100,8 @@ bool Conversation::load(Kobold::String filename)
    Ogre::DataStreamPtr file;
    try
    {
-      file = Ogre::ResourceGroupManager::getSingleton().openResource(filename);
+      file = Ogre::ResourceGroupManager::getSingleton().openResource(filename,
+            "dialogs");
    }
    catch(Ogre::FileNotFoundException)
    {
@@ -1293,8 +1292,8 @@ bool Conversation::load(Kobold::String filename)
                   TalkAction* tact = NULL;
                   
                   /* Get The action and its parameters */
-                  token = getString(position, buffer, separator);               
-                  TalkActionType actType = getActionType(token, filename, line);
+                  TalkActionType actType = getActionType(
+                        getString(position, buffer, separator), filename, line);
                   
                   /* Add the Talk action (as if or else one) */
                   if(token == TK_ELSE_ACTION)
@@ -1522,8 +1521,7 @@ void Conversation::changeDialog(int numDialog)
 
    Dialog* dlg;
    
-//TODO: Dialog Window!
-   if( (numDialog == current) /*|| (!dlgWindow.isOpened())*/ )
+   if( (numDialog == current) || (!DialogWindow::isOpened()) )
    {
       /* No change at the same Dialog! */
       return;
@@ -1541,41 +1539,46 @@ void Conversation::changeDialog(int numDialog)
    /* Define the current Dialog number */
    current = numDialog;
 
-//TODO: Dialog Window!
-#if 0
    /* Define the NPC Text */
-   dlgWindow.setNPCText(dlg->npcText);
+   DialogWindow::ownerText->setText(dlg->getOwnerText());
 
    /* Define the options */
-   curOpt = 0;
-   dlgWindow.clearOptions();  
-   for(i = 0; i < MAX_OPTIONS; i++)
+   int curOpt = 0;
+   DialogWindow::pcOptions->clearOptions();
+   Kobold::List* options = dlg->getOptions();
+   DialogOption* opt = static_cast<DialogOption*>(options->getFirst()); 
+   for(int i = 0; i < options->getTotal(); i++)
    {
       /* Only insert the option if isn't empty */
-      if(!dlg->options[i].text.empty())
+      if(!opt->text.empty())
       {
          bool res = true;
 
          /* And passes all preTests */
-         for(j = 0; j < MAX_PRE_TESTS; j++)
+         TalkTest* preTest = static_cast<TalkTest*>(opt->preTests.getFirst());
+         for(int j = 0; j < opt->preTests.getTotal(); j++)
          {
-            res &= dlg->options[i].preTest[j].doTest(currentPC, owner);
+            res &= preTest->doTest(currentPC, owner);
+            preTest = static_cast<TalkTest*>(preTest->getNext());
          }
 
          /* So, if pass all, add the option */
          if(res)
          {
-            sprintf(conv, "%d - ", curOpt+1);
-            text = conv + dlg->options[i].postTest.getTestName(currentPC);
+            text = "";
+            if(opt->postTest)
+            {
+               text += opt->postTest->getTestName(currentPC);
+            }
 
             /* Add the text*/
-            text += dlg->options[i].text;
+            text += opt->text;
 
-            dlgWindow.addOption(curOpt, text, i);
+            DialogWindow::pcOptions->addOption(text, i);
             curOpt++;
          }
       }
+      opt = static_cast<DialogOption*>(opt->getNext());
    }
-#endif
 }
 

@@ -223,7 +223,6 @@ void Character::setInitialPosition(Ogre::Vector3 pos)
    initialPos = pos;
 }
 
-#define CHARACTER_KEY_PORTRAIT "portrait"
 #define CHARACTER_KEY_WALK_INTERVAL "walk_interval"
 #define CHARACTER_KEY_BLOOD_POSITION "bloodPosition"
 #define CHARACTER_KEY_BLOOD_PARTICLE "bloodParticle"
@@ -236,14 +235,8 @@ void Character::setInitialPosition(Ogre::Vector3 pos)
  ***********************************************************************/
 bool Character::doSpecificParse(Kobold::String key, Kobold::String value)
 {
-   /* Portrait */
-   if(key == CHARACTER_KEY_PORTRAIT)
-   {
-      //TODO: load portrait
-      return true;
-   }
    /* Walk Interval */
-   else if(key == CHARACTER_KEY_WALK_INTERVAL)
+   if(key == CHARACTER_KEY_WALK_INTERVAL)
    {
       //TODO
       return true;

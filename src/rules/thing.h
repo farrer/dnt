@@ -234,6 +234,9 @@ class Thing : public Kobold::ListElement
 
       /*! \return list of thing's collision elements */
       Kobold::List* getColElements() { return colElements; };
+
+      /*! \return Thing's portrait filename, if any */
+      const Kobold::String getPortraitFilename() const { return portraitFile;};
       
    protected:
 
@@ -259,6 +262,8 @@ class Thing : public Kobold::ListElement
       float getWalkInterval(); 
       /*! \return distance can rotate each frame */
       float getTurnAroundInterval(); 
+
+      Kobold::String portraitFile; /**< Thing's portrait filename, if any */
 
    private:
       ThingType thingType; /**< Thing's type */

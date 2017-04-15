@@ -255,6 +255,8 @@ class DialogOption : public Kobold::ListElement
       void executeElseActions(Conversation* conv, PlayableCharacter* pc, 
             Thing* owner, Kobold::String ownerMap);
 
+      friend class Conversation;
+
    private:
       Kobold::List preTests; /**< Pre-Tests (if all passed, the option is 
                                   displayed and available to be selected) */

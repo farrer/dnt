@@ -28,6 +28,7 @@
 #include "../lang/translate.h"
 #include "../core/dialog.h"
 #include "../core/game.h"
+#include "../map/map.h"
 
 #include <kobold/defparser.h>
 #include <kobold/log.h>
@@ -46,6 +47,7 @@ using namespace DNT;
 #define THING_KEY_WALKABLE             "walkable"
 #define THING_KEY_WALK_INTERVAL        "walkInterval"
 #define THING_KEY_TURN_AROUND_INTERVAL "turnAroundInterval"
+#define THING_KEY_PORTRAIT             "portrait"
 #define THING_KEY_CONVERSATION         "conversation"
 #define THING_KEY_REDEFINE_BOUNDS      "redefineBounds"
 
@@ -70,6 +72,7 @@ Thing::Thing(ThingType type, int totalAnimations)
    this->walkable = false;
    this->currentEnemy = NULL;
    this->psychoState = PSYCHO_NEUTRAL;
+   this->portraitFile = "";
    this->filename = "";
    this->thingType = type;
    this->totalAnimations = totalAnimations;
@@ -258,6 +261,10 @@ bool Thing::load(Kobold::String fileName,
       else if(key == THING_KEY_TURN_AROUND_INTERVAL)
       {
          sscanf(value.c_str(), "%f", &turnAroundInterval);
+      }
+      else if(key == THING_KEY_PORTRAIT)
+      {
+         portraitFile = value;
       }
       else if(key == THING_KEY_CONVERSATION)
       {
@@ -646,6 +653,7 @@ Conversation* Thing::getConversation()
       /* Create and load our conversation to use */
       conversation = new Conversation();
       conversation->load(conversationFile);
+      conversation->setOwner(this, Game::getCurrentMap()->getFilename());
    }
    return conversation;
 }

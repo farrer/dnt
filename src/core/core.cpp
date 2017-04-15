@@ -23,6 +23,7 @@
 
 #include "core.h"
 #include "game.h"
+#include "object.h"
 
 #include "../map/map.h"
 
@@ -33,6 +34,7 @@
 #include "../rules/skills.h"
 
 #include "../gui/briefing.h"
+#include "../gui/dialogwindow.h"
 
 #include "../core/playablecharacter.h"
 #include "../collision/collision.h"
@@ -139,12 +141,12 @@ void Core::doCycle()
 
    /* Update current models and map */
    Game::update();
-   
-   if(Farso::Controller::verifyEvents(leftButtonPressed, false, mouseX, mouseY))
-   {
-      //TODO;
-   }
-   else
+
+   bool treatedGui = Farso::Controller::verifyEvents(leftButtonPressed, false, 
+         mouseX, mouseY);
+   treatedGui |= DialogWindow::checkEvents();
+
+   if(!treatedGui)
    {
       /* Update mouse world and thing under mouse */
       updateMouseWorld(true);
@@ -179,7 +181,11 @@ void Core::doCycle()
             // TODO: Check if have actions when on battle mode.
             if(thingUnderCursor->canInteract())
             {
-               thingUnderCursor->interact(curPc);
+               Object::InteractResult res = thingUnderCursor->interact(curPc);
+               if(res == Object::INTERACTION_OPEN_CONVERSATION)
+               {
+                  DialogWindow::open(thingUnderCursor, curPc);
+               }
             }
          }
       }
