@@ -52,7 +52,7 @@ void DialogWindow::open(Thing* owner, PlayableCharacter* pc)
    owner->getConversation()->setPlayableCharacter(pc);
 
    /* Create the window */
-   window = new Farso::Window(450, 360, owner->getName());
+   window = new Farso::Window(480, 360, owner->getName());
    window->setPosition((Farso::Controller::getWidth() / 2) - 225, 100);
 
    /* Barter button (only for characters) */
@@ -62,19 +62,19 @@ void DialogWindow::open(Thing* owner, PlayableCharacter* pc)
    }
    /* Add portrait picture */
    Farso::Container* cont = new Farso::Container(
-         Farso::Container::TYPE_TOP_CENTERED, 
-         Farso::Rect(5, 2, 320, 0), window);
+         Farso::Container::TYPE_TOP_CENTERED,
+         Farso::Rect(0, 0, 390, 0), window);
    assert(owner->getPortraitFilename() != "");
    picture = new Farso::Picture(0, 0, owner->getPortraitFilename(), cont);
 
    /* Add the owner's scrollable text */
    cont = new Farso::Container(Farso::Container::TYPE_TOP_RIGHT, window);
-   ownerText = new Farso::ScrollText(0, 0, 320, 90, cont);
+   ownerText = new Farso::ScrollText(0, 0, 390, 108, cont);
 
    /* Add the text selector for PC options */
    cont = new Farso::Container(
-         Farso::Container::TYPE_TOP_CENTERED,
-         0, 100, window->getBody().getWidth() - 32, 120, window);
+         Farso::Container::TYPE_TOP_LEFT,
+         0, 110, window->getBody().getWidth() - 32, 10, window);
    pcOptions = new Farso::TextSelector(cont);
 
    window->setExternPointer(&window);
