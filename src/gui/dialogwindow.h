@@ -60,6 +60,9 @@ namespace DNT
          static Farso::ScrollText* ownerText; /**< Owner's current text */
          static Farso::TextSelector* pcOptions; /**< Current PC text options */
 
+         static int lastPosX; /**< Last window X position */
+         static int lastPosY; /**< Last window Y position */
+
          static int keyPressed; /**< Current pressed option key */
    };
 

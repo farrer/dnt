@@ -53,7 +53,17 @@ void DialogWindow::open(Thing* owner, PlayableCharacter* pc)
 
    /* Create the window */
    window = new Farso::Window(480, 360, owner->getName());
-   window->setPosition((Farso::Controller::getWidth() / 2) - 225, 100);
+
+   if((lastPosX == -1) || (lastPosY == -1))
+   {
+      /* Use default position */
+      window->setPosition(Farso::Controller::getWidth() - 480, 0);
+   }
+   else
+   {
+      /* Use last position */
+      window->setPosition(lastPosX, lastPosY);
+   }
 
    /* Barter button (only for characters) */
    if(owner->getThingType() == Thing::THING_TYPE_CHARACTER)
@@ -96,6 +106,10 @@ bool DialogWindow::checkEvents()
 
    if(Farso::Controller::getActiveWindow() == window)
    {
+      /* Update our last coordinates, to keep them on next open */
+      lastPosX = window->getWidgetRenderer()->getPositionX();
+      lastPosY = window->getWidgetRenderer()->getPositionY();
+
       /* Check option selection by key */
       if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_1))
       {
@@ -217,4 +231,6 @@ Farso::Picture* DialogWindow::picture = NULL;
 Farso::ScrollText* DialogWindow::ownerText = NULL;
 Farso::TextSelector* DialogWindow::pcOptions = NULL;
 int DialogWindow::keyPressed = -1;
+int DialogWindow::lastPosX = -1;
+int DialogWindow::lastPosY = -1;
 
