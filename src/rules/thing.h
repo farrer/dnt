@@ -237,6 +237,9 @@ class Thing : public Kobold::ListElement
 
       /*! \return Thing's portrait filename, if any */
       const Kobold::String getPortraitFilename() const { return portraitFile;};
+
+      /*! \return current displacement */
+      const int getDisplacement() const { return displacement; };
       
    protected:
 

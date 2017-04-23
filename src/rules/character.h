@@ -140,6 +140,17 @@ namespace DNT
          /*! \return true. Characters are interactive. */
          const bool canInteract() const { return true; };
 
+         /*! \return if character can attack at current fight turn */
+         const bool getCanAttack() const { return canAttack; };
+         /*! \return if character can move at current fight turn */
+         const bool getCanMove() const { return canMove; };
+
+         /*! \return if Character is alive */
+         const bool isAlive() const { return !dead; };
+
+         void setCanAttack(bool value);
+         void setCanMove(bool value);
+
       protected:
          /*! \return default character's animation names */
          virtual Kobold::String* getAnimationList();
@@ -181,6 +192,9 @@ namespace DNT
 
       private:
          bool dead; /**< If the character is actually dead (just a corpse). */
+
+         bool canAttack; /**< Flag controller on fight mode */
+         bool canMove; /**< Move flag controller on fight mode */
 
          ModEffectList effects;  /**< Current Character effects */
          DiceInfo bareHandsDice; /**< Damage dice for barehands fight */

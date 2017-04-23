@@ -74,8 +74,9 @@ class Agent
 
       /*! Define Next Agent position. Virtual.
        * \param run -> true if running, false if walking
+       * \param runMultiplier -> multiplier to apply when running
        * \return true if position was defined */
-      virtual bool defineNextPosition(bool run)=0;
+      virtual bool defineNextPosition(bool run, float runMultiplier)=0;
 
    protected:
 

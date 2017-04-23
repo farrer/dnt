@@ -87,7 +87,7 @@ void Agent::getPosition(float& x, float& z)
  ********************************************************************/
 void Agent::update()
 {
-   defineNextPosition(false);
+   defineNextPosition(false, 1.0f);
 }
 
 /********************************************************************

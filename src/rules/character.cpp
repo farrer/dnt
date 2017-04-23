@@ -43,6 +43,9 @@ Character::Character()
    /* Default: alive */
    this->dead = false;
 
+   this->canMove = true;
+   this->canAttack = true;
+
    /* Set ModEffects owner */
    this->effects.setOwner(this);
 
@@ -221,6 +224,22 @@ Ogre::Vector3 Character::getInitialPosition()
 void Character::setInitialPosition(Ogre::Vector3 pos)
 {
    initialPos = pos;
+}
+
+/***********************************************************************
+ *                              setCanAttack                           *
+ ***********************************************************************/
+void Character::setCanAttack(bool value)
+{
+   canAttack = value;
+}
+
+/***********************************************************************
+ *                               setCanMove                            *
+ ***********************************************************************/
+void Character::setCanMove(bool value)
+{
+   canMove = value;
 }
 
 #define CHARACTER_KEY_WALK_INTERVAL "walk_interval"

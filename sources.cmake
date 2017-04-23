@@ -95,10 +95,12 @@ set(GUI_HEADERS
 )
 set(AI_HEADERS
    src/ai/agent.h
+   src/ai/astar.h
    src/ai/patternagent.h
 )
 set(AI_SOURCES
    src/ai/agent.cpp
+   src/ai/astar.cpp
    src/ai/patternagent.cpp
 )
 set(LANG_SOURCES
