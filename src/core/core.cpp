@@ -70,8 +70,8 @@ bool Core::doCycleInit(int callCounter, bool& shouldAbort)
       //FIXME: for outdoor maps, must define the hemisphere colors with
       //       different values.
       getSceneManager()->setAmbientLight(
-            Ogre::ColourValue(0.1f, 0.1f, 0.1f),
-            Ogre::ColourValue(0.1f, 0.1f, 0.1f),
+            Ogre::ColourValue(0.05f, 0.05f, 0.05f),
+            Ogre::ColourValue(0.05f, 0.05f, 0.05f),
             Ogre::Vector3(0.0f, 1.0f, 0.0f));
       Goblin::Camera::disableTranslations();
 

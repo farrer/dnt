@@ -93,6 +93,14 @@ set(GUI_HEADERS
    src/gui/briefing.h
    src/gui/dialogwindow.h
 )
+set(AI_HEADERS
+   src/ai/agent.h
+   src/ai/patternagent.h
+)
+set(AI_SOURCES
+   src/ai/agent.cpp
+   src/ai/patternagent.cpp
+)
 set(LANG_SOURCES
    src/lang/translate.cpp
 )
@@ -121,6 +129,7 @@ IF(${WIN32} OR ${MINGW})
 ENDIF(${WIN32} OR ${MINGW})
 
 set(DNT_LIB_HEADERS
+   ${AI_HEADERS}
    ${CORE_HEADERS}
    ${MAP_HEADERS}
    ${RULES_HEADERS}
@@ -132,6 +141,7 @@ set(DNT_LIB_HEADERS
 )
 
 set(DNT_LIB_SOURCES
+   ${AI_SOURCES}
    ${CORE_SOURCES}
    ${MAP_SOURCES}
    ${RULES_SOURCES}
