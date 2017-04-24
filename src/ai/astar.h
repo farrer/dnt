@@ -22,6 +22,7 @@
 #define _dnt_astar_h
 
 #include "dntconfig.h"
+#include <kobold/parallelprocess.h>
 #include <kobold/list.h>
 #include <kobold/timer.h>
 
@@ -77,19 +78,17 @@ class ListAStar: public Kobold::List
 
 };
 
-#define ASTAR_STATE_OTHER     0  /**< A* Other State */
-#define ASTAR_STATE_RUNNING   1  /**< A* Running State (searching for path) */
-#define ASTAR_STATE_FOUND     2  /**< A* Found Path State */   
-#define ASTAR_STATE_NOT_FOUND 3  /**< A* Not Found Path State */
+#define ASTAR_SLEEP_TIME     50  /**< Sleep time between A* cycle call (ms) */
 
 /*! A* implementation. The A* will be searching few nodes per cycle. 
  *  When running, state is RUNNING. When end running, state is
  *  FOUND or NOT_FOUND, based on the result of the search. */
-class AStar
+class AStar : Kobold::ParallelProcess
 {
    public:
-      /*! Constructor */
-      AStar();
+      /*! Constructor
+       * \param isPC if the owner of the A* is a PlayableCharacter. */
+      AStar(bool isPC);
       /*! Destructor */
       ~AStar();
 
@@ -98,36 +97,37 @@ class AStar
        * \param x -> destiny x position
        * \param z -> desired z position
        * \param stepSize -> size of the Step 
-       * \param fightMode -> true if is in the fight mode
        * \param forceCall -> true to force the call (there's a counter inner
        *                      the function that don't allow too often calls)
        * */
       void findPath(Character* actor, float x, float z, float stepSize,
-            bool fightMode, bool forceCall=false);
-
-      /* Do the a* cycle (if is current searching for something)
-       * \param fightMode -> true if is in the fight mode
-       * \param isPC -> true if is searching for a playable Character */
-      void doCycle(bool fightMode, bool isPC);
+            bool forceCall=false);
 
       /*! Get the New Character Position, based on Path Found previously 
        * \param posX -> new X position
        * \param posZ -> new Z position
        * \param ori -> new orientation
-       * \param fightMode -> true if is in the fight mode
        * \param run -> true if Character is running or false if walking
        * \return true if can actualize, false otherwise */
       bool getNewPosition(float& posX, float& posZ, float& ori,
-            bool fightMode, bool run, float runMultiplier);
+            bool run, float runMultiplier);
 
       /*! Gets the Destiny of The Character
        * \param destX -> X destiny Position
        * \param destZ -> Z destiny Position */
       void getDestiny(float& destX, float& destZ);
 
+      enum AStarState
+      {
+         ASTAR_STATE_OTHER,     /**< A* Other State */
+         ASTAR_STATE_RUNNING,   /**< A* Running State (searching for path) */
+         ASTAR_STATE_FOUND,     /**< A* Found Path State */   
+         ASTAR_STATE_NOT_FOUND  /**< A* Not Found Path State */
+      };
+
       /*! Get Actual State of the aStar and put it on OTHER mode
        * \return state value if the state is nor RUNNING. */
-      int getState();
+      AStarState getState();
 
       /*! Set Character orientation value
        * \param ori -> new orientation value */
@@ -136,7 +136,14 @@ class AStar
       /*! Clear the a* state */
       void clear();
 
+      /* Functions from Kobold::ParallelProcess */
+      bool step();
+      unsigned int getSleepTime() { return ASTAR_SLEEP_TIME; };
+
    private:
+
+      /* Do the a* cycle (if is current searching for something) */
+      void doCycle();
 
       /*! Clear search structures */
       void clearSearch();
@@ -144,11 +151,12 @@ class AStar
       float destinyX,           /**< Destiny X position */
             destinyZ;           /**< Destiny Z position */
       PatternAgent* patt;       /**< The Pattern Agent to Follow created path */
-      int state;                /**< Internal State of the aStar */
+      AStarState state;         /**< Internal State of the aStar */
       Character* curActor;      /**< Current Actor */
       float curStepSize;        /**< Current Step Size */
       bool walking;             /**< True if the Character is walking with
                                      at a* at the momment. */
+      bool ownerPC;             /**< If owner is a PlayableCharacter or not */
 
       ListAStar* opened;         /**< Opened nodes list */
       ListAStar* closed;         /**< Closed nodes list */

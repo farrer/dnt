@@ -78,6 +78,9 @@ namespace DNT
          /*! \return used SceneManager */
          static Ogre::SceneManager* getSceneManager();
 
+         /*! \return if is at fight mode or normal */
+         static const bool isAtFightMode() { return fightMode; };
+
       private:
          static Ogre::SceneManager* sceneManager; /**< Used scene manager */
 
@@ -87,6 +90,9 @@ namespace DNT
          static CharacterList* npcs;
          /*! Current loaded PCs */
          static CharacterList* pcs;
+
+         /*! Fight mode controller flag */
+         static bool fightMode;
 
 
    };

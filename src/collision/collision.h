@@ -24,6 +24,7 @@
 #include "dntconfig.h"
 #include <OGRE/OgreAxisAlignedBox.h>
 #include <kobold/list.h>
+#include <kobold/readwritelock.h>
 #include <utility>
 
 namespace DNT
@@ -200,6 +201,9 @@ namespace DNT
          static int xSize; /**< Grid X axis size */
          static int zSize; /**< Grid Z axis size */
          static float squareSize; /**< Size of each square side on world */
+         /*! Read-Write-Lock for collision structures access */
+         static Kobold::ReadWriteLock* rwLock; 
+
    };
 
 }

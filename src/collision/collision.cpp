@@ -32,10 +32,13 @@ void Collision::init(int x, int z, float squareSize)
 {
    assert(grid == NULL);
 
+   rwLock = new Kobold::ReadWriteLock();
+
    Collision::xSize = x;
    Collision::zSize = z;
    Collision::squareSize = squareSize;
 
+   rwLock->lockForWrite();
    /* Create our square matrix (grid) */
    Collision::grid = new Square*[x];
    for(int i = 0; i < x; i++)
@@ -50,6 +53,7 @@ void Collision::init(int x, int z, float squareSize)
                   400.0f, (j + 1) * squareSize));
       }
    }
+   rwLock->unlockForWrite();
 }
 
 /***********************************************************************
@@ -58,15 +62,19 @@ void Collision::init(int x, int z, float squareSize)
 void Collision::finish()
 {
    assert(grid != NULL);
-   if(grid != NULL)
+   assert(rwLock != NULL);
+
+   rwLock->lockForWrite();
+   for(int x = 0; x < xSize; x++)
    {
-      for(int x = 0; x < xSize; x++)
-      {
-         delete[] grid[x];
-      }
-      delete[] grid;
-      grid = NULL;
+      delete[] grid[x];
    }
+   delete[] grid;
+   grid = NULL;
+   rwLock->unlockForWrite();
+
+   delete rwLock;
+   rwLock = NULL;
 }
 
 /***********************************************************************
@@ -100,6 +108,8 @@ bool Collision::canBeAt(const Ogre::Vector3& min, const Ogre::Vector3& max,
    int maxqx = static_cast<int>((max.x) / squareSize);
    int maxqz = static_cast<int>((max.z) / squareSize);
 
+   rwLock->lockForRead();
+
    for(int x = minqx; x <= maxqx; x++)
    {
       for(int z = minqz; z <= maxqz; z++)
@@ -107,14 +117,17 @@ bool Collision::canBeAt(const Ogre::Vector3& min, const Ogre::Vector3& max,
          Square* square = getSquare(x, z);
          if(square)
          {
-            res =square->hasCollisions(actorBox, actor);
+            res = square->hasCollisions(actorBox, actor);
             if(res.first)
             {
+               rwLock->unlockForRead();
                return false;
             }
          }
       }
    }
+
+   rwLock->unlockForRead();
 
    /* No collisions with any square */
    return true;
@@ -157,6 +170,8 @@ bool Collision::isAtSight(Thing* actor, Thing* target, const Ogre::Ray& ray,
    float curDist = dist;
    float collidedDist = dist;
 
+   rwLock->lockForRead();
+
    /* Check all potential squares for collisions */
    for(int x = initSqX; x <= endSqX; x++)
    {
@@ -189,6 +204,8 @@ bool Collision::isAtSight(Thing* actor, Thing* target, const Ogre::Ray& ray,
          }
       }
    }
+
+   rwLock->unlockForRead();
 
    return collidedWithTarget;
 }
@@ -282,6 +299,8 @@ void Collision::addElement(const Ogre::Vector3& min,
    int maxqx = static_cast<int>((max.x) / squareSize);
    int maxqz = static_cast<int>((max.z) / squareSize);
 
+   rwLock->lockForWrite();
+
    for(int x = minqx; x <= maxqx; x++)
    {
       for(int z = minqz; z <= maxqz; z++)
@@ -293,6 +312,8 @@ void Collision::addElement(const Ogre::Vector3& min,
          }
       }
    }
+
+   rwLock->unlockForWrite();
 }
 
 /***********************************************************************
@@ -301,6 +322,8 @@ void Collision::addElement(const Ogre::Vector3& min,
 void Collision::removeElement(Thing* thing)
 {
    assert(thing != NULL);
+
+   rwLock->lockForWrite();
 
    /* Remove all related Elements to the Thing */
    Kobold::List* colElements = thing->getColElements();
@@ -312,6 +335,8 @@ void Collision::removeElement(Thing* thing)
       colEl = static_cast<Thing::ColElement*>(colEl->getNext());
    }
    colElements->clear();
+
+   rwLock->unlockForWrite();
 }
 
 /***********************************************************************
@@ -345,4 +370,5 @@ Square** Collision::grid = NULL;
 int Collision::xSize = 0;
 int Collision::zSize = 0;
 float Collision::squareSize = 0;
+Kobold::ReadWriteLock* Collision::rwLock = NULL; 
 

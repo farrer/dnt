@@ -23,6 +23,7 @@
 #include "../collision/collision.h"
 #include "../rules/character.h"
 #include "../core/game.h"
+#include "../gui/briefing.h"
 #include <kobold/log.h>
 
 #define SEARCH_LIMIT   1000  /**< Max Nodes the AStar will search */
@@ -40,8 +41,9 @@ using namespace DNT;
 /****************************************************************
  *                         Constructor                          *
  ****************************************************************/
-AStar::AStar()
+AStar::AStar(bool isPC)
 {
+   ownerPC = isPC;
    patt = new PatternAgent(true);
    patt->defineDestiny(0, 0);
    patt->defineStepSize(0);
@@ -87,6 +89,12 @@ void AStar::clearSearch()
  ****************************************************************/
 AStar::~AStar()
 {
+   /* Finish and wait running thread, if needed */
+   if(isRunning())
+   {
+      endThread();
+   }
+
    /* Clear Search Structs */
    clearSearch();
 
@@ -98,15 +106,21 @@ AStar::~AStar()
  *                            findPath                          *
  ****************************************************************/
 void AStar::findPath(Character* actor, float x, float z, float stepSize,
-                     bool fightMode, bool forceCall)
+                     bool forceCall)
 {
    /* Verify time variation */
    if( (callTimer.getMilliseconds() >= MIN_CALL) || (forceCall))
    {
       callTimer.reset();
 
+      /* If is running a previous search, must end and wait the tread */
+      if(isRunning())
+      {
+         endThread();
+      }
+
       /* Verify, if at fight mode, if not already walking */
-      if((fightMode) && (walking))
+      if((Game::isAtFightMode()) && (walking))
       {
          /* Can't change the walk, so keep the current one */
          state = ASTAR_STATE_FOUND;
@@ -171,7 +185,7 @@ void AStar::findPath(Character* actor, float x, float z, float stepSize,
          return;
       }
 
-      if(fightMode)
+      if(Game::isAtFightMode())
       {
          if(!actor->getCanMove())
          {
@@ -206,14 +220,17 @@ void AStar::findPath(Character* actor, float x, float z, float stepSize,
       /* Put initial node at search */
       heuristic = dX + dZ;
       opened->insert(actualX, actualZ, 0, heuristic, -1, -1);
+
+      /* Start the search thread */
+      createThread();
    }
    else
    {
       /* Note: Verify if isn't running, since sometimes come here
        * when already searching for the same path. */
-      if( (state != ASTAR_STATE_RUNNING) && (state != ASTAR_STATE_FOUND) )
+      if( (!isRunning()) && (state != ASTAR_STATE_FOUND) )
       {
-         /* Don't search, so don't found =^D */
+         /* Won't search, so not found */
          state = ASTAR_STATE_NOT_FOUND;
          clearSearch();
       }
@@ -225,6 +242,10 @@ void AStar::findPath(Character* actor, float x, float z, float stepSize,
  ****************************************************************/
 void AStar::clear()
 {
+   if(isRunning())
+   {
+      endThread();
+   }
    delete patt;
    patt = new PatternAgent(true);
    state = ASTAR_STATE_OTHER;
@@ -232,9 +253,24 @@ void AStar::clear()
 }
 
 /****************************************************************
+ *                               step                           *
+ ****************************************************************/
+bool AStar::step()
+{
+   doCycle();
+   if(state == ASTAR_STATE_NOT_FOUND)
+   {
+      Briefing::addText(220, 20, 220, gettext("A* could not find a path!"),
+            true);
+   }
+
+   return state == ASTAR_STATE_FOUND || state == ASTAR_STATE_NOT_FOUND;
+}
+
+/****************************************************************
  *                             doCycle                          *
  ****************************************************************/
-void AStar::doCycle(bool fightMode, bool isPC)
+void AStar::doCycle()
 {
    float newg = 0;                   /* new gone value */
    PointAStar* node, *node2, *node3; /* auxiliar nodes */
@@ -250,7 +286,7 @@ void AStar::doCycle(bool fightMode, bool isPC)
       return;
    }
 
-   if(isPC)
+   if(ownerPC)
    {
       /* Must search for more cycles */
       searchInterval *= PC_SEARCH_FACTOR;
@@ -484,7 +520,7 @@ void AStar::setOrientation(float ori)
  *                       getNewPosition                         *
  ****************************************************************/
 bool AStar::getNewPosition(float& posX, float& posZ, float& ori,
-                           bool fightMode, bool run, float runMultiplier)
+                           bool run, float runMultiplier)
 {
    float pX=0, pZ=0;
 
@@ -504,7 +540,7 @@ bool AStar::getNewPosition(float& posX, float& posZ, float& ori,
       posZ = pZ;
       ori = patt->orientationValue();
 
-      if(fightMode)
+      if(Game::isAtFightMode())
       {
          /* Verify if overflow the max normal walk */
          if( (patt->getTotalWalked() > curActor->getDisplacement()) &&
@@ -567,15 +603,19 @@ void AStar::getDestiny(float& destX, float& destZ)
 /****************************************************************
  *                             getState                         *
  ****************************************************************/
-int AStar::getState()
+AStar::AStarState AStar::getState()
 {
-   int st = -1;
-   st = state;
-   if(state != ASTAR_STATE_RUNNING)
+   if(!isRunning())
    {
-      state = ASTAR_STATE_OTHER;
+      AStarState st = state;
+      if(state != ASTAR_STATE_RUNNING)
+      {
+         /* Only return FOUND or NOT_FOUND once. */
+         state = ASTAR_STATE_OTHER;
+      }
+      return st;
    }
-   return st;
+   return ASTAR_STATE_RUNNING;
 }
 
 /****************************************************************************/

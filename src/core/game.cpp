@@ -42,6 +42,7 @@ void Game::init(Ogre::SceneManager* sceneManager)
    Game::sceneManager = sceneManager;
    npcs = new CharacterList();
    pcs = new CharacterList();
+   fightMode = false;
 }
 
 /************************************************************************
@@ -234,4 +235,5 @@ Map* Game::currentMap = NULL;
 Ogre::SceneManager* Game::sceneManager = NULL;
 CharacterList* Game::npcs = NULL;
 CharacterList* Game::pcs = NULL;
+bool Game::fightMode = false;
 
