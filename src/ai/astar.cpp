@@ -26,8 +26,8 @@
 #include "../map/map.h"
 #include <kobold/log.h>
 
-#define SEARCH_LIMIT   1000  /**< Max Nodes the AStar will search */
-#define SEARCH_INTERVAL   2  /**< Interval of Nodes when AStar will sleep */
+#define SEARCH_LIMIT   5000  /**< Max Nodes the AStar will search */
+#define SEARCH_INTERVAL  40  /**< Interval of Nodes when AStar will sleep */
 #define PC_SEARCH_FACTOR  4  /**< Playable Character factor to searchinterval */
 #define MIN_CALL        200  /**< Minimun time interval to call search again */
 
