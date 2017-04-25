@@ -85,7 +85,7 @@ void PatternAgent::calculateAngle(WayPoint* way, WayPoint* previous)
 {
    if(withOrientation)
    {
-      way->angle = Util::getAngle(previous->x, previous->z, way->x, way->z);
+      way->angle = Util::getAngle(way->x, way->z, previous->x, previous->z);
    }
 }
 

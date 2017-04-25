@@ -23,7 +23,7 @@
 #include "../collision/collision.h"
 #include "../rules/character.h"
 #include "../core/game.h"
-#include "../gui/briefing.h"
+#include "../map/map.h"
 #include <kobold/log.h>
 
 #define SEARCH_LIMIT   1000  /**< Max Nodes the AStar will search */
@@ -204,18 +204,15 @@ void AStar::findPath(Character* actor, float x, float z, float stepSize,
          return;
       }
 
-//TODO
-#if 0
       /* Verify if the destiny is in map and not too far away */
       if( (destinyX < 0) || (destinyZ < 0) || 
-          (destinyX >= actualMap->getSizeX()*actualMap->squareSize()) ||
-          (destinyZ >= actualMap->getSizeZ()*actualMap->squareSize()) )
+          (destinyX >= Game::getCurrentMap()->getSizeXWorld()) ||
+          (destinyZ >= Game::getCurrentMap()->getSizeZWorld()) )
       {
          state = ASTAR_STATE_NOT_FOUND;
          clearSearch();
          return;
       }
-#endif
 
       /* Put initial node at search */
       heuristic = dX + dZ;
@@ -258,13 +255,8 @@ void AStar::clear()
 bool AStar::step()
 {
    doCycle();
-   if(state == ASTAR_STATE_NOT_FOUND)
-   {
-      Briefing::addText(220, 20, 220, gettext("A* could not find a path!"),
-            true);
-   }
 
-   return state == ASTAR_STATE_FOUND || state == ASTAR_STATE_NOT_FOUND;
+   return state != ASTAR_STATE_FOUND && state != ASTAR_STATE_NOT_FOUND;
 }
 
 /****************************************************************
@@ -519,7 +511,7 @@ void AStar::setOrientation(float ori)
 /****************************************************************
  *                       getNewPosition                         *
  ****************************************************************/
-bool AStar::getNewPosition(float& posX, float& posZ, float& ori,
+bool AStar::getNewPosition(Ogre::Vector3& pos, float& ori,
                            bool run, float runMultiplier)
 {
    float pX=0, pZ=0;
@@ -529,15 +521,15 @@ bool AStar::getNewPosition(float& posX, float& posZ, float& ori,
    {
       /* If Position not changed (with the same angle), the move ended! */
       patt->getPosition(pX, pZ);
-      if( (pX == posX) && (pZ == posZ) && (ori == patt->orientationValue()) )
+      if( (pX == pos.x) && (pZ == pos.z) && (ori == patt->orientationValue()) )
       {
          walking = false;
          return false;
       }
 
       /* Update Position */
-      posX = pX;
-      posZ = pZ;
+      pos.x = pX;
+      pos.z = pZ;
       ori = patt->orientationValue();
 
       if(Game::isAtFightMode())
@@ -562,7 +554,7 @@ bool AStar::getNewPosition(float& posX, float& posZ, float& ori,
          }
 
          /* Verify if arrived at destiny */
-         else if( (posX == destinyX) && (posZ == destinyZ) )
+         else if( (pos.x == destinyX) && (pos.z == destinyZ) )
          {
             /* Update the booleans */
             if(patt->getTotalWalked() > curActor->getDisplacement())
@@ -583,7 +575,7 @@ bool AStar::getNewPosition(float& posX, float& posZ, float& ori,
       else
       {
          /* Only stop when arrive at destiny */
-         walking = (posX != destinyX) || (posZ != destinyZ);
+         walking = (pos.x != destinyX) || (pos.z != destinyZ);
          return walking;
       }
    }

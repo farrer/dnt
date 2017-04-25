@@ -28,6 +28,8 @@
 
 #include "../core/inventory.h"
 
+#include "../ai/astar.h"
+
 #include <kobold/log.h>
 
 #include <assert.h>
@@ -37,9 +39,12 @@ using namespace DNT;
 /***********************************************************************
  *                                Character                            *
  ***********************************************************************/
-Character::Character()
+Character::Character(bool playable)
           :Thing(Thing::THING_TYPE_CHARACTER, CHARACTER_TOTAL_ANIMATIONS)
 {
+   /* Create the A* path find to use */
+   pathFind = new AStar(playable);
+
    /* Default: alive */
    this->dead = false;
 
@@ -75,6 +80,11 @@ Character::Character()
  ***********************************************************************/
 Character::~Character()
 {
+   if(pathFind)
+   {
+      pathFind->clear();
+      delete pathFind;
+   }
    if(feats)
    {
       delete feats;

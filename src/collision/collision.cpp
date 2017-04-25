@@ -141,8 +141,48 @@ bool Collision::canMove(Thing* actor, const Ogre::Vector3& origin,
 {
    assert(actor != NULL);
 
-   //TODO
-   return false;
+   float dist = (destiny - origin).length();
+   Ogre::Aabb aabb = actor->getWalkableBounds();
+
+   /* Do a ray intersection between positions.
+    * It'll use two rays, each from origin character's top to destiny floor,
+    * and another from origin floor to character top at destiny */
+   Ogre::Ray ray1(Ogre::Vector3(origin.x, 
+            origin.y + aabb.mCenter.y + aabb.mHalfSize.y, origin.z),
+            (destiny - origin).normalisedCopy()); 
+   Ogre::Ray ray2(destiny, (origin - destiny).normalisedCopy());
+
+   /* Define squares to check */
+   int initSqX = static_cast<int>(origin.x / squareSize);
+   int initSqZ = static_cast<int>(origin.z / squareSize);
+   int endSqX = static_cast<int>(destiny.x / squareSize);
+   int endSqZ = static_cast<int>(destiny.z / squareSize);
+
+   rwLock->lockForRead();
+
+   /* Check all potential squares for collisions */
+   for(int x = initSqX; x <= endSqX; x++)
+   {
+      for(int z = initSqZ; z <= endSqZ; z++)
+      {
+         Square* square = getSquare(x, z);
+         if(square)
+         {
+            if((square->hasCollisions(ray1, dist, actor)) ||
+               (square->hasCollisions(ray2, dist, actor)))
+            {
+               /* Collided: can't move. */
+               rwLock->unlockForRead();
+               return false;
+            }
+         }
+      }
+   }
+
+   rwLock->unlockForRead();
+
+   /* Do a bounding box check at the final position */
+   return canOccupy(actor, destiny);
 }
 
 /***********************************************************************
@@ -188,18 +228,6 @@ bool Collision::isAtSight(Thing* actor, Thing* target, const Ogre::Ray& ray,
                curDist = collidedDist;
                /* Check if nearest collision was with the target. */
                collidedWithTarget = (res.second->thing == target);
-#if 0
-               if(res.second->thing)
-               {
-                  printf("Collided with: %s\n", 
-                        res.second->thing->getName().c_str());
-               }
-               else
-               {
-                  printf("Collided with wall\n");
-               }
-               printf("CurDist: %.3f\n", curDist);
-#endif
             }
          }
       }

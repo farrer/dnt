@@ -25,6 +25,7 @@
 #include <kobold/parallelprocess.h>
 #include <kobold/list.h>
 #include <kobold/timer.h>
+#include <OGRE/OgreVector3.h>
 
 namespace DNT
 {
@@ -104,12 +105,11 @@ class AStar : Kobold::ParallelProcess
             bool forceCall=false);
 
       /*! Get the New Character Position, based on Path Found previously 
-       * \param posX -> new X position
-       * \param posZ -> new Z position
-       * \param ori -> new orientation
+       * \param pos -> current character position (will receive the new)
+       * \param ori -> current orientation (will receive the new)
        * \param run -> true if Character is running or false if walking
        * \return true if can actualize, false otherwise */
-      bool getNewPosition(float& posX, float& posZ, float& ori,
+      bool getNewPosition(Ogre::Vector3& pos, float& ori,
             bool run, float runMultiplier);
 
       /*! Gets the Destiny of The Character

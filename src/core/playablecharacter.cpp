@@ -23,6 +23,8 @@
 #include "util.h"
 #include "../rules/classes.h"
 #include "../collision/collision.h"
+#include "../ai/astar.h"
+#include "../gui/briefing.h"
 
 #include <goblin/camera.h>
 
@@ -43,6 +45,7 @@ using namespace DNT;
  *                          PlayableCharacter                        *
  *********************************************************************/
 PlayableCharacter::PlayableCharacter()
+                  :Character(true)
 {
    this->upLevels = 0;
    this->xp = 0;
@@ -236,7 +239,7 @@ bool PlayableCharacter::checkMouseInputForMovement(
          {
             walkState = WALK_MOUSE;
             direction->show();
-            //TODO: clear any A* from the character
+            walkPressTimer.pause();
          }
       }
       else if(!walkPressTimer.isPaused())
@@ -244,8 +247,10 @@ bool PlayableCharacter::checkMouseInputForMovement(
          /* Clicked with mouse right button and released before
           * start a continous walk move by mouse: we should init
           * our A* search to walk. */
-         //TODO findPath
-         walkState = WALK_ASTAR;
+         pathFind->findPath(this, floorMouse.x, floorMouse.z, 
+               getWalkInterval());
+         walkState = WALK_ASTAR_SEARCHING;
+         walkPressTimer.pause();
       }
    }
 
@@ -263,11 +268,42 @@ bool PlayableCharacter::checkMouseInputForMovement(
          direction->hide();
       }
    }
-   else if(walkState == WALK_ASTAR)
+   else if(walkState == WALK_ASTAR_SEARCHING)
    {
-      //TODO: check if ASTAR done and walk, etc.
-      //for now, just going back to KEYBOARD mode
-      walkState = WALK_KEYBOARD;
+      /* Check if A* search is done */
+      AStar::AStarState astate = pathFind->getState();
+      if(astate == AStar::ASTAR_STATE_FOUND)
+      {
+         /* Path is found. Move. */
+         walkState = WALK_ASTAR_MOVING;
+      }
+      else if(astate == AStar::ASTAR_STATE_NOT_FOUND)
+      {
+         /* Path isn't avaiable, so do not run. */
+         walkState = WALK_KEYBOARD;
+         Briefing::addText(220, 20, 220, gettext("A* could not find a path!"),
+            true);
+      }
+   }
+   else if(walkState == WALK_ASTAR_MOVING)
+   {
+      /* Try to update to the new positon */
+      Ogre::Vector3 pos = getModel()->getPosition();
+      float ori = getModel()->getOrientation();
+      if(pathFind->getNewPosition(pos, ori, false, 1.0f))
+      {
+         getModel()->setPosition(pos);
+         getModel()->setOrientation(ori);
+         Goblin::Camera::setPosition(pos);
+         moved = true;
+         return true;
+      }
+      else
+      {
+         /* Done with movement */
+         pathFind->clear();
+         walkState = WALK_KEYBOARD;
+      }
    }
 
    return false;

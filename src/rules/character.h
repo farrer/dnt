@@ -57,7 +57,7 @@ namespace DNT
          };
 
          /*! Constructor */
-         Character();
+         Character(bool playable);
          /*! Destructor */
          virtual ~Character();
 
@@ -189,6 +189,7 @@ namespace DNT
          int classLevel[CHARACTER_MAX_DISTINCT_CLASSES];
          Race* race;    /**< Character race */
          Feats* feats;  /**< Character current owned feats */
+         AStar* pathFind; /**< A* Path find for the character */
 
       private:
          bool dead; /**< If the character is actually dead (just a corpse). */

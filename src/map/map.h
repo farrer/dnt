@@ -50,10 +50,16 @@ class Map
        * \param sizeZ z dimension */
       void create(int sizeX, int sizeZ);
 
-      /*! \return map's x dimension */
-      int getSizeX();
-      /*! \return map's z dimension */
-      int getSizeZ();
+      /*! \return map's x dimension (in square units) */
+      const int getSizeX() const { return xSize;};
+      /*! \return map's z dimension (in square units) */
+      const int getSizeZ() const { return zSize;};
+
+      /*! \return map's x dimension (in world units) */
+      const int getSizeXWorld() const { return xSize * MAP_SQUARE_SIZE; };
+      /*! \return map's z dimension (in world units) */
+      const int getSizeZWorld() const { return zSize * MAP_SQUARE_SIZE; };
+
 
       /*! Open a map to use. 
        * \param mapFileName name of the map file to load.

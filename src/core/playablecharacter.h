@@ -89,7 +89,8 @@ class PlayableCharacter : public Character
       {
          WALK_KEYBOARD,
          WALK_MOUSE,
-         WALK_ASTAR
+         WALK_ASTAR_SEARCHING,
+         WALK_ASTAR_MOVING
       };
       WalkStatus walkState; /**< Current Walk state (keep track of how the user
                                  is currently - or potentially - moving). */
