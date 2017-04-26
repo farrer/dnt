@@ -338,8 +338,10 @@ void AStar::doCycle()
          patt->defineDestiny(node->x, node->z);
          patt->defineStepSize(curStepSize);
          patt->defineOrientation(curActor->getModel()->getOrientation());
-         destinyX = node->x;
-         destinyZ = node->z;
+
+         /* Make sure our position is the destiny (as we are rounded by pass)*/
+         node->x = destinyX;
+         node->z = destinyZ;
 
          /* Make the Founded path */
          while( (node != NULL) )
