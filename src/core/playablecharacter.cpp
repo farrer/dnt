@@ -293,7 +293,7 @@ bool PlayableCharacter::checkMouseInputForMovement(
       if(pathFind->getNewPosition(pos, ori, false, 1.0f))
       {
          getModel()->setPosition(pos);
-         getModel()->setOrientation(ori);
+         getModel()->setTargetOrientation(0.0f, ori, 0.0f, 4);
          Goblin::Camera::setPosition(pos);
          moved = true;
          return true;
