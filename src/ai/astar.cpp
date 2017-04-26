@@ -521,11 +521,6 @@ bool AStar::getNewPosition(Ogre::Vector3& pos, float& ori,
    {
       /* If Position not changed (with the same angle), the move ended! */
       patt->getPosition(pX, pZ);
-      if( (pX == pos.x) && (pZ == pos.z) && (ori == patt->orientationValue()) )
-      {
-         walking = false;
-         return false;
-      }
 
       /* Update Position */
       pos.x = pX;
