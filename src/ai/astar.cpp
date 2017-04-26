@@ -33,7 +33,7 @@
 
 #define STEP_FACTOR        20  /**< Factor to step search */
 #define STEP_FACTOR_INDOOR 10  /**< Indor Factor to step search */
-#define MAX_DIST_FACTOR     2  /**< Only visit nodes at max X times 
+#define MAX_DIST_FACTOR    10  /**< Only visit nodes at max X times 
                                     distant to the goal than the current one */
 
 using namespace DNT;
