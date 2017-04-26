@@ -67,14 +67,14 @@ void AStar::clearSearch()
    /*  Clear Closed Nodes */
    if(closed)
    {
-      delete(closed);
+      delete closed;
       closed = NULL;
    }
 
    /* Clear Opened Nodes */
    if(opened)
    {
-      delete(opened);
+      delete opened;
       opened = NULL;
    }
 
