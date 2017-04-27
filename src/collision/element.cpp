@@ -25,6 +25,8 @@
 
 using namespace DNT;
 
+#define MAX_WALKABLE_DIFF_HEIGHT  1.5f
+
 /***********************************************************************
  *                          Constructor                                *
  ***********************************************************************/
@@ -34,5 +36,14 @@ Element::Element(Square* square,
 {
    this->thing = thing;
    this->square = square;
+}
+
+/***********************************************************************
+ *                          isWalkable                                 *
+ ***********************************************************************/
+bool Element::isWalkable(Thing* actor)
+{
+   return (bounds.getMaximum().y - actor->getModel()->getPosition().y) 
+                  <= MAX_WALKABLE_DIFF_HEIGHT;
 }
 

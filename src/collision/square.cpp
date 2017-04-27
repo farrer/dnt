@@ -53,7 +53,8 @@ void Square::addElement(const Ogre::Vector3& min,
  *                          hasCollisions                              *
  ***********************************************************************/
 std::pair<bool, Element*> Square::hasCollisions(
-      const Ogre::AxisAlignedBox& actorBox, Thing* actor, Thing* ignore)
+      const Ogre::AxisAlignedBox& actorBox, Thing* actor, 
+      float& newHeight, Thing* ignore)
 {
    /* Check if have some intersection with the square */
    if(!actorBox.intersects(bounds))
@@ -72,12 +73,21 @@ std::pair<bool, Element*> Square::hasCollisions(
          /* Only check if not the actor itself or a ignore (target) thing */
          if(actorBox.intersects(el->bounds))
          {
-            //TODO: when verifying if can walk, sometimes the element could be
-            //'walkable', for example, when its not so taller (a wood plank 
-            //on the floor, for example). 
-            //TODO: depth collision check, if desired. 
-            /* Collided */
-            return std::pair<bool, Element*>(true, el);
+            /* When verifying if can walk, sometimes the element could be
+             * 'walkable', for example, when its not so taller (a wood plank 
+             * on the floor, a rug, etc). */
+            if(el->isWalkable(actor))
+            {
+               /* Note: always using the higher delta */
+               newHeight = (el->bounds.getMaximum().y > newHeight) ? 
+                  el->bounds.getMaximum().y : newHeight;
+            }
+            else
+            {
+               //TODO: depth collision check, if desired. 
+               /* Collided */
+               return std::pair<bool, Element*>(true, el);
+            }
          }
       }
       el = static_cast<Element*>(el->getNext());

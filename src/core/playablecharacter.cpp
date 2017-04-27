@@ -316,9 +316,12 @@ bool PlayableCharacter::tryWalk(float varX, float varZ)
 {
    bool moved = false;
    Ogre::Vector3 curPos = getModel()->getPosition();
+
+   float newHeight = 0.0f;
    
    /* Check if can walk to the new position */
-   if(Collision::canMove(this, Ogre::Vector3(varX, 0.0f, varZ), 0.0f))
+   if(Collision::canMove(this, Ogre::Vector3(varX, 0.0f, varZ), 0.0f, 
+            newHeight))
    {
       moved = true;
       curPos.x += varX;
@@ -326,13 +329,15 @@ bool PlayableCharacter::tryWalk(float varX, float varZ)
    }
    /* If can't move, let's try with only a single component */
    else if((Ogre::Math::Abs(varX) >= 0.1f) && 
-           (Collision::canMove(this, Ogre::Vector3(varX, 0.0f, 0.0f), 0.0f)))
+           (Collision::canMove(this, Ogre::Vector3(varX, 0.0f, 0.0f), 
+                               0.0f, newHeight)))
    {
       moved = true;
       curPos.x += varX;
    }
    else if((Ogre::Math::Abs(varZ) >= 0.1f) && 
-           (Collision::canMove(this, Ogre::Vector3(0.0f, 0.0f, varZ), 0.0f)))
+           (Collision::canMove(this, Ogre::Vector3(0.0f, 0.0f, varZ), 
+                               0.0f, newHeight)))
    {
       moved = true;
       curPos.z += varZ;
@@ -340,6 +345,7 @@ bool PlayableCharacter::tryWalk(float varX, float varZ)
 
    if(moved)
    {
+      curPos.y = newHeight;
       getModel()->setPosition(curPos);
       Goblin::Camera::setPosition(curPos);
    }

@@ -197,7 +197,9 @@ void AStar::findPath(Character* actor, float x, float z, float stepSize,
       }
 
       /* Verify if can occupy the destiny position */
-      if(!Collision::canOccupy(actor, Ogre::Vector3(destinyX, 0, destinyZ))) 
+      float newHeight = 0.0f;
+      if(!Collision::canOccupy(actor, Ogre::Vector3(destinyX, 0, destinyZ), 
+               newHeight)) 
       {
          state = ASTAR_STATE_NOT_FOUND;
          clearSearch();

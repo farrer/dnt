@@ -81,7 +81,7 @@ void Collision::finish()
  *                                canMove                              *
  ***********************************************************************/
 bool Collision::canMove(Thing* actor, const Ogre::Vector3& varPos,
-      const float varOri)
+      const float varOri, float& newHeight)
 {
    assert(actor != NULL);
 
@@ -90,17 +90,23 @@ bool Collision::canMove(Thing* actor, const Ogre::Vector3& varPos,
    Ogre::Aabb walkableAabb = actor->getWalkableBounds();
    walkableAabb.mCenter = worldAabb.mCenter + varPos;
 
-   return canBeAt(walkableAabb.getMinimum(), walkableAabb.getMaximum(), actor);
+   return canBeAt(walkableAabb.getMinimum(), walkableAabb.getMaximum(), actor,
+         newHeight);
 }
 
 /***********************************************************************
  *                                canBeAt                              *
  ***********************************************************************/
 bool Collision::canBeAt(const Ogre::Vector3& min, const Ogre::Vector3& max,
-      Thing* actor)
+      Thing* actor, float& newHeight)
 {
    std::pair<bool, Element*> res;
-   Ogre::AxisAlignedBox actorBox(min, max);
+
+   /* Note: the min.y decrement is necessary, otherwise if we are 'up' on an
+    * element, it won't collide and our newHeight will be 0, which is wrong
+    * (resulting in the actor going inner the element). */
+   Ogre::AxisAlignedBox actorBox(
+         Ogre::Vector3(min.x, min.y - 1.0f, min.z), max);
 
    /* Check all potentially occuped squares */
    int minqx = static_cast<int>((min.x) / squareSize);
@@ -117,7 +123,7 @@ bool Collision::canBeAt(const Ogre::Vector3& min, const Ogre::Vector3& max,
          Square* square = getSquare(x, z);
          if(square)
          {
-            res = square->hasCollisions(actorBox, actor);
+            res = square->hasCollisions(actorBox, actor, newHeight);
             if(res.first)
             {
                rwLock->unlockForRead();
@@ -182,13 +188,15 @@ bool Collision::canMove(Thing* actor, const Ogre::Vector3& origin,
    rwLock->unlockForRead();
 
    /* Do a bounding box check at the final position */
-   return canOccupy(actor, destiny);
+   float newHeight = 0.0f;
+   return canOccupy(actor, destiny, newHeight);
 }
 
 /***********************************************************************
  *                              canOccupy                              *
  ***********************************************************************/
-bool Collision::canOccupy(Thing* actor, const Ogre::Vector3& pos)
+bool Collision::canOccupy(Thing* actor, const Ogre::Vector3& pos, 
+      float& newHeight)
 {
    assert(actor != NULL);
 
@@ -196,7 +204,7 @@ bool Collision::canOccupy(Thing* actor, const Ogre::Vector3& pos)
    Ogre::Aabb aabb = actor->getModel()->getItem()->getWorldAabb();
    aabb.mCenter = pos;
    
-   return canBeAt(aabb.getMinimum(), aabb.getMaximum(), actor);
+   return canBeAt(aabb.getMinimum(), aabb.getMaximum(), actor, newHeight);
 }
 
 /***********************************************************************

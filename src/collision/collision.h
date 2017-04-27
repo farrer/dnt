@@ -41,6 +41,9 @@ namespace DNT
          Element(Square* square, const Ogre::Vector3& min, 
                const Ogre::Vector3& max, Thing* thing);
 
+         /*! \return if the actor can be over the element (walk on it). */
+         bool isWalkable(Thing* actor);
+
          Ogre::AxisAlignedBox bounds; /**< Current element bounds */
          Square* square; /**< Square who owns the element */
          Thing* thing;  /**< Pointer to its related Thing, if any */
@@ -67,12 +70,14 @@ namespace DNT
           * \param actorBox -> translated and rotated bounding box 
           * \param actor -> pointer to the actor, if any (will ignore
           *                 collisions with itself)
+          * \param newHeight -> will receive the new height for the actor be 
+          *                     at the desired position.
           * \param ignore -> pointer to a thing to ignore collisions to
           * \return pair, first true if collided, false if no 
           * collisions got, second, pointer to the collider element */
          std::pair<bool, Element*> hasCollisions(
                const Ogre::AxisAlignedBox& actorBox,
-               Thing* actor = NULL, Thing* ignore = NULL);
+               Thing* actor, float& newHeight, Thing* ignore = NULL);
 
          /*! Verify if a Ray collide with some element within this square,
           * always returning the nearest collider got.
@@ -134,10 +139,12 @@ namespace DNT
           * \param actor thing to move
           * \param varPos delta to move on its position
           * \param varOri delta to move on its orientation
+          * \param newHeight -> will receive the new height for the actor be 
+          *                     at the desired position.
           * \return true if can move, false if will collide with something
           *         else and can't */
          static bool canMove(Thing* actor, const Ogre::Vector3& varPos,
-                             const float varOri);
+               const float varOri, float& newHeight);
 
          /*! Check if a Thing can move from a defined position to another
           * one. This check will be made by using rays from and to 
@@ -153,8 +160,11 @@ namespace DNT
          /*! Check if a thing can occupy an specific position on the map.
           * \param actor to check if can occupy
           * \param pos position to check if can occupy
+          * \param newHeight -> will receive the new height for the actor be 
+          *                     at the desired position.
           * \return true if can, false otherwise. */
-         static bool canOccupy(Thing* actor, const Ogre::Vector3& pos);
+         static bool canOccupy(Thing* actor, const Ogre::Vector3& pos, 
+               float& newHeight);
 
          /*! Check if a Thing is at sight of another one.
           * \param actor to check if target is at its sight
@@ -190,7 +200,7 @@ namespace DNT
          /*! Verify if bounding box defined by min,max doesn't collide with 
           * any square element */
          static bool canBeAt(const Ogre::Vector3& min, 
-               const Ogre::Vector3& max, Thing* actor);
+               const Ogre::Vector3& max, Thing* actor, float& newHeight);
 
          /*! Internal at sight check */
          static bool isAtSight(Thing* actor, Thing* target, 
