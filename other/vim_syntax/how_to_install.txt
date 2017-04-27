@@ -1,0 +1,8 @@
+Copy the syntax files from this folder to ~/.vim/syntax/ on Unix-based systems,
+or to $HOME/vimfiles/syntax/ on Windows systems.
+
+After that, add to your ~/.vimrc the following lines:
+
+au BufRead,BufNewFile *.dsl set filetype=dnt
+au BufRead,BufNewFile *.dlg set filetype=dialog
+
