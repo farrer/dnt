@@ -117,6 +117,25 @@ set(COLLISION_SOURCES
 set(COLLISION_HEADERS
    src/collision/collision.h
 )
+set(TERRA_SOURCES
+   src/terra/Terra.cpp
+   src/terra/TerrainCell.cpp
+   src/terra/TerraShadowMapper.cpp
+   src/terra/Hlms/OgreHlmsJsonTerra.cpp
+   src/terra/Hlms/OgreHlmsTerra.cpp
+   src/terra/Hlms/OgreHlmsTerraDatablock.cpp
+   src/terra/Hlms/PbsListener/OgreHlmsPbsTerraShadows.cpp
+)
+set(TERRA_HEADERS
+   src/terra/Terra.h
+   src/terra/TerrainCell.h
+   src/terra/TerraShadowMapper.h
+   src/terra/Hlms/OgreHlmsJsonTerra.h
+   src/terra/Hlms/OgreHlmsTerra.h
+   src/terra/Hlms/OgreHlmsTerraDatablock.h
+   src/terra/Hlms/OgreHlmsTerraPrerequisites.h
+   src/terra/Hlms/PbsListener/OgreHlmsPbsTerraShadows.h
+)
 
 IF(${APPLE})
    set(APPLE_CONFIG_SOURCES
@@ -139,6 +158,7 @@ set(DNT_LIB_HEADERS
    ${LANG_HEADERS}
    ${COLLISION_HEADERS}
    ${GUI_HEADERS}
+   ${TERRA_HEADERS}
    ${APPLE_CONFIG_HEADERS}
 )
 
@@ -151,6 +171,7 @@ set(DNT_LIB_SOURCES
    ${LANG_SOURCES}
    ${COLLISION_SOURCES}
    ${GUI_SOURCES}
+   ${TERRA_SOURCES}
    ${APPLE_CONFIG_SOURCES}
 )
 
