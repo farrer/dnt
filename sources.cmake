@@ -112,10 +112,12 @@ set(LANG_HEADERS
 set(COLLISION_SOURCES
    src/collision/collision.cpp
    src/collision/element.cpp
+   src/collision/overlaps.cpp
    src/collision/square.cpp
 )
 set(COLLISION_HEADERS
    src/collision/collision.h
+   src/collision/overlaps.h
 )
 set(TERRA_SOURCES
    src/terra/Terra.cpp

@@ -78,3 +78,46 @@ float Util::getAngle(float p1X, float p1Z, float p2X, float p2Z)
    return 0;
 }
 
+/*************************************************************************
+ *                               rotate                                  *
+ *************************************************************************/
+void Util::rotatePoint(float pX, float pY, float pZ,
+      Ogre::Radian angleX, Ogre::Radian angleY, Ogre::Radian angleZ, 
+      float sinAngleX, float cosAngleX, float sinAngleY, float cosAngleY,
+      float sinAngleZ, float cosAngleZ, float& resX, float& resY, float& resZ)
+{
+   /* Set initial result (no angle!) */
+   resX = pX;
+   resY = pY;
+   resZ = pZ;
+
+   /* Rotate around Y axis */
+   if(angleY.valueDegrees() != 0)
+   {
+      /* Calculate new point */
+      resX = (pZ*sinAngleY) + (pX*cosAngleY);
+      resZ = (pZ*cosAngleY) - (pX*sinAngleY);
+      pX = resX;
+      pZ = resZ;
+   }
+
+   /* Rotate around X axis */
+   if(angleX.valueDegrees() != 0)
+   {
+      /* Calculate new point */
+      resY = -(pZ*sinAngleX) + (pY*cosAngleX);
+      resZ =(pZ*cosAngleX) + (pY*sinAngleX);
+      pY = resY;
+      pZ = resZ;
+   }
+
+   /* Rotate at Z axis */
+   if(angleZ.valueDegrees() != 0)
+   {
+      /* Calculate new point */
+      resX = -(pY*sinAngleZ) + (pX*cosAngleZ);
+      resY = (pY*cosAngleZ) + (pX*sinAngleZ);
+   }
+}
+
+

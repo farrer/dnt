@@ -90,7 +90,10 @@ bool CommonApp::doCommonCycleInit(int callCounter, bool& shouldAbort)
          /* Change workspace to cdefine map type */
          Ogre::CompositorManager2 *compositorManager =
             ogreRoot->getCompositorManager2();
-         //compositorManager->removeWorkspace(ogreWorkspace);
+         if(ogreWorkspace)
+         {
+            compositorManager->removeWorkspace(ogreWorkspace);
+         }
          ogreWorkspace = compositorManager->addWorkspace(ogreSceneManager,
                ogreWindow, Goblin::Camera::getOgreCamera(), 
                "DNTIndoorWorkspace", true);

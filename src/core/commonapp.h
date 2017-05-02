@@ -58,7 +58,6 @@ class CommonApp : public Goblin::BaseApp
       };
       const Ogre::String getBaseDataDir() const {return BASE_DATA_DIR;};
       const bool shouldUseKoboldI18n() const { return false; };
-      const bool shouldCreateBasicWorkspace() const { return false; };
       void getDataDirectories(Ogre::String** dataDirectories,
             Ogre::String** dataGroups, int& total);
       /* Done with Goblin::BaseApp */

@@ -147,6 +147,9 @@ namespace DNT
 
          /*! \return if Character is alive */
          const bool isAlive() const { return !dead; };
+         
+         /*! For simplicity, characters are only verified by bounding box  */
+         virtual const bool shouldDepthCollisionCheck() const { return false; }
 
          void setCanAttack(bool value);
          void setCanMove(bool value);

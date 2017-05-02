@@ -44,6 +44,12 @@ namespace DNT
          /*! \return if the actor can be over the element (walk on it). */
          bool isWalkable(Thing* actor);
 
+         /*! Check, triangle by triangle, if the element's Thing model, 
+          * at its current position and orientation collides with the
+          * defined actor's bounding box.
+          * \param actorBox Bounding box to check. */
+         bool depthCollide(const Ogre::AxisAlignedBox& actorBox); 
+
          Ogre::AxisAlignedBox bounds; /**< Current element bounds */
          Square* square; /**< Square who owns the element */
          Thing* thing;  /**< Pointer to its related Thing, if any */

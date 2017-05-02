@@ -240,6 +240,10 @@ class Thing : public Kobold::ListElement
 
       /*! \return current displacement */
       const int getDisplacement() const { return displacement; };
+
+      /*! \return if should do a depth collision check with Thing's model 
+       * triangles or just bounding box check is sufficient */
+      virtual const bool shouldDepthCollisionCheck() const { return true; }
       
    protected:
 

@@ -25,6 +25,7 @@
 #define _dnt_util_h
 
 #include "dntconfig.h"
+#include <OGRE/OgreMath.h>
 
 namespace DNT
 {
@@ -37,6 +38,15 @@ namespace DNT
       public:
          /*! Calculate angle between two points (p1 and p2) */
          static float getAngle(float p1X, float p1Z, float p2X, float p2Z);
+
+         /*! Rotate a point around Y, X and Z axis, with precalculated
+          * sines and cosines. */
+         static void rotatePoint(float pX, float pY, float pZ,
+               Ogre::Radian angleX, Ogre::Radian angleY, Ogre::Radian angleZ,
+               float sinAngleX, float cosAngleX,
+               float sinAngleY, float cosAngleY,
+               float sinAngleZ, float cosAngleZ,
+               float& resX, float& resY, float& resZ);
    };
 
 };

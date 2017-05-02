@@ -84,9 +84,20 @@ std::pair<bool, Element*> Square::hasCollisions(
             }
             else
             {
-               //TODO: depth collision check, if desired. 
-               /* Collided */
-               return std::pair<bool, Element*>(true, el);
+               if((el->thing != NULL) && 
+                  (el->thing->shouldDepthCollisionCheck()))
+               {
+                  /* Only collided if depth collided */
+                  if(el->depthCollide(actorBox))
+                  {
+                     return std::pair<bool, Element*>(true, el);
+                  }
+               }
+               else
+               {
+                  /* Collided */
+                  return std::pair<bool, Element*>(true, el);
+               }
             }
          }
       }
