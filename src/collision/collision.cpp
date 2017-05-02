@@ -20,6 +20,8 @@
 
 #include "collision.h"
 #include "../rules/thing.h"
+#include "../core/game.h"
+#include "../map/map.h"
 
 #include <assert.h>
 
@@ -101,6 +103,14 @@ bool Collision::canBeAt(const Ogre::Vector3& min, const Ogre::Vector3& max,
       Thing* actor, float& newHeight)
 {
    std::pair<bool, Element*> res;
+
+   /* Make sure we aren't outside map bounds */
+   if((min.x < 0.0f) || (min.z < 0.0f) || 
+      (max.x > Game::getCurrentMap()->getSizeXWorld()) ||
+      (max.z > Game::getCurrentMap()->getSizeZWorld()))
+   {
+      return false;
+   }
 
    /* Note: the min.y decrement is necessary, otherwise if we are 'up' on an
     * element, it won't collide and our newHeight will be 0, which is wrong
