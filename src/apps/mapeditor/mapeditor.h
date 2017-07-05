@@ -53,7 +53,8 @@ class MapEditor : public DNT::CommonApp
       void doSendToBackground();
       void doSendToForeground();
 
-      void doCycle();
+      void doBeforeRender();
+      void doAfterRender();
       bool shouldQuit();
       bool specialSelect(Ogre::SceneNode* sceneNode);
 
@@ -65,6 +66,7 @@ class MapEditor : public DNT::CommonApp
       PositionEditor* positionEditor; /**< Position editor */
 
       bool shouldExit; /**< exit flag */
+      bool treatedGui; /**< if got gui event on current frame */
 
       Kobold::KeyCodes lastKey; /**< Last action key checked */
 

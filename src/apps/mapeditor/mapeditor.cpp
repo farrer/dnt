@@ -52,6 +52,7 @@ MapEditor::MapEditor()
    mainGui = NULL;
    positionEditor = NULL;
    lastKey = Kobold::KOBOLD_KEY_UNKNOWN;
+   treatedGui = false;
 }
 
 /***********************************************************************
@@ -83,7 +84,7 @@ bool MapEditor::doCycleInit(int callCounter, bool& shouldAbort)
             getDataPath() + "textures/mapeditor", "FileSystem", 
             "mapeditor_textures", true);
       Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
-            "mapeditor_textures");
+            "mapeditor_textures", true);
 
       /* Create Map Editor's GUI */
       mainGui = new MainGui();
@@ -195,9 +196,9 @@ bool MapEditor::specialSelect(Ogre::SceneNode* sceneNode)
 }
 
 /***********************************************************************
- *                              doCycle                                *
+ *                          doBeforeRender                             *
  ***********************************************************************/
-void MapEditor::doCycle()
+void MapEditor::doBeforeRender()
 {
    if((DNT::Game::getCurrentMap()) && (mainGui->isLightEnabled()) &&
       (!positionEditor->hasSelection()))
@@ -208,9 +209,21 @@ void MapEditor::doCycle()
    
    if(Farso::Controller::verifyEvents(leftButtonPressed, false, mouseX, mouseY))
    {
+      treatedGui = true;
       shouldExit |= mainGui->checkEvents(positionEditor);
    }
    else
+   {
+      treatedGui = false;
+   }
+}
+
+/***********************************************************************
+ *                          doAfterRender                              *
+ ***********************************************************************/
+void MapEditor::doAfterRender()
+{
+   if(!treatedGui)
    {
       mainGui->update(positionEditor);
 

@@ -34,7 +34,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "upper_wall.png",
             "sampler" : "SamplerBlock_indoor1"
          },
@@ -57,7 +57,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "concrete6.png",
             "sampler" : "SamplerBlock_indoor1"
          },
@@ -80,7 +80,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "wall_crete03b.png",
             "sampler" : "SamplerBlock_indoor1"
          },
@@ -104,7 +104,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "tile3.png",
             "sampler" : "SamplerBlock_indoor1"
          },
@@ -128,7 +128,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "wood1.png",
             "sampler" : "SamplerBlock_indoor1"
          },
@@ -152,7 +152,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "wood8.png",
             "sampler" : "SamplerBlock_indoor1"
          },
@@ -176,7 +176,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "oldwood1.png",
             "sampler" : "SamplerBlock_indoor1"
          },
@@ -200,7 +200,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "plaster3c.png",
             "sampler" : "SamplerBlock_indoor1"
          },
@@ -224,7 +224,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "wood_planks_2.png",
             "sampler" : "SamplerBlock_indoor1"
          },
@@ -248,7 +248,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "floor_tile.png",
             "sampler" : "SamplerBlock_indoor1"
          },
@@ -272,7 +272,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "concrete01.png",
             "sampler" : "SamplerBlock_indoor1"
          },
@@ -296,7 +296,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "concrete01b.png",
             "sampler" : "SamplerBlock_indoor1"
          },
@@ -320,7 +320,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "rustytiles01.png",
             "sampler" : "SamplerBlock_indoor1"
          },
@@ -344,7 +344,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "rustytiles01b.png",
             "sampler" : "SamplerBlock_indoor1"
          },
@@ -368,7 +368,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "woodfloor.png",
             "sampler" : "SamplerBlock_indoor1"
          },
@@ -392,7 +392,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "siding2.png",
             "sampler" : "SamplerBlock_indoor1"
          },

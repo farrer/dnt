@@ -11,7 +11,7 @@ struct ShadowReceiverData
 
 struct Light
 {
-	vec3 position;
+	vec4 position; //.w contains the objLightMask
 	vec3 diffuse;
 	vec3 specular;
 @property( hlms_num_shadow_map_lights )
@@ -28,6 +28,10 @@ layout(binding = 0) uniform PassBuffer
 {
 	//Vertex shader (common to both receiver and casters)
 	mat4 viewProj;
+
+@property( hlms_global_clip_distances )
+	vec4 clipPlane0;
+@end
 
 @property( hlms_shadowcaster_point )
 	vec4 cameraPosWS;	//Camera position in world space
@@ -92,6 +96,8 @@ layout(binding = 0) uniform PassBuffer
 	@end
 @end
 
+	@insertpiece( DeclPlanarReflUniforms )
+
 @property( parallax_correct_cubemaps )
 	CubemapProbe autoProbe;
 @end
@@ -128,7 +134,7 @@ struct Material
 
 layout(binding = 1) uniform MaterialBuf
 {
-	Material m[@insertpiece( materials_per_buffer )];
+	Material m[@value( materials_per_buffer )];
 } materialArray;
 @end
 
@@ -144,6 +150,9 @@ layout(binding = 2) uniform InstanceBuffer
     //shadowConstantBias. Send the bias directly to avoid an
     //unnecessary indirection during the shadow mapping pass.
     //Must be loaded with uintBitsToFloat
+    //
+    //.z =
+    //lightMask. Ogre must have been compiled with OGRE_NO_FINE_LIGHT_MASK_GRANULARITY
     uvec4 worldMaterialIdx[4096];
 } instance;
 @end

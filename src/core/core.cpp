@@ -51,6 +51,7 @@ Core::Core()
 {
    testedThingUnderCursor = NULL;
    testedAtSightResult = false;
+   treatedGui = false;
 }
 
 /***********************************************************************
@@ -131,20 +132,26 @@ bool Core::specialSelect(Ogre::SceneNode* sceneNode)
 
 
 /***********************************************************************
- *                              doCycle                                *
+ *                          doBeforeRender                             *
  ***********************************************************************/
-void Core::doCycle()
+void Core::doBeforeRender()
+{
+   /* Update current models and map */
+   Game::update();
+
+   treatedGui = Farso::Controller::verifyEvents(leftButtonPressed, false, 
+         mouseX, mouseY);
+   treatedGui |= DialogWindow::checkEvents();
+}
+
+/***********************************************************************
+ *                          doAfterRender                              *
+ ***********************************************************************/
+void Core::doAfterRender()
 {
    /* Define current active playable character */
    PlayableCharacter* curPc = static_cast<PlayableCharacter*>(
             Game::getPcs()->getActiveCharacter());
-
-   /* Update current models and map */
-   Game::update();
-
-   bool treatedGui = Farso::Controller::verifyEvents(leftButtonPressed, false, 
-         mouseX, mouseY);
-   treatedGui |= DialogWindow::checkEvents();
 
    if(!treatedGui)
    {

@@ -137,12 +137,12 @@ bool CommonApp::doCommonCycleInit(int callCounter, bool& shouldAbort)
                getDataPath() + "textures/doors", "FileSystem", 
                "doors_textures", true);
          Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
-               "doors_textures");
+               "doors_textures", true);
          Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
                getDataPath() + "textures/other", "FileSystem", 
                "other_textures", true);
          Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
-               "other_textures");
+               "other_textures", true);
          progressBar->setValue(30);
       }
       break;
@@ -152,7 +152,7 @@ bool CommonApp::doCommonCycleInit(int callCounter, bool& shouldAbort)
                getDataPath() + "textures/furniture", "FileSystem", 
                "furniture_textures", true);
          Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
-               "furniture_textures");
+               "furniture_textures", true);
          progressBar->setValue(40);
       }
       break;
@@ -162,7 +162,7 @@ bool CommonApp::doCommonCycleInit(int callCounter, bool& shouldAbort)
                getDataPath() + "textures/general", "FileSystem", 
                "general_textures", true);
          Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
-               "general_textures");
+               "general_textures", true);
          progressBar->setValue(50);
       }
       break;
@@ -172,7 +172,7 @@ bool CommonApp::doCommonCycleInit(int callCounter, bool& shouldAbort)
                getDataPath() + "textures/humans", "FileSystem", 
                "humans_textures", true);
          Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
-               "humans_textures");
+               "humans_textures", true);
          progressBar->setValue(60);
       }
       break;
@@ -182,7 +182,7 @@ bool CommonApp::doCommonCycleInit(int callCounter, bool& shouldAbort)
                getDataPath() + "textures/portraits", "FileSystem", 
                "portraits_textures", true);
          Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
-               "portraits_textures");
+               "portraits_textures", true);
          progressBar->setValue(70);
       }
       break;
@@ -192,7 +192,7 @@ bool CommonApp::doCommonCycleInit(int callCounter, bool& shouldAbort)
                getDataPath() + "textures/junk", "FileSystem", 
                "junk_textures", true);
          Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
-               "junk_textures");
+               "junk_textures", true);
          progressBar->setValue(80);
       }
       break;
@@ -202,7 +202,7 @@ bool CommonApp::doCommonCycleInit(int callCounter, bool& shouldAbort)
                getDataPath() + "textures/indoor", "FileSystem", 
                "indoor_textures", true);
          Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
-               "indoor_textures");
+               "indoor_textures", true);
          progressBar->setValue(90);
       }
       break;

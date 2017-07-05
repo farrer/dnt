@@ -50,7 +50,8 @@ class Core : public CommonApp
       void doSendToBackground();
       void doSendToForeground();
 
-      void doCycle();
+      void doBeforeRender();
+      void doAfterRender();
       bool shouldQuit();
       bool specialSelect(Ogre::SceneNode* sceneNode);
 
@@ -59,6 +60,7 @@ class Core : public CommonApp
       Thing* testedThingUnderCursor; /**< Thing under cursor of the last 
                                           atSight test */
       bool testedAtSightResult;  /**< Result of the atSight for last test */
+      bool treatedGui; /**< If treated some GUI event */
 
 };
 

@@ -34,7 +34,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "caixa1.png",
             "sampler" : "SamplerBlock_junk1"
          },
@@ -57,7 +57,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "caixa2.png",
             "sampler" : "SamplerBlock_junk1"
          },
@@ -80,7 +80,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "apple_crate.png",
             "sampler" : "SamplerBlock_junk1"
          },
@@ -103,7 +103,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "pneu.png",
             "sampler" : "SamplerBlock_junk1"
          },

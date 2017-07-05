@@ -34,7 +34,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "bookshelf.png",
             "sampler" : "SamplerBlock_furniture1"
          },
@@ -57,7 +57,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "mesa_redonda.png",
             "sampler" : "SamplerBlock_furniture1"
          },
@@ -80,7 +80,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "calendar.png",
             "sampler" : "SamplerBlock_furniture1"
          },
@@ -103,7 +103,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "dinner_chair.png",
             "sampler" : "SamplerBlock_furniture1"
          },
@@ -126,7 +126,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "dinner_table.png",
             "sampler" : "SamplerBlock_furniture1"
          },
@@ -149,7 +149,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "estante.png",
             "sampler" : "SamplerBlock_furniture1"
          },
@@ -173,7 +173,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "fridge.png",
             "sampler" : "SamplerBlock_furniture1"
          },
@@ -196,7 +196,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "letto.png",
             "sampler" : "SamplerBlock_furniture1"
          },
@@ -219,7 +219,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "mesa_redonda.png",
             "sampler" : "SamplerBlock_furniture1"
          },
@@ -242,7 +242,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "microwave.png",
             "sampler" : "SamplerBlock_furniture1"
          },
@@ -265,7 +265,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "oven.png",
             "sampler" : "SamplerBlock_furniture1"
          },
@@ -288,7 +288,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "papel_higienico.png",
             "sampler" : "SamplerBlock_furniture1"
          },
@@ -311,7 +311,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "pc_chair.png",
             "sampler" : "SamplerBlock_furniture1"
          },
@@ -334,7 +334,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "pc_table.png",
             "sampler" : "SamplerBlock_furniture1"
          },
@@ -357,12 +357,13 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "pia.png",
             "sampler" : "SamplerBlock_furniture1"
          },
          "normal":
          {
+            "value" : 1,
             "texture" : "pia_n.png",
             "sampler" : "SamplerBlock_furniture1"
          },
@@ -380,7 +381,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "sofa.png",
             "sampler" : "SamplerBlock_furniture1"
          },
@@ -403,7 +404,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "poster.png",
             "sampler" : "SamplerBlock_furniture1"
          },
@@ -426,7 +427,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "privada.png",
             "sampler" : "SamplerBlock_furniture1"
          },
@@ -449,7 +450,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "privada2.png",
             "sampler" : "SamplerBlock_furniture1"
          },
@@ -472,7 +473,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "rug.png",
             "sampler" : "SamplerBlock_furniture1"
          },
@@ -518,7 +519,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "wardrobe.png",
             "sampler" : "SamplerBlock_furniture1"
          },

@@ -34,7 +34,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "porta4.png",
             "sampler" : "SamplerBlock_doors1"
          },
@@ -57,7 +57,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "porta5.png",
             "sampler" : "SamplerBlock_doors1"
          },
@@ -80,7 +80,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "porta6.png",
             "sampler" : "SamplerBlock_doors1"
          },
@@ -103,7 +103,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "porta7.png",
             "sampler" : "SamplerBlock_doors1"
          },
@@ -120,7 +120,7 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [0.64, 0.64, 0.64],
+            "value" : [1.0, 1.0, 1.0],
             "texture" : "porta8.png",
             "sampler" : "SamplerBlock_doors1"
          },

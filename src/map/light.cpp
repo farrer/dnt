@@ -179,7 +179,10 @@ void LightInfo::setLight(Ogre::Light* light, Ogre::SceneNode* sceneNode)
    ogreLight = light;
    lightSceneNode = sceneNode;
 
-   light->setPowerScale(Ogre::Math::PI); 
+   //FIXME: PI used to work before update to current 
+   //       2.1 commit on 2 july 2017.
+   //light->setPowerScale(Ogre::Math::PI); 
+   light->setPowerScale(50); 
 
    /*light->setShadowNearClipDistance(2.2f);
    light->setShadowFarClipDistance(2200.0f);
