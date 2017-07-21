@@ -34,6 +34,7 @@ ScriptInstance::ScriptInstance(asIScriptObject* obj, ScriptController* script,
    /* Set the script controller and manager*/
    this->script = script;
    this->manager = manager;
+   this->context = NULL;
 }
 
 /**************************************************************************
