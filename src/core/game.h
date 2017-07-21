@@ -78,6 +78,9 @@ namespace DNT
          /*! \return used SceneManager */
          static Ogre::SceneManager* getSceneManager();
 
+          /*! \return game used script manager */
+         static ScriptManager* getScriptManager() { return scriptManager; };
+
          /*! \return if is at fight mode or normal */
          static const bool isAtFightMode() { return fightMode; };
 
@@ -93,7 +96,9 @@ namespace DNT
 
          /*! Fight mode controller flag */
          static bool fightMode;
-
+      
+         /*! Manager of all DNT scripts */
+         static ScriptManager* scriptManager;
 
    };
 

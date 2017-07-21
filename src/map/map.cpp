@@ -29,9 +29,12 @@
 #include "../core/game.h"
 #include "../lang/translate.h"
 #include "../collision/collision.h"
+#include "../ai/script/mapscript.h"
+#include "../ai/script/scriptmanager.h"
 
 #include <kobold/defparser.h>
 #include <kobold/log.h>
+#include <assert.h>
 
 using namespace DNT;
 
@@ -44,6 +47,7 @@ using namespace DNT;
 
 #define MAP_TOKEN_NAME                  "name"
 #define MAP_TOKEN_MUSIC_FILE            "musicFile"
+#define MAP_TOKEN_SCRIPT                "script"
 
 #define MAP_TOKEN_WALL                  "wall"
 #define MAP_TOKEN_WALL_TEXTURE_FRONT    "wtf"
@@ -93,6 +97,7 @@ Map::Map()
    this->staticThings = new Kobold::List(Kobold::LIST_TYPE_ADD_AT_END);
    this->dynamicThings = new Kobold::List(Kobold::LIST_TYPE_ADD_AT_END);
    this->lights = new MapLights();
+   this->script = NULL;
 }
 
 /**************************************************************************
@@ -104,6 +109,10 @@ Map::~Map()
   delete this->staticThings;
   delete this->dynamicThings;
   delete this->lights;
+  if(this->script)
+  {
+     Game::getScriptManager()->removeInstance(script);
+  }
 }
 
 /**************************************************************************
@@ -294,6 +303,12 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool forceDynamicModels)
       else if(key == MAP_TOKEN_MUSIC_FILE)
       {
          musicFilename = value;
+      }
+      else if(key == MAP_TOKEN_SCRIPT)
+      {
+         assert(script == NULL);
+         script = Game::getScriptManager()->createMapScriptInstance(value,
+               mapFileName);
       }
       /* Square definition */
       else if(key == MAP_TOKEN_SQUARE)
@@ -588,6 +603,12 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool forceDynamicModels)
 
    /* Define an active light */
    lights->setActiveLight(0.0f, 0.0f);
+
+   /* Call our onLoad script, if defined */
+   if(script)
+   {
+      script->callOnLoad();
+   }
 
    return true;
 }

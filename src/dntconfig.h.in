@@ -120,6 +120,12 @@ namespace DNT
    class ListAStar;
    class AStar;
 
+   class ScriptManager;
+   class ScriptController;
+   class ScriptInstance;
+   class MapScript;
+   class MapScriptInstance;
+
 }
 
 #endif

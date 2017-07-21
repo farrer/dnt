@@ -97,11 +97,21 @@ set(AI_HEADERS
    src/ai/agent.h
    src/ai/astar.h
    src/ai/patternagent.h
+   src/ai/script/mapscript.h
+   src/ai/script/scriptcontroller.h
+   src/ai/script/scriptinstance.h
+   src/ai/script/scriptmanager.h
+   src/ai/script/scriptstdstring.h
 )
 set(AI_SOURCES
    src/ai/agent.cpp
    src/ai/astar.cpp
    src/ai/patternagent.cpp
+   src/ai/script/mapscript.cpp
+   src/ai/script/scriptcontroller.cpp
+   src/ai/script/scriptinstance.cpp
+   src/ai/script/scriptmanager.cpp
+   src/ai/script/scriptstdstring.cpp
 )
 set(LANG_SOURCES
    src/lang/translate.cpp

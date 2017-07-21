@@ -138,6 +138,8 @@ class Map
 
       MapLights* lights; /**< All light definitions for map */
 
+      MapScriptInstance* script; /**< Script used for the map */
+
       //FIXME: use a more suitable structure.
       Kobold::List* dynamicThings; /**< Dynamic things list */
       Kobold::List* staticThings;  /**< Static things list */

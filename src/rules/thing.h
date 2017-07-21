@@ -174,10 +174,6 @@ class Thing : public Kobold::ListElement
        * \return true if succed, false if failed. */
       bool doCheck(Kobold::String stateToCheck, int difficulty);
 
-      /*! Function that implements the normal interaction (not on batle) 
-       * between a PlayableCharacter and the Thing. */
-      //virtual bool interact() = 0;
-      
       /*! Get the current number of life points
        * \return -> current life points */
       int getLifePoints();

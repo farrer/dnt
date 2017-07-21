@@ -241,10 +241,10 @@ void CommonApp::getDataDirectories(Ogre::String** dataDirectories,
       Ogre::String** dataGroups, int& total)
 {
    static Ogre::String dirs[] = {"gui", "compositors", "maps", "models", 
-      "fonts", "rules", "skeletons", "sndfx", "dialogs"};
+      "fonts", "rules", "skeletons", "sndfx", "dialogs", "scripts"};
    (*dataDirectories) = &dirs[0];
    (*dataGroups) = &dirs[0];
-   total = 9;
+   total = 10;
 }
 
 /***********************************************************************

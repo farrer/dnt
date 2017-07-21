@@ -29,9 +29,9 @@
 
 #include "../map/map.h"
 #include "../rules/character.h"
+#include "../ai/script/scriptmanager.h"
 
 #include <kobold/log.h>
-
 using namespace DNT;
 
 /************************************************************************
@@ -43,6 +43,7 @@ void Game::init(Ogre::SceneManager* sceneManager)
    npcs = new CharacterList();
    pcs = new CharacterList();
    fightMode = false;
+   scriptManager = new ScriptManager();
 }
 
 /************************************************************************
@@ -64,6 +65,11 @@ void Game::finish()
    {
       delete pcs;
       pcs = NULL;
+   }
+   if(scriptManager)
+   {
+      delete scriptManager;
+      scriptManager = NULL;
    }
    sceneManager = NULL;
 }
@@ -236,4 +242,5 @@ Ogre::SceneManager* Game::sceneManager = NULL;
 CharacterList* Game::npcs = NULL;
 CharacterList* Game::pcs = NULL;
 bool Game::fightMode = false;
+ScriptManager* Game::scriptManager = NULL;
 
