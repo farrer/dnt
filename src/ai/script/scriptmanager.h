@@ -25,15 +25,19 @@
 #include <OGRE/OgreString.h>
 #include <vector>
 #include <kobold/list.h>
+#include <kobold/parallelprocess.h>
 #include <SDL2/SDL.h>
 #include "scriptcontroller.h"
 #include "scriptinstance.h"
 #include "mapscript.h"
 
+/*! How much (in ms) should sleep before each step on ScriptManager */
+#define SCRIPT_UPDATE_TIME   100
+
 namespace DNT
 {
    /*! The manager of all DNT scripts. */
-   class ScriptManager
+   class ScriptManager : public Kobold::ParallelProcess
    {
       public:
          /*! Constructor */
@@ -80,12 +84,15 @@ namespace DNT
 
          void playSound(float x, float y, float z, Ogre::String file);
         
-         //TODO: update function: to call update function on script instances. 
-         
          static void lineCallback(asIScriptContext* ctx, Uint8* timeout);
 
          /*! Callback for receiving error messages from the scripts */
          void messageCallback(const asSMessageInfo& msg);
+
+         /*! Do a step on the script manager (should only be called by our
+          * script thread) */
+         bool step();
+         unsigned int getSleepTime() { return SCRIPT_UPDATE_TIME; };
 
       protected:
          /*! Get from already loaded controllers or load a new one, based
@@ -102,6 +109,8 @@ namespace DNT
          std::vector<asIScriptContext*> contexts; /**< Context pool */
          Kobold::List controllers; /**< List of ScriptControllers */
          Kobold::List instances; /**< List of ScriptInstances */
+         Kobold::Mutex managerMutex; /**< Mutex for access */
+         ScriptInstance* current; /**< Current treating script */
    };
 }
 

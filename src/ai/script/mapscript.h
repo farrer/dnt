@@ -56,7 +56,7 @@ class MapScript : public ScriptController
       /*! \return pointer to the constructor function */
       asIScriptFunction* getFactoryFunction();
       /*! \return pointer to the function called on every cycle */
-      asIScriptFunction* getUpdateFunction();
+      asIScriptFunction* getStepFunction();
       /*! \return pointer to the function called when map finished to load */
       asIScriptFunction* getOnLoadFunction();
       /*! \return pointer to the function called when PC entered the map */
@@ -71,7 +71,7 @@ class MapScript : public ScriptController
    private:
 
       asIScriptFunction* factoryFunction;
-      asIScriptFunction* updateFunction;
+      asIScriptFunction* stepFunction;
       asIScriptFunction* onLoadFunction;
       asIScriptFunction* onEnterFunction;
       asIScriptFunction* onExitFunction;

@@ -33,6 +33,8 @@ ScriptManager::ScriptManager()
 {
    int r;
 
+   current = NULL;
+
    /* Create the Engine and set its message and line callbacks */
    asEngine = asCreateScriptEngine();
    r = asEngine->SetMessageCallback(asMETHOD(ScriptManager, 
@@ -52,6 +54,8 @@ ScriptManager::ScriptManager()
    /* TODO: Register our classes */
    r = asEngine->RegisterInterface("MapController");
 
+   /* Start our thread */
+   createThread();
 }
 
 /**************************************************************************
@@ -59,6 +63,12 @@ ScriptManager::ScriptManager()
  **************************************************************************/
 ScriptManager::~ScriptManager()
 {
+   /* Stop our thread, if active */
+   if(isRunning())
+   {
+      endThread();
+   }
+
    /* We should remove all instances and controllers to decrement
     * all references before exiting the AngelScript engine. */
    instances.clear();
@@ -68,6 +78,44 @@ ScriptManager::~ScriptManager()
    {
       asEngine->ShutDownAndRelease();
    }
+}
+
+/**************************************************************************
+ *                                  step                                  *
+ **************************************************************************/
+bool ScriptManager::step()
+{
+   managerMutex.lock();
+   current = static_cast<ScriptInstance*>(instances.getFirst());
+   int total = instances.getTotal();
+   managerMutex.unlock();
+
+   /* Note: at worst case, we'll step more than once one script,
+    * as we kept the total and the list could had changed. */
+
+   for(int i = 0; i < total; i++)
+   {
+      //TODO: check if script is waiting a pending action,
+      //or if is suspended.
+
+      /* Run its step method. */
+      if(current->getScript()->getStepFunction())
+      {
+         callFunction(current, current->getScript()->getStepFunction()); 
+      }
+
+      /* Get next instance to step */
+      managerMutex.lock();
+      current = static_cast<ScriptInstance*>(current->getNext());
+      managerMutex.unlock();
+   }
+
+   /* No more steping any instance, must unset the current. */
+   managerMutex.lock();
+   current = NULL;
+   managerMutex.unlock();
+
+   return true;
 }
 
 /**************************************************************************
@@ -101,6 +149,7 @@ asIScriptContext* ScriptManager::prepareContextFromPool(
       asIScriptFunction* f)
 {
    asIScriptContext* ctx = NULL;
+   managerMutex.lock();
    if(contexts.size())
    {
       /* Get avaiable context form pool */
@@ -112,6 +161,7 @@ asIScriptContext* ScriptManager::prepareContextFromPool(
       /* Create a new context */
       ctx = asEngine->CreateContext();
    }
+   managerMutex.unlock();
 
    /* Prepare the context */
    int r = ctx->Prepare(f);
@@ -126,7 +176,9 @@ asIScriptContext* ScriptManager::prepareContextFromPool(
 void ScriptManager::returnContextToPool(asIScriptContext* ctx)
 {
    assert(ctx != NULL);
+   managerMutex.lock();
    contexts.push_back(ctx);
+   managerMutex.unlock();
 
    ctx->Unprepare();
 }
@@ -210,12 +262,15 @@ ScriptController* ScriptManager::getOrLoadController(
    {
       /* Loaded, return it */
       controllers.insert(ctrl);
-      return ctrl;
    }
-
-   /* Failed to load or compile, must not use it */
-   delete ctrl;
-   return NULL;
+   else
+   {
+      /* Failed to load or compile, must not use it */
+      delete ctrl;
+      ctrl = NULL;
+   }
+   
+   return ctrl;
 }
       
 /**************************************************************************
@@ -237,8 +292,10 @@ MapScriptInstance* ScriptManager::createMapScriptInstance(
    MapScriptInstance* res = ctrl->createInstance(mapFilename);
    if(res)
    {
+      managerMutex.lock();
       /* Add to our instances list */
       instances.insert(res);
+      managerMutex.unlock();
    }
 
    return res;
@@ -249,7 +306,12 @@ MapScriptInstance* ScriptManager::createMapScriptInstance(
  **************************************************************************/
 void ScriptManager::removeInstance(ScriptInstance* instance)
 {
+   /* Must wait until not executing the instance */
+   while(current == instance);
+   
+   managerMutex.lock();
    instances.remove(instance);
+   managerMutex.unlock();
 }
 
 /**************************************************************************

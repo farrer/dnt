@@ -84,7 +84,7 @@ MapScript::MapScript(ScriptManager* manager)
           :ScriptController(SCRIPT_TYPE_MAP, manager)
 {
    this->factoryFunction = NULL;
-   this->updateFunction = NULL;
+   this->stepFunction = NULL;
    this->onLoadFunction = NULL;
    this->onEnterFunction = NULL;
    this->onExitFunction = NULL;
@@ -134,7 +134,7 @@ void MapScript::setFunctionPointers()
             "Error: Script '%s' couldn't find factory '%s'",
             getFilename().c_str(), factoryName.c_str());
    }
-   this->updateFunction = mainType->GetMethodByDecl("void update()");
+   this->stepFunction = mainType->GetMethodByDecl("void step()");
    this->onLoadFunction = mainType->GetMethodByDecl("void onLoad()");
    this->onEnterFunction = mainType->GetMethodByDecl("void onEnter()");
    this->onExitFunction = mainType->GetMethodByDecl("void onExit()");
@@ -149,11 +149,11 @@ asIScriptFunction* MapScript::getFactoryFunction()
 }
 
 /**************************************************************************
- *                            getUpdateFunction                           *
+ *                            getStepFunction                           *
  **************************************************************************/
-asIScriptFunction* MapScript::getUpdateFunction()
+asIScriptFunction* MapScript::getStepFunction()
 {
-   return updateFunction;
+   return stepFunction;
 }
 
 /**************************************************************************

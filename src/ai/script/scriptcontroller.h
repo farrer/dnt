@@ -51,7 +51,7 @@ class ScriptController : public Kobold::ListElement
       virtual asIScriptFunction* getFactoryFunction() = 0;
       
       /*! \return pointer to the function to be called on every cycle */
-      virtual asIScriptFunction* getUpdateFunction() = 0;
+      virtual asIScriptFunction* getStepFunction() = 0;
 
       /*! \return type of the implemented script */
       const ScriptType getType() const { return this->type; };
