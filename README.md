@@ -12,9 +12,11 @@ This is the Ogre3d port/rewrite of former DNT (http://dnt.dnteam.org).
  * Ogg [https://xiph.org/downloads/]
  * Vorbis [https://xiph.org/downloads/]
  * VorbisFile [https://xiph.org/downloads/]
+ * AngelScript [http://www.angelcode.com/angelscript]
  * Kobold [https://github.com/farrer/kobold]
  * Kosound [https://github.com/farrer/kosound]
  * Goblin [https://github.com/farrer/goblin]
+ * Farso [https://github.com/farrer/farso]
 
 ## Building
 
