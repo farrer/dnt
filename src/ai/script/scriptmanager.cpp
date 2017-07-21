@@ -51,9 +51,18 @@ ScriptManager::ScriptManager()
          this);
    assert(r >= 0);
 
-   /* TODO: Register our classes */
+   /* Register our base interfaces */
    r = asEngine->RegisterInterface("MapController");
+   assert(r >= 0);
+   r = asEngine->RegisterInterface("MissionController");
+   assert(r >= 0);
+   r = asEngine->RegisterInterface("ThingController");
+   assert(r >= 0);
+   r = asEngine->RegisterInterface("CharacterController");
+   assert(r >= 0);
 
+   /* TODO: Register our classes */
+   
    /* Start our thread */
    createThread();
 }
@@ -95,13 +104,19 @@ bool ScriptManager::step()
 
    for(int i = 0; i < total; i++)
    {
-      //TODO: check if script is waiting a pending action,
-      //or if is suspended.
-
-      /* Run its step method. */
-      if(current->getScript()->getStepFunction())
+      /* Note: only do the step if not already running any other
+       * function on the script. If are, use its time to resume it. */
+      if(current->shouldResume())
       {
-         callFunction(current, current->getScript()->getStepFunction()); 
+         current->resume();
+      }
+      else if(!current->waitingActionEnd())
+      {
+         /* Run its step method. */
+         if(current->getScript()->getStepFunction())
+         {
+            callFunction(current, current->getScript()->getStepFunction()); 
+         }
       }
 
       /* Get next instance to step */
@@ -349,10 +364,14 @@ void ScriptManager::callFunction(ScriptInstance* instance,
    int r = executeCall(ctx);
    if(r == asEXECUTION_SUSPENDED)
    {
-      //TODO: must not end execution, keep the context and resume it on next
-      //      step.
+      /* Do not end execution, keep the context and resume latter
+       * on next step for this instance. */
+      instance->setSuspendedContext(ctx);
    }
-   returnContextToPool(ctx);
+   else
+   {
+      returnContextToPool(ctx);
+   }
 }
 
 

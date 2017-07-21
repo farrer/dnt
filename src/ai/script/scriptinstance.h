@@ -38,6 +38,22 @@ class ScriptInstance : public Kobold::ListElement
             ScriptManager* manager); 
       ~ScriptInstance();
 
+      /*! \return if should resume an instance running that was suspended.
+       * \note Equals to hasContextToResume() && !waitingActionEnd() */
+      const bool shouldResume() const;
+      /*! \return if is waiting for a pending action to end before 
+       *          should be resumed */
+      const bool waitingActionEnd() const;
+      /*! \return if have a suspended context to resume latter */
+      const bool hasContextToResume() const;
+
+      /*! Set the a suspended call context to be resumed latter.
+       * \param context suspended context to be resumed */
+      void setSuspendedContext(asIScriptContext* context);
+
+      /*! Resume the suspended context */
+      void resume();
+
       asIScriptObject* getObject() { return obj; };
       ScriptController* getScript() { return script; };
 
@@ -45,6 +61,8 @@ class ScriptInstance : public Kobold::ListElement
       asIScriptObject* obj; /**< AngelScript object as instance of script */
       ScriptController* script; /**< The script the object is an instance of */
       ScriptManager* manager; /**< Script manager used */
+
+      asIScriptContext* context; /**< Suspended context to be resumed */
 
 };
 

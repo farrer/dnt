@@ -19,6 +19,7 @@
 */
 
 #include "scriptinstance.h"
+#include "scriptmanager.h"
 using namespace DNT;
 
 /**************************************************************************
@@ -40,7 +41,62 @@ ScriptInstance::ScriptInstance(asIScriptObject* obj, ScriptController* script,
  **************************************************************************/
 ScriptInstance::~ScriptInstance()
 {
+   if(hasContextToResume())
+   {
+      manager->returnContextToPool(context);
+      context = NULL;
+   }
    /* No more using the object, decrement its reference */
    this->obj->Release();
+}
+
+/**************************************************************************
+ *                              shouldResume                              *
+ **************************************************************************/
+const bool ScriptInstance::shouldResume() const
+{
+   return hasContextToResume() && !waitingActionEnd();
+}
+
+/**************************************************************************
+ *                          waitingActionEnd                              *
+ **************************************************************************/
+const bool ScriptInstance::waitingActionEnd() const
+{
+   //TODO
+   return false;
+}
+
+/**************************************************************************
+ *                           hasContextToResume                           *
+ **************************************************************************/
+const bool ScriptInstance::hasContextToResume() const
+{
+   return context != NULL;
+}
+
+/**************************************************************************
+ *                         setSuspendedContext                            *
+ **************************************************************************/
+void ScriptInstance::setSuspendedContext(asIScriptContext* context)
+{
+   this->context = context;
+}
+
+/**************************************************************************
+ *                                  resume                                *
+ **************************************************************************/
+void ScriptInstance::resume()
+{
+   int r = manager->executeCall(context);
+   if(r == asEXECUTION_SUSPENDED)
+   {
+      setSuspendedContext(context);
+   }
+   else
+   {
+      manager->returnContextToPool(context);
+      context = NULL;
+   }
 }
 
