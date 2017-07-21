@@ -127,6 +127,8 @@ void ScriptManager::returnContextToPool(asIScriptContext* ctx)
 {
    assert(ctx != NULL);
    contexts.push_back(ctx);
+
+   ctx->Unprepare();
 }
 
 /**************************************************************************

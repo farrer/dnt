@@ -84,10 +84,15 @@ namespace DNT
          
          static void lineCallback(asIScriptContext* ctx, Uint8* timeout);
 
-      protected:
          /*! Callback for receiving error messages from the scripts */
          void messageCallback(const asSMessageInfo& msg);
 
+      protected:
+         /*! Get from already loaded controllers or load a new one, based
+          * on its type and filename.
+          * \param type type of the controller to get/load
+          * \param filename filename of the controller to get/load
+          * \return pointer to the controller or NULL if couldn't load */
          ScriptController* getOrLoadController(
                ScriptController::ScriptType type, Ogre::String filename);
 
