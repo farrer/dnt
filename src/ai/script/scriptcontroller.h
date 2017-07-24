@@ -66,8 +66,6 @@ class ScriptController : public Kobold::ListElement
       /*! \return number of active instances of the controller */
       const int getNumberOfInstances() const { return instCount; };
 
-      //TODO: pending actions related functions.
-
    protected:
       /*! Set all needed function pointers, for latter quick access. */
       virtual void setFunctionPointers() = 0;

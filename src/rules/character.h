@@ -24,6 +24,7 @@
 #include "dntconfig.h"
 
 #include <kobold/kstring.h>
+#include <kobold/mutex.h>
 
 #include "thing.h"
 #include "modeffect.h"
@@ -193,6 +194,7 @@ namespace DNT
          Race* race;    /**< Character race */
          Feats* feats;  /**< Character current owned feats */
          AStar* pathFind; /**< A* Path find for the character */
+         Kobold::Mutex mutex; /**< Mutex for access control */
 
       private:
          bool dead; /**< If the character is actually dead (just a corpse). */

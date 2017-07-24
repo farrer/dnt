@@ -108,7 +108,7 @@ MapScriptInstance* MapScript::createInstance(Ogre::String mapname)
    assert(factoryFunction != NULL);
    asIScriptContext* ctx = manager->prepareContextFromPool(factoryFunction);
    ctx->SetArgObject(0, &mapname);
-   int r = manager->executeCall(ctx);
+   int r = manager->executeCall(ctx, NULL);
    if(r == asEXECUTION_FINISHED)
    {
       asIScriptObject* obj = *((asIScriptObject**) 

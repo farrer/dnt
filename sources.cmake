@@ -98,6 +98,7 @@ set(AI_HEADERS
    src/ai/astar.h
    src/ai/patternagent.h
    src/ai/script/mapscript.h
+   src/ai/script/pendingaction.h
    src/ai/script/scriptcontroller.h
    src/ai/script/scriptinstance.h
    src/ai/script/scriptmanager.h
@@ -108,6 +109,7 @@ set(AI_SOURCES
    src/ai/astar.cpp
    src/ai/patternagent.cpp
    src/ai/script/mapscript.cpp
+   src/ai/script/pendingaction.cpp
    src/ai/script/scriptcontroller.cpp
    src/ai/script/scriptinstance.cpp
    src/ai/script/scriptmanager.cpp

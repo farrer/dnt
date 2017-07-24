@@ -21,6 +21,7 @@
 
 #include "scriptmanager.h"
 #include "scriptstdstring.h"
+#include "pendingaction.h"
 #include <kobold/log.h>
 #include <kosound/sound.h>
 #include <assert.h>
@@ -33,7 +34,9 @@ ScriptManager::ScriptManager()
 {
    int r;
 
-   current = NULL;
+   currentOnStep = NULL;
+   curRunningInstance = NULL;
+   curRunningContext = NULL;
 
    /* Create the Engine and set its message and line callbacks */
    asEngine = asCreateScriptEngine();
@@ -47,8 +50,10 @@ ScriptManager::ScriptManager()
    /* Register our 'global' functions */
    r = asEngine->RegisterGlobalFunction(
          "void playSound(float x, float y, float z, string file)",
-         asMETHOD(ScriptManager, playSound), asCALL_THISCALL_ASGLOBAL, 
-         this);
+         asMETHOD(ScriptManager, playSound), asCALL_THISCALL_ASGLOBAL, this);
+   assert(r >= 0);
+   r = asEngine->RegisterGlobalFunction("void sleep(int seconds)",
+         asMETHOD(ScriptManager, sleep), asCALL_THISCALL_ASGLOBAL, this);
    assert(r >= 0);
 
    /* Register our base interfaces */
@@ -95,7 +100,7 @@ ScriptManager::~ScriptManager()
 bool ScriptManager::step()
 {
    managerMutex.lock();
-   current = static_cast<ScriptInstance*>(instances.getFirst());
+   currentOnStep = static_cast<ScriptInstance*>(instances.getFirst());
    int total = instances.getTotal();
    managerMutex.unlock();
 
@@ -106,28 +111,41 @@ bool ScriptManager::step()
    {
       /* Note: only do the step if not already running any other
        * function on the script. If are, use its time to resume it. */
-      if(current->shouldResume())
+      if(currentOnStep->shouldResume())
       {
-         current->resume();
+         currentOnStep->resume();
       }
-      else if(!current->waitingActionEnd())
+      else if(!currentOnStep->waitingActionEnd())
       {
          /* Run its step method. */
-         if(current->getScript()->getStepFunction())
+         if(currentOnStep->getScript()->getStepFunction())
          {
-            callFunction(current, current->getScript()->getStepFunction()); 
+            callFunction(currentOnStep, 
+                  currentOnStep->getScript()->getStepFunction()); 
+         }
+      }
+      else /* if(current->waitingActionEnd()) */
+      {
+         PendingAction* action = currentOnStep->getPendingAction();
+         /* Must update the action */
+         if(action->update())
+         {
+            /* Done with the pending action, should resume script execution
+             * on next cycle */
+            delete action;
+            currentOnStep->setPendingAction(NULL);
          }
       }
 
       /* Get next instance to step */
       managerMutex.lock();
-      current = static_cast<ScriptInstance*>(current->getNext());
+      currentOnStep = static_cast<ScriptInstance*>(currentOnStep->getNext());
       managerMutex.unlock();
    }
 
    /* No more steping any instance, must unset the current. */
    managerMutex.lock();
-   current = NULL;
+   currentOnStep = NULL;
    managerMutex.unlock();
 
    return true;
@@ -212,8 +230,17 @@ void ScriptManager::lineCallback(asIScriptContext* ctx, Uint8* timeout)
 /**************************************************************************
  *                               executeCall                              *
  **************************************************************************/
-int ScriptManager::executeCall(asIScriptContext* ctx, int maxTime)
+int ScriptManager::executeCall(asIScriptContext* ctx, 
+      ScriptInstance* instance, int maxTime)
 {
+   /* Note: we are only allowing a single instance to be executed at the
+    * same time. This way we can treat and suspend context on pending action
+    * functions, without needing to check each thread called the function. */
+   managerMutex.lock();
+
+   /* Set current running pointers */
+   curRunningInstance = instance;
+   curRunningContext = ctx;
 
    /* Set our line-time-out check function */
    Uint8 timeout = SDL_GetTicks() + maxTime;
@@ -240,6 +267,11 @@ int ScriptManager::executeCall(asIScriptContext* ctx, int maxTime)
       }
    }
 
+   /* Clear current running */
+   curRunningInstance = NULL;
+   curRunningContext = NULL;
+
+   managerMutex.unlock();
    return r;
 }
 
@@ -322,7 +354,7 @@ MapScriptInstance* ScriptManager::createMapScriptInstance(
 void ScriptManager::removeInstance(ScriptInstance* instance)
 {
    /* Must wait until not executing the instance */
-   while(current == instance);
+   while(currentOnStep == instance);
    
    managerMutex.lock();
    instances.remove(instance);
@@ -361,7 +393,7 @@ void ScriptManager::callFunction(ScriptInstance* instance,
 {
    asIScriptContext* ctx = prepareContextFromPool(function);
    ctx->SetObject(instance->getObject());
-   int r = executeCall(ctx);
+   int r = executeCall(ctx, instance);
    if(r == asEXECUTION_SUSPENDED)
    {
       /* Do not end execution, keep the context and resume latter
@@ -381,5 +413,16 @@ void ScriptManager::callFunction(ScriptInstance* instance,
 void ScriptManager::playSound(float x, float y, float z, Ogre::String file)
 {
    Kosound::Sound::addSoundEffect(x, y, z, -1, file);
+}
+
+/**************************************************************************
+ *                                  sleep                                 *
+ **************************************************************************/
+void ScriptManager::sleep(int seconds)
+{
+   curRunningInstance->setPendingAction(new PendingActionSleep(seconds));
+
+   /* Suspend current execution */
+   curRunningContext->Suspend();
 }
 

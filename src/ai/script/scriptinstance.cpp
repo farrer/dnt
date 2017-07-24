@@ -20,6 +20,8 @@
 
 #include "scriptinstance.h"
 #include "scriptmanager.h"
+#include "scriptcontroller.h"
+#include "pendingaction.h"
 using namespace DNT;
 
 /**************************************************************************
@@ -34,7 +36,8 @@ ScriptInstance::ScriptInstance(asIScriptObject* obj, ScriptController* script,
    /* Set the script controller and manager*/
    this->script = script;
    this->manager = manager;
-   this->context = NULL;
+   this->suspendedContext = NULL;
+   this->pendingAction = NULL;
 }
 
 /**************************************************************************
@@ -44,8 +47,13 @@ ScriptInstance::~ScriptInstance()
 {
    if(hasContextToResume())
    {
-      manager->returnContextToPool(context);
-      context = NULL;
+      manager->returnContextToPool(suspendedContext);
+      suspendedContext = NULL;
+   }
+   if(pendingAction != NULL)
+   {
+      delete pendingAction;
+      pendingAction = NULL;
    }
    /* No more using the object, decrement its reference */
    this->obj->Release();
@@ -64,8 +72,7 @@ const bool ScriptInstance::shouldResume() const
  **************************************************************************/
 const bool ScriptInstance::waitingActionEnd() const
 {
-   //TODO
-   return false;
+   return pendingAction != NULL;
 }
 
 /**************************************************************************
@@ -73,7 +80,7 @@ const bool ScriptInstance::waitingActionEnd() const
  **************************************************************************/
 const bool ScriptInstance::hasContextToResume() const
 {
-   return context != NULL;
+   return suspendedContext != NULL;
 }
 
 /**************************************************************************
@@ -81,7 +88,7 @@ const bool ScriptInstance::hasContextToResume() const
  **************************************************************************/
 void ScriptInstance::setSuspendedContext(asIScriptContext* context)
 {
-   this->context = context;
+   this->suspendedContext = context;
 }
 
 /**************************************************************************
@@ -89,15 +96,23 @@ void ScriptInstance::setSuspendedContext(asIScriptContext* context)
  **************************************************************************/
 void ScriptInstance::resume()
 {
-   int r = manager->executeCall(context);
+   int r = manager->executeCall(suspendedContext, this);
    if(r == asEXECUTION_SUSPENDED)
    {
-      setSuspendedContext(context);
+      setSuspendedContext(suspendedContext);
    }
    else
    {
-      manager->returnContextToPool(context);
-      context = NULL;
+      manager->returnContextToPool(suspendedContext);
+      suspendedContext = NULL;
    }
+}
+
+/**************************************************************************
+ *                            setPendingAction                            *
+ **************************************************************************/
+void ScriptInstance::setPendingAction(PendingAction* action)
+{
+   this->pendingAction = action;
 }
 

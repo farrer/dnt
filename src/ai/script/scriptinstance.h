@@ -24,10 +24,14 @@
 #include <angelscript.h>
 #include <OGRE/OgreString.h>
 #include <kobold/list.h>
-#include "scriptcontroller.h"
+#include "dntconfig.h"
 
 namespace DNT
 {
+
+//FIXME: must be able to suspend multiple times the same instance,
+//       with distinct pending actions or timeouts (as an instance could be 
+//       called by different entry functions (ie: step, onClick, etc).
 
 /*! DNT implements each of its scripts as an AngelScript class. Thus,
  * each one should have an instance, which information is kept by this class */
@@ -50,19 +54,26 @@ class ScriptInstance : public Kobold::ListElement
       /*! Set the a suspended call context to be resumed latter.
        * \param context suspended context to be resumed */
       void setSuspendedContext(asIScriptContext* context);
-
+      
       /*! Resume the suspended context */
       void resume();
 
       asIScriptObject* getObject() { return obj; };
       ScriptController* getScript() { return script; };
 
+      /*! Set the current pending action of the instance */
+      void setPendingAction(PendingAction* action);
+      /*! \return pointer to current pending action, if any. */
+      PendingAction* getPendingAction() { return pendingAction; };
+
    protected:
       asIScriptObject* obj; /**< AngelScript object as instance of script */
       ScriptController* script; /**< The script the object is an instance of */
       ScriptManager* manager; /**< Script manager used */
 
-      asIScriptContext* context; /**< Suspended context to be resumed */
+      asIScriptContext* suspendedContext; /**< Suspended context 
+                                               to be resumed. */
+      PendingAction* pendingAction; /**< Action pending */
 
 };
 

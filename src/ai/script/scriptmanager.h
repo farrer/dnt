@@ -77,12 +77,15 @@ namespace DNT
          asIScriptContext* prepareContextFromPool(asIScriptFunction* f);
          /*! Return a context to the pool, after execution */
          void returnContextToPool(asIScriptContext* ctx);
-         /*! Execute a prepared function call from context */
-         int executeCall(asIScriptContext* ctx, int maxTime=2000);
+         /*! Execute a prepared function call from context 
+          * \param ctx the context to use
+          * \param instance script instance where to call. Should only be NULL
+          *        when calling the factory function (which will create an 
+          *        instance itself)*/
+         int executeCall(asIScriptContext* ctx, ScriptInstance* instance, 
+               int maxTime=2000);
 
          asIScriptEngine* getScriptEngine() { return asEngine; };
-
-         void playSound(float x, float y, float z, Ogre::String file);
         
          static void lineCallback(asIScriptContext* ctx, Uint8* timeout);
 
@@ -93,6 +96,10 @@ namespace DNT
           * script thread) */
          bool step();
          unsigned int getSleepTime() { return SCRIPT_UPDATE_TIME; };
+
+         /* Global Functions */
+         void playSound(float x, float y, float z, Ogre::String file);
+         void sleep(int seconds);
 
       protected:
          /*! Get from already loaded controllers or load a new one, based
@@ -110,7 +117,9 @@ namespace DNT
          Kobold::List controllers; /**< List of ScriptControllers */
          Kobold::List instances; /**< List of ScriptInstances */
          Kobold::Mutex managerMutex; /**< Mutex for access */
-         ScriptInstance* current; /**< Current treating script */
+         ScriptInstance* currentOnStep; /**< Current onStep instance */
+         ScriptInstance* curRunningInstance; /**< Current running instance */
+         asIScriptContext* curRunningContext; /**< Current running context */
    };
 }
 
