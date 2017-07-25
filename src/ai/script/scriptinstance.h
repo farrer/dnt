@@ -24,23 +24,30 @@
 #include <angelscript.h>
 #include <OGRE/OgreString.h>
 #include <kobold/list.h>
+#include <kobold/mutex.h>
 #include "dntconfig.h"
 
 namespace DNT
 {
 
-//FIXME: must be able to suspend multiple times the same instance,
-//       with distinct pending actions or timeouts (as an instance could be 
-//       called by different entry functions (ie: step, onClick, etc).
-
-/*! DNT implements each of its scripts as an AngelScript class. Thus,
- * each one should have an instance, which information is kept by this class */
-class ScriptInstance : public Kobold::ListElement
+/*! Information about a suspended execution on a script instance. An instance
+ * could be suspended for two reasons: if it takes too much time or if it 
+ * called a pending action function. As each instance could be called by 
+ * different entry functions (ie: step, onClick, onLoad, etc.), it can be
+ * suspended more than one time at a cycle, making this class necessary. */
+class SuspendedInfo : public Kobold::ListElement
 {
    public:
-      ScriptInstance(asIScriptObject* obj, ScriptController* script,
-            ScriptManager* manager); 
-      ~ScriptInstance();
+      SuspendedInfo(asIScriptContext* context, PendingAction* action, 
+            ScriptManager* manager);
+      ~SuspendedInfo();
+
+      asIScriptContext* getContext() { return context; };
+      PendingAction* getPendingAction() { return action; };
+
+      /*! Delete the action (usually when it's done), to allow the
+       * resume of the suspended context on next cycle */
+      void deleteAction();
 
       /*! \return if should resume an instance running that was suspended.
        * \note Equals to hasContextToResume() && !waitingActionEnd() */
@@ -51,29 +58,43 @@ class ScriptInstance : public Kobold::ListElement
       /*! \return if have a suspended context to resume latter */
       const bool hasContextToResume() const;
 
-      /*! Set the a suspended call context to be resumed latter.
-       * \param context suspended context to be resumed */
-      void setSuspendedContext(asIScriptContext* context);
-      
-      /*! Resume the suspended context */
-      void resume();
+   private:
+      asIScriptContext* context;
+      PendingAction* action;
+      ScriptManager* manager;
+};
+
+/*! DNT implements each of its scripts as an AngelScript class. Thus,
+ * each one should have an instance, which information is kept by this class */
+class ScriptInstance : public Kobold::ListElement
+{
+   public:
+      ScriptInstance(asIScriptObject* obj, ScriptController* script,
+            ScriptManager* manager); 
+      ~ScriptInstance();
 
       asIScriptObject* getObject() { return obj; };
       ScriptController* getScript() { return script; };
 
-      /*! Set the current pending action of the instance */
-      void setPendingAction(PendingAction* action);
-      /*! \return pointer to current pending action, if any. */
-      PendingAction* getPendingAction() { return pendingAction; };
+      /*! Do a step update on the script instance */
+      void step();
+
+      /*! Add a suspended context to the script */
+      void addSuspendedContext(asIScriptContext* ctx, PendingAction* act);
 
    protected:
+
+      /*! Resume a suspended context from this instance
+       * \param info suspended information to be resumed.
+       * \return AngelScript return integer. */
+      int resume(SuspendedInfo* info);
+
       asIScriptObject* obj; /**< AngelScript object as instance of script */
       ScriptController* script; /**< The script the object is an instance of */
       ScriptManager* manager; /**< Script manager used */
 
-      asIScriptContext* suspendedContext; /**< Suspended context 
-                                               to be resumed. */
-      PendingAction* pendingAction; /**< Action pending */
+      Kobold::List suspended; /**< List of suspended contexts */
+      Kobold::Mutex mutex;
 
 };
 

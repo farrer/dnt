@@ -27,6 +27,68 @@ using namespace DNT;
 /**************************************************************************
  *                              Constructor                               *
  **************************************************************************/
+SuspendedInfo::SuspendedInfo(asIScriptContext* context, PendingAction* action,
+      ScriptManager* manager)
+{
+   this->context = context;
+   this->action = action;
+   this->manager = manager;
+}
+
+/**************************************************************************
+ *                               Destructor                               *
+ **************************************************************************/
+SuspendedInfo::~SuspendedInfo()
+{
+   if(hasContextToResume())
+   {
+      manager->returnContextToPool(context);
+      context = NULL;
+   }
+   if(action != NULL)
+   {
+      delete action;
+      action = NULL;
+   }
+}
+
+/**************************************************************************
+ *                              deleteAction                              *
+ **************************************************************************/
+void SuspendedInfo::deleteAction()
+{
+   assert(action != NULL);
+   delete action;
+   action = NULL;
+}
+
+/**************************************************************************
+ *                              shouldResume                              *
+ **************************************************************************/
+const bool SuspendedInfo::shouldResume() const
+{
+   return hasContextToResume() && !waitingActionEnd();
+}
+
+/**************************************************************************
+ *                          waitingActionEnd                              *
+ **************************************************************************/
+const bool SuspendedInfo::waitingActionEnd() const
+{
+   return action != NULL;
+}
+
+/**************************************************************************
+ *                           hasContextToResume                           *
+ **************************************************************************/
+const bool SuspendedInfo::hasContextToResume() const
+{
+   return context != NULL;
+}
+
+/**************************************************************************
+ *                              Constructor                               *
+ **************************************************************************/
 ScriptInstance::ScriptInstance(asIScriptObject* obj, ScriptController* script,
       ScriptManager* manager)
 {
@@ -36,8 +98,6 @@ ScriptInstance::ScriptInstance(asIScriptObject* obj, ScriptController* script,
    /* Set the script controller and manager*/
    this->script = script;
    this->manager = manager;
-   this->suspendedContext = NULL;
-   this->pendingAction = NULL;
 }
 
 /**************************************************************************
@@ -45,74 +105,96 @@ ScriptInstance::ScriptInstance(asIScriptObject* obj, ScriptController* script,
  **************************************************************************/
 ScriptInstance::~ScriptInstance()
 {
-   if(hasContextToResume())
-   {
-      manager->returnContextToPool(suspendedContext);
-      suspendedContext = NULL;
-   }
-   if(pendingAction != NULL)
-   {
-      delete pendingAction;
-      pendingAction = NULL;
-   }
+   suspended.clear();
    /* No more using the object, decrement its reference */
    this->obj->Release();
 }
 
 /**************************************************************************
- *                              shouldResume                              *
- **************************************************************************/
-const bool ScriptInstance::shouldResume() const
-{
-   return hasContextToResume() && !waitingActionEnd();
-}
-
-/**************************************************************************
- *                          waitingActionEnd                              *
- **************************************************************************/
-const bool ScriptInstance::waitingActionEnd() const
-{
-   return pendingAction != NULL;
-}
-
-/**************************************************************************
- *                           hasContextToResume                           *
- **************************************************************************/
-const bool ScriptInstance::hasContextToResume() const
-{
-   return suspendedContext != NULL;
-}
-
-/**************************************************************************
- *                         setSuspendedContext                            *
- **************************************************************************/
-void ScriptInstance::setSuspendedContext(asIScriptContext* context)
-{
-   this->suspendedContext = context;
-}
-
-/**************************************************************************
  *                                  resume                                *
  **************************************************************************/
-void ScriptInstance::resume()
+int ScriptInstance::resume(SuspendedInfo* info)
 {
-   int r = manager->executeCall(suspendedContext, this);
-   if(r == asEXECUTION_SUSPENDED)
+   return manager->executeCall(info->getContext(), this);
+}
+
+/**************************************************************************
+ *                           addSuspendedContext                          *
+ **************************************************************************/
+void ScriptInstance::addSuspendedContext(asIScriptContext* ctx, 
+      PendingAction* act)
+{
+   mutex.lock();
+
+   /* Only add if context is different from last added one (to avoid double
+    * references to the same suspended context) */
+   SuspendedInfo* last = static_cast<SuspendedInfo*>(suspended.getLast());
+   if((last == NULL) || (last->getContext() != ctx))
    {
-      setSuspendedContext(suspendedContext);
+      suspended.insert(new SuspendedInfo(ctx, act, manager));
+   }
+
+   mutex.unlock();
+}
+
+/**************************************************************************
+ *                                   step                                 *
+ **************************************************************************/
+void ScriptInstance::step()
+{
+   /* Note: only do the step if not already running any other
+    * function on the script. If are, use its time to resume it. */
+   if(suspended.getTotal() == 0)
+   {
+      /* No suspended contexts: call the normal step function */
+      if(script->getStepFunction())
+      {
+         manager->callFunction(this, script->getStepFunction());
+      }
    }
    else
    {
-      manager->returnContextToPool(suspendedContext);
-      suspendedContext = NULL;
-   }
-}
+      bool shouldRemove;
+      mutex.lock();
+      /* Let's check all suspended contexts */
+      SuspendedInfo* info = static_cast<SuspendedInfo*>(suspended.getFirst());
+      int total = suspended.getTotal();
+      mutex.unlock();
 
-/**************************************************************************
- *                            setPendingAction                            *
- **************************************************************************/
-void ScriptInstance::setPendingAction(PendingAction* action)
-{
-   this->pendingAction = action;
+      for(int i=0; i < total; i++)
+      {
+         shouldRemove = false;
+         if(info->shouldResume())
+         {
+            /* Resume the suspended script */
+            shouldRemove = (resume(info) != asEXECUTION_SUSPENDED);
+         }
+         else if(info->waitingActionEnd())
+         {
+            /* Waiting for action end, update it. */
+            if(info->getPendingAction()->update())
+            {
+               /* Action done, must remove it and resume script on next cycle */
+               info->deleteAction();
+            }
+         }
+         
+         if(shouldRemove)
+         {
+            SuspendedInfo* tmp = info;
+            mutex.lock();
+            info = static_cast<SuspendedInfo*>(info->getNext());
+            suspended.remove(tmp);
+            mutex.unlock();
+         }
+         else
+         {
+            mutex.lock();
+            info = static_cast<SuspendedInfo*>(info->getNext());
+            mutex.unlock();
+         }
+      }
+
+   }
 }
 

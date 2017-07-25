@@ -38,6 +38,9 @@ ScriptManager::ScriptManager()
    curRunningInstance = NULL;
    curRunningContext = NULL;
 
+   Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL,
+         "Initing ScriptManager...");
+
    /* Create the Engine and set its message and line callbacks */
    asEngine = asCreateScriptEngine();
    r = asEngine->SetMessageCallback(asMETHOD(ScriptManager, 
@@ -77,17 +80,39 @@ ScriptManager::ScriptManager()
  **************************************************************************/
 ScriptManager::~ScriptManager()
 {
+   Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL,
+         "Finishing ScriptManager...");
+
    /* Stop our thread, if active */
    if(isRunning())
    {
+      Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL,
+         "\tWaiting thread to end...");
       endThread();
    }
 
    /* We should remove all instances and controllers to decrement
     * all references before exiting the AngelScript engine. */
+   Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL,
+         "\tClearing active instances...");
    instances.clear();
+   Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL,
+         "\tClearing controllers...");
    controllers.clear();
 
+   /* Release all created contexts */
+   Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL,
+         "\tReleasing context pool...");
+   while(contexts.size())
+   {
+      /* Get avaiable context form pool */
+      asIScriptContext* ctx = *contexts.rbegin();
+      contexts.pop_back();
+      ctx->Release();
+   }
+
+   Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL,
+         "\tShuting down AngelScript engine...");
    if(asEngine)
    {
       asEngine->ShutDownAndRelease();
@@ -109,33 +134,7 @@ bool ScriptManager::step()
 
    for(int i = 0; i < total; i++)
    {
-      /* Note: only do the step if not already running any other
-       * function on the script. If are, use its time to resume it. */
-      if(currentOnStep->shouldResume())
-      {
-         currentOnStep->resume();
-      }
-      else if(!currentOnStep->waitingActionEnd())
-      {
-         /* Run its step method. */
-         if(currentOnStep->getScript()->getStepFunction())
-         {
-            callFunction(currentOnStep, 
-                  currentOnStep->getScript()->getStepFunction()); 
-         }
-      }
-      else /* if(current->waitingActionEnd()) */
-      {
-         PendingAction* action = currentOnStep->getPendingAction();
-         /* Must update the action */
-         if(action->update())
-         {
-            /* Done with the pending action, should resume script execution
-             * on next cycle */
-            delete action;
-            currentOnStep->setPendingAction(NULL);
-         }
-      }
+      currentOnStep->step();
 
       /* Get next instance to step */
       managerMutex.lock();
@@ -209,6 +208,7 @@ asIScriptContext* ScriptManager::prepareContextFromPool(
 void ScriptManager::returnContextToPool(asIScriptContext* ctx)
 {
    assert(ctx != NULL);
+   
    managerMutex.lock();
    contexts.push_back(ctx);
    managerMutex.unlock();
@@ -398,7 +398,7 @@ void ScriptManager::callFunction(ScriptInstance* instance,
    {
       /* Do not end execution, keep the context and resume latter
        * on next step for this instance. */
-      instance->setSuspendedContext(ctx);
+      instance->addSuspendedContext(ctx, NULL);
    }
    else
    {
@@ -420,7 +420,8 @@ void ScriptManager::playSound(float x, float y, float z, Ogre::String file)
  **************************************************************************/
 void ScriptManager::sleep(int seconds)
 {
-   curRunningInstance->setPendingAction(new PendingActionSleep(seconds));
+   curRunningInstance->addSuspendedContext(curRunningContext, 
+         new PendingActionSleep(seconds));
 
    /* Suspend current execution */
    curRunningContext->Suspend();
