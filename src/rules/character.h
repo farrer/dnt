@@ -126,11 +126,6 @@ namespace DNT
          /*! \return pointer to character's inventory */
          Inventory* getInventory();
 
-         /*! \return initial position on map */
-         Ogre::Vector3 getInitialPosition();
-         /*! Set initial position on map */
-         void setInitialPosition(Ogre::Vector3 pos);
-
          /*! Set current charcter animation 
           * \param animation to set
           * \param loop if will loop or just run once. */
@@ -206,8 +201,6 @@ namespace DNT
          DiceInfo bareHandsDice; /**< Damage dice for barehands fight */
 
          Inventory* inventory; /**< Character inventory */
-
-         Ogre::Vector3 initialPos; /**< Initial position on map */
 
          static Kobold::String animationList[CHARACTER_TOTAL_ANIMATIONS];
    };

@@ -240,7 +240,18 @@ class Thing : public Kobold::ListElement
       /*! \return if should do a depth collision check with Thing's model 
        * triangles or just bounding box check is sufficient */
       virtual const bool shouldDepthCollisionCheck() const { return true; }
-      
+
+      /*! Undefine the defined script object */
+      void undefineScriptObject() { scriptObject = NULL; };
+
+      /*! Define the script object related to this thing */
+      void defineScriptObject(ScriptObject* sobj) { scriptObject = sobj; };
+
+      /*! \return initial position on map */
+      const Ogre::Vector3& getInitialPosition() const { return initialPos; };
+      /*! Set initial position on map */
+      void setInitialPosition(Ogre::Vector3 pos);
+
    protected:
 
       /*! Parse specifc key/value pair readed from definition's file that
@@ -267,6 +278,7 @@ class Thing : public Kobold::ListElement
       float getTurnAroundInterval(); 
 
       Kobold::String portraitFile; /**< Thing's portrait filename, if any */
+      ScriptObject* scriptObject; /**< Script Object related to the thing */
 
    private:
       ThingType thingType; /**< Thing's type */
@@ -288,6 +300,7 @@ class Thing : public Kobold::ListElement
       bool walkable; /**< If the thing could be walkable through or not. */
 
       Kobold::String modelFileName; /**< File name of the 3d model */
+      Ogre::Vector3 initialPos; /**< Initial position on map */
       Goblin::Model3d* model; /**< The 3d model representing the thing */
 
       Kobold::String conversationFile; /**< Conversation file, if any. */

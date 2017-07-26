@@ -65,6 +65,12 @@ namespace DNT
          /*! \return current PlayableCharacters list */
          static CharacterList* getPcs();
 
+         /*! \return pointer to a character from the list */
+         static Character* getCharacter(Kobold::String filename, 
+               Ogre::Vector3 originalPos);
+         /*! \return pointer to a character from the list */
+         static Character* getCharacter(Kobold::String filename); 
+
          /*! Create a new object (with its specialization type) based on its
           * file extension.
           * \param filename file to create (and load) object 
@@ -85,6 +91,9 @@ namespace DNT
          static const bool isAtFightMode() { return fightMode; };
 
       private:
+         static Character* getCharacter(Kobold::String filename, 
+               Ogre::Vector3 originalPos, bool usePos);
+
          static Ogre::SceneManager* sceneManager; /**< Used scene manager */
 
          static Map* currentMap; /**< Current loaded map pointer */

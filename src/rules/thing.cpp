@@ -29,6 +29,8 @@
 #include "../core/dialog.h"
 #include "../core/game.h"
 #include "../map/map.h"
+#include "../ai/script/scriptobject.h"
+#include "../ai/script/scriptmanager.h"
 
 #include <kobold/defparser.h>
 #include <kobold/log.h>
@@ -77,6 +79,7 @@ Thing::Thing(ThingType type, int totalAnimations)
    this->thingType = type;
    this->totalAnimations = totalAnimations;
    this->colElements = new Kobold::List();
+   this->scriptObject = NULL;
 }
 
 /**************************************************************************
@@ -84,6 +87,12 @@ Thing::Thing(ThingType type, int totalAnimations)
  **************************************************************************/
 Thing::~Thing()
 {
+   if(scriptObject)
+   {
+      /* Tell the script object that its pointer is no longer valid */
+      scriptObject->setPointer(NULL);
+   }
+
    /* Clean conversation, if loaded */
    if(conversation)
    {
@@ -305,6 +314,17 @@ bool Thing::load(Kobold::String fileName,
    }
 
    return true;
+}
+
+/**************************************************************************
+ *                           updateScriptObject                           *
+ **************************************************************************/
+void Thing::setInitialPosition(Ogre::Vector3 pos)
+{
+   initialPos = pos;
+   model->setPosition(pos);
+   scriptObject = Game::getScriptManager()->getAndDefinePointer(filename, 
+      pos, this);
 }
 
 /**************************************************************************

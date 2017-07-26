@@ -25,6 +25,7 @@
 #include <OGRE/OgreString.h>
 #include <vector>
 #include <kobold/list.h>
+#include <kobold/kstring.h>
 #include <kobold/parallelprocess.h>
 #include <SDL2/SDL.h>
 #include "scriptcontroller.h"
@@ -51,7 +52,7 @@ namespace DNT
           * \param mapname name of the map
           * \return new instance of the loaded script */
          MapScriptInstance* createMapScriptInstance(
-               Ogre::String filename, Ogre::String mapFilename);
+               Kobold::String filename, Kobold::String mapFilename);
 
          /*! Call an specific instance function.
           * \param instance to call an specific function.
@@ -96,10 +97,19 @@ namespace DNT
           * script thread) */
          bool step();
          unsigned int getSleepTime() { return SCRIPT_UPDATE_TIME; };
+ 
+         /*! Search for a already create ScriptObject with filename and 
+          * position and set its related game pointer.
+          * \return pointer to the ScriptObject found, if any */
+         ScriptObject* getAndDefinePointer(Kobold::String filename,
+               const Ogre::Vector3 pos, void* newPtr);
 
          /* Global Functions */
-         void playSound(float x, float y, float z, Ogre::String file);
+         void playSound(float x, float y, float z, Kobold::String file);
          void sleep(int seconds);
+         ScriptObjectCharacter* getCharacter(Kobold::String filename, 
+               float x, float y, float z);
+         ScriptObjectCharacter* getCharacterByFilename(Kobold::String filename);
 
       protected:
          /*! Get from already loaded controllers or load a new one, based
@@ -108,7 +118,7 @@ namespace DNT
           * \param filename filename of the controller to get/load
           * \return pointer to the controller or NULL if couldn't load */
          ScriptController* getOrLoadController(
-               ScriptController::ScriptType type, Ogre::String filename);
+               ScriptController::ScriptType type, Kobold::String filename);
 
       private:
          asIScriptEngine* asEngine;
@@ -116,6 +126,7 @@ namespace DNT
          std::vector<asIScriptContext*> contexts; /**< Context pool */
          Kobold::List controllers; /**< List of ScriptControllers */
          Kobold::List instances; /**< List of ScriptInstances */
+         Kobold::List objects; /**< List of ScriptObjects */
          Kobold::Mutex managerMutex; /**< Mutex for access */
          ScriptInstance* currentOnStep; /**< Current onStep instance */
          ScriptInstance* curRunningInstance; /**< Current running instance */

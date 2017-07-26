@@ -138,7 +138,7 @@ Map* Game::loadMap(Kobold::String filename, bool fullPath,
       {
          //FIXME: currently putting all at the same position, it should be
          //       fixed to support multiple PCs.
-         ch->getModel()->setPosition(map->getInitialPosition());
+         ch->setInitialPosition(map->getInitialPosition());
 
          ch = static_cast<Character*>(ch->getNext());
       }
@@ -169,6 +169,55 @@ CharacterList* Game::getNpcs()
 CharacterList* Game::getPcs()
 {
    return pcs;
+}
+
+/************************************************************************
+ *                             getCharacter                             *
+ ************************************************************************/
+Character* Game::getCharacter(Kobold::String filename)
+{
+   return getCharacter(filename, Ogre::Vector3(0, 0, 0), false);
+}
+Character* Game::getCharacter(Kobold::String filename, 
+      Ogre::Vector3 originalPos)
+{
+   return getCharacter(filename, originalPos, true);
+}
+Character* Game::getCharacter(Kobold::String filename, 
+      Ogre::Vector3 originalPos, bool usePos)
+{
+   /* FIXME Should lock */
+
+   Character* c;
+   int total;
+
+   for(int l=0; l < 2; l++)
+   {
+      if(l == 0)
+      {
+         /* Search on PCs */
+         c = static_cast<Character*>(pcs->getFirst());
+         total = pcs->getTotal();
+      }
+      else
+      {
+         /* Search on NPCs */
+         c = static_cast<Character*>(npcs->getFirst());
+         total = npcs->getTotal();
+      }
+
+      for(int i=0; i < total; i++)
+      {
+         if((c->getFilename() == filename) && 
+            ((!usePos) || (c->getInitialPosition() == originalPos)))
+         {
+            return c;
+         }
+         c = static_cast<Character*>(c->getNext());
+      }
+   }
+
+   return NULL;
 }
 
 /************************************************************************

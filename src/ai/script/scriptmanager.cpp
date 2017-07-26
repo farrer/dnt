@@ -21,6 +21,8 @@
 
 #include "scriptmanager.h"
 #include "scriptstdstring.h"
+#include "scriptobject.h"
+#include "scriptobjectcharacter.h"
 #include "pendingaction.h"
 #include <kobold/log.h>
 #include <kosound/sound.h>
@@ -43,12 +45,16 @@ ScriptManager::ScriptManager()
 
    /* Create the Engine and set its message and line callbacks */
    asEngine = asCreateScriptEngine();
+   asEngine->SetEngineProperty(asEP_DISALLOW_GLOBAL_VARS, true);
    r = asEngine->SetMessageCallback(asMETHOD(ScriptManager, 
             messageCallback), this, asCALL_THISCALL); 
    assert(r >= 0);
 
    /* Register the default string type */
    RegisterStdString(asEngine);
+
+   /* Register our classes */
+   ScriptObjectCharacter::doScriptRegister(asEngine);
 
    /* Register our 'global' functions */
    r = asEngine->RegisterGlobalFunction(
@@ -57,6 +63,17 @@ ScriptManager::ScriptManager()
    assert(r >= 0);
    r = asEngine->RegisterGlobalFunction("void sleep(int seconds)",
          asMETHOD(ScriptManager, sleep), asCALL_THISCALL_ASGLOBAL, this);
+   assert(r >= 0);
+
+   /* Functions to get character from game */
+   r = asEngine->RegisterGlobalFunction(
+         "Character @+ getCharacter(string file, float x, float y, float z)",
+         asMETHOD(ScriptManager, getCharacter), asCALL_THISCALL_ASGLOBAL, this);
+   assert(r >= 0);
+   r = asEngine->RegisterGlobalFunction(
+         "Character @+ getCharacter(string file)",
+         asMETHOD(ScriptManager, getCharacterByFilename), 
+         asCALL_THISCALL_ASGLOBAL, this);
    assert(r >= 0);
 
    /* Register our base interfaces */
@@ -68,8 +85,6 @@ ScriptManager::ScriptManager()
    assert(r >= 0);
    r = asEngine->RegisterInterface("CharacterController");
    assert(r >= 0);
-
-   /* TODO: Register our classes */
    
    /* Start our thread */
    createThread();
@@ -99,6 +114,9 @@ ScriptManager::~ScriptManager()
    Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL,
          "\tClearing controllers...");
    controllers.clear();
+   Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL,
+         "\tClearing ScriptObjects...");
+   objects.clear();
 
    /* Release all created contexts */
    Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL,
@@ -157,7 +175,7 @@ void ScriptManager::messageCallback(const asSMessageInfo& msg)
 {
    /* Define log level type */
    Kobold::Log::LogLevel level = Kobold::Log::LOG_LEVEL_ERROR;
-   Ogre::String strLevel = "ERROR";
+   Kobold::String strLevel = "ERROR";
    if(msg.type == asMSGTYPE_WARNING)
    {
       level = Kobold::Log::LOG_LEVEL_NORMAL;
@@ -279,7 +297,7 @@ int ScriptManager::executeCall(asIScriptContext* ctx,
  *                          getOrLoadController                           *
  **************************************************************************/
 ScriptController* ScriptManager::getOrLoadController(
-      ScriptController::ScriptType type, Ogre::String filename)
+      ScriptController::ScriptType type, Kobold::String filename)
 {
    ScriptController* ctrl = static_cast<ScriptController*>(
          controllers.getFirst());
@@ -324,7 +342,7 @@ ScriptController* ScriptManager::getOrLoadController(
  *                        createMapScriptInstance                         *
  **************************************************************************/
 MapScriptInstance* ScriptManager::createMapScriptInstance(
-      Ogre::String filename, Ogre::String mapFilename)
+      Kobold::String filename, Kobold::String mapFilename)
 {
    /* Load or get already loaded script controller */
    MapScript* ctrl = static_cast<MapScript*>(getOrLoadController(
@@ -410,7 +428,7 @@ void ScriptManager::callFunction(ScriptInstance* instance,
 /**************************************************************************
  *                                playSound                               *
  **************************************************************************/
-void ScriptManager::playSound(float x, float y, float z, Ogre::String file)
+void ScriptManager::playSound(float x, float y, float z, Kobold::String file)
 {
    Kosound::Sound::addSoundEffect(x, y, z, -1, file);
 }
@@ -425,5 +443,94 @@ void ScriptManager::sleep(int seconds)
 
    /* Suspend current execution */
    curRunningContext->Suspend();
+}
+
+/**************************************************************************
+ *                         getAndDefinePointer                            *
+ **************************************************************************/
+ScriptObject* ScriptManager::getAndDefinePointer(Kobold::String filename,
+      const Ogre::Vector3 pos, void* newPtr)
+{
+   ScriptObject* res = NULL;
+   managerMutex.lock();
+   ScriptObject* cur = static_cast<ScriptObject*>(objects.getFirst());
+   for(int i = 0; i < objects.getTotal(); i++)
+   {
+      if(cur->isEquivalent(filename, pos))
+      {
+         cur->setPointer(newPtr);
+         res = cur;
+         break;
+      }
+      cur = static_cast<ScriptObject*>(cur->getNext());
+   }
+   managerMutex.unlock();
+   return res;
+}
+
+/**************************************************************************
+ *                             getCharacter                               *
+ **************************************************************************/
+ScriptObjectCharacter* ScriptManager::getCharacter(Kobold::String filename, 
+      float x, float y, float z)
+{
+   ScriptObjectCharacter* res = NULL;
+   Ogre::Vector3 pos(x, y, z);
+   managerMutex.lock();
+   ScriptObject* cur = static_cast<ScriptObject*>(objects.getFirst());
+   for(int i = 0; i < objects.getTotal(); i++)
+   {
+      if((cur->getType() == ScriptObject::TYPE_CHARACTER) &&
+         (cur->isEquivalent(filename, pos)))
+      {
+         /* Found */
+         res = static_cast<ScriptObjectCharacter*>(cur);
+         break;
+      }
+      cur = static_cast<ScriptObject*>(cur->getNext());
+   }
+
+   if(res == NULL)
+   {
+      /* Not found, must create one */
+      res = new ScriptObjectCharacter(filename, pos);
+      objects.insert(res);
+   }
+
+   managerMutex.unlock();
+   return res;
+}
+
+/**************************************************************************
+ *                             getCharacter                               *
+ **************************************************************************/
+ScriptObjectCharacter* ScriptManager::getCharacterByFilename(Kobold::String 
+      filename)
+{
+   ScriptObjectCharacter* res = NULL;
+   managerMutex.lock();
+   ScriptObject* cur = static_cast<ScriptObject*>(objects.getFirst());
+   for(int i = 0; i < objects.getTotal(); i++)
+   {
+      if((cur->getType() == ScriptObject::TYPE_CHARACTER) &&
+         (cur->isEquivalent(filename)))
+      {
+         /* Found */
+         res = static_cast<ScriptObjectCharacter*>(cur);
+         break;
+      }
+      cur = static_cast<ScriptObject*>(cur->getNext());
+   }
+
+   if(res == NULL)
+   {
+      /* Not found, must create one */
+      res = new ScriptObjectCharacter(filename);
+      objects.insert(res);
+   }
+
+   managerMutex.unlock();
+   return res;
+
 }
 

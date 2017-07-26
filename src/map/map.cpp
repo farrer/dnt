@@ -433,7 +433,7 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool forceDynamicModels)
          {
             Ogre::Real pX=0.0f, pY=0.0f, pZ=0.0f;
             sscanf(value.c_str(), "%f,%f,%f", &pX, &pY, &pZ);
-            lastThing->getModel()->setPosition(pX, pY, pZ);
+            lastThing->setInitialPosition(Ogre::Vector3(pX, pY, pZ));
          }
       }
       else if(key == MAP_TOKEN_THING_ORIENTATION)

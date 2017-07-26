@@ -123,6 +123,8 @@ namespace DNT
    class ScriptManager;
    class ScriptController;
    class ScriptInstance;
+   class ScriptObject;
+   class ScriptObjectCharacter;
    class MapScript;
    class MapScriptInstance;
    class PendingAction;

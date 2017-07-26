@@ -221,22 +221,6 @@ Character::CharacterAnimation Character::getCurrentAnimation()
 }
 
 /***********************************************************************
- *                           getInitialPosition                        *
- ***********************************************************************/
-Ogre::Vector3 Character::getInitialPosition()
-{
-   return initialPos;
-}
-
-/***********************************************************************
- *                           setInitialPosition                        *
- ***********************************************************************/
-void Character::setInitialPosition(Ogre::Vector3 pos)
-{
-   initialPos = pos;
-}
-
-/***********************************************************************
  *                              setCanAttack                           *
  ***********************************************************************/
 void Character::setCanAttack(bool value)
