@@ -42,15 +42,15 @@ PositionEditor::PositionEditor(Ogre::SceneManager* sceneManager)
          zRot("zRot", "mapeditor/rotation_circle.mesh", sceneManager, 
                Goblin::Model3d::MODEL_DYNAMIC)
 {
-   xAxis.setScale(5.0f, 5.0f, 5.0f);
-   yAxis.setScale(5.0f, 5.0f, 5.0f);
-   zAxis.setScale(5.0f, 5.0f, 5.0f);
+   xAxis.setScaleNow(5.0f, 5.0f, 5.0f);
+   yAxis.setScaleNow(5.0f, 5.0f, 5.0f);
+   zAxis.setScaleNow(5.0f, 5.0f, 5.0f);
 
-   lightDirAxis.setScale(5.0f, 5.0f, 5.0f);
+   lightDirAxis.setScaleNow(5.0f, 5.0f, 5.0f);
 
-   xRot.setScale(4.0f, 4.0f, 4.0f);
-   yRot.setScale(4.0f, 4.0f, 4.0f);
-   zRot.setScale(4.0f, 4.0f, 4.0f);
+   xRot.setScaleNow(4.0f, 4.0f, 4.0f);
+   yRot.setScaleNow(4.0f, 4.0f, 4.0f);
+   zRot.setScaleNow(4.0f, 4.0f, 4.0f);
 
    yAxis.setMaterial("greenVector");
    yRot.setMaterial("greenVector");
@@ -58,18 +58,18 @@ PositionEditor::PositionEditor(Ogre::SceneManager* sceneManager)
    zRot.setMaterial("blueVector");
    lightDirAxis.setMaterial("yellowVector");
 
-   xAxis.setOrientation(0.0f, 0.0f, 270.0f);
-   xRot.setOrientation(0.0f, 0.0f, 270.0f);
-   zAxis.setOrientation(0.0f, 90.0f, 90.0f);
-   zRot.setOrientation(0.0f, 90.0f, 90.0f);
+   xAxis.setOrientationNow(0.0f, 0.0f, 270.0f);
+   xRot.setOrientationNow(0.0f, 0.0f, 270.0f);
+   zAxis.setOrientationNow(0.0f, 90.0f, 90.0f);
+   zRot.setOrientationNow(0.0f, 90.0f, 90.0f);
 
-   xAxis.setPosition(10.0f, 0.0f, 0.0f);
-   xRot.setPosition(12.0f, 0.0f, 0.0f);
-   yAxis.setPosition(0.0f, 10.0f, 0.0f);
-   yRot.setPosition(0.0f, 12.0f, 0.0f);
-   zAxis.setPosition(0.0f, 0.0f, 10.0f);
-   zRot.setPosition(0.0f, 0.0f, 12.0f);
-   lightDirAxis.setPosition(0.0f, 0.0f, 0.0f);
+   xAxis.setPositionNow(10.0f, 0.0f, 0.0f);
+   xRot.setPositionNow(12.0f, 0.0f, 0.0f);
+   yAxis.setPositionNow(0.0f, 10.0f, 0.0f);
+   yRot.setPositionNow(0.0f, 12.0f, 0.0f);
+   zAxis.setPositionNow(0.0f, 0.0f, 10.0f);
+   zRot.setPositionNow(0.0f, 0.0f, 12.0f);
+   lightDirAxis.setPositionNow(0.0f, 0.0f, 0.0f);
 
    xAxis.getItem()->setCastShadows(false);
    xRot.getItem()->setCastShadows(false);
@@ -401,9 +401,9 @@ bool PositionEditor::update(bool leftButtonPressed,
          /* Define new position */
          if(selectedThing)
          {
-            selectedThing->getModel()->setPosition(curPos);
+            selectedThing->getModel()->setPositionNow(curPos);
             selectedThing->getModel()->clearOrientation();
-            selectedThing->getModel()->setOrientation(ori.x, ori.y, ori.z);
+            selectedThing->getModel()->setOrientationNow(ori.x, ori.y, ori.z);
          }
          else if(selectedLight)
          {
@@ -449,14 +449,14 @@ void PositionEditor::updateAxisPosition()
  ***********************************************************************/
 void PositionEditor::setPosition(Ogre::Vector3 pos)
 {
-   xAxis.setPosition(pos.x + 10.0f, pos.y, pos.z);
-   xRot.setPosition(pos.x + 12.0f, pos.y, pos.z);
-   yAxis.setPosition(pos.x, pos.y + 10.0f, pos.z);
-   yRot.setPosition(pos.x, pos.y + 12.0f, pos.z);
-   zAxis.setPosition(pos.x, pos.y, pos.z + 10.0f);
-   zRot.setPosition(pos.x, pos.y, pos.z + 12.0f);
+   xAxis.setPositionNow(pos.x + 10.0f, pos.y, pos.z);
+   xRot.setPositionNow(pos.x + 12.0f, pos.y, pos.z);
+   yAxis.setPositionNow(pos.x, pos.y + 10.0f, pos.z);
+   yRot.setPositionNow(pos.x, pos.y + 12.0f, pos.z);
+   zAxis.setPositionNow(pos.x, pos.y, pos.z + 10.0f);
+   zRot.setPositionNow(pos.x, pos.y, pos.z + 12.0f);
 
-   lightDirAxis.setPosition(pos);
+   lightDirAxis.setPositionNow(pos);
 }
 
 /***********************************************************************

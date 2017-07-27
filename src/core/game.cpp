@@ -85,8 +85,9 @@ void Game::update()
    if(curPc)
    {
       getCurrentMap()->update(curPc->getModel()->getPosition());
-      curPc->getModel()->update();
    }
+   pcs->update();
+   npcs->update();
 }
 
 /************************************************************************
@@ -142,6 +143,13 @@ Map* Game::loadMap(Kobold::String filename, bool fullPath,
 
          ch = static_cast<Character*>(ch->getNext());
       }
+   }
+
+   /* Call the On Load action, if defined */
+   MapScriptInstance* script = map->getScriptInstance();
+   if(script)
+   {
+      script->callOnLoad();
    }
 
    return map;

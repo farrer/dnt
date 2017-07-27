@@ -79,9 +79,6 @@ namespace DNT
           * \return pointer to the modEffectList */
          ModEffectList* getEffects();
 
-         /*! Update all effects affecting the Character */
-         void updateEffects();
-
          /*! Verify if the Character alignment is of type represented by al
           * \param al -> string with align type
           * \return -> true if the align string identifier have the string al
@@ -150,6 +147,19 @@ namespace DNT
          void setCanAttack(bool value);
          void setCanMove(bool value);
 
+         /*! Set the character to move by the found path of a A* search.
+          * \note usually this function is called when the A* was defined by
+          *       a script call. 
+          * \param aStar A* with found path. */
+         void setToMoveByFoundPath(AStar* aStar);
+
+         /*! \return if is moving by path (true) 
+          *          or if isn't or no more (false) */
+         const bool isMovingByPath() const { return aStar != NULL; };
+         
+         /*! Update character */
+         virtual void update();
+
       protected:
          /*! \return default character's animation names */
          virtual Kobold::String* getAnimationList();
@@ -188,10 +198,10 @@ namespace DNT
          int classLevel[CHARACTER_MAX_DISTINCT_CLASSES];
          Race* race;    /**< Character race */
          Feats* feats;  /**< Character current owned feats */
-         AStar* pathFind; /**< A* Path find for the character */
          Kobold::Mutex mutex; /**< Mutex for access control */
 
       private:
+         AStar* aStar; /**< A* with a path found to follow */
          bool dead; /**< If the character is actually dead (just a corpse). */
 
          bool canAttack; /**< Flag controller on fight mode */

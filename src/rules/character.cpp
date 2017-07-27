@@ -42,14 +42,12 @@ using namespace DNT;
 Character::Character(bool playable)
           :Thing(Thing::THING_TYPE_CHARACTER, CHARACTER_TOTAL_ANIMATIONS)
 {
-   /* Create the A* path find to use */
-   pathFind = new AStar(playable);
-
    /* Default: alive */
    this->dead = false;
 
    this->canMove = true;
    this->canAttack = true;
+   this->aStar = NULL;
 
    /* Set ModEffects owner */
    this->effects.setOwner(this);
@@ -80,11 +78,6 @@ Character::Character(bool playable)
  ***********************************************************************/
 Character::~Character()
 {
-   if(pathFind)
-   {
-      pathFind->clear();
-      delete pathFind;
-   }
    if(feats)
    {
       delete feats;
@@ -147,14 +140,6 @@ void Character::removeAllModEffects()
 ModEffectList* Character::getEffects()
 {
    return &effects;
-}
-
-/***********************************************************************
- *                             updateEffects                           *
- ***********************************************************************/
-void Character::updateEffects()
-{
-   effects.doStep();
 }
 
 /***********************************************************************
@@ -480,6 +465,48 @@ void Character::applyBonusAndSaves()
    }
 }
 
+/*********************************************************************
+ *                       setMoveByFoundPath                          *
+ *********************************************************************/
+void Character::setToMoveByFoundPath(AStar* aStar)
+{
+   this->aStar = aStar;
+}
+
+/*********************************************************************
+ *                              update                               *
+ *********************************************************************/
+void Character::update()
+{
+   if(aStar)
+   {
+      /* Must follow its path */
+      Ogre::Vector3 pos = getModel()->getPosition();
+      float ori = getModel()->getOrientation();
+      if(aStar->getNewPosition(pos, ori, false, 1.0f))
+      {
+         getModel()->setPosition(pos);
+         getModel()->setOrientation(ori);
+         if(getCurrentAnimation() != CHARACTER_ANIMATION_WALK)
+         {
+            setAnimation(CHARACTER_ANIMATION_WALK, true);
+         }
+      }
+      else
+      {
+         /* Done with movement, bye aStar reference */
+         aStar = NULL;
+         if(getCurrentAnimation() != CHARACTER_ANIMATION_IDLE)
+         {
+            setAnimation(CHARACTER_ANIMATION_IDLE, true);
+         }
+      }
+   }
+
+   Thing::update();
+   effects.doStep();
+}
+
 /***************************************************************************
  ***************************************************************************
  *                            CharacterList                                *
@@ -659,7 +686,7 @@ void CharacterList::update()
    Character* ch = static_cast<Character*>(getFirst());
    for(i=0; i < getTotal(); i++)
    {
-      ch->updateEffects();
+      ch->update();
       ch = static_cast<Character*>(ch->getNext());
    }
 }

@@ -19,6 +19,9 @@
 */
 
 #include "pendingaction.h"
+#include "scriptobjectcharacter.h"
+#include "../astar.h"
+#include "../../rules/character.h"
 using namespace DNT;
 
 /**************************************************************************
@@ -45,4 +48,68 @@ bool PendingActionSleep::update()
 {
    return timer.getMilliseconds() > (seconds * 1000);
 }
+
+/**************************************************************************
+ *                              Constructor                               *
+ **************************************************************************/
+PendingActionMove::PendingActionMove(ScriptObjectCharacter* actor, 
+      Character* actorPtr, float pX, float pZ)
+                  :PendingAction(TYPE_MOVE_CHARACTER)
+{
+   this->actor = actor;
+   this->pathFind = new AStar(false);
+   this->pathFind->findPath(actorPtr, pX, pZ, 
+         actorPtr->getWalkInterval(), true);
+   this->state = STATE_SEARCHING;
+}
+
+/**************************************************************************
+ *                               Destructor                               *
+ **************************************************************************/
+PendingActionMove::~PendingActionMove()
+{
+   if(pathFind)
+   {
+      pathFind->clear();
+      delete pathFind;
+   }
+}
+
+/**************************************************************************
+ *                                 update                                 *
+ **************************************************************************/
+bool PendingActionMove::update()
+{
+   if(!actor->isValid())
+   {
+      /*! Character pointer is no longer valid, must finish. */
+      return true;
+   }
+
+   if(state == STATE_SEARCHING)
+   {
+      AStar::AStarState astate = pathFind->getState();
+      if(astate == AStar::ASTAR_STATE_FOUND)
+      {
+         /* Found a path, must start moving */
+         state = STATE_MOVING;
+         actor->setToMoveByFoundPath(pathFind);
+      }
+      else if(astate == AStar::ASTAR_STATE_NOT_FOUND)
+      {
+         /* Couldn't find a path, the pending action is finished, but
+          * with the 'failed' way. */
+         return true;
+      }
+   }
+   else if(state == STATE_MOVING)
+   {
+      /* Check if character done with movement */
+      return !actor->isMovingByPath();
+   }
+  
+   /* Not done yet */
+   return false;
+}
+
 

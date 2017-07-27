@@ -210,7 +210,7 @@ bool Collision::canOccupy(Thing* actor, const Ogre::Vector3& pos,
    assert(actor != NULL);
 
    /* Define position */
-   Ogre::Aabb aabb = actor->getModel()->getItem()->getWorldAabb();
+   Ogre::Aabb aabb = actor->getWalkableBounds();
    aabb.mCenter = pos;
    
    return canBeAt(aabb.getMinimum(), aabb.getMaximum(), actor, newHeight);

@@ -117,6 +117,8 @@ class Map
 
       /*! \return current map lights */
       MapLights* getLights() { return lights; };
+      
+      MapScriptInstance* getScriptInstance() { return script; };
 
       Kobold::List* getStaticThings() { return staticThings; };
       Kobold::List* getDynamicThings() { return dynamicThings; };

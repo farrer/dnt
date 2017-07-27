@@ -19,6 +19,8 @@
 */
 
 #include "scriptobjectcharacter.h"
+#include "scriptmanager.h"
+#include "pendingaction.h"
 #include "../../rules/character.h"
 #include "../../core/game.h"
 #include <kobold/log.h>
@@ -32,6 +34,7 @@ ScriptObjectCharacter::ScriptObjectCharacter(Kobold::String filename,
                       :ScriptObject(ScriptObject::TYPE_CHARACTER, filename, 
                             originalPos)
 {
+   mutex.lock();
    character = Game::getCharacter(filename, originalPos);
 
    if(character)
@@ -44,6 +47,7 @@ ScriptObjectCharacter::ScriptObjectCharacter(Kobold::String filename,
             "Warning: script: Couldn't find character '%s' (%.3f %.3f %.3f)\n",
             filename.c_str(), originalPos.x, originalPos.y, originalPos.z);
    }
+   mutex.unlock();
 }
 
 /**************************************************************************
@@ -52,6 +56,7 @@ ScriptObjectCharacter::ScriptObjectCharacter(Kobold::String filename,
 ScriptObjectCharacter::ScriptObjectCharacter(Kobold::String filename) 
                       :ScriptObject(ScriptObject::TYPE_CHARACTER, filename) 
 {
+   mutex.lock();
    character = Game::getCharacter(filename);
 
    if(character)
@@ -63,6 +68,7 @@ ScriptObjectCharacter::ScriptObjectCharacter(Kobold::String filename)
       Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
          "Warning: script: Couldn't find character '%s'\n", filename.c_str());
    }
+   mutex.unlock();
 }
 
 /**************************************************************************
@@ -70,10 +76,12 @@ ScriptObjectCharacter::ScriptObjectCharacter(Kobold::String filename)
  **************************************************************************/
 ScriptObjectCharacter::~ScriptObjectCharacter()
 {
+   mutex.lock();
    if(character)
    {
       character->undefineScriptObject();
    }
+   mutex.unlock();
 }
 
 /**************************************************************************
@@ -81,7 +89,109 @@ ScriptObjectCharacter::~ScriptObjectCharacter()
  **************************************************************************/
 void ScriptObjectCharacter::setPointer(void* newPtr)
 {
+   mutex.lock();
    character = static_cast<Character*>(newPtr);
+   mutex.unlock();
+}
+ 
+/**************************************************************************
+ *                               isValid                                  *
+ **************************************************************************/ 
+const bool ScriptObjectCharacter::isValid()
+{
+   bool res = false;
+   
+   mutex.lock();
+   res = character != NULL;
+   mutex.unlock();
+   
+   return res;
+}
+
+/**************************************************************************
+ *                              getPosition                               *
+ **************************************************************************/
+const Ogre::Vector3 ScriptObjectCharacter::getPosition()
+{
+   Ogre::Vector3 pos = Ogre::Vector3(0, 0, 0);
+   mutex.lock();
+   if(character)
+   {
+      pos = character->getModel()->getPosition();
+   }
+   mutex.unlock();
+
+   return pos;
+}
+
+/**************************************************************************
+ *                              setPosition                               *
+ **************************************************************************/
+void ScriptObjectCharacter::setPosition(const Ogre::Vector3& pos)
+{
+   mutex.lock();
+   if(character)
+   {
+      character->getModel()->setPosition(pos);
+   }
+   mutex.unlock();
+}
+
+/**************************************************************************
+ *                            setOrientation                              *
+ **************************************************************************/
+void ScriptObjectCharacter::setOrientation(const float ori)
+{
+   mutex.lock();
+   if(character)
+   {
+      character->getModel()->setTargetOrientation(0.0f, ori, 0.0f, 4);
+   }
+   mutex.unlock();
+}
+ 
+/**************************************************************************
+ *                            getOrientation                              *
+ **************************************************************************/
+const float ScriptObjectCharacter::getOrientation()
+{
+   float res = 0.0f;
+   mutex.lock();
+   if(character)
+   {
+      res = character->getModel()->getOrientation();
+   }
+   mutex.unlock();
+   return res;
+}
+
+/**************************************************************************
+ *                           setMoveByFoundPath                           *
+ **************************************************************************/
+void ScriptObjectCharacter::setToMoveByFoundPath(AStar* aStar)
+{
+   mutex.lock();
+   if(character)
+   {
+      character->setToMoveByFoundPath(aStar);
+   }
+   mutex.unlock();
+}
+
+/**************************************************************************
+ *                            isMovingbyPath                              *
+ **************************************************************************/
+const bool ScriptObjectCharacter::isMovingByPath()
+{
+   bool res = false;
+   mutex.lock();
+   if(character)
+   {
+      res = character->isMovingByPath();
+   }
+   mutex.unlock();
+
+   return res;
 }
 
 /**************************************************************************
@@ -89,7 +199,14 @@ void ScriptObjectCharacter::setPointer(void* newPtr)
  **************************************************************************/
 void ScriptObjectCharacter::moveToPosition(float posX, float posZ)
 {
-   //TODO
+   mutex.lock();
+   if(character != NULL)
+   {
+      PendingActionMove* action = new PendingActionMove(this, character, 
+            posX, posZ);
+      Game::getScriptManager()->suspendByPendingAction(action);
+   }
+   mutex.unlock();
 }
 
 /**************************************************************************

@@ -97,6 +97,13 @@ namespace DNT
           * script thread) */
          bool step();
          unsigned int getSleepTime() { return SCRIPT_UPDATE_TIME; };
+
+         /*! Suspend the current on-procces script until a pending 
+          * action finishes.
+          * \note Should only be called inside a functions called by the 
+          *       running script. It's an erro otherwise. 
+          * \param pendingAction pointer to the pending action to wait. */
+         void suspendByPendingAction(PendingAction* pendingAction);
  
          /*! Search for a already create ScriptObject with filename and 
           * position and set its related game pointer.
@@ -107,6 +114,7 @@ namespace DNT
          /* Global Functions */
          void playSound(float x, float y, float z, Kobold::String file);
          void sleep(int seconds);
+         void print(Kobold::String s);
          ScriptObjectCharacter* getCharacter(Kobold::String filename, 
                float x, float y, float z);
          ScriptObjectCharacter* getCharacterByFilename(Kobold::String filename);

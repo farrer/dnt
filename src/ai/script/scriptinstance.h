@@ -49,6 +49,12 @@ class SuspendedInfo : public Kobold::ListElement
        * resume of the suspended context on next cycle */
       void deleteAction();
 
+      /*! Clear the context information. Should be called just before
+       * resuming it, to avoid returning it to the pool when deleted.
+       * \note When this function is called, the caller is responsable to 
+       *       return the context to the pool. */
+      void clearContextInfo();
+
       /*! \return if should resume an instance running that was suspended.
        * \note Equals to hasContextToResume() && !waitingActionEnd() */
       const bool shouldResume() const;
@@ -85,9 +91,9 @@ class ScriptInstance : public Kobold::ListElement
    protected:
 
       /*! Resume a suspended context from this instance
-       * \param info suspended information to be resumed.
+       * \param ctx context to be resumed.
        * \return AngelScript return integer. */
-      int resume(SuspendedInfo* info);
+      int resume(asIScriptContext* ctx);
 
       asIScriptObject* obj; /**< AngelScript object as instance of script */
       ScriptController* script; /**< The script the object is an instance of */

@@ -47,6 +47,9 @@ using namespace DNT;
 PlayableCharacter::PlayableCharacter()
                   :Character(true)
 {
+   /* Create the A* path find to use */
+   pathFind = new AStar(true);
+
    this->upLevels = 0;
    this->xp = 0;
    this->walkState = WALK_KEYBOARD;
@@ -60,6 +63,11 @@ PlayableCharacter::PlayableCharacter()
  *********************************************************************/
 PlayableCharacter::~PlayableCharacter()
 {
+   if(pathFind)
+   {
+      pathFind->clear();
+      delete pathFind;
+   }
    if(direction)
    {
       delete direction;
@@ -439,6 +447,13 @@ bool PlayableCharacter::checkInputForMovement(const Ogre::Vector3& floorMouse)
    bool triedToMove = false;
    bool moved = false;
    bool run = false;
+
+   if(isMovingByPath())
+   {
+      /* Following a path (probably called by script). Shouldn't try to manual
+       * move, but still is a move, thus return true. */
+      return true;
+   }
   
    /* First check if tryed to move if mouse, and if not, check keyboard */
    triedToMove = checkMouseInputForMovement(floorMouse, moved, run);

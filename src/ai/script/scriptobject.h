@@ -74,11 +74,7 @@ namespace DNT
          virtual void setPointer(void* newPtr) = 0;
 
          /*!\ return if current pointer is valid or not */
-         const bool isValid() const { return getPointer() != NULL; };
-
-      protected:
-         /*! \return pointer to the referenced game object */
-         const virtual void* getPointer() const = 0;
+         virtual const bool isValid() = 0;
 
       private:
          ScriptObjectType type;      /**< Its type */

@@ -22,6 +22,8 @@
 #define _dnt_pending_action_h
 
 #include <kobold/timer.h>
+#include <OGRE/OgreVector3.h>
+#include "dntconfig.h"
 
 namespace DNT
 {
@@ -75,6 +77,32 @@ class PendingActionSleep : public PendingAction
       unsigned int seconds; /**< amount of seconds to sleep */
       Kobold::Timer timer;  /**< Timer used to controll sleep time */
 
+};
+
+
+/*! A move-to pending action. Will do an A* search and move, if possible, 
+ * the actor to the desired place. */
+class PendingActionMove : public PendingAction
+{
+   public:
+      /*! Move actor to a position */
+      PendingActionMove(ScriptObjectCharacter* actor, Character* actorPtr, 
+            float pX, float pZ);
+      /*! Destructor */
+      ~PendingActionMove();
+      
+      bool update();
+
+   private:
+      enum State
+      {
+         STATE_SEARCHING,
+         STATE_MOVING
+      };
+
+      ScriptObjectCharacter* actor;
+      AStar* pathFind;
+      State state;
 };
 
 

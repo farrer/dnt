@@ -63,6 +63,14 @@ void SuspendedInfo::deleteAction()
 }
 
 /**************************************************************************
+ *                            clearContextInfo                            *
+ **************************************************************************/
+void SuspendedInfo::clearContextInfo()
+{
+   context = NULL;
+}
+
+/**************************************************************************
  *                              shouldResume                              *
  **************************************************************************/
 const bool SuspendedInfo::shouldResume() const
@@ -113,9 +121,9 @@ ScriptInstance::~ScriptInstance()
 /**************************************************************************
  *                                  resume                                *
  **************************************************************************/
-int ScriptInstance::resume(SuspendedInfo* info)
+int ScriptInstance::resume(asIScriptContext* ctx)
 {
-   return manager->executeCall(info->getContext(), this);
+   return manager->executeCall(ctx, this);
 }
 
 /**************************************************************************
@@ -154,7 +162,7 @@ void ScriptInstance::step()
    }
    else
    {
-      bool shouldRemove;
+      bool removed;
       mutex.lock();
       /* Let's check all suspended contexts */
       SuspendedInfo* info = static_cast<SuspendedInfo*>(suspended.getFirst());
@@ -163,11 +171,25 @@ void ScriptInstance::step()
 
       for(int i=0; i < total; i++)
       {
-         shouldRemove = false;
+         removed = false;
          if(info->shouldResume())
          {
+            /* Remove the current suspended info (and set next) */
+            SuspendedInfo* tmp = info;
+            asIScriptContext* ctx = tmp->getContext();
+            tmp->clearContextInfo();
+            mutex.lock();
+            info = static_cast<SuspendedInfo*>(info->getNext());
+            suspended.remove(tmp);
+            removed = true;
+            mutex.unlock();
+            
             /* Resume the suspended script */
-            shouldRemove = (resume(info) != asEXECUTION_SUSPENDED);
+            if(resume(ctx) != asEXECUTION_SUSPENDED)
+            {
+               /* Execution finished. We must return our context to the pool */
+               manager->returnContextToPool(ctx);
+            }
          }
          else if(info->waitingActionEnd())
          {
@@ -179,15 +201,7 @@ void ScriptInstance::step()
             }
          }
          
-         if(shouldRemove)
-         {
-            SuspendedInfo* tmp = info;
-            mutex.lock();
-            info = static_cast<SuspendedInfo*>(info->getNext());
-            suspended.remove(tmp);
-            mutex.unlock();
-         }
-         else
+         if(!removed)
          {
             mutex.lock();
             info = static_cast<SuspendedInfo*>(info->getNext());

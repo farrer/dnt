@@ -249,8 +249,8 @@ Thing* Map::insertThing(Kobold::String filename, bool forceDynamic,
    Thing* thing = insertThing(filename, forceDynamic);
    if(thing)
    {
-      thing->getModel()->setPosition(pos);
-      thing->getModel()->setOrientation(ori.x, ori.y, ori.z);
+      thing->getModel()->setPositionNow(pos);
+      thing->getModel()->setOrientationNow(ori.x, ori.y, ori.z);
       Collision::addElement(thing);
    }
 
@@ -443,7 +443,7 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool forceDynamicModels)
          {
             Ogre::Real oX=0.0f, oY=0.0f, oZ=0.0f;
             sscanf(value.c_str(), "%f,%f,%f", &oX, &oY, &oZ);
-            lastThing->getModel()->setOrientation(oX, oY, oZ);
+            lastThing->getModel()->setOrientationNow(oX, oY, oZ);
             /* Note: thingOri must be the last parameter to define a thing,
              * and should be mandatory to all thing declarations on map. */
             Collision::addElement(lastThing);
@@ -603,12 +603,6 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool forceDynamicModels)
 
    /* Define an active light */
    lights->setActiveLight(0.0f, 0.0f);
-
-   /* Call our onLoad script, if defined */
-   if(script)
-   {
-      script->callOnLoad();
-   }
 
    return true;
 }

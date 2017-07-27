@@ -129,6 +129,7 @@ namespace DNT
    class MapScriptInstance;
    class PendingAction;
    class PendingActionSleep;
+   class PendingActionMove;
 
 }
 

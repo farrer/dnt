@@ -105,6 +105,7 @@ class PlayableCharacter : public Character
       bool wasRunning; /**< If was running at continuous mouse walk */
 
       Goblin::Model3d* direction; /**< Direction when moving with mouse */
+      AStar* pathFind; /**< A* Path find for the character */
 };
 
 }

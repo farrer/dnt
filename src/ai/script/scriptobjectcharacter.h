@@ -24,6 +24,7 @@
 #include "dntconfig.h"
 #include "scriptobject.h"
 #include "angelscript.h"
+#include <kobold/mutex.h>
 
 namespace DNT
 {
@@ -48,6 +49,26 @@ namespace DNT
           * \param newPtr pointer to the character this object 
           *               represents, or NULL. */
          void setPointer(void* newPtr);
+         
+         /*! \return if the related pointer is valid */
+         const bool isValid();
+
+         /*! Set the character to move by the found path of a A* search. */
+         void setToMoveByFoundPath(AStar* aStar);
+
+         /*! \return if is moving by path (true)
+          *          or if isn't or no more (false) */
+         const bool isMovingByPath();
+         
+         /*! Get the current position of the character */
+         const Ogre::Vector3 getPosition();
+         /*! Set position of the character on next frame */
+         void setPosition(const Ogre::Vector3& pos);
+
+         /*! Get the current orientation of the character */
+         const float getOrientation();
+         /*! Set the orientation of the character on next frames */
+         void setOrientation(const float ori);
 
          void moveToPosition(float posX, float posZ);
          void moveToCharacter(ScriptObjectCharacter* character);
@@ -62,6 +83,7 @@ namespace DNT
 
      private:
          Character* character; /**< referenced character */
+         Kobold::Mutex mutex; /**< For pointer access changes */
 
    };
 

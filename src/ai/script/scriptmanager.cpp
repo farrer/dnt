@@ -64,6 +64,10 @@ ScriptManager::ScriptManager()
    r = asEngine->RegisterGlobalFunction("void sleep(int seconds)",
          asMETHOD(ScriptManager, sleep), asCALL_THISCALL_ASGLOBAL, this);
    assert(r >= 0);
+   r = asEngine->RegisterGlobalFunction("void print(string s)",
+         asMETHOD(ScriptManager, print), asCALL_THISCALL_ASGLOBAL, this);
+   assert(r >= 0);
+
 
    /* Functions to get character from game */
    r = asEngine->RegisterGlobalFunction(
@@ -123,7 +127,7 @@ ScriptManager::~ScriptManager()
          "\tReleasing context pool...");
    while(contexts.size())
    {
-      /* Get avaiable context form pool */
+      /* Get avaiable context from pool */
       asIScriptContext* ctx = *contexts.rbegin();
       contexts.pop_back();
       ctx->Release();
@@ -424,6 +428,14 @@ void ScriptManager::callFunction(ScriptInstance* instance,
    }
 }
 
+/**************************************************************************
+ *                        suspendByPendingAction                          *
+ **************************************************************************/
+void ScriptManager::suspendByPendingAction(PendingAction* pendingAction)
+{
+   curRunningInstance->addSuspendedContext(curRunningContext, pendingAction);
+   curRunningContext->Suspend();
+}
 
 /**************************************************************************
  *                                playSound                               *
@@ -438,11 +450,15 @@ void ScriptManager::playSound(float x, float y, float z, Kobold::String file)
  **************************************************************************/
 void ScriptManager::sleep(int seconds)
 {
-   curRunningInstance->addSuspendedContext(curRunningContext, 
-         new PendingActionSleep(seconds));
+   suspendByPendingAction(new PendingActionSleep(seconds));
+}
 
-   /* Suspend current execution */
-   curRunningContext->Suspend();
+/**************************************************************************
+ *                                  print                                 *
+ **************************************************************************/
+void ScriptManager::print(Kobold::String s)
+{
+   Kobold::Log::add(s);
 }
 
 /**************************************************************************

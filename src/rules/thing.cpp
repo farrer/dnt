@@ -317,12 +317,12 @@ bool Thing::load(Kobold::String fileName,
 }
 
 /**************************************************************************
- *                           updateScriptObject                           *
+ *                           setInitialPosition                           *
  **************************************************************************/
 void Thing::setInitialPosition(Ogre::Vector3 pos)
 {
    initialPos = pos;
-   model->setPosition(pos);
+   model->setPositionNow(pos);
    scriptObject = Game::getScriptManager()->getAndDefinePointer(filename, 
       pos, this);
 }

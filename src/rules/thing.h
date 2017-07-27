@@ -252,6 +252,11 @@ class Thing : public Kobold::ListElement
       /*! Set initial position on map */
       void setInitialPosition(Ogre::Vector3 pos);
 
+      /*! \return distance can move each frame when walking */
+      float getWalkInterval(); 
+      /*! \return distance can rotate each frame */
+      float getTurnAroundInterval();
+
    protected:
 
       /*! Parse specifc key/value pair readed from definition's file that
@@ -270,12 +275,7 @@ class Thing : public Kobold::ListElement
        * \note those supporting it, should override this function.
        * \param total total names on vector.
        * \return animation names vector */ 
-      virtual Kobold::String* getAnimationList();
-
-      /*! \return distance can move each frame when walking */
-      float getWalkInterval(); 
-      /*! \return distance can rotate each frame */
-      float getTurnAroundInterval(); 
+      virtual Kobold::String* getAnimationList(); 
 
       Kobold::String portraitFile; /**< Thing's portrait filename, if any */
       ScriptObject* scriptObject; /**< Script Object related to the thing */
