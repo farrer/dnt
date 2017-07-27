@@ -230,6 +230,17 @@ void ScriptObjectCharacter::moveFromCharacter(ScriptObjectCharacter* character)
  **************************************************************************/
 void ScriptObjectCharacter::callAnimation(int index)
 {
+   if((index >= Character::CHARACTER_ANIMATION_ATTACK) &&
+      (index < Character::CHARACTER_TOTAL_ANIMATIONS))
+   {
+      mutex.lock();
+      if(character)
+      {
+         character->setAnimation(
+               static_cast<Character::CharacterAnimation>(index), false);
+      }
+      mutex.unlock();
+   }
 }
 
 /**************************************************************************
@@ -237,6 +248,17 @@ void ScriptObjectCharacter::callAnimation(int index)
  **************************************************************************/
 void ScriptObjectCharacter::setAnimation(int index)
 {
+   if((index >= Character::CHARACTER_ANIMATION_ATTACK) &&
+      (index < Character::CHARACTER_TOTAL_ANIMATIONS))
+   {
+      mutex.lock();
+      if(character)
+      {
+         character->setAnimation(
+               static_cast<Character::CharacterAnimation>(index));
+      }
+      mutex.unlock();
+   }
 }
 
 /**************************************************************************
