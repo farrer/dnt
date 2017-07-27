@@ -83,7 +83,7 @@ void PlayableCharacter::doAfterLoad()
    direction = new Goblin::Model3d("directMesh", 
          "other/direc.mesh", Game::getSceneManager(),
          Goblin::Model3d::MODEL_DYNAMIC);
-   direction->setScale(2.6f, 2.6f, 2.6f);
+   direction->setScaleNow(2.6f, 2.6f, 2.6f);
    direction->hide();
 }
 
@@ -204,9 +204,10 @@ bool PlayableCharacter::doMovementByMouse(const Ogre::Vector3& floorMouse,
 
    /* define direction model angle and position */
    float deltaRadius = (run) ? 30.0f : 12.0f;
-   direction->setOrientation(-90.0f, 0.0f, walkAngle - 180);
+   direction->setOrientationNow(-90.0f, 0.0f, walkAngle - 180);
    Ogre::Aabb aabb = getWalkableBounds();
-   direction->setPosition(curPos.x + (aabb.mCenter.x + deltaRadius) * dir[0], 
+   direction->setPositionNow(
+         curPos.x + (aabb.mCenter.x + deltaRadius) * dir[0], 
          curPos.y + 10.0f, 
          curPos.z + (aabb.mCenter.z + deltaRadius) * dir[1]);
    
