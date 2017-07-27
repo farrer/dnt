@@ -115,12 +115,10 @@ ScriptManager::~ScriptManager()
    Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL,
          "\tClearing active instances...");
    instances.clear();
+   
    Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL,
          "\tClearing controllers...");
    controllers.clear();
-   Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL,
-         "\tClearing ScriptObjects...");
-   objects.clear();
 
    /* Release all created contexts */
    Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL,
@@ -132,6 +130,14 @@ ScriptManager::~ScriptManager()
       contexts.pop_back();
       ctx->Release();
    }
+
+   Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL,
+         "\tRunning the garbage collector...");
+   asEngine->GarbageCollect(asGC_FULL_CYCLE);
+
+   Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL,
+         "\tClearing ScriptObjects...");
+   objects.clear();
 
    Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL,
          "\tShuting down AngelScript engine...");
@@ -168,6 +174,8 @@ bool ScriptManager::step()
    managerMutex.lock();
    currentOnStep = NULL;
    managerMutex.unlock();
+
+   asEngine->GarbageCollect(asGC_ONE_STEP);
 
    return true;
 }
