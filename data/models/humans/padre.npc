@@ -1,6 +1,6 @@
 name = Padre
 animatedModel = humans/padre.mesh
-portrait = portraits/padre.png
+portrait = santa.png
 battleScript = ia/script/fight/fight_animal.dsl
 bloodFileName = particles/blood2.par
 bloodPosition = 40

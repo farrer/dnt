@@ -23,6 +23,7 @@
 
 #include "dntconfig.h"
 #include <farso/controller.h>
+#include <kobold/mutex.h>
 
 namespace DNT
 {
@@ -30,10 +31,16 @@ namespace DNT
    class DialogWindow
    {
       public:
+
          /*! Open the dialog window for a Thing conversation.
           * \param owner Thing's to open its conversation.
           * \param pc pointer to current active character */
          static void open(Thing* owner, PlayableCharacter* pc);
+
+         /*! Close the current opened DialogWindow */
+         static void close();
+
+         static void markToOpen();
 
          /*! Check Farso events happening on the DialogWindow.
           * \return true if treated some event, false otherwise */
@@ -46,12 +53,18 @@ namespace DNT
           * Thing */
          static bool isOpened(Thing* owner);
 
-         /*! Close the current opened DialogWindow */
-         static void close();
-
          friend class Conversation;
 
       private:
+
+         /*! Open the dialog window for a Thing conversation.
+          * \param owner Thing's to open its conversation.
+          * \param pc pointer to current active character */
+         static void openNow(Thing* owner, PlayableCharacter* pc);
+
+         /*! Close the current opened DialogWindow */
+         static void closeNow();
+
 
          static Thing* owner; /**< Current owner of the dialog window */
 
@@ -64,6 +77,11 @@ namespace DNT
          static int lastPosY; /**< Last window Y position */
 
          static int keyPressed; /**< Current pressed option key */
+
+         static Kobold::Mutex mutex; /**< Mutex for access control */
+         static Thing* toOpenOwner;  /**< Owner of the dialog to open */
+         static PlayableCharacter* toOpenPC; /**< Pc to use dialog when open */
+         static bool shouldClose; /**< Mark to close window on next cycle */
    };
 
 }

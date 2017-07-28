@@ -36,15 +36,35 @@ void DialogWindow::open(Thing* owner, PlayableCharacter* pc)
    assert(owner->getConversation() != NULL);
    assert(pc != NULL);
 
+   /* Note: as we create a GL texture for the window, we must
+    * only open the window on the main thread. Thus, here we just 
+    * mark to open the dialog window latter, on checkEvents call
+    * by the main thread. */
+
+   mutex.lock();
+   toOpenOwner = owner;
+   toOpenPC = pc;
+   mutex.unlock();
+}
+
+/**************************************************************************
+ *                                 openNow                                *
+ **************************************************************************/
+void DialogWindow::openNow(Thing* owner, PlayableCharacter* pc)
+{
+   assert(owner != NULL);
+   assert(owner->getConversation() != NULL);
+   assert(pc != NULL);
+
    /* Close the window, if currently opened */
-   if(isOpened())
+   if(window != NULL)
    {
       if(DialogWindow::owner == owner)
       {
          /* Dialog is already opened for the same owner, let's keep it. */
          return;
       }
-      close();
+      window->close();
    }
 
    /* Define our pointers and set conversation */
@@ -99,93 +119,129 @@ void DialogWindow::open(Thing* owner, PlayableCharacter* pc)
  **************************************************************************/
 bool DialogWindow::checkEvents()
 {
-   if(!isOpened())
+
+   mutex.lock();
+
+   /* Check if we should close the current window */
+   if(shouldClose)
    {
-      return false;
+      closeNow();
+      shouldClose = false;
+      mutex.unlock();
+      return true;
    }
 
-   if(Farso::Controller::getActiveWindow() == window)
+   /*! Check if we should open a new dialog */
+   if(toOpenOwner != NULL)
    {
-      /* Update our last coordinates, to keep them on next open */
-      lastPosX = window->getWidgetRenderer()->getPositionX();
-      lastPosY = window->getWidgetRenderer()->getPositionY();
+      openNow(toOpenOwner, toOpenPC);
+      toOpenOwner = NULL;
+      toOpenPC = NULL;
+      mutex.unlock();
+      return true;
+   }
 
-      /* Check option selection by key */
-      if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_1))
+   if(window != NULL)
+   {
+      if(Farso::Controller::getActiveWindow() == window)
       {
-         keyPressed = 1;
-      }
-      else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_2))
-      {
-         keyPressed = 2;
-      }
-      else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_3))
-      {
-         keyPressed = 3;
-      }
-      else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_4))
-      {
-         keyPressed = 4;
-      }
-      else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_5))
-      {
-         keyPressed = 5;
-      }
-      else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_6))
-      {
-         keyPressed = 6;
-      }
-      else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_7))
-      {
-         keyPressed = 7;
-      }
-      else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_8))
-      {
-         keyPressed = 8;
-      }
-      else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_9))
-      {
-         keyPressed = 9;
-      }
-      else if(keyPressed != -1)
-      {
-         /* Selected an option by keyabord. */
-         if(pcOptions->haveOption(keyPressed - 1))
+         /* Update our last coordinates, to keep them on next open */
+         lastPosX = window->getWidgetRenderer()->getPositionX();
+         lastPosY = window->getWidgetRenderer()->getPositionY();
+
+         /* Check option selection by key */
+         if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_1))
          {
-            pcOptions->forceSelection(keyPressed - 1);
-            /* TODO: Play gui sound */
-            /* Proccess the action */
-            owner->getConversation()->proccessAction(
-                  pcOptions->getSelectedOption());
+            keyPressed = 1;
          }
-         keyPressed = -1;
-         return true;
-      }
+         else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_2))
+         {
+            keyPressed = 2;
+         }
+         else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_3))
+         {
+            keyPressed = 3;
+         }
+         else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_4))
+         {
+            keyPressed = 4;
+         }
+         else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_5))
+         {
+            keyPressed = 5;
+         }
+         else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_6))
+         {
+            keyPressed = 6;
+         }
+         else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_7))
+         {
+            keyPressed = 7;
+         }
+         else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_8))
+         {
+            keyPressed = 8;
+         }
+         else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_9))
+         {
+            keyPressed = 9;
+         }
+         else if(keyPressed != -1)
+         {
+            /* Selected an option by keyabord. */
+            if(pcOptions->haveOption(keyPressed - 1))
+            {
+               pcOptions->forceSelection(keyPressed - 1);
+               /* TODO: Play gui sound */
+               /* Proccess the action */
+               owner->getConversation()->proccessAction(
+                     pcOptions->getSelectedOption());
+            }
+            keyPressed = -1;
 
-      if(keyPressed != -1)
-      {
-         /* Done the current selection by keyboard */
-         pcOptions->forceSelection(keyPressed - 1);
+            mutex.unlock();
+            return true;
+         }
+
+         if(keyPressed != -1)
+         {
+            /* Done the current selection by keyboard */
+            pcOptions->forceSelection(keyPressed - 1);
+         }
+         else
+         {
+            /* Check selection by Farso event */
+            Farso::Event event = Farso::Controller::getLastEvent();
+            if((event.getType() == Farso::EVENT_TEXTSELECTOR_OPTION_SELECTED) &&
+                  (event.getWidget() == pcOptions))
+            {
+               owner->getConversation()->proccessAction(
+                     pcOptions->getSelectedOption());
+               mutex.unlock();
+               return true;
+            }
+            //TODO: check barter button.
+         }
       }
       else
       {
-         /* Check selection by Farso event */
-         Farso::Event event = Farso::Controller::getLastEvent();
-         if((event.getType() == Farso::EVENT_TEXTSELECTOR_OPTION_SELECTED) &&
-            (event.getWidget() == pcOptions))
-         {
-            owner->getConversation()->proccessAction(
-                  pcOptions->getSelectedOption());
-            return true;
-         }
-         //TODO: check barter button.
+         keyPressed = -1;
+      }
+
+      /* Check window close (needed, to keep our pointer access atomic). */
+      Farso::Event event = Farso::Controller::getLastEvent();
+      if((event.getType() == Farso::EVENT_WINDOW_WILL_CLOSE) &&
+            (event.getWidget() == window))
+      {
+         /* Unset the pointer */
+         window->clearExternPointer();
+         window = NULL;
+         mutex.unlock();
+         return true;
       }
    }
-   else
-   {
-      keyPressed = -1;
-   }
 
+   mutex.unlock();
    return false;
 }
 
@@ -194,7 +250,10 @@ bool DialogWindow::checkEvents()
  **************************************************************************/
 bool DialogWindow::isOpened()
 {
-   return window != NULL;
+   mutex.lock();
+   bool res = (window != NULL);
+   mutex.unlock();
+   return res;
 }
 
 /**************************************************************************
@@ -202,18 +261,32 @@ bool DialogWindow::isOpened()
  **************************************************************************/
 bool DialogWindow::isOpened(Thing* owner)
 {
-   if(isOpened())
-   {
-      return DialogWindow::owner == owner;
-   }
+   bool res = false;
 
-   return false;
+   mutex.lock();
+   if(window)
+   {
+      res = (DialogWindow::owner == owner);
+   }
+   mutex.unlock();
+
+   return res;
 }
 
 /**************************************************************************
  *                                    close                               *
  **************************************************************************/
 void DialogWindow::close()
+{
+   mutex.lock();
+   shouldClose = true;
+   mutex.unlock();
+}
+
+/**************************************************************************
+ *                                  closeNow                              *
+ **************************************************************************/
+void DialogWindow::closeNow()
 {
    if(window)
    {
@@ -233,4 +306,7 @@ Farso::TextSelector* DialogWindow::pcOptions = NULL;
 int DialogWindow::keyPressed = -1;
 int DialogWindow::lastPosX = -1;
 int DialogWindow::lastPosY = -1;
-
+Kobold::Mutex DialogWindow::mutex;
+Thing* DialogWindow::toOpenOwner = NULL; 
+PlayableCharacter* DialogWindow::toOpenPC = NULL;
+bool DialogWindow::shouldClose = false;
