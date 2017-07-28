@@ -465,7 +465,7 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool forceDynamicModels)
          {
             Ogre::Real oY=0.0f;
             sscanf(value.c_str(), "%f", &oY);
-            last->getModel()->setOrientation(0.0f, oY, 0.0f);
+            last->getModel()->setOrientationNow(0.0f, oY, 0.0f);
             last->setClosedAngle(oY);
             Collision::addElement(last);
          }
