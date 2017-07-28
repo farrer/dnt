@@ -33,6 +33,7 @@ ScriptObject::ScriptObject(ScriptObjectType type, Kobold::String filename,
    this->filename = filename;
    this->originalPos = originalPos;
    this->usePos = true;
+   this->fullOnScript = false;
 }
 
 /**************************************************************************
@@ -44,6 +45,20 @@ ScriptObject::ScriptObject(ScriptObjectType type, Kobold::String filename)
    this->type = type;
    this->filename = filename;
    this->usePos = false;
+   this->fullOnScript = false;
+}
+
+/**************************************************************************
+ *                              Constructor                               *
+ **************************************************************************/
+ScriptObject::ScriptObject(ScriptObjectType type)
+{
+   this->references = 0;
+   this->type = type;
+   this->filename = "";
+   this->usePos = false;
+
+   this->fullOnScript = true;
 }
 
 /**************************************************************************
@@ -67,7 +82,13 @@ int ScriptObject::addReference()
  **************************************************************************/
 int ScriptObject::release()
 {
-   return --references;
+   --references;
+   if((references == 0) && (fullOnScript))
+   {
+      delete this;
+   }
+
+   return references;
 }
 
 /**************************************************************************

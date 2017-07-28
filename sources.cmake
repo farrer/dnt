@@ -104,6 +104,7 @@ set(AI_HEADERS
    src/ai/script/scriptmanager.h
    src/ai/script/scriptobject.h
    src/ai/script/scriptobjectcharacter.h
+   src/ai/script/scriptobjectdice.h
    src/ai/script/scriptstdstring.h
 )
 set(AI_SOURCES
@@ -117,6 +118,7 @@ set(AI_SOURCES
    src/ai/script/scriptmanager.cpp
    src/ai/script/scriptobject.cpp
    src/ai/script/scriptobjectcharacter.cpp
+   src/ai/script/scriptobjectdice.cpp
    src/ai/script/scriptstdstring.cpp
 )
 set(LANG_SOURCES

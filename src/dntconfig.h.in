@@ -125,6 +125,7 @@ namespace DNT
    class ScriptInstance;
    class ScriptObject;
    class ScriptObjectCharacter;
+   class ScriptObjectDice;
    class MapScript;
    class MapScriptInstance;
    class PendingAction;

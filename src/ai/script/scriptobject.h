@@ -39,7 +39,8 @@ namespace DNT
       public:
          enum ScriptObjectType
          {
-            TYPE_CHARACTER
+            TYPE_CHARACTER,
+            TYPE_DICE
          };
 
          /*! Constructor
@@ -51,6 +52,13 @@ namespace DNT
                Ogre::Vector3 originalPos);
          /*! Constructor, without position */
          ScriptObject(ScriptObjectType type, Kobold::String filename);
+         /*! Constructor, only with type.
+          * \note only for full-on-script objects (ie: those without any 
+          *       real-world references).
+          * \note full-on-script objects won't go to the objects list of
+          *       script manager and are properly deleted when its reference
+          *       goes down to 0. */
+         ScriptObject(ScriptObjectType type);
          /*! Destructor */
          virtual ~ScriptObject();
 
@@ -82,6 +90,7 @@ namespace DNT
          Ogre::Vector3 originalPos;  /**< Object's original position */
          bool usePos;                /**< If use original position */
          int references;             /**< Total references to it on scripts */
+         bool fullOnScript;          /**< When not a real-world referenced */
    };
 
 }

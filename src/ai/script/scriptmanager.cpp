@@ -23,6 +23,7 @@
 #include "scriptstdstring.h"
 #include "scriptobject.h"
 #include "scriptobjectcharacter.h"
+#include "scriptobjectdice.h"
 #include "pendingaction.h"
 #include <kobold/log.h>
 #include <kosound/sound.h>
@@ -55,6 +56,7 @@ ScriptManager::ScriptManager()
 
    /* Register our classes */
    ScriptObjectCharacter::doScriptRegister(asEngine);
+   ScriptObjectDice::doScriptRegister(asEngine);
 
    /* Register our 'global' functions */
    r = asEngine->RegisterGlobalFunction(
