@@ -23,9 +23,11 @@
 #include "pendingaction.h"
 #include "../../rules/character.h"
 #include "../../core/game.h"
+#include "../../core/util.h"
 #include "../../core/playablecharacter.h"
 #include "../../gui/dialogwindow.h"
 #include <kobold/log.h>
+#include <stdlib.h>
 using namespace DNT;
 
 /**************************************************************************
@@ -168,6 +170,37 @@ const float ScriptObjectCharacter::getOrientation()
 }
 
 /**************************************************************************
+ *                           getDisplacement                              *
+ **************************************************************************/
+const int ScriptObjectCharacter::getDisplacement()
+{
+   int res = 0;
+   mutex.lock();
+   if(character)
+   {
+      character->getDisplacement();
+   }
+   mutex.unlock();
+   return res;
+}
+
+/**************************************************************************
+ *                           getWalkableBounds                            *
+ **************************************************************************/
+Ogre::Aabb ScriptObjectCharacter::getWalkableBounds()
+{
+   Ogre::Aabb res;
+   mutex.lock();
+   if(character)
+   {
+      res = character->getWalkableBounds();
+   }
+   mutex.unlock();
+
+   return res;
+}
+
+/**************************************************************************
  *                           setMoveByFoundPath                           *
  **************************************************************************/
 void ScriptObjectCharacter::setToMoveByFoundPath(AStar* aStar)
@@ -214,17 +247,45 @@ void ScriptObjectCharacter::moveToPosition(float posX, float posZ)
 /**************************************************************************
  *                            moveToCharacter                             *
  **************************************************************************/
-void ScriptObjectCharacter::moveToCharacter(ScriptObjectCharacter* character)
+void ScriptObjectCharacter::moveToCharacter(ScriptObjectCharacter* target)
 {
-   //TODO
+   Ogre::Aabb aabb = target->getWalkableBounds();
+   float sizeX = aabb.mHalfSize.x * 2.0f;
+   float sizeZ = aabb.mHalfSize.z * 2.0f;
+
+   /* Select a random position near the target */
+   bool signalX = ((rand()/(RAND_MAX+1.0)) > 0.5);
+   float varX = (int)((10 * (rand()/(RAND_MAX+1.0)))+sizeX);
+
+   bool signalZ = ((rand()/(RAND_MAX+1.0)) > 0.5);
+   float varZ = (int)((10 * (rand()/(RAND_MAX+1.0)))+sizeZ);
+
+   Ogre::Vector3 tPos = target->getPosition();
+   float tgtX = tPos.x + ((signalX) ? 1 : -1) * varX;
+   float tgtZ = tPos.z + ((signalZ) ? 1 : -1) * varZ;
+
+   /* Try to move there */
+   moveToPosition(tgtX, tgtZ);
 }
 
 /**************************************************************************
  *                            moveFromCharacter                           *
  **************************************************************************/
-void ScriptObjectCharacter::moveFromCharacter(ScriptObjectCharacter* character)
+void ScriptObjectCharacter::moveFromCharacter(ScriptObjectCharacter* target)
 {
-   //TODO
+   Ogre::Vector3 myPos = getPosition();
+   Ogre::Vector3 tgtPos = target->getPosition();
+
+   /* Define a position away from the Character */
+   float angle = Util::getAngle(tgtPos.x, tgtPos.z, myPos.x, myPos.z);
+   const Ogre::Radian angleRad = Ogre::Radian(Ogre::Degree(angle));
+   float doubleDisp = 2.0f * getDisplacement();
+
+   float posX = myPos.x - (Ogre::Math::Cos(angleRad) * doubleDisp);
+   float posZ = myPos.z - (Ogre::Math::Sin(angleRad) * doubleDisp);
+
+   /* Try to move there */
+   moveToPosition(posX, posZ);
 }
 
 /**************************************************************************

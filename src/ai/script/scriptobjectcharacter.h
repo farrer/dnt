@@ -25,6 +25,7 @@
 #include "scriptobject.h"
 #include "angelscript.h"
 #include <kobold/mutex.h>
+#include <OGRE/Math/Simple/OgreAabb.h>
 
 namespace DNT
 {
@@ -70,9 +71,15 @@ namespace DNT
          /*! Set the orientation of the character on next frames */
          void setOrientation(const float ori);
 
+         /*! \return current displacement */
+         const int getDisplacement();
+
+         /*! \return walkable bounding box of the model */
+         Ogre::Aabb getWalkableBounds();
+
          void moveToPosition(float posX, float posZ);
-         void moveToCharacter(ScriptObjectCharacter* character);
-         void moveFromCharacter(ScriptObjectCharacter* character);
+         void moveToCharacter(ScriptObjectCharacter* target);
+         void moveFromCharacter(ScriptObjectCharacter* target);
          void callAnimation(int index);
          void setAnimation(int index);
          void openDialog();
