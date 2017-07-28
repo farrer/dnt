@@ -27,10 +27,12 @@
 #include "modeffect.h"
 
 #include "../core/inventory.h"
+#include "../core/game.h"
 
 #include "../ai/astar.h"
 
 #include <kobold/log.h>
+#include <goblin/camera.h>
 
 #include <assert.h>
 
@@ -490,6 +492,11 @@ void Character::update()
          if(getCurrentAnimation() != CHARACTER_ANIMATION_WALK)
          {
             setAnimation(CHARACTER_ANIMATION_WALK, true);
+         }
+         /* Move the camera, if we are the active playable character */
+         if(Game::getPcs()->getActiveCharacter() == this)
+         {
+            Goblin::Camera::setPosition(pos);
          }
       }
       else
