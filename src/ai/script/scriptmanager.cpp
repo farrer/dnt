@@ -396,6 +396,7 @@ void ScriptManager::removeInstance(ScriptInstance* instance)
  **************************************************************************/
 void ScriptManager::removeAllUnusedControllers()
 {
+   managerMutex.lock();
    /* Check through the controller's list which ones are no more in use */
    int total = controllers.getTotal();
    ScriptController* ctrl = static_cast<ScriptController*>(
@@ -413,6 +414,32 @@ void ScriptManager::removeAllUnusedControllers()
          ctrl = static_cast<ScriptController*>(ctrl->getNext());
       }
    }
+   managerMutex.unlock();
+}
+
+/**************************************************************************
+ *                     removeAllUnusedScriptObjects                       *
+ **************************************************************************/
+void ScriptManager::removeAllUnusedScriptObjects()
+{
+   managerMutex.lock();
+   int total = objects.getTotal();
+   ScriptObject* obj = static_cast<ScriptObject*>(
+         controllers.getFirst());
+   for(int i=0; i < total; i++)
+   {
+      if(obj->getTotalReferences() == 0)
+      {
+         ScriptObject* aux = obj;
+         obj = static_cast<ScriptObject*>(obj->getNext());
+         objects.remove(aux);
+      }
+      else
+      {
+         obj = static_cast<ScriptObject*>(obj->getNext());
+      }
+   }
+   managerMutex.unlock();
 }
 
 /**************************************************************************

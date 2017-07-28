@@ -74,6 +74,9 @@ namespace DNT
           * and a new area is loaded on its place. */
          void removeAllUnusedControllers();
 
+         /*! Remove all unused script objects */
+         void removeAllUnusedScriptObjects();
+
          /*! Get a context from the pool to execute a function. */
          asIScriptContext* prepareContextFromPool(asIScriptFunction* f);
          /*! Return a context to the pool, after execution */
