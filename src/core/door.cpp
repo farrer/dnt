@@ -121,8 +121,8 @@ bool Door::flip()
       /* Lock it (or re-lock it), and define its 'unlock' and 'forced open' 
        * challenge values. */
       setOpenStatus(DOOR_LOCKED);
-      getCurBonusAndSaves()->setIAmNotAFool(unlockChallenge);
-      getCurBonusAndSaves()->setFortitude(forceChallenge);
+      setDifficulty(unlockChallenge);
+      setHardness(forceChallenge);
 
       return true;
    }

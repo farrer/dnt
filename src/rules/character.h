@@ -67,10 +67,9 @@ namespace DNT
           * \param time -> time to expire (0 == forever)
           * \param periodicTime -> time to apply the modEffect again 
           *                        (0 to not re-apply)
-          * \param factorId -> id of the target factor
-          * \param factorType -> type of the target factor */
+          * \param def RuleDefinition target of the effect */
          void addModEffect(int mod, int time, int periodicTime,
-               Kobold::String factorId, Kobold::String factorType);
+               RuleDefinition* def);
 
          /*! Remove all modEffects from the Character */
          void removeAllModEffects();
@@ -79,39 +78,10 @@ namespace DNT
           * \return pointer to the modEffectList */
          ModEffectList* getEffects();
 
-         /*! Verify if the Character alignment is of type represented by al
-          * \param al -> string with align type
-          * \return -> true if the align string identifier have the string al
-          *            in it, false otherwise. 
-          * \note -> a common use is, for example: isAlignOf("FREE_SOFTWARE") */
-         bool isAlignOf(Kobold::String al);
-
-         /*! Get the total class levels of the Character (ie: sum of all its
-          * classes levels).
-          * \return Character total levels */
-         int getLevel();
-
-         /*! Get the Character level for an specific class
-          * \param classId -> class' string identifier
-          * \return -> number of levels Character has on class */
-         int getLevel(Kobold::String classId);
-
-         /*! Get the Character level for an specific class
-          * \param cl -> class to get how many levels the Character has
-          * \return -> number of lvels Character has on class cl */
-         int getLevel(Class* cl);
-
          /*! Kill the Character without calling dead animation
           * \note this is usually used at ModState when loading a level
           *       with dead characters information. */
          void instantKill();
-
-         /*! Apply all current Race and Classes Skill costs to the character's
-          * skill list. */
-         void applySkillCosts();
-
-         /*! Apply Bonus And Saves from all owned Classes to the Character */
-         void applyBonusAndSaves();
 
          /*! Load a character model */
          bool load(Kobold::String filename);
@@ -166,15 +136,6 @@ namespace DNT
          /*! \return default character's animation names */
          virtual Kobold::String* getAnimationList();
 
-         /*! Get first available empty class index on character classes vector
-          * \return index first empty index or -1 if full. */
-         int getEmptyClassIndex();
-
-         /*! Insert all default needed feats for a character. This function will
-          * insert, for example, base weapon attack feat, which is indispensable
-          * for fights. */
-         virtual void insertDefaultNeededFeats();
-
          /*! Parse key/value pairs specific to the character thing's 
           * specialization */
          bool doSpecificParse(Kobold::String key, Kobold::String value);
@@ -193,13 +154,6 @@ namespace DNT
          virtual bool doCharacterSpecializationParse(Kobold::String key, 
                Kobold::String value) = 0;
 
-         Alignment* curAlign;    /**< Current character alignment */
-         /*! Character classes */
-         Class* classes[CHARACTER_MAX_DISTINCT_CLASSES];
-         /*! Each class level */
-         int classLevel[CHARACTER_MAX_DISTINCT_CLASSES];
-         Race* race;    /**< Character race */
-         Feats* feats;  /**< Character current owned feats */
          Kobold::Mutex mutex; /**< Mutex for access control */
 
       private:
@@ -210,7 +164,6 @@ namespace DNT
          bool canMove; /**< Move flag controller on fight mode */
 
          ModEffectList effects;  /**< Current Character effects */
-         DiceInfo bareHandsDice; /**< Damage dice for barehands fight */
 
          Inventory* inventory; /**< Character inventory */
 

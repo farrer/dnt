@@ -70,17 +70,16 @@ class TalkAction : public Kobold::ListElement
      /*! Destructor */
      ~TalkAction();
 
-     /*! Set Action Attribute (meaning depends of TalkActionType)
-      * \param att attribute index */
-     void setAttribute(int att);
+     /*! Set action value */
+     void setValue(int val);
+     /*! Set action second value */
+     void setValue2(int val);
 
-     /*! Set action quantity attribute 
-      * \param qty quantity value*/
-     void setQuantity(int qty);
+     /*! Set action string value */
+     void setStringValue(const Kobold::String strVal);
 
-     /*! Set String Factor to act at 
-      * \param factor factor identifier */
-     void setStringFactor(Kobold::String factor);
+     /*! Set RuleDefinition id to act to. */ 
+     void setRuleDefinition(RuleDefinition* ruleDef);
 
      /*! Execute the action */
      void execute(Conversation* conv, PlayableCharacter* pc, Thing* owner,
@@ -88,10 +87,11 @@ class TalkAction : public Kobold::ListElement
 
   private:
 
-     TalkActionType type;   /**< Talk Action type */
-     int qty;  /**< Quantity */
-     int att;  /**< Attribute to modify */
-     Kobold::String satt; /**< String Attribute */
+     TalkActionType type;     /**< Talk Action type */
+     int value;               /**< First Value */
+     int value2;              /**< Second value */
+     Kobold::String strValue; /**< String value */
+     RuleDefinition* ruleDef; /**< The rule definition */
 };
 
 /*! The available tests */
@@ -104,8 +104,8 @@ enum TalkTestType
    TALK_TEST_EQUAL, /**< Test if equal */
    TALK_TEST_DIFFERENT, /**< Test if different */
    TALK_TEST_HAVE_ITEM, /**< Test if have item on inventory */
-   TALK_TEST_ALIGNMENT_NOT, /**< Test if alignment not of type */
-   TALK_TEST_ALIGNMENT,  /**< Test if alignment is of a type */
+   TALK_TEST_HAVE_RULE_DEFINITION, /**< Test have a RuleDefinition */
+   TALK_TEST_NOT_HAVE_RULE_DEFINITION, /**< Test have a RuleDefinition */
    TALK_TEST_ALL_ALIVE, /**< If all Characters are alive on a map */
    TALK_TEST_ALL_DEAD, /**< If all Characters are dead on a map */
    TALK_TEST_HAVE_MONEY, /**< If have money amount */
@@ -122,10 +122,11 @@ class TalkTest : public Kobold::ListElement
 
       /*! Constructor.
        * \param token TalkTestType defined as string
-       * \param test string with skill or attribute to test with
-       * \param against string with skill or attraibute to test against */
-      TalkTest(Kobold::String token, Kobold::String test, 
-               Kobold::String against);
+       * \param test identifier of the RuleDefinition to roll a test
+       * \param against identifier of the RuleDefinition to test against,
+       *        or single value. */
+      TalkTest(const Kobold::String& token, const Kobold::String& test, 
+               const Kobold::String& against);
       /*! Destructor */
       ~TalkTest();
 
@@ -135,20 +136,22 @@ class TalkTest : public Kobold::ListElement
        * \return -> true if passed the test */
       bool doTest(PlayableCharacter* pc, Thing* owner);
 
-      /*! Get the test name (ie. if a skill, the skill name), when doing it
-       * against a Character.
-       * \param pc -> pointer to the Character
-       * \return -> the test name */
-      Kobold::String getTestName(PlayableCharacter* pc);
+      /*! Get the test name.
+       * \return -> the rule definition test name */
+      Kobold::String getTestName();
 
    protected:
 
-      /*! Get the against value (or skill value) */
-      int getAgainstValue(Thing* owner);
+      /*! Try to get get the against as value. */
+      bool getAgainstValue(Thing* owner, int& value);
+      /*! Try to get against as a RuleDefinitionValue */
+      RuleDefinitionValue* getAgainst(Thing* owner);
 
       TalkTestType type;         /**< Talk test type */
-      Kobold::String test;       /**< The modifier to test */
-      Kobold::String against;    /**< The against modifier to test (or value) */
+      RuleDefinition* test;      /**< Definition to test */
+      Kobold::String testStr;    /**< Test String */
+      Kobold::String against;    /**< Definition to test against */
+      int againstVal;            /**< If against is NULL will test to value */
 };
 
 /*! A single selectable option within a Dialog. The option appearence will be 

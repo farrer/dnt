@@ -21,10 +21,6 @@
 
 #include "thing.h"
 
-#include "modifier.h"
-#include "skills.h"
-#include "bonusandsaves.h"
-
 #include "../lang/translate.h"
 #include "../core/dialog.h"
 #include "../core/game.h"
@@ -46,6 +42,8 @@ using namespace DNT;
 #define THING_KEY_ANIMATED_MODEL       "animatedModel"
 #define THING_KEY_SCALE                "scale"
 #define THING_KEY_STATE                "state"
+#define THING_KEY_DIFFICULTY           "difficulty"
+#define THING_KEY_HARDNESS             "hardness"
 #define THING_KEY_WALKABLE             "walkable"
 #define THING_KEY_WALK_INTERVAL        "walkInterval"
 #define THING_KEY_TURN_AROUND_INTERVAL "turnAroundInterval"
@@ -65,12 +63,14 @@ Thing::Thing(ThingType type, int totalAnimations)
    this->lifePoints = 0;
    this->armatureClass = 0;
    this->initiativeBonus = 0;
-   this->displacement =  WALK_PER_MOVE_ACTION;
+   this->displacement = 60.0f;
    this->walkInterval = 1.2f; 
    this->turnAroundInterval = 3.5f; 
    this->model = NULL;
    this->conversation = NULL;
    this->state = 0;
+   this->difficulty = 0;
+   this->hardness = 0;
    this->walkable = false;
    this->currentEnemy = NULL;
    this->psychoState = PSYCHO_NEUTRAL;
@@ -259,6 +259,14 @@ bool Thing::load(Kobold::String fileName,
       {
          sscanf(value.c_str(), "%d", &state);
       }
+      else if(key == THING_KEY_HARDNESS)
+      {
+         sscanf(value.c_str(), "%d", &hardness);
+      }
+      else if(key == THING_KEY_DIFFICULTY)
+      {
+         sscanf(value.c_str(), "%d", &difficulty);
+      }
       else if(key == THING_KEY_WALKABLE)
       {
          walkable = (value == THING_VALUE_TRUE);
@@ -283,6 +291,7 @@ bool Thing::load(Kobold::String fileName,
       {
          if(!doSpecificParse(key, value))
          {
+            //TODO: check key as a rule def to load 
             /* Got an unknow key. File definition should be fixed. */
             Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
                   "Warning: unknow key '%s' at thing's file '%s'",
@@ -364,6 +373,8 @@ bool Thing::save(Kobold::String filename, bool fullPath)
    file << THING_KEY_WALKABLE << " = " 
         << (walkable ? THING_VALUE_TRUE : THING_VALUE_FALSE) << std::endl;
    file << THING_KEY_CONVERSATION << " = " << conversationFile << std::endl;
+
+   //TODO: Add RuleDefinitions!!
  
    /* Save specific implementation values */
    success |= doSpecificSave(file);
@@ -418,11 +429,19 @@ Kobold::String Thing::getDescription()
 }
 
 /**************************************************************************
- *                               getState                                 *
+ *                            setDifficulty                               *
  **************************************************************************/
-int Thing::getState()
+void Thing::setDifficulty(int value)
 {
-   return state;
+   difficulty = value;
+}
+
+/**************************************************************************
+ *                              setHardness                               *
+ **************************************************************************/
+void Thing::setHardness(int value)
+{
+   hardness = value;
 }
 
 /**************************************************************************
@@ -482,188 +501,6 @@ void Thing::setPsychoState(PsychoState state)
 }
 
 /**************************************************************************
- *                             getBonusValue                              *
- **************************************************************************/
-int Thing::getBonusValue(Factor& something)
-{
-   Skill* s = NULL;
-
-   if(something.getType() == MOD_TYPE_ATT)
-   {
-      s = sk.getSkillByString(something.getId());
-      if(s)
-      {
-         return s->getAttributeBonus();
-      }
-      else
-      {
-         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
-             "Unknow Attribute (Skill): ", something.getId().c_str());
-         return THING_UNKNOWN_VALUE;
-      }
-   }
-   else if(something.getType() == MOD_TYPE_SKILL)
-   {
-      s = sk.getSkillByString(something.getId());
-      if(s)
-      {
-         return s->getBonus(&sk);
-      }
-      else
-      {
-         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
-               "Unknow Skill: '%s'", something.getId().c_str());
-         return THING_UNKNOWN_VALUE;
-      }
-   }
-
-   return getFactorValue(something);
-}
-
-/**************************************************************************
- *                       getFactorValuePointer                            *
- **************************************************************************/
-int Thing::getFactorValue(Factor& something)
-{
-   Skill* s = NULL;
-
-   if( (something.getType() == MOD_TYPE_ATT) ||
-       (something.getType() == MOD_TYPE_SKILL) )
-   {
-      s = sk.getSkillByString(something.getId());
-      if(s)
-      {
-         return s->getPoints();
-      }
-      else
-      {
-         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
-               "Warning: Unknow skill '%s'", something.getId().c_str());
-      }
-   }
-   else if(something.getType() == MOD_TYPE_THING)
-   {
-      if(something.getId() == THING_ARMATURE_CLASS)
-      {
-         return armatureClass;
-      }
-      else if(something.getId() == THING_INITIATIVE_BONUS)
-      {
-         return initiativeBonus;
-      }
-      else if(something.getId() == THING_DISPLACEMENT)
-      {
-         return displacement;
-      }
-      else if(something.getId() == THING_MAX_LIFE_POINTS)
-      {
-         return maxLifePoints;
-      }
-      else if((something.getId() == DNT_BS_LEVEL) ||
-              (something.getId() == DNT_BS_FORTITUDE) ||
-              (something.getId() == DNT_BS_REFLEXES) ||
-              (something.getId() == DNT_BS_I_AM_NOT_A_FOOL) ||
-              (something.getId() == DNT_BS_WILL) )
-      {
-         return curBonusAndSaves.getValue(something.getId());
-      }
-      else
-      {
-         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
-               "Warning: Unknow factor '%s'", something.getId().c_str());
-      }
-   }
-   else
-   {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
-            "Warning: Unknow factor type: ", something.getType().c_str());
-   }
-
-   return THING_UNKNOWN_VALUE;
-}
-
-/**************************************************************************
- *                           incFactorValue                               *
- **************************************************************************/
-void Thing::incFactorValue(Factor& something, int inc)
-{
-   Skill* s = NULL;
-
-   if( (something.getType() == MOD_TYPE_ATT) ||
-       (something.getType() == MOD_TYPE_SKILL) )
-   {
-      s = sk.getSkillByString(something.getId());
-      if(s)
-      {
-         s->setPoints(inc + s->getPoints());
-      }
-      else
-      {
-         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
-               "Warning: Unknow skill '%s'", something.getId().c_str());
-      }
-   }
-   else if(something.getType() == MOD_TYPE_THING)
-   {
-      if(something.getId() == THING_ARMATURE_CLASS)
-      {
-         armatureClass += inc;
-      }
-      else if(something.getId() == THING_INITIATIVE_BONUS)
-      {
-         initiativeBonus += inc;
-      }
-      else if(something.getId() == THING_DISPLACEMENT)
-      {
-         displacement += inc;
-      }
-      else if(something.getId() == THING_MAX_LIFE_POINTS)
-      {
-         maxLifePoints += inc;
-      }
-      else if((something.getId() == DNT_BS_LEVEL) ||
-              (something.getId() == DNT_BS_FORTITUDE) ||
-              (something.getId() == DNT_BS_REFLEXES) ||
-              (something.getId() == DNT_BS_I_AM_NOT_A_FOOL) ||
-              (something.getId() == DNT_BS_WILL) )
-      {
-         int v = curBonusAndSaves.getValue(something.getId());
-
-         if(something.getId() == DNT_BS_FORTITUDE)
-         {
-            curBonusAndSaves.setFortitude(v + inc);
-         }
-         else if(something.getId() == DNT_BS_REFLEXES)
-         {
-         }
-         else if((something.getId() == DNT_BS_I_AM_NOT_A_FOOL) ||
-                 (something.getId() == DNT_BS_WILL))
-         {
-            curBonusAndSaves.setIAmNotAFool(v + inc);
-         }
-      }
-      else
-      {
-         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
-               "Warning: Unknow factor '%s'", something.getId().c_str());
-      }
-   }
-   else
-   {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
-            "Warning: Unknow factor type: ", something.getType().c_str());
-   }
-}
-
-/**************************************************************************
- *                            getCurBonusAndSaves                         *
- **************************************************************************/
-BonusAndSaves* Thing::getCurBonusAndSaves()
-{
-   return &curBonusAndSaves;
-}
-
-/**************************************************************************
  *                            getConversation                             *
  **************************************************************************/
 Conversation* Thing::getConversation()
@@ -695,40 +532,20 @@ void Thing::setConversationFile(Kobold::String fileName)
 }
 
 /**************************************************************************
- *                                  getSkills                             *
+ *                                   doCheck                              *
  **************************************************************************/
-Skills* Thing::getSkills()
+bool Thing::doCheck(RuleDefinition* ruleDef, int difficulty)
 {
-   return &sk;
+   //TODO
+   return false;
 }
 
 /**************************************************************************
  *                                   doCheck                              *
  **************************************************************************/
-bool Thing::doCheck(Kobold::String stateToCheck, int difficulty)
+bool Thing::doCheck(RuleDefinition* ruleDef, RuleDefinitionValue* against)
 {
-   Skill* skl;
-   bool couldCheck = false;
-   bool res;
-
-   /* First, let's test as skill */
-   skl = sk.getSkillByString(stateToCheck);
-   if(skl != NULL)
-   {
-      return sk.doSkillCheck(skl, difficulty);
-   }
-
-   /* Nope, so let's test as a bonus and Save */
-   res = curBonusAndSaves.doCheck(stateToCheck, difficulty, &couldCheck);
-   if(couldCheck)
-   {
-      return res;
-   }
-
-   /* Unknow! */
-   Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
-         "Warning: thing::doCheck - Unknown state to check: '%s'",
-         stateToCheck.c_str());
+   //TODO
    return false;
 }
 
@@ -775,6 +592,70 @@ void Thing::setMaxLifePoints(int points)
 {
    maxLifePoints = points;
    lifePoints = maxLifePoints;
+}
+
+/**************************************************************************
+ *                          getRuleDefinition                             *
+ **************************************************************************/
+RuleDefinitionValue* Thing::getRuleDefinition(const Kobold::String id)
+{
+   RuleGroupAvailableInfo* cur = static_cast<RuleGroupAvailableInfo*>(
+         ruleGroups.getFirst());
+   for(int i = 0; i < ruleGroups.getTotal(); i++)
+   {
+      RuleDefinitionValue* val = cur->getDefinition(id);
+      if(val)
+      {
+         return val;
+      }
+      cur = static_cast<RuleGroupAvailableInfo*>(cur->getNext());
+   }
+   return NULL;
+}
+
+/**************************************************************************
+ *                          getRuleDefinition                             *
+ **************************************************************************/
+RuleDefinitionValue* Thing::getRuleDefinition(const Kobold::String groupId, 
+      const Kobold::String id)
+{
+   RuleGroupAvailableInfo* group = getRuleGroup(groupId);
+   if(group)
+   {
+      return group->getDefinition(id);
+   }
+
+   return NULL;
+}
+
+/**************************************************************************
+ *                          getRuleDefinition                             *
+ **************************************************************************/
+RuleDefinitionValue* Thing::getRuleDefinition(RuleDefinition* def)
+{
+   if(def)
+   {
+      return getRuleDefinition(def->getGroup()->getId(), def->getId());
+   }
+   return NULL;
+}
+
+/**************************************************************************
+ *                            getRuleGroup                                *
+ **************************************************************************/
+RuleGroupAvailableInfo* Thing::getRuleGroup(const Kobold::String id)
+{
+   RuleGroupAvailableInfo* cur = static_cast<RuleGroupAvailableInfo*>(
+         ruleGroups.getFirst());
+   for(int i = 0; i < ruleGroups.getTotal(); i++)
+   {
+      if(cur->getGroup()->getId() == id)
+      {
+         return cur;
+      }
+      cur = static_cast<RuleGroupAvailableInfo*>(cur->getNext());
+   }
+   return NULL;
 }
 
 /**************************************************************************

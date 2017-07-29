@@ -44,17 +44,6 @@ class PlayableCharacter : public Character
        * \param floorMouse mouse projected to Y=0 plane. */
       bool checkInputForMovement(const Ogre::Vector3& floorMouse);
 
-      /*! Verify if can take levels on an specific class
-       * \param cl -> class to verify if can take levels 
-       * \return -> true if can take a level, false otherwise */
-      bool canClass(Class* cl);
-
-      /*! Get a new level on a class
-       * \param cl -> pointer to the class to get a new level
-       * \note -> will only take a level if have enought XP
-       *          and can take a level at the specified class */
-      void getNewClassLevel(Class* cl);
-
       /*! Overriden from Character class */
       void doAfterLoad();
 

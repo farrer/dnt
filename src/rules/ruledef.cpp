@@ -19,20 +19,120 @@
 */
 
 #include "ruledef.h"
+#include "../lang/translate.h"
+#include <kobold/defparser.h>
+#include <kobold/log.h>
+#include <assert.h>
 using namespace DNT;
+
+////////////////////////////////////////////////////////////////////////////
+//                                                                        //
+//                               RuleGroup                                //
+//                                                                        //
+////////////////////////////////////////////////////////////////////////////
 
 /******************************************************************
  *                            Constructor                         *
  ******************************************************************/
-RuleDefinition::RuleDefinition(int id, Kobold::String strId)
+RuleGroup::RuleGroup(Kobold::String id)
 {
-   this->image = NULL;
-   setId(id, strId);
+   this->id = id;
+   this->type = TYPE_SELECTABLE;
 }
-RuleDefinition::RuleDefinition()
+
+/******************************************************************
+ *                            Destructor                          *
+ ******************************************************************/
+RuleGroup::~RuleGroup()
 {
+}
+
+/******************************************************************
+ *                        addRuleDefinition                       *
+ ******************************************************************/
+void RuleGroup::addRuleDefintion(RuleDefinition* ruleDef)
+{
+   definitions.insert(ruleDef);
+}
+
+/******************************************************************
+ *                         getDefinition                          *
+ ******************************************************************/
+RuleDefinition* RuleGroup::getDefinition(const Kobold::String id)
+{
+   RuleDefinition* cur = static_cast<RuleDefinition*>(definitions.getFirst());
+   for(int i=0; i < definitions.getTotal(); i++)
+   {
+      if(cur->getId() == id)
+      {
+         return cur;
+      }
+      cur = static_cast<RuleDefinition*>(cur->getNext());
+   }
+
+   return NULL;
+}
+
+/******************************************************************
+ *                              setType                           *
+ ******************************************************************/
+void RuleGroup::setType(const RuleGroupType type)
+{
+   this->type = type;
+}
+ 
+/******************************************************************
+ *                            setName                             *
+ ******************************************************************/
+void RuleGroup::setName(Kobold::String name)
+{
+   this->name = name;
+}
+
+/******************************************************************
+ *                         setDescription                         *
+ ******************************************************************/
+void RuleGroup::setDescription(Kobold::String desc)
+{
+   this->description = desc;
+}
+
+////////////////////////////////////////////////////////////////////////////
+//                                                                        //
+//                           RulePreRequisite                             //
+//                                                                        //
+////////////////////////////////////////////////////////////////////////////
+
+/******************************************************************
+ *                            Constructor                         *
+ ******************************************************************/
+RulePreRequisite::RulePreRequisite(RuleDefinition* requisite, int minValue)
+{
+   this->required = requisite;
+   this->minValue = minValue;
+}
+
+/******************************************************************
+ *                             Destructor                         *
+ ******************************************************************/
+RulePreRequisite::~RulePreRequisite()
+{
+}
+
+////////////////////////////////////////////////////////////////////////////
+//                                                                        //
+//                            RuleDefinition                              //
+//                                                                        //
+////////////////////////////////////////////////////////////////////////////
+
+/******************************************************************
+ *                            Constructor                         *
+ ******************************************************************/
+RuleDefinition::RuleDefinition(Kobold::String id)
+{
+   this->group = NULL;
+   this->id = id;
    this->image = NULL;
-   setId(0, "");
 }
 
 /******************************************************************
@@ -47,28 +147,11 @@ RuleDefinition::~RuleDefinition()
 }
 
 /******************************************************************
- *                               setId                            *
+ *                            setGroup                            *
  ******************************************************************/
-void RuleDefinition::setId(int id, Kobold::String strId)
+void RuleDefinition::setGroup(const RuleGroup* ruleGroup)
 {
-   this->intID = id;
-   this->strID = strId;
-}
-
-/******************************************************************
- *                               getId                            *
- ******************************************************************/
-int RuleDefinition::getId()
-{
-   return intID;
-}
-
-/******************************************************************
- *                            getStringId                         *
- ******************************************************************/
-Kobold::String RuleDefinition::getStringId()
-{
-   return strID;
+   this->group = ruleGroup;
 }
 
 /******************************************************************
@@ -81,27 +164,11 @@ void RuleDefinition::loadImage(Kobold::String imageFilename)
 }
 
 /******************************************************************
- *                             getImage                           *
- ******************************************************************/
-Farso::Surface* RuleDefinition::getImage()
-{
-   return image;
-}
-
-/******************************************************************
  *                              setName                           *
  ******************************************************************/
 void RuleDefinition::setName(Kobold::String name)
 {
    this->name = name;
-}
-
-/******************************************************************
- *                              getName                           *
- ******************************************************************/
-Kobold::String RuleDefinition::getName()
-{
-   return name;
 }
 
 /******************************************************************
@@ -111,14 +178,341 @@ void RuleDefinition::setDescription(Kobold::String desc)
 {
    this->description = desc;
 }
-
+ 
 /******************************************************************
- *                          getDescription                        *
- ******************************************************************/
-Kobold::String RuleDefinition::getDescription()
+ *                        addPreRequisite                         *
+ ******************************************************************/     
+void RuleDefinition::addPreRequisite(RulePreRequisite* preRequisite)
 {
-   return description;
+   this->requisites.insert(preRequisite);
 }
 
+////////////////////////////////////////////////////////////////////////////
+//                                                                        //
+//                         RuleDefinitionValue                            //
+//                                                                        //
+////////////////////////////////////////////////////////////////////////////
+
+/******************************************************************
+ *                           Constructor                          *
+ ******************************************************************/
+RuleDefinitionValue::RuleDefinitionValue(RuleDefinition* def)
+{
+   this->ruleDef = def;
+   this->value = 0;
+}
+
+/******************************************************************
+ *                            Destructor                          *
+ ******************************************************************/
+RuleDefinitionValue::~RuleDefinitionValue()
+{
+}
+
+/******************************************************************
+ *                               add                              *
+ ******************************************************************/
+void RuleDefinitionValue::add(int v)
+{
+   this->value += v;
+}
+
+/******************************************************************
+ *                           setValue                             *
+ ******************************************************************/
+void RuleDefinitionValue::setValue(int v)
+{
+   this->value = v;
+}
+
+////////////////////////////////////////////////////////////////////////////
+//                                                                        //
+//                       RuleGroupAvailableInfo                           //
+//                                                                        //
+////////////////////////////////////////////////////////////////////////////
+
+/******************************************************************
+ *                           Constructor                          *
+ ******************************************************************/
+RuleGroupAvailableInfo::RuleGroupAvailableInfo(RuleGroup* group)
+{
+   this->group = group;
+   this->total = 0;
+}
+
+/******************************************************************
+ *                            Destructor                          *
+ ******************************************************************/
+RuleGroupAvailableInfo::~RuleGroupAvailableInfo()
+{
+}
+
+/******************************************************************
+ *                               add                              *
+ ******************************************************************/
+void RuleGroupAvailableInfo::add(int v)
+{
+   this->total += v;
+}
+
+/******************************************************************
+ *                           setValue                             *
+ ******************************************************************/
+void RuleGroupAvailableInfo::setTotal(int v)
+{
+   this->total = v;
+}
+
+/******************************************************************
+ *                         getDefinition                          *
+ ******************************************************************/
+RuleDefinitionValue* RuleGroupAvailableInfo::getDefinition(
+      const Kobold::String id)
+{
+   RuleDefinitionValue* cur = static_cast<RuleDefinitionValue*>(
+         defValues.getFirst());
+   for(int i=0; i < defValues.getTotal(); i++)
+   {
+      if(cur->getDefinition()->getId() == id)
+      {
+         return cur;
+      }
+      cur = static_cast<RuleDefinitionValue*>(cur->getNext());
+   }
+
+   return NULL;
+}
+
+////////////////////////////////////////////////////////////////////////////
+//                                                                        //
+//                                Rules                                   //
+//                                                                        //
+////////////////////////////////////////////////////////////////////////////
+
+/******************************************************************
+ *                           Constructor                          *
+ ******************************************************************/
+void Rules::init(const Kobold::String filename)
+{
+   assert(groups == NULL);
+   groups = new Kobold::List();
+   if(!load(filename))
+   {
+      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 
+            "Error: Couldn't load rules file: '%s'", filename.c_str());
+      assert(false);
+   }
+}
+
+/******************************************************************
+ *                            Destructor                          *
+ ******************************************************************/
+void Rules::finish()
+{
+   if(groups != NULL)
+   {
+      delete groups;
+      groups = NULL;
+   }
+}
+
+/******************************************************************
+ *                            getGroup                            *
+ ******************************************************************/
+RuleGroup* Rules::getGroup(const Kobold::String id)
+{
+   RuleGroup* cur = static_cast<RuleGroup*>(groups->getFirst());
+   for(int i=0; i < groups->getTotal(); i++)
+   {
+      if(cur->getId() == id)
+      {
+         return cur;
+      }
+      cur = static_cast<RuleGroup*>(cur->getNext());
+   }
+
+   return NULL;
+}
+
+/******************************************************************
+ *                        getDefinition                           *
+ ******************************************************************/
+RuleDefinition* Rules::getDefinition(const Kobold::String groupId,
+      const Kobold::String id)
+{
+   RuleGroup* group = getGroup(groupId);
+   if(group)
+   {
+      return group->getDefinition(id);
+   }
+
+   return NULL;
+}
+
+/******************************************************************
+ *                        getDefinition                           *
+ ******************************************************************/
+RuleDefinition* Rules::getDefinition(Kobold::String id)
+{
+   RuleGroup* cur = static_cast<RuleGroup*>(groups->getFirst());
+   for(int i=0; i < groups->getTotal(); i++)
+   {
+      RuleDefinition* def = cur->getDefinition(id);
+      if(def)
+      {
+         return def;
+      }
+      cur = static_cast<RuleGroup*>(cur->getNext());
+   }
+
+   return NULL;
+}
+
+/******************************************************************
+ *                        checkNotNull                            *
+ ******************************************************************/
+void Rules::checkNotNull(void* info, const Kobold::String& filename, 
+      const Kobold::String key, const Kobold::String infoDecl)
+{
+   if(info == NULL)
+   {
+      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 
+            "Error: '%s': %s without %s!", 
+            filename.c_str(), key.c_str(), infoDecl.c_str());
+   }
+   assert(info != NULL);
+}
+
+/******************************************************************
+ *                  checkIsIsNullOrHaveGroup                      *
+ ******************************************************************/
+void Rules::checkIsNullOrHaveGroup(RuleDefinition* curDef, 
+      const Kobold::String& filename)
+{
+   if((curDef != NULL) && (curDef->getGroup()  == NULL))
+   {
+      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 
+            "Error: '%s': RuleDefinition '%s' is without a defined RuleGroup!", 
+            filename.c_str(), curDef->getName().c_str());
+   }
+   assert((curDef == NULL) || (curDef->getGroup() != NULL));
+}
+
+/******************************************************************
+ *                              load                              *
+ ******************************************************************/
+bool Rules::load(const Kobold::String filename)
+{
+   Kobold::DefParser defParser;
+
+   if(!defParser.load(filename))
+   {
+      return false;
+   }
+
+   Kobold::String key, value;
+   RuleGroup* curGroup = NULL;
+   RuleGroup* foundGroup = NULL;
+   RuleDefinition* curDef = NULL;
+   while(defParser.getNextTuple(key, value))
+   {
+      /* Rule Group */
+      if(key == "ruleGroup")
+      {
+         curDef = NULL;
+         curGroup = new RuleGroup(value);
+         groups->insert(curGroup);
+      }
+      else if(key == "ruleGroupName")
+      {
+         checkNotNull(curGroup, filename, key, "ruleGroup");
+         curGroup->setName(translateDataString(value));
+      }
+      else if(key == "ruleGroupDesc")
+      {
+         checkNotNull(curGroup, filename, key, "ruleGroup");
+         curGroup->setDescription(translateDataString(value));
+      }
+      else if(key == "ruleGroupType")
+      {
+         checkNotNull(curGroup, filename, key, "ruleGroup");
+         if(value == "value")
+         {
+            curGroup->setType(RuleGroup::TYPE_VALUE);
+         }
+         else if(value == "selectable")
+         {
+            curGroup->setType(RuleGroup::TYPE_SELECTABLE);
+         }
+         else if(value == "level_selectable")
+         {
+            curGroup->setType(RuleGroup::TYPE_LEVEL_SELECTABLE);
+         }
+         else if(value == "calculated")
+         {
+            curGroup->setType(RuleGroup::TYPE_CALCULATED);
+         }
+         else
+         {
+            Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+               "Error: '%s': unexpected RuleGroup type '%s'!",
+               filename.c_str(), value.c_str());
+            assert(false);
+         }
+      }
+      /* RuleDefinition */
+      else if(key == "ruleDef" || key == "ruleDefinition")
+      {
+         curGroup = NULL;
+         checkIsNullOrHaveGroup(curDef, filename);
+         curDef = new RuleDefinition(value);
+      }
+      else if(key == "ruleDefName" || key == "ruleDefinitionName")
+      {
+         checkNotNull(curDef, filename, key, "ruleDef");
+         curDef->setName(value);
+      }
+      else if(key == "ruleDefDesc" || key == "ruleDefinitionDesc")
+      {
+         checkNotNull(curDef, filename, key, "ruleDef");
+         curDef->setDescription(value);
+      }
+      else if(key == "ruleDefImage" || key == "ruleDefinitionImage")
+      {
+         checkNotNull(curDef, filename, key, "ruleDef");
+         curDef->loadImage(value);
+      }
+      else if(key == "ruleDefScript" || key == "ruleDefinitionScript")
+      {
+         checkNotNull(curDef, filename, key, "ruleDef");
+         //curDef-> TODO
+      }
+      else if(key == "ruleDefGroup" || key == "ruleDefinitionGroup")
+      {
+         checkNotNull(curDef, filename, key, "ruleDef");
+         if((foundGroup == NULL) || (foundGroup->getId() != value))
+         {
+            foundGroup = getGroup(value);
+            if(foundGroup == NULL)
+            {
+               Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+                  "Error: '%s': Unknown RuleGroup '%s' used at a RuleDef!",
+                  filename.c_str(), value.c_str());
+            }
+         }
+         assert(foundGroup != NULL);
+         curDef->setGroup(foundGroup);
+      }
+   }
+   
+   checkIsNullOrHaveGroup(curDef, filename);
+
+   return true;
+}
+
+/******************************************************************
+ *                            members                             *
+ ******************************************************************/
+Kobold::List* Rules::groups = NULL;
 
 

@@ -20,12 +20,6 @@
 
 #include "character.h"
 
-#include "alignment.h"
-#include "classes.h"
-#include "race.h"
-#include "feats.h"
-#include "modeffect.h"
-
 #include "../core/inventory.h"
 #include "../core/game.h"
 
@@ -54,23 +48,6 @@ Character::Character(bool playable)
    /* Set ModEffects owner */
    this->effects.setOwner(this);
 
-   /* Nullify things */
-   this->curAlign = NULL;
-   for(int i = 0; i < CHARACTER_MAX_DISTINCT_CLASSES; i++)
-   {
-      this->classes[i] = NULL;
-      this->classLevel[i] = 0;
-   }
-   this->race = NULL;
-
-   /* Create Feats list and define needed Feats */
-   feats = new Feats();
-   insertDefaultNeededFeats();
-
-   /* Define default bare hands damage dice */
-   bareHandsDice.setBaseDice(Dice(Dice::DICE_TYPE_D2));
-   bareHandsDice.setInitialLevel(1);
-
    /* Create its inventory */
    inventory = new Inventory();
 }
@@ -80,10 +57,6 @@ Character::Character(bool playable)
  ***********************************************************************/
 Character::~Character()
 {
-   if(feats)
-   {
-      delete feats;
-   }
    if(inventory)
    {
       delete inventory;
@@ -107,22 +80,13 @@ Kobold::String* Character::getAnimationList()
 }
 
 /***********************************************************************
- *                        insertDefaultNeededFeats                     *
- ***********************************************************************/
-void Character::insertDefaultNeededFeats()
-{
-   feats->insert(FeatsList::getFeatByNumber(FEAT_WEAPON_ATTACK));
-}
-
-/***********************************************************************
  *                             addModEffect                            *
  ***********************************************************************/
 void Character::addModEffect(int mod, int time, int periodicTime,
-      Kobold::String factorId, Kobold::String factorType)
+      RuleDefinition* def)
 {
    /* Create ModEffect */
-   ModEffect* modEffect = new ModEffect(mod, time, periodicTime, 
-         factorId, factorType);
+   ModEffect* modEffect = new ModEffect(mod, time, periodicTime, def); 
 
    /* Add and apply it */
    effects.insert(modEffect, true);
@@ -142,34 +106,6 @@ void Character::removeAllModEffects()
 ModEffectList* Character::getEffects()
 {
    return &effects;
-}
-
-/***********************************************************************
- *                               isAlignOf                             *
- ***********************************************************************/
-bool Character::isAlignOf(Kobold::String al)
-{
-   if(curAlign)
-   {
-      return curAlign->getStringId().find(al) != Kobold::String::npos;
-   }
-
-   return false;
-}
-
-/***********************************************************************
- *                           getEmptyClassIndex                        *
- ***********************************************************************/
-int Character::getEmptyClassIndex()
-{
-   for(int i = 0; i < CHARACTER_MAX_DISTINCT_CLASSES; i++)
-   {
-      if(classes[i] == NULL)
-      {
-         return i;
-      }
-   }
-   return -1;
 }
 
 /***********************************************************************
@@ -226,9 +162,6 @@ void Character::setCanMove(bool value)
 #define CHARACTER_KEY_WALK_INTERVAL "walk_interval"
 #define CHARACTER_KEY_BLOOD_POSITION "bloodPosition"
 #define CHARACTER_KEY_BLOOD_PARTICLE "bloodParticle"
-#define CHARACTER_KEY_RACE "race"
-#define CHARACTER_KEY_CLASS "class"
-#define CHARACTER_KEY_ALIGNMENT "align"
 
 /***********************************************************************
  *                           doSpecificParse                           *
@@ -253,49 +186,6 @@ bool Character::doSpecificParse(Kobold::String key, Kobold::String value)
       //TODO: particles
       return true;
    }
-   /* Race */
-   else if(key == CHARACTER_KEY_RACE)
-   {
-      race = Races::getRaceByString(value);
-      if(race == NULL)
-      {
-         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
-               "Error: Unknown race '%s' for character!", value.c_str());
-      }
-      return true;
-   }
-   /* Alignment */
-   else if(key == CHARACTER_KEY_ALIGNMENT)
-   {
-      curAlign = Alignments::getAlignmentByString(value);
-      if(curAlign == NULL)
-      {
-         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
-               "Error: Unknown alignment '%s' for character!", value.c_str());
-      }
-      return true;
-   }
-   /* Class */
-   else if(key == CHARACTER_KEY_CLASS)
-   {
-      int cindex = getEmptyClassIndex();
-      if(cindex != -1)
-      {
-         /* Parse class name and level */
-         char buf[128];
-         int lvl = 0;
-         sscanf(value.c_str(), "%s %d", &buf[0], &lvl);
-         /* Set it */
-         classes[cindex] = Classes::getClassByString(buf);
-         classLevel[cindex] = lvl;
-      }
-      else
-      {
-         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
-               "Error: class overflow for character with value '%s'",
-               value.c_str());
-      }
-   }
 
    return doCharacterSpecializationParse(key, value);
 }
@@ -319,24 +209,6 @@ bool Character::load(Kobold::String filename)
  ***********************************************************************/
 void Character::doAfterLoad()
 {
-   /* Define the AC if not yet defined at the file */
-   if(getArmatureClass() == 0)
-   {
-      /* Define AC TODO others values to sum here*/ 
-      setArmatureClass(10 + getSkills()->getSkillByString(
-               "DEXTERITY")->getAttributeBonus());
-   }
-
-   /* Apply Saves and Bonus, if not yet defined (some npcs without classes
-    * defines its bonus on .npc file) */
-   if(!getCurBonusAndSaves()->isDefined())
-   {
-      applyBonusAndSaves();
-   }
-
-   /* Apply cost to skills */
-   applySkillCosts();
-   
    /* Set as idle by default */
    setAnimation(CHARACTER_ANIMATION_IDLE, true);
 }
@@ -350,64 +222,7 @@ bool Character::doSpecificSave(std::ofstream& file)
    //TODO: file << CHARACTER_KEY_WALK_INTERVAL << " = " << std::endl;
    //TODO: file << CHARACTER_KEY_BLOOD_POSITION << " = " << std::endl;
    //TODO: file << CHARACTER_KEY_BLOOD_PARTICLE << " = " << std::endl;
-   file << CHARACTER_KEY_RACE << " = " << race->getStringId() << std::endl;
-   file << CHARACTER_KEY_ALIGNMENT << " = " << curAlign->getStringId() 
-        << std::endl;
-   /* Class */
-   for(int i = 0; 
-       ((i < CHARACTER_MAX_DISTINCT_CLASSES) || (classes[i] == NULL)); i++)
-   {
-      file << CHARACTER_KEY_CLASS << " = " << classes[i]->getStringId() 
-           << " " << classLevel[i] << std::endl;
-   }
    return doCharacterSpecializationSave(file);
-}
-
-/*********************************************************************
- *                             getLevel                              *
- *********************************************************************/
-int Character::getLevel()
-{
-   int totalLevels = 0;
-   for(int i = 0; i < CHARACTER_MAX_DISTINCT_CLASSES; i++)
-   {
-      if(classes[i] != NULL)
-      {
-         totalLevels += classLevel[i];
-      }
-   }
-   return totalLevels;
-}
-
-/*********************************************************************
- *                             getLevel                              *
- *********************************************************************/
-int Character::getLevel(Class* cl)
-{
-   for(int i = 0; i < CHARACTER_MAX_DISTINCT_CLASSES; i++)
-   {
-      if(classes[i] == cl)
-      {
-         return classLevel[i];
-      }
-   }
-   return 0;
-}
-
-/*********************************************************************
- *                             getLevel                              *
- *********************************************************************/
-int Character::getLevel(Kobold::String classId)
-{
-   for(int i = 0; i < CHARACTER_MAX_DISTINCT_CLASSES; i++)
-   {
-      if((classes[i] != NULL) && 
-         (classes[i]->getStringId() == classId))
-      {
-         return classLevel[i];
-      }
-   }
-   return 0;
 }
 
 /*********************************************************************
@@ -418,53 +233,6 @@ void Character::instantKill()
    dead = true;
    //TODO: skeleton state: set as dead!
    //scNode->getModel()->setState(STATE_DEAD);
-}
-
-/*********************************************************************
- *                           applySkillCosts                         *
- *********************************************************************/
-void Character::applySkillCosts()
-{
-   Skills* skills = getSkills();
-
-   /* Clear current costs */
-   skills->clearCosts();
-
-   /* Apply Race Costs */
-   if(race) 
-   {
-      race->applySkillCosts(skills);
-   }
-
-   //FIXME Classes Costs will be only per actual class?
-   //      In the way bellow is always for all classes.
-   for(int i = 0; i < CHARACTER_MAX_DISTINCT_CLASSES; i++)
-   {
-      if(classes[i] != NULL)
-      {
-         classes[i]->applySkillCosts(skills);
-      }
-   }
-}
-
-/*********************************************************************
- *                         applyBonusAndSaves                        *
- *********************************************************************/
-void Character::applyBonusAndSaves()
-{
-   BonusAndSaves* bas = getCurBonusAndSaves();
-
-   /* Clear the current */
-   bas->clear();
-
-   /* Add from all classes */
-   for(int i = 0; i < CHARACTER_MAX_DISTINCT_CLASSES; i++)
-   {
-      if(classes[i] != NULL)
-      {
-         (*bas) = (*bas) + classes[i]->getBonusAndSaves(classLevel[i] - 1);
-      }
-   }
 }
 
 /*********************************************************************

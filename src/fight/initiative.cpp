@@ -22,7 +22,6 @@
 
 #include "../rules/character.h"
 #include "../rules/dices.h"
-#include "../rules/modifier.h"
 
 #include "../gui/briefing.h"
 

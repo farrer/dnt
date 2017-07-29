@@ -29,8 +29,6 @@
 #include "../rules/thing.h"
 #include "../lang/translate.h"
 
-#include "../rules/modifier.h"
-
 #include "../map/npcfile.h"
 
 #include "../gui/briefing.h"
@@ -89,8 +87,8 @@ using namespace DNT;
 #define TK_TEST_LESSER "lesser"
 #define TK_TEST_EQUAL "equal"
 #define TK_TEST_DIFF "diff"
-#define TK_TEST_ALIGN "align"
-#define TK_TEST_ALIGN_NOT "align_not"
+#define TK_TEST_HAVE_RULE_DEFINITION "have_rule_definition"
+#define TK_TEST_NOT_HAVE_RULE_DEFINITION "not_have_rule_definition"
 #define TK_TEST_HAVE_ITEM "have_item"
 #define TK_TEST_HAVE_ITEM_WITH_INFO "have_item_with_info"
 #define TK_TEST_ALL_ALIVE "all_alive"
@@ -99,7 +97,9 @@ using namespace DNT;
 #define TK_TEST_MISSION_ACTIVE "mission_active"
 
 /* Constant Tokens */
-#define TK_CONST_OBJECT_STATE "OBJECT_STATE"
+#define TK_CONST_THING_STATE "thing_state"
+#define TK_CONST_THING_DIFFICULTY "thing_difficulty"
+#define TK_CONST_THING_HARDNESS "thing_hardness"
 
 
 
@@ -115,9 +115,8 @@ using namespace DNT;
 TalkAction::TalkAction(TalkActionType type)
 {
    this->type = type;
-   this->qty = 0;
-   this->att = -1;
-   this->satt = "";
+   this->value = 0;
+   this->ruleDef = NULL;
 }
 
 /*************************************************************************
@@ -128,27 +127,35 @@ TalkAction::~TalkAction()
 }
 
 /*************************************************************************
- *                              setAttribute                             *
- *************************************************************************/
-void TalkAction::setAttribute(int att)
-{
-   this->att = att;
-}
-
-/*************************************************************************
  *                            setStringFactor                            *
  *************************************************************************/
-void TalkAction::setStringFactor(Kobold::String factor)
+void TalkAction::setRuleDefinition(RuleDefinition* ruleDef)
 {
-   this->satt = factor;
+   this->ruleDef = ruleDef;
 }
 
 /*************************************************************************
- *                              setQuantity                              *
+ *                               setValue                                *
  *************************************************************************/
-void TalkAction::setQuantity(int qty)
+void TalkAction::setValue(int val)
 {
-   this->qty = qty;
+   this->value = val;
+}
+
+/*************************************************************************
+ *                               setValue2                               *
+ *************************************************************************/
+void TalkAction::setValue2(int val)
+{
+   this->value2 = val;
+}
+
+/*************************************************************************
+ *                            setStringValue                             *
+ *************************************************************************/
+void TalkAction::setStringValue(const Kobold::String strVal)
+{
+   this->strValue = strVal;
 }
 
 /*************************************************************************
@@ -162,7 +169,7 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
       /* Change Dialog */
       case TALK_ACTION_GO_TO_DIALOG:
       {
-         conv->changeDialog(att);
+         conv->changeDialog(value);
       }
       break;
       /* Init a Fight with the owner */
@@ -190,7 +197,7 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
       /* Set new initial Dialog */
       case TALK_ACTION_DIALOG_INIT:
       {
-         conv->setInitialDialog(att);
+         conv->setInitialDialog(value);
       }
       break;
       /* Open the door */
@@ -213,7 +220,7 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
          /* Play a sound at owner's position */
          Ogre::Vector3 pos = owner->getModel()->getPosition();
          Kosound::Sound::addSoundEffect(pos.x, pos.y, pos.z,
-               SOUND_NO_LOOP, satt);
+               SOUND_NO_LOOP, strValue);
       }
       break;
 
@@ -290,7 +297,7 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
          {
             Character* ownerNPC = static_cast<Character*>(owner);
             /* Search for the item at actor's inventory */
-            Item* item = pc->getInventory()->getItemByFilename(satt);
+            Item* item = pc->getInventory()->getItemByFilename(strValue);
             if(item)
             {
                /* Remove it from there */
@@ -307,7 +314,7 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
             {
                Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
                   "Error: no object '%s' to give at character's inventory!",
-                  satt.c_str());
+                  strValue.c_str());
             }
          }
       }
@@ -321,7 +328,7 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
          {
             Character* ownerNPC = static_cast<Character*>(owner);
             /* Search for the item on owner's inventory */
-            Item* item = ownerNPC->getInventory()->getItemByFilename(satt);
+            Item* item = ownerNPC->getInventory()->getItemByFilename(strValue);
             if(item)
             {
                /* Remove it from there */
@@ -345,16 +352,16 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
       /* Receive Money */
       case TALK_ACTION_RECEIVE_MONEY:
       {
-         pc->getInventory()->addMoney(att);
-         Briefing::addText(gettext("Received $%d."), att);
+         pc->getInventory()->addMoney(value);
+         Briefing::addText(gettext("Received $%d."), value);
       }
       break;
 
       /* Give Money */
       case TALK_ACTION_GIVE_MONEY:
       {
-         pc->getInventory()->decMoney(att);
-         Briefing::addText(gettext("Lost $%d."), att);
+         pc->getInventory()->decMoney(value);
+         Briefing::addText(gettext("Lost $%d."), value);
       }
       break;
 
@@ -362,7 +369,7 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
       case TALK_ACTION_CHANGE_OBJECT_STATE:
       {
          /* Change the state */
-         owner->setState(att);
+         owner->setState(value);
          Object* obj = static_cast<Object*>(owner);
          /* Tell ModState about the change */
          ModState::addMapObjectAction(MODSTATE_ACTION_OBJECT_CHANGE_STATE,
@@ -401,7 +408,7 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
       case TALK_ACTION_KILL_ALL:
       {
          NpcFile npcs;
-         if(npcs.load(satt))
+         if(npcs.load(strValue))
          {
             npcs.killAll();
          }
@@ -431,11 +438,15 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
 /*************************************************************************
  *                              Constructor                              *
  *************************************************************************/
-TalkTest::TalkTest(Kobold::String token, Kobold::String t, Kobold::String a)
+TalkTest::TalkTest(const Kobold::String& token, const Kobold::String& test, 
+      const Kobold::String& against)
 {
+   bool shouldCheck = true;
+
    /* Set test and against */
-   this->test = t;
-   this->against = a;
+   this->test = Rules::getDefinition(test);
+   this->testStr = test;
+   this->against = against;
 
    /* translate token Kobold::String to id */
 
@@ -448,51 +459,67 @@ TalkTest::TalkTest(Kobold::String token, Kobold::String t, Kobold::String a)
    else if(token == TK_TEST_GREATER)
    {
       type = TALK_TEST_GREATER;
+      shouldCheck = (testStr != TK_CONST_THING_STATE) && 
+                    (testStr != TK_CONST_THING_DIFFICULTY) &&
+                    (testStr != TK_CONST_THING_HARDNESS);
    }
    /* lesser */
    else if(token == TK_TEST_LESSER)
    {
       type = TALK_TEST_LESSER;
+      shouldCheck = (testStr != TK_CONST_THING_STATE) && 
+                    (testStr != TK_CONST_THING_DIFFICULTY) &&
+                    (testStr != TK_CONST_THING_HARDNESS);
    }
    /* equal */
    else if(token == TK_TEST_EQUAL)
    {
       type = TALK_TEST_EQUAL;
+      shouldCheck = (testStr != TK_CONST_THING_STATE) && 
+                    (testStr != TK_CONST_THING_DIFFICULTY) &&
+                    (testStr != TK_CONST_THING_HARDNESS);
    }
    /* diff */
    else if(token == TK_TEST_DIFF)
    {
       type = TALK_TEST_DIFFERENT;
+      shouldCheck = (testStr != TK_CONST_THING_STATE) && 
+                    (testStr != TK_CONST_THING_DIFFICULTY) &&
+                    (testStr != TK_CONST_THING_HARDNESS);
    }
    /* have_item */
    else if(token == TK_TEST_HAVE_ITEM)
    {
       type = TALK_TEST_HAVE_ITEM;
+      shouldCheck = false;
    }
    /* have_item_with_info */
    else if(token == TK_TEST_HAVE_ITEM_WITH_INFO)
    {
       type = TALK_TEST_HAVE_ITEM_WITH_INFO;
+      shouldCheck = false;
    }
-   /* align_not */
-   else if(token == TK_TEST_ALIGN_NOT)
+   /* have_rule_definition */
+   else if(token == TK_TEST_HAVE_RULE_DEFINITION)
    {
-      type = TALK_TEST_ALIGNMENT_NOT;
+      type = TALK_TEST_HAVE_RULE_DEFINITION;
    }
-   /* align */
-   else if(token == TK_TEST_ALIGN)
+   /* not_have_rule_definition */
+   else if(token == TK_TEST_NOT_HAVE_RULE_DEFINITION)
    {
-      type = TALK_TEST_ALIGNMENT;
+      type = TALK_TEST_NOT_HAVE_RULE_DEFINITION;
    }
    /* all_dead */
    else if(token == TK_TEST_ALL_DEAD)
    { 
       type = TALK_TEST_ALL_DEAD;
+      shouldCheck = false;
    }
    /* all_alive */
    else if(token == TK_TEST_ALL_ALIVE)
    {
       type = TALK_TEST_ALL_ALIVE;
+      shouldCheck = false;
    }
    /* have_money */
    else if(token == TK_TEST_HAVE_MONEY)
@@ -509,6 +536,13 @@ TalkTest::TalkTest(Kobold::String token, Kobold::String t, Kobold::String a)
       Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
             "Warning: unknow test '%s' at dialog!", token.c_str());
    }
+
+   if((this->test == NULL) && (shouldCheck))
+   {
+      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 
+         "Error: Unknown rule definition '%s' on dialog!", test.c_str());
+   }
+   assert(!shouldCheck || this->test != NULL);
 }
 
 /*************************************************************************
@@ -521,18 +555,14 @@ TalkTest::~TalkTest()
 /*************************************************************************
  *                              getTestName                              *
  *************************************************************************/
-Kobold::String TalkTest::getTestName(PlayableCharacter* pc)
+Kobold::String TalkTest::getTestName()
 {
    Kobold::String res = "";
 
    /* Get the skill name */
-   if(pc)
+   if(test)
    {
-      Skill* sk = pc->getSkills()->getSkillByString(test);
-      if(sk)
-      {
-         res = "(" + sk->getDefinition()->getName() + ") ";
-      }
+      res = "(" + test->getName() + ") ";
    }
 
    return res;
@@ -542,42 +572,40 @@ Kobold::String TalkTest::getTestName(PlayableCharacter* pc)
 /*************************************************************************
  *                         getAgainstValue                               *
  *************************************************************************/
-int TalkTest::getAgainstValue(Thing* owner)
+bool TalkTest::getAgainstValue(Thing* owner, int& value)
 {
    int val = 0;
 
-   /* Try to get as a number */
-   if(sscanf(against.c_str(), "%d", &val) == 1)
+   if(against == TK_CONST_THING_STATE)
+   {
+      value = owner->getState();
+      return true;
+   }
+   else if(against == TK_CONST_THING_DIFFICULTY)
+   {
+      value = owner->getDifficulty();
+      return true;
+   }
+   else if(against == TK_CONST_THING_HARDNESS)
+   {
+      value = owner->getHardness();
+      return true;
+   }
+   else if(sscanf(against.c_str(), "%d", &val) == 1)
    {
       /* It's a number */
-      return val;
+      value = val;
+      return true;
    }
-   else
-   {
-      /* Try to get as a THING factor value. */
-      Factor fac(MOD_TYPE_THING, against);
-      val = owner->getBonusValue(fac);
-      if(val != THING_UNKNOWN_VALUE)
-      {
-         /* Got it. */
-         return val;
-      }
+   return false;
+}
 
-      /* Not a Thing value, must be an skill or attribute*/
-      fac = Factor(MOD_TYPE_SKILL, against);
-      val = owner->getBonusValue(fac);
-      if(val != THING_UNKNOWN_VALUE)
-      {
-         /* Got it. */
-         return val;
-      }
-   }
-
-   /* No value got! */
-   Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
-      "Warning: Unknwow against factor '%s' at dialog!", against.c_str());
-
-   return THING_UNKNOWN_VALUE;
+/*************************************************************************
+ *                            getAgainst                                 *
+ *************************************************************************/
+RuleDefinitionValue* TalkTest::getAgainst(Thing* owner)
+{
+   return owner->getRuleDefinition(against);
 }
 
 /*************************************************************************
@@ -602,54 +630,64 @@ bool TalkTest::doTest(PlayableCharacter* pc, Thing* owner)
    else if(type == TALK_TEST_ROLL)
    {
       /* Get the difficulty value */
-      value = getAgainstValue(owner);
-
-      /* Roll the Thing! */
-      return pc->doCheck(test, value);
+      if(getAgainstValue(owner, value))
+      {
+         return pc->doCheck(test, value);
+      }
+      else
+      {
+         return pc->doCheck(test, getAgainst(owner)); 
+      }
    }
    
    /* Have Item test */
    else if(type == TALK_TEST_HAVE_ITEM)
    {
-      return pc->getInventory()->getItemByFilename(test) != NULL;  
+      return pc->getInventory()->getItemByFilename(testStr) != NULL;  
    }
 
    /* Have Item with info test */
    else if(type == TALK_TEST_HAVE_ITEM_WITH_INFO)
    {
-      return pc->getInventory()->getItemByInfo(test) != NULL;
+      return pc->getInventory()->getItemByInfo(testStr) != NULL;
    }
 
-   /* Align Not Test */
-   else if(type == TALK_TEST_ALIGNMENT_NOT)
+   /* Have Rule Definition */
+   else if(type == TALK_TEST_HAVE_RULE_DEFINITION)
    {
-      return !pc->isAlignOf(test);
+      return pc->getRuleDefinition(test) != NULL;
    }
 
-   /* Align Test */
-   else if(type == TALK_TEST_ALIGNMENT)
+   else if(type == TALK_TEST_NOT_HAVE_RULE_DEFINITION)
    {
-      return pc->isAlignOf(test);
+      return pc->getRuleDefinition(test) == NULL;
    }
 
    /* All Alive */
    else if(type == TALK_TEST_ALL_ALIVE)
    {
-      return ModState::isAllCharactersAlive(test);
+      return ModState::isAllCharactersAlive(testStr);
    }
 
    /* All Dead */
    else if(type == TALK_TEST_ALL_DEAD)
    {
-      return ModState::isAllCharactersDead(test);
+      return ModState::isAllCharactersDead(testStr);
    }
 
    /* Have money */
    else if(type == TALK_TEST_HAVE_MONEY)
    {
-      int val = 0;
-      sscanf(test.c_str(), "%d", &val);
-      return pc->getInventory()->getMoneyQuantity() >= val;
+
+      if(getAgainstValue(owner, value))
+      {
+         return pc->getInventory()->getMoneyQuantity() >= value;
+      }
+      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+            "Warning: Unknown money quantity '%s' at dialog test!",
+            against.c_str());
+       
+      return false;
    }
 
 //TODO: Missions
@@ -670,32 +708,36 @@ bool TalkTest::doTest(PlayableCharacter* pc, Thing* owner)
       int compValue = 0;
 
       /* Is comparing an owner state */
-      if(test == TK_CONST_OBJECT_STATE)
+      if(testStr == TK_CONST_THING_STATE)
       {
          compValue = owner->getState();
       }
-
-      /* Must be comparing the active Character skill or attribute */
+      else if(testStr == TK_CONST_THING_DIFFICULTY)
+      {
+         compValue = pc->getDifficulty();
+      }
+      else if(testStr == TK_CONST_THING_HARDNESS)
+      {
+         compValue = pc->getHardness();
+      }
+      /* Must be comparing with the active character RuleDefinition */
       else
       {
-
-         /* Get the skill or attribute to compare */
-         Skill* sk = pc->getSkills()->getSkillByString(test);
-
-         if(!sk)
+         RuleDefinitionValue* defVal = pc->getRuleDefinition(test);
+         if(defVal)
          {
-            Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
-                "Warning: Unknow Attribute or Skill '%s' to test at dialog!",
-                test.c_str());
-
-            return false;
+            compValue = defVal->getValue();
          }
-
-         compValue = sk->getPoints();
       }
 
       /* Get the value to compare with */
-      value = getAgainstValue(owner);
+      if(!getAgainstValue(owner, value))
+      {
+         /* not a value, warning! */
+         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+            "Warning: Unexpected compare value '%s' at dialog."
+            "Should be a literal", against.c_str());
+      }
 
       /* Now, finally do the test */
 
@@ -1371,24 +1413,24 @@ bool Conversation::load(Kobold::String filename)
                   {
                      //get number
                      token = getString(position, buffer, separator);
-                     tact->setAttribute(atoi(token.c_str()));
+                     tact->setValue(atoi(token.c_str()));
                   }
                   else if( (actType == TALK_ACTION_ADD_MISSION) ||
                            (actType == TALK_ACTION_COMPLETE_MISSION))
                   {
                      //get mission
                      token = getString(position, buffer, separator);
-                     tact->setStringFactor(token);
+                     tact->setStringValue(token);
 
                      //get xp, if needed
                      if(actType == TALK_ACTION_COMPLETE_MISSION)
                      {
                         token = getString(position, buffer, separator);
-                        tact->setAttribute(atoi(token.c_str()));
+                        tact->setValue(atoi(token.c_str()));
 
                         //and get completion type
                         token = getString(position, buffer, separator);
-                        tact->setQuantity(atoi(token.c_str()));
+                        tact->setValue2(atoi(token.c_str()));
                      }
                   }
                   else if( (actType == TALK_ACTION_GIVE_ITEM) ||
@@ -1400,7 +1442,7 @@ bool Conversation::load(Kobold::String filename)
                   {
                      //get name
                      token = getString(position, buffer, separator);
-                     tact->setStringFactor(token);
+                     tact->setStringValue(token);
                   }
                }
                else
@@ -1624,7 +1666,7 @@ void Conversation::changeDialog(int numDialog)
             text = "";
             if(opt->postTest)
             {
-               text += opt->postTest->getTestName(currentPC);
+               text += opt->postTest->getTestName();
             }
 
             /* Add the text*/

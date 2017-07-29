@@ -42,10 +42,8 @@ class ModEffect: public Kobold::ListElement
        * \param time -> time to expire (0 to not expire)
        * \param periodicTime -> time to apply the ModEffect again 
        *                        (0 to not apply)
-       * \param factorId -> id of the target factor (see: factor)
-       * \param factorType -> type of the target factor (see: factor) */
-      ModEffect(int mod, int time, int periodicTime, 
-                Kobold::String factorId, Kobold::String factorType);
+       * \param def -> target of the effect to be modified */
+      ModEffect(int mod, int time, int periodicTime, RuleDefinition* def); 
       /*! Constructor 
        * \param obj -> ModEffect to use as base */
       ModEffect(ModEffect* obj);
@@ -103,10 +101,10 @@ class ModEffect: public Kobold::ListElement
        * \param value -> value to use as modifier (instead of current mod) */
       void doApply(Character* actor, int value);
 
-      int mod;             /**< The modifier value */
-      Factor* cause;       /**< Thing to modify */
-      Kobold::Timer timer; /**< Timer controller */
-      unsigned int time;   /**< Max Time the effect remains (0 for infinity) */
+      int mod;                /**< The modifier value */
+      RuleDefinition* target;  /**< RuleDefinition to modify */
+      Kobold::Timer timer;    /**< Timer controller */
+      unsigned int time;  /**< Max Time the effect remains (0 for infinity) */
       unsigned int periodicTime; /**< Periodicity of the effect (with saves), 
                                 0 for non-periodic ones. */
       Kobold::Timer applyTimer; /**< Timer from last application */

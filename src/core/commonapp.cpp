@@ -26,11 +26,7 @@
 
 #include "../map/map.h"
 
-#include "../rules/alignment.h"
-#include "../rules/feats.h"
-#include "../rules/race.h"
-#include "../rules/classes.h"
-#include "../rules/skills.h"
+#include "../rules/ruledef.h"
 
 #include "../gui/briefing.h"
 
@@ -62,11 +58,7 @@ CommonApp::~CommonApp()
 {
    DNT::Game::finish();
 
-   DNT::Alignments::finish();
-   DNT::SkillsDefinitions::finish();
-   DNT::Races::finish();
-   DNT::Classes::finish();
-   DNT::FeatsList::finish();
+   DNT::Rules::finish();
    DNT::Briefing::finish();
    Farso::Controller::finish();
 
@@ -123,11 +115,7 @@ bool CommonApp::doCommonCycleInit(int callCounter, bool& shouldAbort)
          DNT::Briefing::init();
 
          /* Init our rules */
-         DNT::Alignments::init();
-         DNT::SkillsDefinitions::init();
-         DNT::FeatsList::init("feats/", "feats.ftl");
-         DNT::Races::init();
-         DNT::Classes::init();
+         DNT::Rules::init("rules.dnt");
          progressBar->setValue(20);
       }
       break;

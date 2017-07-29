@@ -1,0 +1,30 @@
+## NOTE: The identifiers should never be a number of start with a number.
+
+## ruleGroup = identifier
+##    Define a way to group rules of the same type. For example, on a d20-like
+##    system should be 6 rule groups: Class, Race, Alignment, Attribute, Skill
+##    and Feat.
+##
+##    Parameters:
+##
+##       ruleGroupName   its name
+##       ruleGroupDesc   its description
+##       ruleGroupType   its type. Could be:
+##              value: User always have it, and assign values to it.
+##              selectable: User just select to have it or not.
+##              level_selectable: User select to have it or
+##                 not, and latter can select the same again, gaining a
+##                 'level' on it.
+##              calculated: Always have it, but is value is automatically
+##                 calculated without user interference.
+##
+##
+## ruleDef = identifier
+##    ruleDefName    its name
+##    ruleDefDesc    its description
+##    ruleDefGroup   its group id
+##    ruleDefImage   its image filename
+##    ruleDefScript  its script filename
+##    
+
+

@@ -23,8 +23,7 @@
 
 #include "dntconfig.h"
 
-#include "bonusandsaves.h"
-#include "skills.h"
+#include "ruledef.h"
 
 #include <goblin/model3d.h>
 #include <kobold/list.h>
@@ -36,15 +35,6 @@
 
 namespace DNT
 {
-
-#define WALK_PER_MOVE_ACTION  60 /**< Distance that can be walked per move */
-
-#define THING_ARMATURE_CLASS    "ARMATURE_CLASS"
-#define THING_INITIATIVE_BONUS  "INITIATIVE"
-#define THING_DISPLACEMENT      "DISPLACEMENT"
-#define THING_MAX_LIFE_POINTS   "MAX_LIFE_POINTS"
-
-#define THING_UNKNOWN_VALUE  -100
 
 /*! Base RPG class for characters (PCs and NPCs) and objects */
 class Thing : public Kobold::ListElement
@@ -112,9 +102,18 @@ class Thing : public Kobold::ListElement
       /*! \return #description */
       Kobold::String getDescription();
 
-      /*! \return #state */
-      int getState();
+      /*! Set difficulty */
+      void setDifficulty(int value);
+      /*! \return #difficulty */
+      const int getDifficulty() const { return difficulty; };
 
+      /*! Set hardness */
+      void setHardness(int value);
+      /*! \return #hardness */
+      const int getHardness() const { return hardness; };
+
+      /*! \return #state */
+      const int getState() const { return state; };
       /*! Set thing's internal state.
        * \param state state value */
       void setState(int state);
@@ -138,24 +137,6 @@ class Thing : public Kobold::ListElement
        * \param state new PsychoState */
       void setPsychoState(PsychoState state);
 
-      /*! Get the bonus Value (modifier or not).
-       *  \param something -> number of the definition.
-       *  \return bonus (or THING_UNKNOWN_VALUE if not found). */
-      int getBonusValue(Factor& something);
-
-      /*! Get a factor value
-       * \param something -> factor info
-       * \return its value (or THING_UNKNWOWN_VALUE if not found) */
-      int getFactorValue(Factor& something);
-     
-      /*! Increment a factor value by 'inc'
-       * \param something factor to increment
-       * \param inc value of the increment */
-      void incFactorValue(Factor& something, int inc);
-
-      /*! \return current bonus and saves */
-      BonusAndSaves* getCurBonusAndSaves();
-
       /*! \return conversation to use. */
       Conversation* getConversation();
 
@@ -166,14 +147,11 @@ class Thing : public Kobold::ListElement
        * \param fileName name of the conversation file */
       void setConversationFile(Kobold::String fileName);
 
-      /*! \return thing's skills */
-      Skills* getSkills();
-
-      /*! Do a check (skill, saves, etc) against the difficulty.
-       * \param stateToCheck identifier of the state to check
-       * \param difficulty Difficulty of the check
-       * \return true if succed, false if failed. */
-      bool doCheck(Kobold::String stateToCheck, int difficulty);
+      /*! Do a RuleDefinition against a fixed value difficulty. */
+      bool doCheck(RuleDefinition* ruleDef, int difficulty);
+      
+      /*! Do a RuleDefinition check against a RuleDefinition */ 
+      bool doCheck(RuleDefinition* ruleDef, RuleDefinitionValue* against);
 
       /*! Get the current number of life points
        * \return -> current life points */
@@ -259,6 +237,16 @@ class Thing : public Kobold::ListElement
       /*! \return distance can rotate each frame */
       float getTurnAroundInterval();
 
+      /*! \return RuleDefinitionValue for given identifier */
+      RuleDefinitionValue* getRuleDefinition(const Kobold::String id);
+      /*! \return RuleDefinition Value for given group and identifier */
+      RuleDefinitionValue* getRuleDefinition(const Kobold::String groupId, 
+            const Kobold::String id);
+      /*! \return RuleDefinitionValue or NULL if don't have it */
+      RuleDefinitionValue* getRuleDefinition(RuleDefinition* def);
+      /*! \return RuleDefinitionValue for given identifier */
+      RuleGroupAvailableInfo* getRuleGroup(const Kobold::String id);
+
    protected:
 
       /*! Parse specifc key/value pair readed from definition's file that
@@ -277,6 +265,8 @@ class Thing : public Kobold::ListElement
        * \note those supporting it, should override this function.
        * \return animation names vector */ 
       virtual Kobold::String* getAnimationList(); 
+
+      Kobold::List ruleGroups; /**< List of RuleGroupAvailableInfo */
 
       Kobold::String portraitFile; /**< Thing's portrait filename, if any */
       ScriptObject* scriptObject; /**< Script Object related to the thing */
@@ -298,6 +288,9 @@ class Thing : public Kobold::ListElement
       int state; /**< Current state. What this represents, depends on 
                       respective implementations. Defaults to 0. */
 
+      int difficulty; /**< Thing's difficulty. Depends on the implementation */
+      int hardness; /**< Thing's hardness. Depends on the implementation */
+
       bool walkable; /**< If the thing could be walkable through or not. */
 
       Kobold::String modelFileName; /**< File name of the 3d model */
@@ -310,10 +303,7 @@ class Thing : public Kobold::ListElement
       Thing* currentEnemy; /**< Pointer to current target enemy, if any */
       PsychoState psychoState; /**< State to Playable Characters */
 
-      Skills sk;             /**< skills without images and descriptions */
-
       int armatureClass; /**< Armature class protection value */
-      BonusAndSaves curBonusAndSaves; /**< Thing's bonus and saves */
       int displacement;       /**< Thing's Displacement (in meters) */
       int initiativeBonus;    /**< Thing's initiative bonus value */
 

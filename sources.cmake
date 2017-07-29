@@ -50,40 +50,22 @@ set(MAP_HEADERS
    src/map/wall.h
 )
 set(RULES_SOURCES
-   src/rules/actions.cpp
-   src/rules/alignment.cpp
-   src/rules/bonusandsaves.cpp
    src/rules/character.cpp
-   src/rules/classes.cpp
    src/rules/dices.cpp
-   src/rules/feats.cpp
    src/rules/modeffect.cpp
-   src/rules/modifier.cpp
-   src/rules/race.cpp
    src/rules/ruledef.cpp
-   src/rules/skills.cpp
    src/rules/thing.cpp
 )
 set(RULES_HEADERS
-   src/rules/actions.h
-   src/rules/alignment.h
-   src/rules/bonusandsaves.h
    src/rules/character.h
-   src/rules/classes.h
    src/rules/dices.h
-   src/rules/feats.h
    src/rules/modeffect.h
-   src/rules/modifier.h
-   src/rules/race.h
    src/rules/ruledef.h
-   src/rules/skills.h
    src/rules/thing.h
 )
 set(FIGHT_SOURCES
-   src/fight/initiative.cpp
 )
 set(FIGHT_HEADERS
-   src/fight/initiative.h
 )
 set(GUI_SOURCES
    src/gui/briefing.cpp
@@ -105,6 +87,8 @@ set(AI_HEADERS
    src/ai/script/scriptobject.h
    src/ai/script/scriptobjectcharacter.h
    src/ai/script/scriptobjectdice.h
+   src/ai/script/scriptobjectruledef.h
+   src/ai/script/scriptobjectrulegroup.h
    src/ai/script/scriptstdstring.h
 )
 set(AI_SOURCES
@@ -119,6 +103,8 @@ set(AI_SOURCES
    src/ai/script/scriptobject.cpp
    src/ai/script/scriptobjectcharacter.cpp
    src/ai/script/scriptobjectdice.cpp
+   src/ai/script/scriptobjectruledef.cpp
+   src/ai/script/scriptobjectrulegroup.cpp
    src/ai/script/scriptstdstring.cpp
 )
 set(LANG_SOURCES

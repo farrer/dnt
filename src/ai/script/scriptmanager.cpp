@@ -24,6 +24,8 @@
 #include "scriptobject.h"
 #include "scriptobjectcharacter.h"
 #include "scriptobjectdice.h"
+#include "scriptobjectruledef.h"
+#include "scriptobjectrulegroup.h"
 #include "pendingaction.h"
 #include <kobold/log.h>
 #include <kosound/sound.h>
@@ -57,6 +59,8 @@ ScriptManager::ScriptManager()
    /* Register our classes */
    ScriptObjectCharacter::doScriptRegister(asEngine);
    ScriptObjectDice::doScriptRegister(asEngine);
+   ScriptObjectRuleDefinition::doScriptRegister(asEngine);
+   ScriptObjectRuleGroup::doScriptRegister(asEngine);
 
    /* Register our 'global' functions */
    r = asEngine->RegisterGlobalFunction(

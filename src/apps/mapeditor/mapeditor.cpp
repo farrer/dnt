@@ -27,11 +27,6 @@
 
 #include "../../map/map.h"
 
-#include "../../rules/alignment.h"
-#include "../../rules/feats.h"
-#include "../../rules/race.h"
-#include "../../rules/classes.h"
-#include "../../rules/skills.h"
 #include "../../rules/thing.h"
 
 #include "../../gui/briefing.h"

@@ -41,7 +41,9 @@ namespace DNT
          enum ScriptObjectType
          {
             TYPE_CHARACTER,
-            TYPE_DICE
+            TYPE_DICE,
+            TYPE_RULE_DEFINITION,
+            TYPE_RULE_GROUP
          };
 
          /*! Constructor

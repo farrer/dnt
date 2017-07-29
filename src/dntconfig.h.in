@@ -59,34 +59,17 @@ namespace DNT
    class CharacterList;
 
    class RuleDefinition;
-   class Alignment;
-   class Alignments;
-   class Class;
-   class Classes;
-   class Race;
-   class Races;
-   class FeatDescription;
-   class Feat;
-   class Feats;
-   class FeatsList;
-   class SkillDefinition;
-   class Skill;
-   class SkillsDefinitions;
-   class Skills;
+   class RuleGroup;
+   class RulePreRequisite;
+   class Rules;
+   class RuleDefinitionValue;
+   class RuleGroupAvailableInfo;
+
    class ModEffect;
    class ModEffectList;
 
-   class Action;
-   class AttackBonus;
-   class BonusAndSaves;
    class Dice;
    class DiceInfo;
-   class Factor;
-   class Modifier;
-   class LevelPoints;
-
-   class InitiativeInfo;
-   class Inititative;
 
    class Core;
    class Util;

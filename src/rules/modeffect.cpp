@@ -20,8 +20,6 @@
 
 #include "modeffect.h"
 
-#include "modifier.h"
-#include "skills.h"
 #include "character.h"
 
 #include "../lang/translate.h"
@@ -48,21 +46,20 @@ ModEffect::ModEffect(ModEffect* obj)
    time = obj->time;
    applied = obj->applied;
    periodicTime = obj->periodicTime;
-   cause = new Factor(obj->cause->getType(), obj->cause->getId());
+   target = obj->target;
 }
 
 /***********************************************************************
  *                             Constructor                             *
  ***********************************************************************/
-ModEffect::ModEffect(int mod, int time, int periodicTime, 
-            Kobold::String factorId, Kobold::String factorType)
+ModEffect::ModEffect(int mod, int time, int periodicTime, RuleDefinition* def)
 {
    /* set values */
    this->mod = mod;
    this->applied = false;
    this->time = time;
    this->periodicTime = periodicTime;
-   this->cause = new Factor(factorType, factorId);
+   this->target = def;
    timer.reset();
    applyTimer.reset();
 }
@@ -80,10 +77,6 @@ ModEffect::ModEffect(Kobold::String saveTxt)
  ***********************************************************************/
 ModEffect::~ModEffect()
 {
-   if(cause)
-   {
-      delete cause;
-   }
 }
 
 /***********************************************************************
@@ -96,7 +89,7 @@ Kobold::String ModEffect::toSaveText()
    sprintf(buf, "%d,%lu,%lu,%d,%d,%s %s", 
          mod, timer.getMilliseconds(), applyTimer.getMilliseconds(), 
          time, periodicTime, 
-         cause->getId().c_str(), cause->getType().c_str());
+         target->getGroup()->getId().c_str(), target->getId().c_str());
    return buf;
 }
 
@@ -105,17 +98,13 @@ Kobold::String ModEffect::toSaveText()
  ***********************************************************************/
 void ModEffect::fromSaveText(Kobold::String txt)
 {
-   char i[64], t[64];
+   char group[64], id[64];
    unsigned long tInit=0L, tApInit=0L;
    sscanf(txt.c_str(), "%d,%lu,%lu,%d,%d,%s %s", 
          &mod, &tInit, &tApInit, &time, &periodicTime, 
-         i, t);
+         group, id);
 
-   if(cause)
-   {
-      delete cause;
-   }
-   cause = new Factor(t, i);
+   target = Rules::getDefinition(group, id);
 
    applied = false;
 
@@ -128,10 +117,6 @@ void ModEffect::fromSaveText(Kobold::String txt)
  ***********************************************************************/
 Kobold::String ModEffect::toReadableText(Character* actor)
 {
-   char buf[128];
-
-   Skill* s;
-
    if(actor == NULL)
    {
       Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
@@ -140,77 +125,20 @@ Kobold::String ModEffect::toReadableText(Character* actor)
    }
 
    /* Attribute and skills */
-   if((cause->getType() == MOD_TYPE_ATT) || 
-      (cause->getType() == MOD_TYPE_SKILL)) 
+   assert(target != NULL);
+   if(target)
    {
-      s = actor->getSkills()->getSkillByString(cause->getId());
-
-      if(s)
-      {
-         if(mod <= 0)
-         {
-            sprintf(buf, "%s: %d", s->getDefinition()->getName().c_str(), mod);
-         }
-         else
-         {
-            sprintf(buf, "%s: +%d", s->getDefinition()->getName().c_str(), mod);
-         }
-         return buf;
-      }
-      else
-      {
-         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
-               "Warning: unknow cause '%s' for character '%s' ModEffect",
-               cause->getId().c_str(), actor->getName().c_str());
-      }
-   }
-   else if(cause->getType() == MOD_TYPE_THING)
-   {
-      Kobold::String text = cause->getId();
-      if(cause->getId() == THING_ARMATURE_CLASS)
-      {
-         text = gettext("Armature Class");
-      }
-      else if(cause->getId() == THING_INITIATIVE_BONUS)
-      {
-         text = gettext("Initiative");
-      }
-      else if(cause->getId() == THING_MAX_LIFE_POINTS)
-      {
-         text = gettext("Life Points");
-      }
-      else if(cause->getId() == THING_DISPLACEMENT)
-      {
-         text = gettext("Displacement");
-      }
-      else if(cause->getId() == DNT_BS_FORTITUDE)
-      {
-         text = gettext("Fortitude");
-      }
-      else if(cause->getId() == DNT_BS_REFLEXES)
-      {
-         text = gettext("Reflexes");
-      }
-      else if( (cause->getId() == DNT_BS_I_AM_NOT_A_FOOL) ||
-               (cause->getId() == DNT_BS_WILL) )
-      {
-         text = gettext("I Am Not A Fool");
-      }
-      
+      char buf[256];
       if(mod <= 0)
       {
-         sprintf(buf, "%s: %d", text.c_str(), mod);
+         sprintf(buf, "%s: %d", target->getName().c_str(), mod);
       }
       else
       {
-         sprintf(buf, "%s: +%d", text.c_str(), mod);
+         sprintf(buf, "%s: +%d", target->getName().c_str(), mod);
       }
       return buf;
    }
-
-   Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
-         "Error: Invalid factor '%s' '%s' for ModEffect!",
-         cause->getType().c_str(), cause->getId().c_str());
    
    return gettext("Invalid Modifier!");
 }
@@ -251,7 +179,17 @@ void ModEffect::doApply(Character* actor, int value)
 {
    if(actor != NULL)
    {
-      actor->incFactorValue(*cause, value);
+      RuleDefinitionValue* defVal = actor->getRuleDefinition(target);
+      if(defVal)
+      {
+         defVal->add(value);
+      }
+      else
+      {
+         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+               "Error: ModEffect::doApply: character have no RuleDef '%s'!",
+               target->getId().c_str());
+      }
    }
    else
    { 

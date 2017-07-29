@@ -16,9 +16,8 @@ dialog(0)
    pc_begin
 
       option
-         # The unlock counter is the door I Am Not A Fool!
          text = gettext("Try to unlock it.")
-         post_test = roll(OPERATE_MECHANIC_OBJECTS, I_AM_NOT_A_FOOL)
+         post_test = roll(OPERATE_MECHANIC_OBJECTS, thing_difficulty)
          if_action = play_sound("objects/door_pick_lock.ogg")
          if_action = open()
          if_action = dialog_init(3)
@@ -27,9 +26,8 @@ dialog(0)
          else_action = go_to_dialog(1)
 
       option 
-         # The burglary counter is the door Fortitude!
          text = gettext("Force your entrance.")
-         post_test = roll(BURGLARY, FORTITUDE)
+         post_test = roll(BURGLARY, thing_hardness)
          if_action = play_sound("objects/door_unlock.ogg")
          if_action = open()
          if_action = dialog_init(5)
