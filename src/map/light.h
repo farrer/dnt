@@ -85,6 +85,7 @@ namespace DNT
                Ogre::Real linear, Ogre::Real quadratic);
 
       private:
+         /*! A single area of influence of a light */
          class Area : public Kobold::ListElement
          {
             public:
@@ -108,10 +109,10 @@ namespace DNT
          MapLights* mapLights; /**< Current lights */
 
          /* Attenuation values */
-         Ogre::Real range,
-                    constant,
-                    linear,
-                    quadratic;
+         Ogre::Real range,    /**< range value for attenuation */
+                    constant, /**< constant value for attenuation */
+                    linear,   /**< linear value for attenuation */
+                    quadratic;/**< quadratic value for attenuation */
    };
 
    /*! Class that keeps information about all lights on a map, selecting

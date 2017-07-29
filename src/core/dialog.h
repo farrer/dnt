@@ -31,61 +31,6 @@
 namespace DNT
 {
 
-/* General Tokens */
-#define TK_TRUE "true"
-#define TK_FALSE "false"
-#define TK_DIALOG "dialog"
-#define TK_END_DIALOG "end_dialog"
-#define TK_NPC_BEGIN "npc_begin"
-#define TK_NPC_END "npc_end"
-#define TK_PC_BEGIN "pc_begin"
-#define TK_PC_END "pc_end"
-#define TK_PRE_TEST "pre_test"
-#define TK_POST_TEST "post_test"
-#define TK_TEXT "text"
-#define TK_ACTION "action"
-#define TK_IF_ACTION "if_action"
-#define TK_ELSE_ACTION "else_action"
-#define TK_OPTION "option"
-
-/* Action Tokens */
-#define TK_ACTION_GO_TO_DIALOG "go_to_dialog"
-#define TK_ACTION_INIT_FIGHT "init_fight"
-#define TK_ACTION_FINISH_DIALOG "finish_dialog"
-#define TK_ACTION_DIALOG_INIT "dialog_init"
-#define TK_ACTION_ADD_MISSION "add_mission"
-#define TK_ACTION_COMPLETE_MISSION "complete_mission"
-#define TK_ACTION_GIVE_ITEM "give_item"
-#define TK_ACTION_RECEIVE_MONEY "receive_money"
-#define TK_ACTION_GIVE_MONEY "give_money"
-#define TK_ACTION_CHANGE_OBJECT_STATE "change_object_state"
-#define TK_ACTION_RECEIVE_XP "receive_xp"
-#define TK_ACTION_KILL_ALL "kill_all"
-#define TK_ACTION_RECEIVE_ITEM "receive_item"
-#define TK_ACTION_MAP_TRAVEL "map_travel"
-#define TK_ACTION_CALL_SCRIPT "call_script"
-#define TK_ACTION_OPEN "open"
-#define TK_ACTION_PLAY_SOUND "play_sound"
-
-/* Test Tokens */
-#define TK_TEST_ROLL "roll"
-#define TK_TEST_GREATER "greater"
-#define TK_TEST_LESSER "lesser"
-#define TK_TEST_EQUAL "equal"
-#define TK_TEST_DIFF "diff"
-#define TK_TEST_ALIGN "align"
-#define TK_TEST_ALIGN_NOT "align_not"
-#define TK_TEST_HAVE_ITEM "have_item"
-#define TK_TEST_HAVE_ITEM_WITH_INFO "have_item_with_info"
-#define TK_TEST_ALL_ALIVE "all_alive"
-#define TK_TEST_ALL_DEAD "all_dead"
-#define TK_TEST_HAVE_MONEY "have_money"
-#define TK_TEST_MISSION_ACTIVE "mission_active"
-
-/* Constant Tokens */
-#define TK_CONST_OBJECT_STATE "OBJECT_STATE"
-
-
 /*! The type of actions */
 enum TalkActionType
 {
@@ -169,7 +114,7 @@ enum TalkTestType
 };
 
 
-/* Definition of a test to be rolled before appearence or after selection of
+/*! Definition of a test to be rolled before appearence or after selection of
  * a DialogOption. */
 class TalkTest : public Kobold::ListElement
 {
@@ -207,7 +152,7 @@ class TalkTest : public Kobold::ListElement
 };
 
 /*! A single selectable option within a Dialog. The option appearence will be 
- * defined by passing all of its #preTest tests. When the option is selected,
+ * defined by passing all of its #preTests tests. When the option is selected,
  * its #postTest is caled, doing its #ifActions when passed or #elseActions
  * when not passed. */
 class DialogOption : public Kobold::ListElement

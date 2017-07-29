@@ -36,6 +36,7 @@ namespace DNT
 class PendingAction
 {
    public:
+      /*! Type of the pending action */
       enum PendingActionType
       {
          TYPE_SLEEP,
@@ -56,7 +57,7 @@ class PendingAction
       const PendingActionType getType() const { return type;};
 
    private:
-      PendingActionType type;
+      PendingActionType type; /**< its type */
 };
 
 /*! A sleep pending action. Will wait until an amount of time passes */
@@ -94,15 +95,16 @@ class PendingActionMove : public PendingAction
       bool update();
 
    private:
+      /*! Current state of the pending action move */
       enum State
       {
          STATE_SEARCHING,
          STATE_MOVING
       };
 
-      ScriptObjectCharacter* actor;
-      AStar* pathFind;
-      State state;
+      ScriptObjectCharacter* actor; /**< Who is moving */
+      AStar* pathFind;              /**< A* to use */
+      State state;                  /**< Current state of the move */
 };
 
 

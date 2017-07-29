@@ -84,6 +84,7 @@ class FeatDescription : public RuleDefinition
             int requiredLevel;      /**< Factor level required */
       };
 
+      /*! Possible Feat types */
       enum FeatType
       {
          FEAT_TYPE_PERMANENT=0,  /**< Permanent Feat (infinite ModEffect) */

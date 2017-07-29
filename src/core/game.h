@@ -42,7 +42,7 @@ namespace DNT
          static void update();
 
          /*! Load a map and set it the current one. 
-          * \note if travelling through maps, use #travelToMap instead. 
+          * \note if travelling through maps, use travelToMap instead. 
           * \param filename map file to load.
           * \param fullPath if filename is defined with full path or as
           *        an inner file.
@@ -91,6 +91,7 @@ namespace DNT
          static const bool isAtFightMode() { return fightMode; };
 
       private:
+         /*! Get a character from the lists of #pcs and #npcs */
          static Character* getCharacter(Kobold::String filename, 
                Ogre::Vector3 originalPos, bool usePos);
 

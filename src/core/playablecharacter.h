@@ -85,6 +85,7 @@ class PlayableCharacter : public Character
 
 
    private:
+      /*! Possible states of walking */
       enum WalkStatus
       {
          WALK_KEYBOARD,

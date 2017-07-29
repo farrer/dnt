@@ -36,6 +36,7 @@
 namespace DNT
 {
 
+/*! A single map implementation */
 class Map
 {
    public:
@@ -117,10 +118,13 @@ class Map
 
       /*! \return current map lights */
       MapLights* getLights() { return lights; };
-      
+     
+      /*! \return ScriptInstance used for this map */
       MapScriptInstance* getScriptInstance() { return script; };
 
+      /*! \return list of static things on the map */
       Kobold::List* getStaticThings() { return staticThings; };
+      /*! \return list of dynamic things on the map */
       Kobold::List* getDynamicThings() { return dynamicThings; };
 
    private:

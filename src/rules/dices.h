@@ -32,6 +32,7 @@ namespace DNT
 class Dice
 {
    public:
+      /*! Each available dice type */
       enum DiceType
       {
         DICE_TYPE_NONE = 0,     /**< 0 faces dice (no dice) */
@@ -51,7 +52,7 @@ class Dice
       /*! Destructor */
       ~Dice();
 
-      /* Dice assign from another instance. */
+      /*! Dice assign from another instance. */
       Dice& operator=(const Dice& d);
 
       /*! Roll the dice
@@ -128,7 +129,7 @@ class DiceInfo
        * \param levels number of levels to gain a new aditional dice */
       void setAditionalLevels(int levels);
       /*! Set initial level from this DiceInfo will be valid 
-       * \parma level level number */
+       * \param level level number */
       void setInitialLevel(int level);
       
       /*! Roll the dice

@@ -30,11 +30,12 @@
 namespace DNT
 {
 
-   /* Implements an element that should have collision enabled. */
+   /*! Implements an element that should have collision enabled. */
    class Element : public Kobold::ListElement
    {
       public:
          /*! Constructor
+          * \param square square occupied by the box 
           * \param min minimum corner of the box
           * \param max maximum corner of the box 
           * \param thing pointer to the related thing, if any. */

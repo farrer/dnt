@@ -42,6 +42,7 @@ namespace DNT
          /*! Constructor */
          ScriptObjectCharacter(Kobold::String filename, 
                Ogre::Vector3 originalPos);
+         /*! Constructor */
          ScriptObjectCharacter(Kobold::String filename);
          /*! Destructor */
          ~ScriptObjectCharacter();
@@ -77,11 +78,17 @@ namespace DNT
          /*! \return walkable bounding box of the model */
          Ogre::Aabb getWalkableBounds();
 
+         /*! Move to a position */
          void moveToPosition(float posX, float posZ);
+         /*! Mote near to a character */
          void moveToCharacter(ScriptObjectCharacter* target);
+         /*! Move away from a character */
          void moveFromCharacter(ScriptObjectCharacter* target);
+         /*! Call its animation (once) */
          void callAnimation(int index);
+         /*! Set its looping animation */
          void setAnimation(int index);
+         /*! Open its dialog */
          void openDialog();
 
      protected:

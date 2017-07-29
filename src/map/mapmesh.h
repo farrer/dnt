@@ -56,14 +56,15 @@ class IndoorTextureSquare : public Kobold::ListElement
        * \param normZ -> normal Z */
       IndoorTextureSquare(Ogre::Real x1, Ogre::Real y1, Ogre::Real z1,
                      Ogre::Real x2, Ogre::Real y2, Ogre::Real z2,
-                     Ogre::Real normX, Ogre::Real nomrY, Ogre::Real normZ);
+                     Ogre::Real normX, Ogre::Real normY, Ogre::Real normZ);
       /*! Destructor */
       ~IndoorTextureSquare();
 
-      /* Define the square with triangles.
+      /*! Define the square with triangles.
        * \note side effect: will increment curVert and curFace
        * \param vertices current Ogre vertex info to define
        * \param curVert current (first) vertex info index to define here
+       * \param curIndex current (first) index info to define here
        * \param faces current Ogre face Index do define
        * \param curFace current face (first) index to define here 
        * \param meshMin minimum bounds of the mesh */
@@ -76,18 +77,23 @@ class IndoorTextureSquare : public Kobold::ListElement
       Ogre::Vector3 getTopRightCorner();
 
    private:
+      /*! Define for X oriented */
       void defineAtX(float* vertices, int& curVert, int& curIndex, 
             Ogre::uint16* faces, int& curFace, Ogre::Real textureDelta, 
             const Ogre::Vector3 meshMin);
+      /*! Define for Y oriented */
       void defineAtY(float* vertices, int& curVert, int& curIndex, 
             Ogre::uint16* faces, int& curFace, Ogre::Real textureDelta, 
             const Ogre::Vector3 meshMin);
+      /*! Define for Z oriented */
       void defineAtZ(float* vertices, int& curVert, int& curIndex, 
             Ogre::uint16* faces, int& curFace, Ogre::Real textureDelta, 
             const Ogre::Vector3 meshMin);
+      /*! Define triangles */
       void defineTriangles(int& curIndex, Ogre::uint16* faces, 
             int& curFace, int nValue);
 
+      /*! Set a vertex for the mesh */
       void setVertex(float* vertices, int& curVert, Ogre::Vector3 pos, 
                      Ogre::Vector3 normal, Ogre::Vector2 uv, 
                      const Ogre::Vector3 meshMin);
@@ -104,6 +110,7 @@ class MapSubMesh : public Kobold::List, public Kobold::ListElement
 {
    public:
       /*! Constructor.
+       * \param mesh pointer to its parent mesh
        * \param datablockName datablock datablock to use for the mesh. */
       MapSubMesh(Ogre::MeshPtr mesh, Ogre::String datablockName);
       /*! Destructor */
@@ -120,7 +127,9 @@ class MapSubMesh : public Kobold::List, public Kobold::ListElement
       /*! \return name of the used datablock for this mesh. */
       Ogre::String getDatablockName();
 
+      /*! \return minimun value of its bounds */
       Ogre::Vector3 getMin() { return min; };
+      /*! \return maximun value of its bounds */
       Ogre::Vector3 getMax() { return max; };
  
    private:
@@ -128,6 +137,7 @@ class MapSubMesh : public Kobold::List, public Kobold::ListElement
       Ogre::Vector3 min; /**< Minimum values for x,y,z */
       Ogre::Vector3 max; /**< Maximum values for x,y,z */
 
+      /*! Create a VertexArrayObject for the mesh */
       void createVao(float* verts, Ogre::uint16* faces);
 
       Ogre::MeshPtr mesh; /**< The mesh owner of this submesh */
@@ -149,13 +159,19 @@ class MapSubMesh : public Kobold::List, public Kobold::ListElement
 class MapMesh : public Kobold::List
 {
    public:
+     /*! Constructor 
+      * \param baseName name to use as base (usally wall or floor) */
      MapMesh(Ogre::String baseName);
+     /*! Destructor */
      ~MapMesh();
 
+     /*! Create a submesh with dataBlockName as material */
      MapSubMesh* createSubMesh(Ogre::String datablockName);
 
+     /*! \return a submesh with dataBlockName as material */
      MapSubMesh* getSubMesh(Ogre::String datablockName);
 
+     /*! \return if has a mesh with datablock material */
      bool hasTextureMesh(Ogre::String datablockName);
 
      /*! Create or update all dirty manual objects */

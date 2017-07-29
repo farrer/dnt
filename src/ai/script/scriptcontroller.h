@@ -35,11 +35,14 @@ namespace DNT
 class ScriptController : public Kobold::ListElement
 {
    public:
+      /*! Type of ScriptController */
       enum ScriptType
       {
           SCRIPT_TYPE_MAP
       };
+      /*! Constructor */
       ScriptController(ScriptType type, ScriptManager* manager);
+      /*! Destructor */
       virtual ~ScriptController();
 
       /*! Load and compile the script 
@@ -56,6 +59,7 @@ class ScriptController : public Kobold::ListElement
       /*! \return type of the implemented script */
       const ScriptType getType() const { return this->type; };
 
+      /*! \return filename of the script definition */
       const Ogre::String getFilename() const { return this->filename; };
 
       /*! Increment the number of instances the controller has */

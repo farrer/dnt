@@ -89,11 +89,17 @@ namespace DNTMapEditor
 
       private:
 
+         /*! Open the dialog window to load or save.
+          * \param loading true will open a load dialog, false a save one */
          void openLoadOrSaveWindow(bool loading);
+         /*! Open the New Map window */
          void openNewMapWindow();
+         /*! Toggle menu availability status */
          void toggleMenuStatus();
 
+         /*! Enable edit menu items */
          void enableEditItems();
+         /*! Disable edit menu items */
          void disableEditItems();
 
          /*! Set current camera to be within map area */
@@ -104,45 +110,45 @@ namespace DNTMapEditor
          Farso::Container* cont; /**< Top bar menu container */
 
          /* File button and Menu */
-         Farso::Button* fileButton;
-         Farso::Menu* fileMenu;
-         Farso::Menu::MenuItem* menuItemNewIndoor;
-         Farso::Menu::MenuItem* menuItemNewOutdoor;
-         Farso::Menu::MenuItem* menuItemLoad;
-         Farso::Menu::MenuItem* menuItemSave;
-         Farso::Menu::MenuItem* menuItemSaveAs;
-         Farso::Menu::MenuItem* menuItemExit;
+         Farso::Button* fileButton; /**< The file button */
+         Farso::Menu* fileMenu;     /**< The file menu */
+         Farso::Menu::MenuItem* menuItemNewIndoor; /**< New Infoor map */
+         Farso::Menu::MenuItem* menuItemNewOutdoor; /**< New outdoor map */
+         Farso::Menu::MenuItem* menuItemLoad; /**< Load map */
+         Farso::Menu::MenuItem* menuItemSave; /**< Save map */
+         Farso::Menu::MenuItem* menuItemSaveAs; /**< Save map as */
+         Farso::Menu::MenuItem* menuItemExit; /**< Exit editor */
 
          /*! Edit Menu */
-         Farso::Button* editButton;
-         Farso::Menu* editMenu;
-         Farso::Menu::MenuItem* menuItemUnselect;
-         Farso::Menu::MenuItem* menuItemDuplicate;
-         Farso::Menu::MenuItem* menuItemRemove;
+         Farso::Button* editButton; /**< Edit button */
+         Farso::Menu* editMenu;     /**< Edit menu */
+         Farso::Menu::MenuItem* menuItemUnselect; /**< Unselect item */
+         Farso::Menu::MenuItem* menuItemDuplicate; /**< Duplicate item */
+         Farso::Menu::MenuItem* menuItemRemove; /**< Remove item */
 
          /* Dialogs button and Menu */
-         Farso::Button* dialogsButton;
-         Farso::Menu* dialogsMenu;
-         Farso::Menu::MenuItem* menuItemMetadata;
-         Farso::Menu::MenuItem* menuItemNodes;
-         Farso::Menu::MenuItem* menuItemTransform;
+         Farso::Button* dialogsButton; /**< Dialogs button */
+         Farso::Menu* dialogsMenu; /**< Dialogs menu */
+         Farso::Menu::MenuItem* menuItemMetadata; /**< Metadata item */
+         Farso::Menu::MenuItem* menuItemNodes; /**< Nodes item */
+         Farso::Menu::MenuItem* menuItemTransform; /**< Transform item */
 
          /* View button and Menu */
-         Farso::Button* viewButton;
-         Farso::Menu* viewMenu;
-         Farso::Menu::MenuItem* menuItemToggleLight;
-         bool lightEnabled;
-         Farso::Menu::MenuItem* menuItemShowConnections;
+         Farso::Button* viewButton; /**< View button */
+         Farso::Menu* viewMenu; /**< View menu */
+         Farso::Menu::MenuItem* menuItemToggleLight; /**< Toggle light */
+         bool lightEnabled; /**< If light is enabled or not */
+         Farso::Menu::MenuItem* menuItemShowConnections; /**< Show connects */
 
          /* Load / Save window widgets */
-         Farso::Window* loadSaveWindow;
-         Farso::FileSelector* loadSaveSelector;
+         Farso::Window* loadSaveWindow; /**< Window to load or save */
+         Farso::FileSelector* loadSaveSelector; /**< The selector */
 
          /* New Map Window widgets */
-         Farso::Window* newMapWindow;
-         Farso::Spin* spinNewMapSizeX;
-         Farso::Spin* spinNewMapSizeZ;
-         Farso::Button* buttonNewMapCreate;
+         Farso::Window* newMapWindow; /**< New Map window */
+         Farso::Spin* spinNewMapSizeX; /**< Map size X */
+         Farso::Spin* spinNewMapSizeZ; /**< Map size Z */
+         Farso::Button* buttonNewMapCreate; /**< Button create window */
 
          MetadataGui metadataGui; /**< Metadata editor gui */
          NodesWindow nodesWindow; /**< Nodes selector window */

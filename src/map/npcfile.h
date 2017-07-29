@@ -52,7 +52,7 @@ class NpcFile: public Kobold::List
       /*! Destructor */
       ~NpcFile();
 
-      /* Load the npc file
+      /*! Load the npc file
        * \param filename -> relative fileName of the npc's file
        * \return -> true if loaded, false otherwise */
       bool load(Kobold::String filename);
@@ -72,14 +72,14 @@ class NpcFile: public Kobold::List
       bool getNextCharacter(Kobold::String& name, Kobold::String& fileName,
             Ogre::Vector3& pos, float& angle, Thing::PsychoState& psycho);
 
-      /* Insert a character at the list
+      /*! Insert a character at the list
        * \param name -> name of the npc
        * \param fileName -> fileName of the character got
        * \param pos -> initial position of the character got 
        * \param angle -> Orientation angle of the character got
        * \param psycho -> Character psycho state */
       void insertCharacter(Kobold::String name, Kobold::String fileName, 
-            Ogre::Vector3, float angle, Thing::PsychoState psycho);
+            Ogre::Vector3 pos, float angle, Thing::PsychoState psycho);
 
       /*! Kill All NPCs defined by the NPC file */
       void killAll();

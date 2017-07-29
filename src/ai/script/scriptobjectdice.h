@@ -52,6 +52,9 @@ namespace DNT
          /*! Register our functions and types */
          static void doScriptRegister(asIScriptEngine* asEngine);
 
+         /*! Factory function.
+          * \param faces number of dice faces to create.
+          * \return a new dice for script usage */
          static ScriptObjectDice* factoryDice(int faces);
 
       private:

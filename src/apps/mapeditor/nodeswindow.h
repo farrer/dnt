@@ -75,15 +75,15 @@ namespace DNTMapEditor
          /*! \return node name with counter */
          Kobold::String getNodeName(Kobold::String name);
          
-         Farso::Window* window;
-         Farso::TreeView* nodesTree;
-         Farso::TreeView::TreeViewElement* lightNode;
-         Farso::TreeView::TreeViewElement* sceneryNode;
-         Farso::TreeView::TreeViewElement* doorsNode;
-         Farso::TreeView::TreeViewElement* wallsNode;
-         Farso::TreeView::TreeViewElement* pickableNode;
+         Farso::Window* window; /**< The node window */
+         Farso::TreeView* nodesTree; /**< A selector tree */
+         Farso::TreeView::TreeViewElement* lightNode; /**< Light subtree */
+         Farso::TreeView::TreeViewElement* sceneryNode; /**< Scenery subtree */
+         Farso::TreeView::TreeViewElement* doorsNode; /**< Door subtree */
+         Farso::TreeView::TreeViewElement* wallsNode; /**< Wall subtree */
+         Farso::TreeView::TreeViewElement* pickableNode; /**< Pickable tree */
 
-         std::map<Kobold::String, int> namesCount;
+         std::map<Kobold::String, int> namesCount; /**< Map for same name */
 
      
    };

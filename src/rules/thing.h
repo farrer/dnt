@@ -54,7 +54,7 @@ class Thing : public Kobold::ListElement
       class ColElement : public Kobold::ListElement
       {
          public:
-            Element* element;
+            Element* element; /**< The element itself */
       };
 
       /*! Thing's State to Playable Characters */
@@ -170,7 +170,8 @@ class Thing : public Kobold::ListElement
       Skills* getSkills();
 
       /*! Do a check (skill, saves, etc) against the difficulty.
-       * \param difficulty -> Difficulty of the check
+       * \param stateToCheck identifier of the state to check
+       * \param difficulty Difficulty of the check
        * \return true if succed, false if failed. */
       bool doCheck(Kobold::String stateToCheck, int difficulty);
 
@@ -200,7 +201,7 @@ class Thing : public Kobold::ListElement
        * \param value armature class value */
       void setArmatureClass(int value);
 
-      /* \return our 'playable character walking bounding box':
+      /*! \return our 'playable character walking bounding box':
        * This is a regular squared one, in which rotations will never happen,
        * avoiding the character being 'stucked' when can't move, rotate a bit
        * (maybe increasing regular bound size), an try to move. With a regular
@@ -211,6 +212,7 @@ class Thing : public Kobold::ListElement
        * is possible. */
       virtual const bool canInteract() const = 0;
 
+      /*! Possible result of interact function */
       enum InteractResult
       {
          /* The interaction is done. */
@@ -273,7 +275,6 @@ class Thing : public Kobold::ListElement
       /*! Get the animation names list for the AnimatedModel, if the thing's 
        * implementation support it.
        * \note those supporting it, should override this function.
-       * \param total total names on vector.
        * \return animation names vector */ 
       virtual Kobold::String* getAnimationList(); 
 

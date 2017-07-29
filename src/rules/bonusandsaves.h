@@ -39,7 +39,7 @@ class AttackBonus
       AttackBonus();
 
       /*! Constructor
-       * \total -> total bonus value
+       * \param total -> total bonus value
        * \note -> usually, the total is relative to the 
        *          first attack bonus.
        * \note -> you can get the total value if the toInt() function */
@@ -73,7 +73,7 @@ class AttackBonus
       int getBonus(int attackNumber);
 
       /*! Set bonus value for an attack in a single act.
-       * \param attackNumbner -> number of the attack (1 for first)
+       * \param attackNumber -> number of the attack (1 for first)
        * \param value -> bonus value for the attack */
       void setBonus(int attackNumber, int value);
 
@@ -93,7 +93,8 @@ class AttackBonus
 class BonusAndSaves
 {
    public:
-      
+     
+      /*! Types of check to make */
       enum CheckType
       {
          CHECK_ROLL = 1,  /**< Roll a dice check */

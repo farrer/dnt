@@ -33,6 +33,7 @@ namespace DNT
 class Door : public Object
 {
    public:
+      /*! Status of 'openess' of a door */
       enum OpenStatus
       {
          DOOR_CLOSED = 0,
@@ -70,10 +71,10 @@ class Door : public Object
       /*! Open a closed door */
       void open();
       
-      /*! CLose an opened door */
+      /*! Close an opened door */
       void close();
 
-      /* \return true. Doors are interactive. */
+      /*! \return true. Doors are interactive. */
       const bool canInteract() const {return true;};
 
       /* Interact with the door, opening/closing it if unlocked, or 

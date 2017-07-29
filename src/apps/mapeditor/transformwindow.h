@@ -65,10 +65,10 @@ namespace DNTMapEditor
          /*! Parse value from text entry. on error, use previous value */
          float parse(Farso::TextEntry* textEntry, float previousValue);
 
-         Farso::Window* window;
-         Farso::TextEntry* position[3];
-         Farso::TextEntry* rotation[3];
-         Farso::TextEntry* scale[3];
+         Farso::Window* window; /**< The window */
+         Farso::TextEntry* position[3]; /**< Each position to edit */
+         Farso::TextEntry* rotation[3]; /**< Each rotation to edit */
+         Farso::TextEntry* scale[3]; /**< Each scale to edit */
    };
 
 }

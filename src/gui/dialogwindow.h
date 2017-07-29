@@ -40,8 +40,6 @@ namespace DNT
          /*! Close the current opened DialogWindow */
          static void close();
 
-         static void markToOpen();
-
          /*! Check Farso events happening on the DialogWindow.
           * \return true if treated some event, false otherwise */
          static bool checkEvents();

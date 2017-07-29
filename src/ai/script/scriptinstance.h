@@ -38,11 +38,15 @@ namespace DNT
 class SuspendedInfo : public Kobold::ListElement
 {
    public:
+      /*! Constructor */
       SuspendedInfo(asIScriptContext* context, PendingAction* action, 
             ScriptManager* manager);
+      /*! Destructor */
       ~SuspendedInfo();
 
+      /*! \return context suspended */
       asIScriptContext* getContext() { return context; };
+      /*! \return pending action waiting for finalization */
       PendingAction* getPendingAction() { return action; };
 
       /*! Delete the action (usually when it's done), to allow the
@@ -65,9 +69,9 @@ class SuspendedInfo : public Kobold::ListElement
       const bool hasContextToResume() const;
 
    private:
-      asIScriptContext* context;
-      PendingAction* action;
-      ScriptManager* manager;
+      asIScriptContext* context;  /**< Suspended contex */
+      PendingAction* action;      /**< Action waiting */
+      ScriptManager* manager;     /**< Manager used */
 };
 
 /*! DNT implements each of its scripts as an AngelScript class. Thus,
@@ -75,11 +79,18 @@ class SuspendedInfo : public Kobold::ListElement
 class ScriptInstance : public Kobold::ListElement
 {
    public:
+      /*! Constructor 
+       * \param obj object of this instance 
+       * \param script its controller 
+       * \param manager current manager to use */
       ScriptInstance(asIScriptObject* obj, ScriptController* script,
             ScriptManager* manager); 
+      /*! Destructor */
       ~ScriptInstance();
 
+      /*! \return object of the instance */
       asIScriptObject* getObject() { return obj; };
+      /*! \return script controller of the instance */
       ScriptController* getScript() { return script; };
 
       /*! Do a step update on the script instance */
@@ -100,7 +111,7 @@ class ScriptInstance : public Kobold::ListElement
       ScriptManager* manager; /**< Script manager used */
 
       Kobold::List suspended; /**< List of suspended contexts */
-      Kobold::Mutex mutex;
+      Kobold::Mutex mutex;    /**< Mutex to controll parallel access */
 
 };
 

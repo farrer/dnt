@@ -108,6 +108,7 @@ class AStar : Kobold::ParallelProcess
        * \param pos -> current character position (will receive the new)
        * \param ori -> current orientation (will receive the new)
        * \param run -> true if Character is running or false if walking
+       * \param runMultiplier -> value to multiply to step size when running
        * \return true if can actualize, false otherwise */
       bool getNewPosition(Ogre::Vector3& pos, float& ori,
             bool run, float runMultiplier);
@@ -117,6 +118,7 @@ class AStar : Kobold::ParallelProcess
        * \param destZ -> Z destiny Position */
       void getDestiny(float& destX, float& destZ);
 
+      /*! States of the A* search */
       enum AStarState
       {
          ASTAR_STATE_OTHER,     /**< A* Other State */
@@ -136,13 +138,15 @@ class AStar : Kobold::ParallelProcess
       /*! Clear the a* state */
       void clear();
 
-      /* Functions from Kobold::ParallelProcess */
+      /*! Do a single A* search step
+       * \note should only be called by the parallel thread. */
       bool step();
+      /*! \return time (in ms) the search should sleep between steps */
       unsigned int getSleepTime() { return ASTAR_SLEEP_TIME; };
 
    private:
 
-      /* Do the a* cycle (if is current searching for something) */
+      /*! Do the a* cycle (if is current searching for something) */
       void doCycle();
 
       /*! Clear search structures */
@@ -161,10 +165,10 @@ class AStar : Kobold::ParallelProcess
       ListAStar* opened;         /**< Opened nodes list */
       ListAStar* closed;         /**< Closed nodes list */
 
-      float dX, 
-            dZ, 
-            heuristic,
-            maxDist;
+      float dX,            /**< Current delta X on search */ 
+            dZ,            /**< Current delta Z on search */
+            heuristic,     /**< heuristic value */
+            maxDist;       /**< Max distance sould allow from target */
 
       Kobold::Timer callTimer; /**< Timer for subsequent calls */
 };

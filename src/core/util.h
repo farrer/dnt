@@ -33,6 +33,7 @@ namespace DNT
 #define DNT_TO_METER   0.2f /**< Constant to multiply to convert DNT to meter.*/
 #define METER_TO_DNT   1.0f / DNT_TO_METER /**< Constant to Meter to DNT value*/
 
+   /*! Some util functions for DNT */
    class Util
    {
       public:

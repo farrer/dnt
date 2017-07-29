@@ -61,7 +61,7 @@ class Alignments
       static Alignment* getAlignmentByString(Kobold::String id);
       
    private:
-      static Kobold::List list;
+      static Kobold::List list; /**< List of aligments */
 
       /*! Insert an Alignmentment on List
        * \param filename -> fileName of the Alignmentment to insert 

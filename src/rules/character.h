@@ -44,7 +44,7 @@ namespace DNT
    class Character : public Thing
    {
       public:
-         /* Each character animation */
+         /*! Each character animation */
          enum CharacterAnimation
          {
             CHARACTER_ANIMATION_ATTACK = 0,
@@ -144,7 +144,9 @@ namespace DNT
          /*! For simplicity, characters are only verified by bounding box  */
          virtual const bool shouldDepthCollisionCheck() const { return false; }
 
+         /*! Set if character can attack at current fight turn */
          void setCanAttack(bool value);
+         /*! Set if character can move at current fight turn */
          void setCanMove(bool value);
 
          /*! Set the character to move by the found path of a A* search.
@@ -212,6 +214,7 @@ namespace DNT
 
          Inventory* inventory; /**< Character inventory */
 
+         /*! Names of each animation valid for characters */
          static Kobold::String animationList[CHARACTER_TOTAL_ANIMATIONS];
    };
 
@@ -265,7 +268,7 @@ namespace DNT
          void treatGeneralScripts();
 
          /*! Verify if a Character is on the list
-          * \paarm ch -> pointer to the Character
+          * \param ch -> pointer to the Character
           * \return -> true if the Character is on the list */
          bool isCharacterIn(Character* ch);
 

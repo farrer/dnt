@@ -68,6 +68,7 @@ namespace DNTMapEditor
           * when created a new map or loaded another one */
          void clear();
 
+         /*! Update the editor with input */
          bool update(bool leftButtonPressed, const Ogre::Vector3& floorMouse, 
                const int mouseX, const int mouseY);
 
@@ -76,10 +77,14 @@ namespace DNTMapEditor
 
       private:
 
+         /*! Hide the translation axis */
          void hideTranslationAxis();
+         /*! Show the translation axis */
          void showTranslationAxis();
 
+         /*! Hide the rotation axis */
          void hideRotationAxis();
+         /*! Show the rotation axis */
          void showRotationAxis();
 
          /*! Set axis positions to be relative to */
@@ -88,24 +93,25 @@ namespace DNTMapEditor
          /*! Restore selected axis to its original material */
          void restoreAxisMaterial();
          
+         /*! Add a value, limiting it */
          Ogre::Real addOnLimit(Ogre::Real value, Ogre::Real addVal);
 
-         Goblin::Model3d xAxis;
-         Goblin::Model3d yAxis;
-         Goblin::Model3d zAxis;
+         Goblin::Model3d xAxis; /**< Model for x axis */
+         Goblin::Model3d yAxis; /**< Model for y axis */
+         Goblin::Model3d zAxis; /**< Model for z axis */
          
-         Goblin::Model3d lightDirAxis;
+         Goblin::Model3d lightDirAxis; /**< Model for light direction axis */
 
-         Goblin::Model3d xRot;
-         Goblin::Model3d yRot;
-         Goblin::Model3d zRot;
+         Goblin::Model3d xRot; /**< Model for x rotation */
+         Goblin::Model3d yRot; /**< Model for y rotation */
+         Goblin::Model3d zRot; /**< Model for z rotation */
 
-         Goblin::Model3d* selectedAxis;
-         Goblin::Model3d* coloredAxis;
-         DNT::Thing* selectedThing;
-         DNT::LightInfo* selectedLight;
+         Goblin::Model3d* selectedAxis; /**< Model for selected axis */
+         Goblin::Model3d* coloredAxis;  /**< Model for colored axis */
+         DNT::Thing* selectedThing;  /**< Thing selected */
+         DNT::LightInfo* selectedLight; /**< Light selected */
 
-         int reference;
+         int reference; /**< Internal reference value */
 
    };
 

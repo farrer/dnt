@@ -48,25 +48,33 @@ class Agent
        * \param size -> step size */
       void defineStepSize(float size);
 
-      /*! Define Actual Agent Position 
+      /*! Define current Agent Position 
        * \param x -> x position coordinate
        * \param z -> z position coordinate */
       void definePosition(float x, float z);
 
-      /*! Get Actual Agent Position 
+      /*! Get current Agent Position 
        * \param x -> will have X agent coordinate
        * \param z -> will have Z agent coordinate */
       void getPosition(float& x, float& z);
 
+      /*! Define agent's current orientation */
       void defineOrientation(float ori){orientation = ori;};
 
+      /*! \return if orientation is relevant for the agent */
       const bool oriented() const { return withOrientation; };
+      /*! \return current orientation angle */
       const float orientationValue() const { return orientation; };
+      /*! \return current step size for each update */
       const float getStepSize() const { return stepSize; };
 
+      /*! Do the angle update for the agent.
+       * \return if updated angle. */
       bool doAngle();
 
+      /*! Define agent's bouding box */
       void defineBoundingBox(float xa, float za, float xb, float zb);
+      /*! Get agent's bouding box */
       void getBoundingBox(float &xa, float &za, float &xb, float &zb);
 
 
@@ -85,8 +93,8 @@ class Agent
       float destinyZ;      /**< Destiny Z Coordinate */
 
          /* POSITION */
-      float actualX;       /**< Agent Actual X Coordinate */
-      float actualZ;       /**< Agent Actual Z Coordinate */
+      float actualX;       /**< Agent current X Coordinate */
+      float actualZ;       /**< Agent current Z Coordinate */
         
          /* BOUNDING BOX */
       float x1;            /**< X1 Bounding Box */
@@ -95,7 +103,7 @@ class Agent
       float z2;            /**< Z2 Bounding Box */
 
          /* STEP */
-      float stepSize;      /**< Agent Step Size per Actualization */
+      float stepSize;      /**< Agent Step Size per update */
 
          /* ORIENTATION */
       bool withOrientation;  /**< If agent has orientation or not */

@@ -131,8 +131,8 @@ class SkillsDefinitions
       static SkillDefinition* getSkillDefinition(int i);
 
    protected:
-      static SkillDefinition* skillsDefs;
-      static int totalSkills;
+      static SkillDefinition* skillsDefs; /**< Vector of skills definitions */
+      static int totalSkills;  /**< Total definitions on vector */
   
 };
 
@@ -141,14 +141,13 @@ class SkillsDefinitions
 class Skills
 {
    public:
-      /*! Skills contructor. Read all Skills from file.
+      /* Skills contructor. Read all Skills from file.
        *  \param dir -> directory of the Skills files
        *  \param arq -> filename of the Skills list. */
       //Skills(string dir, string arq); 
       /*! Skills contructor. Read all Skills from a Skills. Do not load 
        *  descriptions. 
-       *  \param sk -> other Skills pointer.
-       */
+       *  \param sk -> other Skills pointer. */
       Skills(Skills* sk);
       /*! Skills contructor. Read all Skills from a Skills. Do not load 
        *  descriptions and images.

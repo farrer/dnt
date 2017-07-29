@@ -282,9 +282,12 @@ class ModInventory: public ModAction, public Kobold::List
          class ModInvObj: public Kobold::ListElement
          {
             public:
+               /*! Constructor */
                ModInvObj(Kobold::String filename, int x, int y, 
                      int invNumber, int state);
+               /*! Constructor */
                ModInvObj();
+               /*! Destructor */
                ~ModInvObj();
 
                Kobold::String filename; /**< The Object Filename */
@@ -391,6 +394,7 @@ class ModMap: public Kobold::ListElement
       /*! Search for a ModAction on the list
        * \param action -> action number constant
        * \param target -> target name
+       * \param pos -> position, if defined 
        * \return -> pointer to the ModAction found, or NULL if none */
       ModAction* search(ModActionType action, Kobold::String target, 
             Ogre::Vector3 pos = Ogre::Vector3(-1, -1, -1));

@@ -47,9 +47,8 @@ namespace DNT
          ~ScriptManager();
 
          /*! Create an instance of a map script.
-          * \param type script type to load
           * \param filename name of the script to load
-          * \param mapname name of the map
+          * \param mapFilename name of the map
           * \return new instance of the loaded script */
          MapScriptInstance* createMapScriptInstance(
                Kobold::String filename, Kobold::String mapFilename);
@@ -85,12 +84,15 @@ namespace DNT
           * \param ctx the context to use
           * \param instance script instance where to call. Should only be NULL
           *        when calling the factory function (which will create an 
-          *        instance itself)*/
+          *        instance itself)
+          * \param maxTime maximum execution time (in ms) before suspend. */
          int executeCall(asIScriptContext* ctx, ScriptInstance* instance, 
                int maxTime=2000);
 
+         /*! \return used script engine */
          asIScriptEngine* getScriptEngine() { return asEngine; };
-        
+       
+         /*! Callback for each line execution. Used for timeouts */
          static void lineCallback(asIScriptContext* ctx, Uint8* timeout);
 
          /*! Callback for receiving error messages from the scripts */
@@ -99,6 +101,7 @@ namespace DNT
          /*! Do a step on the script manager (should only be called by our
           * script thread) */
          bool step();
+         /*! \return time (in ms) to sleep between each cycle */
          unsigned int getSleepTime() { return SCRIPT_UPDATE_TIME; };
 
          /*! Suspend the current on-procces script until a pending 
@@ -115,11 +118,17 @@ namespace DNT
                const Ogre::Vector3 pos, void* newPtr);
 
          /* Global Functions */
+
+         /*! Play a sound */
          void playSound(float x, float y, float z, Kobold::String file);
+         /*! Sleep for at least some seconds */
          void sleep(int seconds);
+         /*! Print a message on screen */
          void print(Kobold::String s);
+         /*! \return a character by its name and position */
          ScriptObjectCharacter* getCharacter(Kobold::String filename, 
                float x, float y, float z);
+         /*! \return a character by its name */
          ScriptObjectCharacter* getCharacterByFilename(Kobold::String filename);
 
       protected:
@@ -132,7 +141,7 @@ namespace DNT
                ScriptController::ScriptType type, Kobold::String filename);
 
       private:
-         asIScriptEngine* asEngine;
+         asIScriptEngine* asEngine; /**< The AngelScript engine */
 
          std::vector<asIScriptContext*> contexts; /**< Context pool */
          Kobold::List controllers; /**< List of ScriptControllers */

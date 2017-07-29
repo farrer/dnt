@@ -44,25 +44,37 @@ class CommonApp : public Goblin::BaseApp
       /*! Destructor */
       virtual ~CommonApp();
    protected:
+      /*! \return skin file to use for Farso */
       virtual const Ogre::String getSkin() const = 0;
-
+      /*! Do anithing needed after select a node with mouse click */
       virtual bool specialSelect(Ogre::SceneNode* sceneNode) = 0;
 
       /* From Goblin::BaseApp */
+      /*! \return current width to use */
       const int getDefaultWindowWidth() const { return DEFAULT_WINDOW_WIDTH; };
+      /*! \return current height to use */
       const int getDefaultWindowHeight() const { return DEFAULT_WINDOW_HEIGHT;};
+      /*! \return current orientation to the window to use */
       const Orientation getDefaultOrientation() const { return LANDSCAPE; };
+      /*! \return minimun size to double the gui widgets */
       const int getMinWidthToUseDoubleSizedGui() const
       { 
          return WIDTH_TO_DOUBLE_SIZE; 
       };
+      /*! \return base data directory to use */
       const Ogre::String getBaseDataDir() const {return BASE_DATA_DIR;};
+      /*! \return if should use Kobold::I18n for internationalization */
       const bool shouldUseKoboldI18n() const { return false; };
+      /*! Get the data directories for immediate load */
       void getDataDirectories(Ogre::String** dataDirectories,
             Ogre::String** dataGroups, int& total);
       /* Done with Goblin::BaseApp */
 
+      /*! Init, cycled, the engine */
       bool doCommonCycleInit(int callCounter, bool& shouldAbort);
+      /*! Update the mouse world position 
+       * \param updateThingUnderMouse true to update the thing pointer of
+       * a thing that is pointed by the mouse (if any). */
       void updateMouseWorld(bool updateThingUnderMouse);
 
       Ogre::Vector3 floorMouse; /**< Coordinates of mouse on floor */ 

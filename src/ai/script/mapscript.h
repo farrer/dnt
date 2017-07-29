@@ -33,14 +33,19 @@ namespace DNT
 class MapScriptInstance: public ScriptInstance
 {
    public:
+      /*! Constructor */
       MapScriptInstance(asIScriptObject* obj, MapScript* script, 
             ScriptManager* manager);
+      /*! Destructor */
       ~MapScriptInstance();
 
+      /*! Call its onEnter function */
       void callOnEnter();
 
+      /*! Call its onLoad function */
       void callOnLoad();
 
+      /*! Call its onExit function */
       void callOnExit();
 };
 
@@ -48,9 +53,12 @@ class MapScriptInstance: public ScriptInstance
 class MapScript : public ScriptController
 {
    public:
+      /*! Constructor */
       MapScript(ScriptManager* manager);
+      /*! Destructor */
       ~MapScript();
       
+      /*! \return a new instance of the script */
       MapScriptInstance* createInstance(Ogre::String mapname);
 
       /*! \return pointer to the constructor function */
@@ -70,11 +78,11 @@ class MapScript : public ScriptController
 
    private:
 
-      asIScriptFunction* factoryFunction;
-      asIScriptFunction* stepFunction;
-      asIScriptFunction* onLoadFunction;
-      asIScriptFunction* onEnterFunction;
-      asIScriptFunction* onExitFunction;
+      asIScriptFunction* factoryFunction; /**< Pointer to the factory */
+      asIScriptFunction* stepFunction;    /**< Pointer to the step() */
+      asIScriptFunction* onLoadFunction;  /**< Pointer to onLoad() */
+      asIScriptFunction* onEnterFunction; /**< Pointer to onEnter() */
+      asIScriptFunction* onExitFunction;  /**< Pointer to onExit() */
 };
 
 }

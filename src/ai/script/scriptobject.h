@@ -37,6 +37,7 @@ namespace DNT
    class ScriptObject: public Kobold::ListElement
    {
       public:
+         /*! Type of ScriptObjects */
          enum ScriptObjectType
          {
             TYPE_CHARACTER,
@@ -74,6 +75,7 @@ namespace DNT
 
          /*! Check if the script object is equivalent to the parameters */
          const bool isEquivalent(const Kobold::String& filename);
+         /*! \copydoc isEquivalent */
          const bool isEquivalent(const Kobold::String& filename, 
                const Ogre::Vector3& pos);
 

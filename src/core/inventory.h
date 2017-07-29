@@ -44,6 +44,7 @@ namespace DNT
 class Inventory
 {
    public:
+      /*! Possible places at the Inventory */
       enum CharacterPlaces
       {
          INVENTORY_HEAD = 0,     /**< Head Place */
@@ -98,7 +99,7 @@ class Inventory
        * \return -> true if equipped, false, if can't equip */
       bool equipItem(Item* item, int where);
 
-      /* Drop itemect from the Inventory (puting it on the floor X,Z)
+      /*! Drop itemect from the Inventory (puting it on the floor X,Z)
        * \param item -> itemect to drop from the Inventory
        * \param x -> x position of the itemect on Inventory
        * \param y -> y position of the itemect at Inventory
@@ -170,7 +171,7 @@ class Inventory
       Item* getItemByInfo(Kobold::String relatedInfo);
 
       /*! Count the items with relatedInfo
-       * \relatedInfo -> info of the item to count
+       * \param relatedInfo -> info of the item to count
        * \return -> number of items with relatedInfo */
       int countItemByInfo(Kobold::String relatedInfo);
 

@@ -44,17 +44,25 @@ class MapEditor : public DNT::CommonApp
       ~MapEditor();
    protected:
 
+      /*! \return string to show as window title */
       const Ogre::String getApplicationUnixName() const { return APP_NAME; };
+      /*! \return Farso skint to use */
       const Ogre::String getSkin() const {return APP_SKIN;};
-
+      /*! Execute a single step of the init */
       bool doCycleInit(int callCounter, bool& shouldAbort);
-
+ 
+      /*! Unused */
       void doLowMemoryClean();
+      /*! Unused */
       void doSendToBackground();
+      /*! Unused */
       void doSendToForeground();
 
+      /*! Called before the render */
       void doBeforeRender();
+      /*! Called after the render */
       void doAfterRender();
+      /*! \return true to quit */
       bool shouldQuit();
       bool specialSelect(Ogre::SceneNode* sceneNode);
 

@@ -41,17 +41,25 @@ class Core : public CommonApp
       ~Core();
    protected:
 
+      /*! \return application name to display as window title */
       const Ogre::String getApplicationUnixName() const { return APP_NAME; };
       const Ogre::String getSkin() const {return APP_SKIN;};
 
+      /*! Do a single cycle of the init procedure */
       bool doCycleInit(int callCounter, bool& shouldAbort);
 
+      /*! Called when the memory is low. Only for portable devices */
       void doLowMemoryClean();
+      /*! Called when the application was sent to background */
       void doSendToBackground();
+      /*! Called when the application was sent back to foreground */
       void doSendToForeground();
 
+      /*! Called just before the render */
       void doBeforeRender();
+      /*! Called juset after the render */
       void doAfterRender();
+      /*! \return true to quit the application */
       bool shouldQuit();
       bool specialSelect(Ogre::SceneNode* sceneNode);
 

@@ -56,10 +56,12 @@
 namespace DNT
 {
 
+   /*! An action on the game */
    class Action
    {
       public:
 
+         /*! Identifier of each action */
          enum ActionId
          {
             ACT_NONE,
@@ -83,6 +85,7 @@ namespace DNT
             ACT_WAIT
          };
 
+         /*! Type of each Action */
          enum ActionType
          {
             ACT_TYPE_FREE_ACTION,
@@ -152,7 +155,7 @@ namespace DNT
 
          /*! Do an action that will negatively affect the life points of
           * characters  in the area.
-          * \note : TODO: affect objects too.
+          * \todo affect objects too.
           * \param actor -> Thing that will act 
           * \param targetX -> central X target
           * \param targetZ -> central Z target
@@ -160,8 +163,7 @@ namespace DNT
           * \param conceptBonus -> bonus to the action 
           * \param conceptAgainst -> the target's concept to roll against 
           * \param radius -> radius of target circle
-          * \param range -> action range 
-          * \param eng -> pointer to current DNT engine */
+          * \param range -> action range */ 
          static bool doAreaAttack(Thing* actor, float targetX, float targetZ,
                int radius, DiceInfo& diceInfo, Factor& conceptBonus,
                Factor& conceptAgainst, int range);

@@ -26,7 +26,7 @@
 namespace DNTMapEditor
 {
 
-   /* Windows for Map's Metadata edit */
+   /*! Window for Map's Metadata edit */
    class MetadataGui
    {
       public:
@@ -54,15 +54,15 @@ namespace DNTMapEditor
          void openSelectMusicWindow();
 
          /* Map Metadata widgets */
-         Farso::Window* metadataWindow;
-         Farso::TextEntry* mapNameTextEntry;
-         Farso::TextEntry* mapMusicTextEntry;
-         Farso::Button* buttonSelectMusic;
-         Farso::Button* buttonApplyMetadata;
+         Farso::Window* metadataWindow; /**< Its window */
+         Farso::TextEntry* mapNameTextEntry; /**< Text for map name */
+         Farso::TextEntry* mapMusicTextEntry; /**< Text for map music */
+         Farso::Button* buttonSelectMusic; /**< Button to select music */
+         Farso::Button* buttonApplyMetadata; /**< Button to apply */
 
          /* select music widgets */
-         Farso::Window* selectWindow;
-         Farso::FileSelector* musicSelector;
+         Farso::Window* selectWindow; /**< The select window */
+         Farso::FileSelector* musicSelector; /**< Its selector */
 
 
    };

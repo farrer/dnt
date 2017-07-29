@@ -33,7 +33,7 @@ class Object : public Thing
 {
    public:
       /*! Constructor 
-       * \param thingType type of the object */
+       * \param type type of the object */
       Object(ThingType type);
       /*! Destructor */
       virtual ~Object();

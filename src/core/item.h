@@ -88,6 +88,7 @@ class Item : public Object
       Kobold::String relatedInfo; /**< Related Item information */
       ItemType type; /**< Type of the item */
 
+      /*! Each possible item type definition string */
       static Kobold::String typeStrings[ITEM_TOTAL_TYPES];
 };
 
