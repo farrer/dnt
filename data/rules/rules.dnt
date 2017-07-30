@@ -26,5 +26,120 @@
 ##    ruleDefImage   its image filename
 ##    ruleDefScript  its script filename
 ##    
+ruleGroup = attribute
+   ruleGroupName = gettext("Attribute")
+   ruleGroupDesc = gettext("An attribute represents basic traits of a character.")
+   ruleGroupType = value
 
+ruleGroup = course
+   ruleGroupName = gettext("Course")
+   ruleGroupdDesc = gettext("A course represents which basic areas of knowledge a character follows.")
+   ruleGroupType = level_selectable
+
+ruleGroup = tendency
+   ruleGroupName = gettext("Tendency")
+   ruleGroupDesc = gettext("A tendency describes the political alignment of a character on the computer's world.")
+   ruleGroupType = selectable
+
+ruleGroup = skill
+   ruleGroupName = gettext("Skill")
+   ruleGroupDesc = gettext("A skill represents how skilled a character is at doing something, like hacking a computer or fixing stuff.")
+   ruleGroupType = value
+
+ruleGroup = talent
+   ruleGroupName = gettext("Talent")
+   ruleGroupDesc = gettext("A talent is a special trait of a character.")
+   ruleGroupType = selectable
+
+##############
+# Attributes #
+##############
+ruleDef = strength
+   ruleDefGroup = attribute
+   ruleDefName = gettext("Strength")
+   ruleDefDesc = gettext("It's the physical strength of the creature, measuring how gross and potential it is. A creature with too much strength can beat like a Titan and smash like a Hulk. A creature with low strength can't beat anyone and is frequently subjugated by others like a little chicken.")
+
+ruleDef = dexterity
+   ruleDefGroup = attribute
+   ruleDefName = gettext("Dexterity")
+   ruleDefDesc = gettext("It's how skillful, agile, supple, among other similar adjectives, the creature is. An organism with too much dexterity is able to juggle with knives and easily avoid bullets. A creature with little dexterity constantly trip over its own legs and rarely play with Tente blocks.")
+
+ruleDef = constitution
+   ruleDefGroup = attribute
+   ruleDefName = gettext("Constitution")
+   ruleDefDesc = gettext("Measures how physically resistant the organism is. A creature with a lot of constitution is as resistant as a horse, being able to self-inject venom in order to create some antidote. Those with few constitution points are constantly found in a vegetative state")
+
+ruleDef = intelligence
+   ruleDefGroup = attribute
+   ruleDefName = gettext("Intelligence")
+   ruleDefDesc = gettext("Measures how smart or dumb the creature is. Too intelligent creatures often create their own world interpretation system and theories. Too dumb ones often fail to comunicate themselves.")
+
+ruleDef = wisdom
+   ruleDefGroup = attribute
+   ruleDefName = gettext("Wisdom")
+   ruleDefDesc = gettext("Measures the creature expertise in dealing with any sort of real-life situation. A creature with few wisdom points can get lost on the way from the university restaurant to the bathroom.")
+
+ruleDef = charisma
+   ruleDefGroup = attribute
+   ruleDefName = gettext("Charisma")
+   ruleDefDesc = gettext("Measures how eloquent, skilled with words and inspireda creature is. A very charismatic organism can convince people to depose a president. But the not charismatic one isn't able to make a dog follow a stick.")
+
+
+##############
+#  Tendency  #
+##############
+
+ruleDef = libertarian_free_software
+   ruleDefGroup = tendency
+   ruleDefName = gettext("Libertarian Free-Software Adept")
+   ruleDefDesc = gettext("Libertarian Free-Software Adepts are creatures that believe in the free circulation of knowledge, without any intervention. They license their software under public-domain-like licenses.")
+   ruleDefImage = tendencies/libertarian.png
+
+ruleDef = free_software
+   ruleDefGroup = tendency
+   ruleDefName = gettext("Free-Software Adept")
+   ruleDefDesc = gettext("Free-Software Adepts are creatures who believe that the knowledge should be free, and will make the necessary efforts for this freedom being respected. Usually they are adepts of GPL-compatible licenses.")
+   ruleDefImage = tendencies/gnu.png
+
+ruleDef = non_profit_open_source
+   ruleDefGroup = tendency
+   ruleDefName = gettext("Non-profit Open Source Software Adept")
+   ruleDefDesc = gettext("Non-profit Open Source Software Adepts are more permissive about software license, as long they don't allow commercial usage and gave access to the source code.")
+   ruleDefImage = tendencies/beastie.png
+
+ruleDef = functional_neutral
+   ruleDefGroup = tendency
+   ruleDefName = gettext("Functional Neutral")
+   ruleDefDes = gettext("Functional Neutral creatures don't have a solid position on software licenses. They are adepts of software that work for their necessities.")
+   ruleDefImage = tendencies/canivete.png
+
+ruleDef = center_neutral
+   ruleDefGroup = tendency
+   ruleDefName = gettext("Center Neutral")
+   ruleDefDesc = gettext("They are the fence-sitters of the DNT universe, having tendency of being favorable to what people near them are.")
+   ruleDefImage = tendencies/muro.png
+
+ruleDef = chaotic_neutral
+   ruleDefGroup = tendency
+   ruleDefName = gettext("Chaotic Neutral")
+   ruleDefDesc = gettext("Chaotic Neutral creatures sometimes are free software adepts, sometimes proprietary software adepts, depending on their daily humor.")
+   ruleDefImage = tendencies/yang.png
+
+ruleDef = capitalist_proprietary_software
+   ruleDefGroup = tendency
+   ruleDefName = gettext("Capitalist Proprietary-Software Adept")
+   ruleDefDesc = gettext("Capitalist Proprietary Software Adepts have in uncle Bill their big idol. They want to be rich with the software they make, although, most of the time, they only get a job at small national software factories.")
+   ruleDefImage = tendencies/niquel.png
+
+ruleDef = neutral_proprietary_software
+   ruleDefGroup = tendency
+   ruleDefName = gettext("Neutral Proprietary-Software Adept")
+   ruleDefDesc = gettext("Neutral Proprietary Software Adepts want to make money with their programs, but distrust the absence of security of their favorite OS.")
+   ruleDefImage = tendencies/cifrao.png
+
+ruleDef = chaotic_proprietary_software
+   ruleDefGroup = tendency
+   ruleDefName = gettext("Chaotic Proprietary-Software Adept")
+   ruleDefDesc = gettext("Sometimes they like wealth and uncle Bill sometimes not. But they always see Free-Software Adepts as crazy-hippie guys.")
+   ruleDefImage = tendencies/ruindows.png
 

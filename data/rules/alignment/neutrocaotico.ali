@@ -1,3 +1,0 @@
-name = gettext("Chaotic Neutral")
-description = gettext("   Chaotic Neutral creatures sometimes are free software adepts, sometimes proprietary software adepts, depending on their daily humor.")
-image = alignment/images/yang.png

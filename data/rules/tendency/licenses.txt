@@ -1,4 +1,4 @@
-images/*
+*.svg, *.png
    author: qubodup (Iwan Gabovitch) <qubodup@gmail.com>
    license: GPLv3 or later
    note: heavily modified characters by farrer
