@@ -1,3 +1,0 @@
-name = gettext("Operates Mechanic Object")
-description = gettext("Is the capacity to operate or fix mechanical objects without the loss of a finger or a hand.")
-baseAttribute = 3

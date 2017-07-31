@@ -1,4 +1,0 @@
-name = gettext("Wisdom")
-description = gettext("Measures the creature' expertise in dealing with any sort of real-life situation. A very wise organism can do 10 years of post-graduate studies without any problem. A creature with few wisdom points can get lost on the way from the university restaurant to the bathroom.||Ameiva: Wisdom 4|Ratazana: Wisdom 6|Ente: Wisdom 12")
-baseAttribute = 4
-isAttribute = true

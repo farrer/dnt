@@ -15,7 +15,7 @@
 ##              level_selectable: User select to have it or
 ##                 not, and latter can select the same again, gaining a
 ##                 'level' on it.
-##              calculated: Always have it, but is value is automatically
+##              calculated: Always have it, but its value is automatically
 ##                 calculated without user interference.
 ##
 ##
@@ -142,4 +142,74 @@ ruleDef = chaotic_proprietary_software
    ruleDefName = gettext("Chaotic Proprietary-Software Adept")
    ruleDefDesc = gettext("Sometimes they like wealth and uncle Bill sometimes not. But they always see Free-Software Adepts as crazy-hippie guys.")
    ruleDefImage = tendencies/ruindows.png
+
+##############
+#    Skill   #
+##############
+
+ruleDef = appraisal 
+   ruleDefGroup = skill
+   ruleDefName = gettext("Appraisal")
+   ruleDefDesc = gettext("Usually used to estimate the price of a 486 processor sold by your favorite smuggler.")
+   ruleDefImage = skills/appraisal.png
+
+ruleDef = bluff
+   ruleDefGroup = skill
+   ruleDefName = gettext("Bluff")
+   ruleDefDesc = gettext("The creature master of this skill is able to fool the most expert people.")
+   ruleDefImage = skills/bluff.png
+
+ruleDef = diplomacy
+   ruleDefGroup = skill
+   ruleDefName = gettext("Diplomacy")
+   ruleDefDesc = gettext("It's the capacity to solve a lot of problems with other creatures. Including eloquence, gentlemanly behavior, and knowing how to use the correct words at correct times, this skill has all those boring social things.")
+   ruleDefImage = skills/diplomacy.png
+
+ruleDef = drinking
+   ruleDefGroup = skill
+   ruleDefName = gettext("Drinking")
+   ruleDefDesc = gettext("It's the ability to get drunk without throwing up. Drinking could be an alternative way to get more extroverted and social or your own ruin.")
+   ruleDefImage = skills/drinking.png
+
+ruleDef = general_knowledge
+   ruleDefGroup = skill
+   ruleDefName = gettext("General Knowledge")
+   ruleDefDesc = gettext("It's how much a creature known about the most diverse aspects of the world's life.")
+   ruleDefImage = skills/gknowledge.png
+
+ruleDef = healing
+   ruleDefGroup = skill
+   ruleDefName = gettext("Healing")
+   ruleDefDesc = gettext("The organism with points in this skill is able to heal wounds and illnesses in completely ordinary ways.")
+   ruleDefImage = skills/healing.png
+
+ruleDef = intimidation
+   ruleDefGroup = skill
+   ruleDefName = gettext("Intimidatation")
+   ruleDefDesc = gettext("Measures the capacity to compel the target to act in accordance with your orders, through gestures, words or shows of strength. This skill doesn't allow you to control the will of a target directly. It's only used to insure special treatment, like make the snack-bar woman give you a discount on a hot-dog.")
+   ruleDefImage = skills/intimidation.png
+
+ruleDef = operate_eletronic_objects
+   ruleDefGroup = skill
+   ruleDefName = gettext("Operate Eletronic Objects")
+   ruleDefDesc = gettext("It's the capacity to operate or fix electronic objects without getting electric shocks, losing 70 percent of your brain or blowing the object (and yourself) up.")
+   ruleDefImage = skills/opelobj.png
+
+ruleDef = operate_mechanic_objects
+   ruleDefGroup = skill
+   ruleDefName = gettext("Operate Mechanic Objects")
+description = gettext("It's the capacity to operate or fix mechanical objects without loosing a finger or a hand.")
+   ruleDefImage = skills/opelmecobj.png
+
+ruleDef = prestidigitagion
+   ruleDefGroup = skill
+   ruleDefName = gettext("Prestidigitation")
+   ruleDefDesc = gettext("It's the skill used to steal little objects on someone's pockets, or in a place observed by a lot of people.")
+   ruleDefImage = skills/prestidig.png
+
+ruleDef = stealth
+   ruleDefGroup = skill
+   ruleDefName = gettext("Stealth")
+   ruleDefDesc = gettext("It's the capacity to pass through some areas without making sounds or being visible.")
+   ruleDefImage = skills/stealth.png
 

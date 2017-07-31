@@ -1,4 +1,0 @@
-name = gettext("Constitution")
-description = gettext("Measures how physically resistant the organism is. A creature with a lot of constitution is as resistant as a horse, and is able to self-inject venom in order to create and withdraw an antidote. One with little constitution is constantly found in a vegetative state, and, to him, the common influenza virus can be lethal.||Ameiva: Constitution 12|Ratazana: Constitution 6|Ente: Constitution 26")
-baseAttribute = 2
-isAttribute = true

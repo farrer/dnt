@@ -1,4 +1,0 @@
-name = gettext("Strength")
-description = gettext("It's the physical strength of the creature, measuring how gross and potential it is. A creature with too much strength can beat like a Titan and smash like a Hulk. A creature with low strength can't beat anyone and is frequently subjugated by others like a little chicken.||Ameiva: Strength 1|Ratazana: Strength 2|Ente: Strength 23")
-baseAttribute = 0
-isAttribute = true

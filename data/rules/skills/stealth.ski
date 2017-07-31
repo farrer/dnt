@@ -1,3 +1,0 @@
-name = gettext("Stealth")
-description = gettext("Is the organism's capacity to pass through some areas without making sounds.")
-baseAttribute = 1

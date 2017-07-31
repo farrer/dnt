@@ -1,3 +1,0 @@
-name = gettext("Operates Eletronic Object")
-description = gettext("Is the capacity to operate or fix electronic objects without getting electric shocks and losing 70 percent of your brain or blowing the object (and yourself) up.")
-baseAttribute = 3

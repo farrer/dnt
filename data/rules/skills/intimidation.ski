@@ -1,3 +1,0 @@
-name = gettext("Intimidatation")
-description = gettext("Measures the capacity to compel the target to act in accordance with your orders, through gestures, words or shows of strength. This skill doesn't allow you to control the will of a target directly. It's only used to insure special treatment, like make a student let you copy his exercises or make the snack-bar woman give you a discount on a hot-dog.")
-baseAttribute = 5

@@ -1,4 +1,0 @@
-name = gettext("Charisma")
-description = gettext("Measures how eloquence, skilled with words, inspired, or the like, the creature is. A very charismatic organism can convince students groups to combine to invade the University President's Building. One who is not charismatic can't make his dog obey him.||Ameiva: Charisma 25|Ratazana: Charisma 6|Ente: Charisma 8")
-baseAttribute = 5
-isAttribute = true

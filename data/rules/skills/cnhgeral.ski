@@ -1,3 +1,0 @@
-name = gettext("Knowledge: (General)")
-description = gettext("This feature points to any knowledge the organism might have. The term '(General)' must be replaced by the specific type of knowledge. Each type of knowledge affects the tests related to it.")
-baseAttribute = 3

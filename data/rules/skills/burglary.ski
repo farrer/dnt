@@ -1,3 +1,0 @@
-name = gettext("Burglary")
-description = gettext("The organism graduated in this skill is able to burglarize locks, unlock doors, safes and similars.")
-baseAttribute = 1

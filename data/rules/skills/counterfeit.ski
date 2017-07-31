@@ -1,3 +1,0 @@
-name = gettext("Counterfeit")
-description = gettext("Is used to make false copies of something, like director's signatures or teacher's grade books.")
-baseAttribute = 5

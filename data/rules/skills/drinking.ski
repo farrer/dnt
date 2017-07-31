@@ -1,3 +1,0 @@
-name = gettext("Drinking")
-description = gettext("It's the ability to get really drunk without throwing up. Drinking is a good way to get more extroverted and social.")
-baseAttribute = 2
