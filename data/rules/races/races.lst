@@ -1,9 +1,0 @@
-STRANGE_AUTISTIC = 0 autista.rca races/images/autista.png
-BOY_PATY = 1 boy.rca races/images/boy.png
-GOTHIC = 2 gotico.rca races/images/gotico.png
-HIPPIE = 3 hippie.rca races/images/hippie.png
-COMMON_HUMAN = 4 humano.rca races/images/humano.png
-HUMAN_LAMA = 5 llama.rca races/images/llama.png
-HEADBANGER = 6 metaleiro.rca races/images/metaleiro.png
-SKINHEAD_MANIAC = 7 skinhead.rca races/images/skin.png
-MUTANT_HUMAN_CRICKET = 8 mutante.rca races/images/grilo.png

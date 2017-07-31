@@ -213,3 +213,48 @@ ruleDef = stealth
    ruleDefDesc = gettext("It's the capacity to pass through some areas without making sounds or being visible.")
    ruleDefImage = skills/stealth.png
 
+##############
+#   Course   #
+##############
+
+ruleDef = biology
+   ruleDefGroup = course
+   ruleDefName = gettext("Biology Student")
+   ruleDefDesc = gettext("Able to be isolated in the mountains for two weeks doing their 'Field Work', ambushing and observing the incredible and exciting ameiva's feeding habits, the Biology Students can do any needed activity for live: be a doctor, a hippie, a computer programmer, or a hot-dog seller...")
+
+ruleDef = journalism
+   ruleDefGroup = course
+   ruleDefName = gettext("Journalism Student")
+   ruleDefDesc = gettext("Graduating in the arts of deceit and cheating, the journalism student is a master writer. With words, he can create events, stun his enemies, swindle his audience, and so forth. If the judge think being a God and the medician play as God, the Journalist, if isn't a God, convinces you that it is. These malicious creatures can be very rude to each other, being unusual to see them in large groups.")
+
+ruleDef = law
+   ruleDefGroup = course
+   ruleDefName = gettext("Law Student")
+   ruleDefDesc = gettext("Living on Campus disguised as penguins, Law Students are organisms that, when they perceive the minor possibility of making a profit of some situation they judge to be 'juridical', will use all their vocabulary, rhetorical tricks and sophisms to take advantage of it. It's always important to have a Law Student in your group, be it to avoid being taken advantage of or to be able to take advantage of others, hence avoiding that looming punishment.")
+
+ruleDef = mechanical_engineering
+   ruleDefGroup = course
+   ruleDefName = gettext("Mechanical Engineering Student")
+   ruleDefDesc = gettext("The Mechanical Engineering Student is the most frustrated person on a Campus. After choosing that course in the hope of learning everything about cars, planes, boats and other mechanical structures of great complexity, they discover that the world can be summarized to F = m*a. In possession of that simple equation and of absurd quantities of inexplicable calculations, the Physics teachers make their life a hell during the fundamental first year, until they discover in specific classes that that hell was way too easy.")
+
+ruleDef = medical
+   ruleDefGroup = course
+   ruleDefName = gettext("Medical student")
+   ruleDefDesc = gettext("The Medical Student is a person who has given up his social life in exchange for an abnormal dedication to his studies, believing he'll be something in life. Those creatures haven't any cleverness, and base their lives on theories and more theories. To be one of this class, the character needs to be able to behave in a hideous manner: drowning hookies, public perversion, among other activities that result in death.")
+
+ruleDef = philosophy
+   ruleDefGroup = course
+   ruleDefName = gettext("Philosophy Student")
+   ruleDefDesc = gettext("Not satisfied with not wanting anything for his life, the Philosophy Student enters the University with just one objective: to perfect that lack of desire. Because they are adepts of drinking and of doing nothing, sharing their time between one and other activity, the Philosophy Student becomes the perfect bohemian full of hot air.")
+
+ruleDef = phisical_education
+   ruleDefGroup = course
+   ruleDefName = gettext("Physical Education Student")
+   ruleDefDesc = gettext("Usually taking classes in 'Soccer' and 'Basketball', the dedicated (in the physical sense of the word) Physical Education Student values muscular force above all. With too many muscles in the brain, those Students possess nothing less than a supernatural resistance in the head - in exchange for some points of Intelligence, really. Finally, these boys are stars on the soccer field but aren't distinguished students of maths, hardly knowing the fundamental numbers.")
+
+ruleDef = music
+   ruleDefGroup = course
+   ruleDefName = gettext("Music Student")
+   ruleDefDesc = gettext("In a scientific world, few people adventure into different concepts, delving into some art source, like music. The Music Student is a creature with extreme patience, needed to learn all the techniques related to ternary compass atonalisms, having a distorted taste for playing one of the most bizarre and occult musical instruments. The Creator's Note: 'Based on the idea that musical tastes are distinct and only the the most open-minded people appreciate distinct rhythms (obviously all that aren't attempts to kill the musical concept), the class was made. So, the same sound, Bach for example, can be beautiful music or terribly boring, depending upon the ear of the listener. Probably a progressive fan will like Bach, but a fan of Tati-Quebra-Barraco, without any musical sense, will think Bach is shit. So, the Music Student will be virtuous and misunderstood.'")
+
+

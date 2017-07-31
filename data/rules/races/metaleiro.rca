@@ -1,9 +1,0 @@
-name = gettext("Headbanger")
-epigraph = gettext("'Dark...'|(Anamatheus Iskurium)")
-description = gettext("These creatures usually walk around wearing black pants, black skirts (of bands or not) and military boots. They wear this kind of clothes to 'be different', although all of them wear the same. They love to play everything they find, thinking it is a drum, and to sing the lyrics of the music they love. Usually categorized as autistic, these creatures walk with other headbangers (from 2 to 5) and have the need to show others their 'revolt'. They are easily attracted by anything that looks 'malignant', the rougher the better.")
-totalModifiers = 1
-modifier = 2 SKILL INTIMIDATE RACE BOY_PATY
-modifierText = gettext("Since Boys / Patys are highly emotional, Headbangers receive +2 of intimidation against them.")
-totalTalents = 2
-talent= VOLUNTARY_AUTISM
-talent = PROMPT_MOSH

@@ -1,10 +1,6 @@
 #
 # This dialog controls the behaviour of a common locked door.
 #
-# Note: against unlock (operate mechanic object) value is door's IamNotaFool
-#       against burglary value is door's fortitude
-#       against explosive items, is door's fortitude
-#
 
 ############################################################
 #                     Main Dialog                          #
@@ -17,7 +13,7 @@ dialog(0)
 
       option
          text = gettext("Try to unlock it.")
-         post_test = roll(OPERATE_MECHANIC_OBJECTS, thing_difficulty)
+         post_test = roll(operate_mechanic_objects, thing_difficulty)
          if_action = play_sound("objects/door_pick_lock.ogg")
          if_action = open()
          if_action = dialog_init(3)
@@ -27,7 +23,7 @@ dialog(0)
 
       option 
          text = gettext("Force your entrance.")
-         post_test = roll(BURGLARY, thing_hardness)
+         post_test = roll(strength, thing_hardness)
          if_action = play_sound("objects/door_unlock.ogg")
          if_action = open()
          if_action = dialog_init(5)

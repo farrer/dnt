@@ -1,0 +1,3 @@
+*.png *.svg 
+   Author: Farrer
+   License: GPLv3+
