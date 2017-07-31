@@ -174,6 +174,8 @@ bool Thing::load(Kobold::String fileName,
       return false;
    }
    filename = fileName;
+   
+   populateWithRules();
 
    while(defParser.getNextTuple(key, value))
    {
@@ -323,6 +325,14 @@ bool Thing::load(Kobold::String fileName,
    }
 
    return true;
+}
+
+/**************************************************************************
+ *                           populateWithRules                            *
+ **************************************************************************/
+void Thing::populateWithRules()
+{
+   Rules::populate(&ruleGroups);
 }
 
 /**************************************************************************

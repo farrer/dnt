@@ -48,9 +48,9 @@ RuleGroup::~RuleGroup()
 }
 
 /******************************************************************
- *                        addRuleDefinition                       *
+ *                      insertRuleDefinition                      *
  ******************************************************************/
-void RuleGroup::addRuleDefintion(RuleDefinition* ruleDef)
+void RuleGroup::insert(RuleDefinition* ruleDef)
 {
    definitions.insert(ruleDef);
 }
@@ -95,6 +95,19 @@ void RuleGroup::setName(Kobold::String name)
 void RuleGroup::setDescription(Kobold::String desc)
 {
    this->description = desc;
+}
+
+/******************************************************************
+ *                            populate                            *
+ ******************************************************************/
+void RuleGroup::populate(RuleGroupAvailableInfo* groupInfo)
+{
+   RuleDefinition* def = static_cast<RuleDefinition*>(definitions.getFirst());
+   for(int i=0; i < definitions.getTotal(); i++)
+   {
+      groupInfo->insert(def);
+      def = static_cast<RuleDefinition*>(def->getNext());
+   }
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -283,6 +296,18 @@ RuleDefinitionValue* RuleGroupAvailableInfo::getDefinition(
    return NULL;
 }
 
+/******************************************************************
+ *                            insert                              *
+ ******************************************************************/
+void RuleGroupAvailableInfo::insert(RuleDefinition* ruleDef)
+{
+   assert(ruleDef != NULL);
+   assert(getDefinition(ruleDef->getId()) == NULL);
+
+   defValues.insert(new RuleDefinitionValue(ruleDef));
+}
+
+
 ////////////////////////////////////////////////////////////////////////////
 //                                                                        //
 //                                Rules                                   //
@@ -405,6 +430,8 @@ bool Rules::load(const Kobold::String filename)
 {
    Kobold::DefParser defParser;
 
+   Kobold::Log::add("Initing Rules...");
+
    if(!defParser.load(filename))
    {
       return false;
@@ -422,6 +449,8 @@ bool Rules::load(const Kobold::String filename)
          curDef = NULL;
          curGroup = new RuleGroup(value);
          groups->insert(curGroup);
+         Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
+               "\tAdded group '%s'", curGroup->getId().c_str());
       }
       else if(key == "ruleGroupName")
       {
@@ -470,12 +499,12 @@ bool Rules::load(const Kobold::String filename)
       else if(key == "ruleDefName" || key == "ruleDefinitionName")
       {
          checkNotNull(curDef, filename, key, "ruleDef");
-         curDef->setName(value);
+         curDef->setName(translateDataString(value));
       }
       else if(key == "ruleDefDesc" || key == "ruleDefinitionDesc")
       {
          checkNotNull(curDef, filename, key, "ruleDef");
-         curDef->setDescription(value);
+         curDef->setDescription(translateDataString(value));
       }
       else if(key == "ruleDefImage" || key == "ruleDefinitionImage")
       {
@@ -502,6 +531,10 @@ bool Rules::load(const Kobold::String filename)
          }
          assert(foundGroup != NULL);
          curDef->setGroup(foundGroup);
+         foundGroup->insert(curDef);
+         Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
+               "\tAdded '%s' to group '%s'", curDef->getId().c_str(),
+               foundGroup->getId().c_str());
       }
    }
    
@@ -509,6 +542,30 @@ bool Rules::load(const Kobold::String filename)
 
    return true;
 }
+
+/******************************************************************
+ *                            populate                            *
+ ******************************************************************/
+void Rules::populate(Kobold::List* groupInfoList)
+{
+   assert(groupInfoList->getTotal() == 0);
+   RuleGroup* group = static_cast<RuleGroup*>(groups->getFirst());
+   for(int i = 0; i < groups->getTotal(); i++)
+   {
+      RuleGroupAvailableInfo* groupInfo = new RuleGroupAvailableInfo(group);
+      /* Check if need to add all definitions (!selectable) */
+      if((group->getType() == RuleGroup::TYPE_VALUE) || 
+         (group->getType() == RuleGroup::TYPE_CALCULATED))
+      {
+         /* Insert all definitions */
+         group->populate(groupInfo);
+      }
+      /* insert it */
+      groupInfoList->insert(groupInfo);
+      group = static_cast<RuleGroup*>(group->getNext());
+   }
+}
+
 
 /******************************************************************
  *                            members                             *

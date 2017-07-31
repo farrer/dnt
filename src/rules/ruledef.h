@@ -80,10 +80,13 @@ class RuleGroup : public Kobold::ListElement
       const Kobold::String& getDescription() const { return description; };
 
       /*! Add a rule definition to the group */
-      void addRuleDefintion(RuleDefinition* ruleDef);
+      void insert(RuleDefinition* ruleDef);
       
       /*! \return a RuleDefinition within this group */
       RuleDefinition* getDefinition(const Kobold::String id);
+
+      /*! Populate the groupInfo with all the RuleDefinitions of this group */
+      void populate(RuleGroupAvailableInfo* groupInfo);
 
    private:
       RuleGroupType type; /**< Group type */
@@ -215,8 +218,6 @@ class RuleGroupAvailableInfo : public Kobold::ListElement
       /*! Destructor */
       ~RuleGroupAvailableInfo();
 
-      //TODO: Populate its DefValues!
-
       /*! \return the group related */
       RuleGroup* getGroup() const { return group; };
       /*! \return total point available to group */
@@ -229,6 +230,9 @@ class RuleGroupAvailableInfo : public Kobold::ListElement
 
       /*! \return a RuleDefinitionValue for the id given */
       RuleDefinitionValue* getDefinition(const Kobold::String id);
+
+      /*! Insert a RuleDefinitionValue based on the given RuleDefinition */
+      void insert(RuleDefinition* ruleDef);
 
    private:
       int total; /**< Total available to the group */
@@ -244,6 +248,10 @@ class Rules
       static void init(const Kobold::String filename);
       /*! Destructor */
       static void finish();
+
+      /*! Populate a list of RuleGroupAvailableInfo with all RuleGroups and
+       * all RuleDefs that isn't selectable */
+      static void populate(Kobold::List* groupInfoList);
 
       /*! Find a RuleGroup on the list of groups */
       static RuleGroup* getGroup(const Kobold::String id);

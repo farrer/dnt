@@ -264,7 +264,7 @@ class Thing : public Kobold::ListElement
        * implementation support it.
        * \note those supporting it, should override this function.
        * \return animation names vector */ 
-      virtual Kobold::String* getAnimationList(); 
+      virtual Kobold::String* getAnimationList();
 
       Kobold::List ruleGroups; /**< List of RuleGroupAvailableInfo */
 
@@ -272,6 +272,10 @@ class Thing : public Kobold::ListElement
       ScriptObject* scriptObject; /**< Script Object related to the thing */
 
    private:
+      /*! Populate the thing ruleGroups with all groups and all
+       * not-selectable RuleDefs */
+      void populateWithRules();
+
       ThingType thingType; /**< Thing's type */
       int totalAnimations; /**< Expected total animations */
 

@@ -199,7 +199,7 @@ ruleDef = operate_mechanic_objects
    ruleDefGroup = skill
    ruleDefName = gettext("Operate Mechanic Objects")
 description = gettext("It's the capacity to operate or fix mechanical objects without loosing a finger or a hand.")
-   ruleDefImage = skills/opelmecobj.png
+   ruleDefImage = skills/opmecobj.png
 
 ruleDef = prestidigitagion
    ruleDefGroup = skill
