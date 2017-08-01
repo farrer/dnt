@@ -49,6 +49,7 @@ ScriptManager::ScriptManager()
    /* Create the Engine and set its message and line callbacks */
    asEngine = asCreateScriptEngine();
    asEngine->SetEngineProperty(asEP_DISALLOW_GLOBAL_VARS, true);
+   asEngine->SetEngineProperty(asEP_AUTO_GARBAGE_COLLECT, false);
    r = asEngine->SetMessageCallback(asMETHOD(ScriptManager, 
             messageCallback), this, asCALL_THISCALL); 
    assert(r >= 0);
