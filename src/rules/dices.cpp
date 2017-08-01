@@ -20,6 +20,7 @@
 
 #include "dices.h"
 #include <stdlib.h>
+#include <SDL2/SDL.h>
 using namespace DNT;
 
 //////////////////////////////////////////////////////////////////////////
@@ -34,6 +35,7 @@ using namespace DNT;
 Dice::Dice(DiceType type)
 {
    init(type);
+   srand(SDL_GetTicks() + (int)(1 + 1000 * (rand() / (RAND_MAX + 1.0))));
 }
 
 /***********************************************************************

@@ -154,6 +154,9 @@ namespace DNT
          ScriptController* getOrLoadController(
                ScriptController::ScriptType type, Kobold::String filename);
 
+         /*! Print, at debug level, the variables of a stack level */
+         void printVariables(asIScriptContext* ctx, asUINT stackLevel);
+
       private:
          /*! Insert a script instance to the list of instances. */
          void insertInstance(ScriptInstance* instance);

@@ -569,7 +569,11 @@ void Thing::setConversationFile(Kobold::String fileName)
  **************************************************************************/
 bool Thing::doCheck(RuleDefinition* ruleDef, int difficulty)
 {
-   //TODO
+   RuleDefinitionValue* defVal = getRuleDefinition(ruleDef);
+   if(defVal)
+   {
+      return Rules::getScriptInstance()->callRollValue(defVal, difficulty);
+   }
    return false;
 }
 
@@ -578,7 +582,12 @@ bool Thing::doCheck(RuleDefinition* ruleDef, int difficulty)
  **************************************************************************/
 bool Thing::doCheck(RuleDefinition* ruleDef, RuleDefinitionValue* against)
 {
-   //TODO
+   RuleDefinitionValue* defVal = getRuleDefinition(ruleDef);
+   if(defVal)
+   {
+      return Rules::getScriptInstance()->callRoll(defVal, against);
+   }
+
    return false;
 }
 

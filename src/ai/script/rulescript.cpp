@@ -55,6 +55,7 @@ bool RuleScriptInstance::callRoll(RuleDefinitionValue* testRule,
    {
       asIScriptContext* ctx = manager->prepareContextFromPool(
             ruleScript->getRollFunction());
+      ctx->SetObject(getObject());
       ctx->SetArgObject(0, testRule->getScriptObject());
       ctx->SetArgObject(1, againstRule->getScriptObject());
       int r = manager->executeCall(ctx, NULL);
@@ -75,12 +76,16 @@ bool RuleScriptInstance::callRoll(RuleDefinitionValue* testRule,
 bool RuleScriptInstance::callRollValue(RuleDefinitionValue* testRule, 
       int againstValue)
 {
+   assert(testRule != NULL);
+   assert(testRule->getScriptObject() != NULL);
+
    bool res = false;
    RuleScript* ruleScript = static_cast<RuleScript*>(script);
    if(ruleScript->getRollValueFunction())
    {
       asIScriptContext* ctx = manager->prepareContextFromPool(
             ruleScript->getRollValueFunction());
+      ctx->SetObject(getObject());
       ctx->SetArgObject(0, testRule->getScriptObject());
       ctx->SetArgDWord(1, againstValue);
       int r = manager->executeCall(ctx, NULL);
@@ -157,6 +162,7 @@ void RuleScript::setFunctionPointers()
    assert(this->rollFunction);
    this->rollValueFunction = mainType->GetMethodByDecl(
          "bool roll(RuleDefinition @+, int)");
+   assert(this->rollValueFunction);
 }
 
 /**************************************************************************

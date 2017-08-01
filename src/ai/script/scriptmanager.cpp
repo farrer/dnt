@@ -215,7 +215,7 @@ void ScriptManager::messageCallback(const asSMessageInfo& msg)
    }
    else if(msg.type == asMSGTYPE_INFORMATION)
    {
-      level = Kobold::Log::LOG_LEVEL_DEBUG;
+      level = Kobold::Log::LOG_LEVEL_NORMAL;
       strLevel = "INFO";
    }
    
@@ -278,6 +278,79 @@ void ScriptManager::lineCallback(asIScriptContext* ctx, Uint8* timeout)
 }
 
 /**************************************************************************
+ *                           printVariables                               *
+ **************************************************************************/
+void ScriptManager::printVariables(asIScriptContext* ctx, asUINT stackLevel)
+{
+   Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, "\t\tVariables:"); 
+   asIScriptEngine *engine = ctx->GetEngine();
+   
+   /* First print the this pointer if this is a class method */
+   int typeId = ctx->GetThisTypeId(stackLevel);
+   void *varPointer = ctx->GetThisPointer(stackLevel);
+   if(typeId)
+   {
+      Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
+            "\t\t this = 0x%x", varPointer);
+   }
+
+   /* Print the value of each variable, including parameters */
+   int numVars = ctx->GetVarCount(stackLevel);
+   for( int n = 0; n < numVars; n++ )
+   {
+      int typeId = ctx->GetVarTypeId(n, stackLevel); 
+      void *varPointer = ctx->GetAddressOfVar(n, stackLevel);
+      if(typeId == asTYPEID_INT32)
+      {
+         Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
+               "\t\t %s = %d", ctx->GetVarDeclaration(n, stackLevel), 
+               *(int*)varPointer);
+      }
+      else if(typeId == asTYPEID_FLOAT)
+      {
+         Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
+               "\t\t %s = %f", ctx->GetVarDeclaration(n, stackLevel), 
+               *(float*)varPointer);
+      }
+      else if( typeId & asTYPEID_SCRIPTOBJECT )
+      {
+         asIScriptObject *obj = (asIScriptObject*)varPointer;
+         if(obj)
+         {
+            Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
+                  "\t\t %s = {...}", ctx->GetVarDeclaration(n, stackLevel));
+         }
+         else
+         {
+            Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
+                  "\t\t %s = <null>", ctx->GetVarDeclaration(n, stackLevel));
+         }
+      }
+      else if(typeId == engine->GetTypeIdByDecl("string"))
+      {
+         Kobold::String* str = static_cast<Kobold::String*>(varPointer);
+         if(str)
+         {
+            Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
+                  "\t\t %s = '%s'", ctx->GetVarDeclaration(n, stackLevel), 
+                  str->c_str());
+         }
+         else
+         {
+            Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
+                  "\t\t %s = <null>", ctx->GetVarDeclaration(n, stackLevel));
+         }
+      }
+      else
+      {
+         Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
+               "\t\t %s = {...}", ctx->GetVarDeclaration(n, stackLevel));
+      }
+   }
+}
+
+
+/**************************************************************************
  *                               executeCall                              *
  **************************************************************************/
 int ScriptManager::executeCall(asIScriptContext* ctx, 
@@ -308,12 +381,26 @@ int ScriptManager::executeCall(asIScriptContext* ctx,
    {
       if(r == asEXECUTION_EXCEPTION)
       {
-         //FIXME: Shouldn't show script name?
+         const asIScriptFunction *function = ctx->GetExceptionFunction();
          Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 
-               "ERROR: Script Exception: '%s' at function '%s' line %d.",
+               "ERROR: Script '%s' Exception: '%s' at function '%s' line %d.",
+               function->GetModuleName(),
                ctx->GetExceptionString(), 
-               ctx->GetExceptionFunction()->GetDeclaration(),
+               function->GetDeclaration(),
                ctx->GetExceptionLineNumber());
+         Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, "\tCallstack:");
+         for( asUINT n = 0; n < ctx->GetCallstackSize(); n++ )
+         {
+            asIScriptFunction *func;
+            const char *scriptSection;
+            int line, column;
+            func = ctx->GetFunction(n);
+            line = ctx->GetLineNumber(n, &column, &scriptSection);
+            Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
+                  "\t%s:%d,%d", func->GetDeclaration(),
+                  line, column);
+            printVariables(ctx, n);
+         }
       }
    }
 

@@ -658,6 +658,13 @@ void Rules::populate(Kobold::List* groupInfoList)
    }
 }
 
+/******************************************************************
+ *                        getScriptInstance                       *
+ ******************************************************************/
+RuleScriptInstance* Rules::getScriptInstance()
+{
+   return scriptInstance;
+}
 
 /******************************************************************
  *                            members                             *

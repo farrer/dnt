@@ -297,6 +297,9 @@ class Rules
       /*! Find a Rule Definition without knowing its group */
       static RuleDefinition* getDefinition(Kobold::String id);
 
+      /*! \return the RuleScriptInstance used for the Rules */
+      static RuleScriptInstance* getScriptInstance();
+
    private:
       /*! Check if the info if not null */
       static void checkNotNull(void* info, const Kobold::String& filename, 
