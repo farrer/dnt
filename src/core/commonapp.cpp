@@ -56,9 +56,9 @@ CommonApp::CommonApp()
  ***********************************************************************/
 CommonApp::~CommonApp()
 {
+   DNT::Rules::finish();
    DNT::Game::finish();
 
-   DNT::Rules::finish();
    DNT::Briefing::finish();
    Farso::Controller::finish();
 
@@ -113,9 +113,6 @@ bool CommonApp::doCommonCycleInit(int callCounter, bool& shouldAbort)
       {
          /* Init our widgets */
          DNT::Briefing::init();
-
-         /* Init our rules */
-         DNT::Rules::init("rules.dnt");
          progressBar->setValue(20);
       }
       break;
@@ -198,6 +195,9 @@ bool CommonApp::doCommonCycleInit(int callCounter, bool& shouldAbort)
       {
          /* Init the Game controller */
          DNT::Game::init(ogreSceneManager);
+
+         /* Init our rules (FIXME: should be inside module init) */
+         DNT::Rules::init("rules.dnt");
 
          /* Set camera initial position */
          Goblin::Camera::set(200.0f, 30.0f, 120.0f, 0.0f, 89.0f, 410.0f);

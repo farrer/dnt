@@ -18,9 +18,11 @@
   along with DNT.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "mapscript.h"
+#include "rulescript.h"
 #include "scriptinstance.h"
 #include "scriptmanager.h"
+#include "scriptobjectruledef.h"
+#include "../../rules/ruledef.h"
 #include <kobold/log.h>
 #include <assert.h>
 using namespace DNT;
@@ -28,7 +30,7 @@ using namespace DNT;
 /**************************************************************************
  *                              Constructor                               *
  **************************************************************************/
-MapScriptInstance::MapScriptInstance(asIScriptObject* obj, MapScript* script,
+RuleScriptInstance::RuleScriptInstance(asIScriptObject* obj, RuleScript* script,
       ScriptManager* manager)
                   :ScriptInstance(obj, script, manager)
 {
@@ -37,84 +39,98 @@ MapScriptInstance::MapScriptInstance(asIScriptObject* obj, MapScript* script,
 /**************************************************************************
  *                               Destructor                               *
  **************************************************************************/
-MapScriptInstance::~MapScriptInstance()
+RuleScriptInstance::~RuleScriptInstance()
 {
 }
 
 /**************************************************************************
- *                              callOnEnter                               *
+ *                               callRoll                                 *
  **************************************************************************/
-void MapScriptInstance::callOnEnter()
+bool RuleScriptInstance::callRoll(RuleDefinitionValue* testRule, 
+      RuleDefinitionValue* againstRule)
 {
-   MapScript* mapScript = static_cast<MapScript*>(script);
-   if(mapScript->getOnEnterFunction())
+   bool res = false;
+   RuleScript* ruleScript = static_cast<RuleScript*>(script);
+   if(ruleScript->getRollFunction())
    {
-      manager->callFunction(this, mapScript->getOnEnterFunction()); 
+      asIScriptContext* ctx = manager->prepareContextFromPool(
+            ruleScript->getRollFunction());
+      ctx->SetArgObject(0, testRule->getScriptObject());
+      ctx->SetArgObject(1, againstRule->getScriptObject());
+      int r = manager->executeCall(ctx, NULL);
+      assert(r == asEXECUTION_FINISHED);
+      if(r == asEXECUTION_FINISHED)
+      {
+         res = ctx->GetReturnByte(); 
+      }
+      manager->returnContextToPool(ctx);
    }
+
+   return res;
 }
 
 /**************************************************************************
- *                              callOnLoad                                *
+ *                            callRollValue                               *
  **************************************************************************/
-void MapScriptInstance::callOnLoad()
+bool RuleScriptInstance::callRollValue(RuleDefinitionValue* testRule, 
+      int againstValue)
 {
-   MapScript* mapScript = static_cast<MapScript*>(script);
-   if(mapScript->getOnLoadFunction())
+   bool res = false;
+   RuleScript* ruleScript = static_cast<RuleScript*>(script);
+   if(ruleScript->getRollValueFunction())
    {
-      manager->callFunction(this, mapScript->getOnLoadFunction()); 
+      asIScriptContext* ctx = manager->prepareContextFromPool(
+            ruleScript->getRollValueFunction());
+      ctx->SetArgObject(0, testRule->getScriptObject());
+      ctx->SetArgDWord(1, againstValue);
+      int r = manager->executeCall(ctx, NULL);
+      assert(r == asEXECUTION_FINISHED);
+      if(r == asEXECUTION_FINISHED)
+      {
+         res = ctx->GetReturnByte(); 
+      }
+      manager->returnContextToPool(ctx);
    }
-}
 
-/**************************************************************************
- *                              callOnExit                                *
- **************************************************************************/
-void MapScriptInstance::callOnExit()
-{
-   MapScript* mapScript = static_cast<MapScript*>(script);
-   if(mapScript->getOnExitFunction())
-   {
-      manager->callFunction(this, mapScript->getOnExitFunction()); 
-   }
+   return res;
 }
 
 /**************************************************************************
  *                              Constructor                               *
  **************************************************************************/
-MapScript::MapScript(ScriptManager* manager)
+RuleScript::RuleScript(ScriptManager* manager)
           :ScriptController(SCRIPT_TYPE_MAP, manager)
 {
    this->factoryFunction = NULL;
    this->stepFunction = NULL;
-   this->onLoadFunction = NULL;
-   this->onEnterFunction = NULL;
-   this->onExitFunction = NULL;
+   this->rollFunction = NULL;
+   this->rollValueFunction = NULL;
 }
 
 /**************************************************************************
  *                               Destructor                               *
  **************************************************************************/
-MapScript::~MapScript()
+RuleScript::~RuleScript()
 {
 }
 
 /**************************************************************************
  *                             createInstance                             *
  **************************************************************************/
-MapScriptInstance* MapScript::createInstance(Ogre::String mapname)
+RuleScriptInstance* RuleScript::createInstance()
 {
-   MapScriptInstance* res = NULL;
+   RuleScriptInstance* res = NULL;
 
    /* Call our factory function */
    assert(factoryFunction != NULL);
    asIScriptContext* ctx = manager->prepareContextFromPool(factoryFunction);
-   ctx->SetArgObject(0, &mapname);
    int r = manager->executeCall(ctx, NULL, 10000);
    assert(r == asEXECUTION_FINISHED);
    if(r == asEXECUTION_FINISHED)
    {
       asIScriptObject* obj = *((asIScriptObject**) 
             ctx->GetAddressOfReturnValue());
-      res = new MapScriptInstance(obj, this, manager);
+      res = new RuleScriptInstance(obj, this, manager);
    }
    manager->returnContextToPool(ctx);
 
@@ -124,10 +140,10 @@ MapScriptInstance* MapScript::createInstance(Ogre::String mapname)
 /**************************************************************************
  *                          setFunctionPointers                           *
  **************************************************************************/
-void MapScript::setFunctionPointers()
+void RuleScript::setFunctionPointers()
 {
    Ogre::String factoryName = Ogre::String(mainType->GetName()) + "@" +
-      Ogre::String(mainType->GetName()) + "(string)";
+      Ogre::String(mainType->GetName()) + "()";
    this->factoryFunction = mainType->GetFactoryByDecl(factoryName.c_str());
    if(!factoryFunction)
    {
@@ -136,15 +152,17 @@ void MapScript::setFunctionPointers()
             getFilename().c_str(), factoryName.c_str());
    }
    this->stepFunction = mainType->GetMethodByDecl("void step()");
-   this->onLoadFunction = mainType->GetMethodByDecl("void onLoad()");
-   this->onEnterFunction = mainType->GetMethodByDecl("void onEnter()");
-   this->onExitFunction = mainType->GetMethodByDecl("void onExit()");
+   this->rollFunction = mainType->GetMethodByDecl(
+         "bool roll(RuleDefinition @+, RuleDefinition @+)");
+   assert(this->rollFunction);
+   this->rollValueFunction = mainType->GetMethodByDecl(
+         "bool roll(RuleDefinition @+, int)");
 }
 
 /**************************************************************************
  *                            getFactoryFunction                          *
  **************************************************************************/
-asIScriptFunction* MapScript::getFactoryFunction()
+asIScriptFunction* RuleScript::getFactoryFunction()
 {
    return factoryFunction;
 }
@@ -152,32 +170,24 @@ asIScriptFunction* MapScript::getFactoryFunction()
 /**************************************************************************
  *                            getStepFunction                           *
  **************************************************************************/
-asIScriptFunction* MapScript::getStepFunction()
+asIScriptFunction* RuleScript::getStepFunction()
 {
    return stepFunction;
 }
 
 /**************************************************************************
- *                            getOnLoadFunction                           *
+ *                             getRollFunction                            *
  **************************************************************************/
-asIScriptFunction* MapScript::getOnLoadFunction()
+asIScriptFunction* RuleScript::getRollFunction()
 {
-   return onLoadFunction;
+   return rollFunction;
 }
 
 /**************************************************************************
- *                            getOnEnterFunction                          *
+ *                           getRollValueFunction                         *
  **************************************************************************/
-asIScriptFunction* MapScript::getOnEnterFunction()
+asIScriptFunction* RuleScript::getRollValueFunction()
 {
-   return onEnterFunction;
-}
-
-/**************************************************************************
- *                            getOnExitFunction                           *
- **************************************************************************/
-asIScriptFunction* MapScript::getOnExitFunction()
-{
-   return onExitFunction;
+   return rollValueFunction;
 }
 

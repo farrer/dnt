@@ -34,18 +34,27 @@ namespace DNT
       public:
          /*! Constructor
           * \param defPtr pointer to the rule definition */
-         ScriptObjectRuleDefinition(RuleDefinition* defPtr);
+         ScriptObjectRuleDefinition(RuleDefinitionValue* defPtr);
          /*! Destructor */
          ~ScriptObjectRuleDefinition();
 
          void setPointer(void* newPtr);
          const bool isValid();
 
+         /*! \return value */
+         int getValue();
+
+         /*! \return identifier of the group */
+         Kobold::String getGroupId();
+
+         /*! \return Related RuleDefinition pointer, if any */
+         ScriptObjectRuleDefinition* getRelated();
+
          /*! Register its type and functions */
          static void doScriptRegister(asIScriptEngine* asEngine);
 
       private:
-         RuleDefinition* ruleDef; /**< Referenced race */
+         RuleDefinitionValue* ruleDef; /**< Referenced race */
          Kobold::Mutex mutex; /**< Mutex used */
    };
 }

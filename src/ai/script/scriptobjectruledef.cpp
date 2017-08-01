@@ -24,7 +24,8 @@ using namespace DNT;
 /**************************************************************************
  *                              Constructor                               *
  **************************************************************************/
-ScriptObjectRuleDefinition::ScriptObjectRuleDefinition(RuleDefinition* defPtr)
+ScriptObjectRuleDefinition::ScriptObjectRuleDefinition(
+      RuleDefinitionValue* defPtr)
                   :ScriptObject(TYPE_RULE_DEFINITION, defPtr->getId())
 {
    ruleDef = defPtr;
@@ -43,7 +44,7 @@ ScriptObjectRuleDefinition::~ScriptObjectRuleDefinition()
 void ScriptObjectRuleDefinition::setPointer(void* newPtr)
 {
    mutex.lock();
-   ruleDef = static_cast<RuleDefinition*>(newPtr);
+   ruleDef = static_cast<RuleDefinitionValue*>(newPtr);
    mutex.unlock();
 }
 
@@ -59,6 +60,53 @@ const bool ScriptObjectRuleDefinition::isValid()
    return res;
 }
 
+/**************************************************************************
+ *                                getValue                                *
+ **************************************************************************/
+int ScriptObjectRuleDefinition::getValue()
+{
+   int res = 0;
+   mutex.lock();
+   if(ruleDef)
+   {
+      res = ruleDef->getValue();
+   }
+   mutex.unlock();
+
+   return res;
+}
+
+/**************************************************************************
+ *                               getGroupId                               *
+ **************************************************************************/
+Kobold::String ScriptObjectRuleDefinition::getGroupId()
+{
+   Kobold::String res;
+   mutex.lock();
+   if(ruleDef)
+   {
+      res = ruleDef->getDefinition()->getGroup()->getId();
+   }
+   mutex.unlock();
+
+   return res;
+}
+
+/**************************************************************************
+ *                               getRelated                               *
+ **************************************************************************/
+ScriptObjectRuleDefinition* ScriptObjectRuleDefinition::getRelated()
+{
+   ScriptObjectRuleDefinition* res = NULL;
+   mutex.lock();
+   if((ruleDef) && (ruleDef->getRelated()))
+   {
+      res = ruleDef->getRelated()->getScriptObject();
+   }
+   mutex.unlock();
+
+   return res;
+}
 
 /**************************************************************************
  *                            doScriptRegister                            *
@@ -77,6 +125,22 @@ void ScriptObjectRuleDefinition::doScriptRegister(asIScriptEngine* asEngine)
          "void f()", asMETHOD(ScriptObjectRuleDefinition, release), 
          asCALL_THISCALL);
    assert(r >= 0);
+
+   r = asEngine->RegisterObjectMethod("RuleDefinition",
+         "int getValue()", asMETHOD(ScriptObjectRuleDefinition, getValue), 
+         asCALL_THISCALL);
+   assert(r >=0 );
+   r = asEngine->RegisterObjectMethod("RuleDefinition",
+         "string getGroupId()", 
+         asMETHOD(ScriptObjectRuleDefinition, getGroupId), 
+         asCALL_THISCALL);
+   assert(r >=0 );
+   r = asEngine->RegisterObjectMethod("RuleDefinition",
+         "RuleDefinition @+ getRelated()", 
+         asMETHOD(ScriptObjectRuleDefinition, getRelated), 
+         asCALL_THISCALL);
+   assert(r >=0 );
+
 }
 
 

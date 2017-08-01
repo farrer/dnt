@@ -19,6 +19,7 @@
 */
 
 #include "scriptobject.h"
+#include <angelscript.h>
 #include <assert.h>
 using namespace DNT;
 
@@ -74,7 +75,7 @@ ScriptObject::~ScriptObject()
  **************************************************************************/
 int ScriptObject::addReference()
 {
-   return ++references;
+   return asAtomicInc(references);
 }
 
 /**************************************************************************
@@ -82,7 +83,7 @@ int ScriptObject::addReference()
  **************************************************************************/
 int ScriptObject::release()
 {
-   --references;
+   asAtomicDec(references);
    if((references == 0) && (fullOnScript))
    {
       delete this;

@@ -86,12 +86,25 @@ ScriptManager::ScriptManager()
          asCALL_THISCALL_ASGLOBAL, this);
    assert(r >= 0);
 
+   /* Functions to get RuleDefinition and RuleGroup from game */
+   r = asEngine->RegisterGlobalFunction(
+         "RuleDefinition @+ getRuleDefinition(string id)",
+         asMETHOD(ScriptManager, getRuleDefinition),
+         asCALL_THISCALL_ASGLOBAL, this);
+   assert(r >= 0);
+   r = asEngine->RegisterGlobalFunction(
+         "RuleGroup @+ getRuleGroup(string id)",
+         asMETHOD(ScriptManager, getRuleGroup), asCALL_THISCALL_ASGLOBAL, this);
+   assert(r >= 0);
+
    /* Register our base interfaces */
    r = asEngine->RegisterInterface("MapController");
    assert(r >= 0);
+   r = asEngine->RegisterInterface("RuleController");
+   assert(r >= 0);
    r = asEngine->RegisterInterface("MissionController");
    assert(r >= 0);
-   r = asEngine->RegisterInterface("ThingController");
+   r = asEngine->RegisterInterface("ObjectController");
    assert(r >= 0);
    r = asEngine->RegisterInterface("CharacterController");
    assert(r >= 0);
@@ -336,6 +349,9 @@ ScriptController* ScriptManager::getOrLoadController(
       case ScriptController::SCRIPT_TYPE_MAP:
          ctrl = new MapScript(this);
       break;
+      case ScriptController::SCRIPT_TYPE_RULE:
+         ctrl = new RuleScript(this);
+      break;
       default:
          ctrl = NULL;
       break;
@@ -373,15 +389,44 @@ MapScriptInstance* ScriptManager::createMapScriptInstance(
 
    /* Create a new instance of the script */
    MapScriptInstance* res = ctrl->createInstance(mapFilename);
-   if(res)
-   {
-      managerMutex.lock();
-      /* Add to our instances list */
-      instances.insert(res);
-      managerMutex.unlock();
-   }
+   insertInstance(res);
 
    return res;
+}
+
+/**************************************************************************
+ *                        createRuleScriptInstance                        *
+ **************************************************************************/
+RuleScriptInstance* ScriptManager::createRuleScriptInstance(
+      Kobold::String filename)
+{
+   /* Load or get already loaded script controller */
+   RuleScript* ctrl = static_cast<RuleScript*>(getOrLoadController(
+            ScriptController::SCRIPT_TYPE_RULE, filename));
+   if(!ctrl)
+   {
+      /* Couldn't load or compile the script, no instance will be created. */
+      return NULL;
+   }
+
+   /* Create a new instance of the script */
+   RuleScriptInstance* res = ctrl->createInstance();
+   insertInstance(res);
+
+   return res;
+}
+
+/**************************************************************************
+ *                             insertInstance                             *
+ **************************************************************************/
+void ScriptManager::insertInstance(ScriptInstance* instance)
+{
+   if(instance)
+   {
+      managerMutex.lock();
+      instances.insert(instance);
+      managerMutex.unlock();
+   }
 }
 
 /**************************************************************************
@@ -503,6 +548,16 @@ void ScriptManager::print(Kobold::String s)
 }
 
 /**************************************************************************
+ *                         insertScriptObject                             *
+ **************************************************************************/
+void ScriptManager::insertScriptObject(ScriptObject* obj)
+{
+   managerMutex.lock();
+   objects.insert(obj);
+   managerMutex.unlock();
+}
+
+/**************************************************************************
  *                         getAndDefinePointer                            *
  **************************************************************************/
 ScriptObject* ScriptManager::getAndDefinePointer(Kobold::String filename,
@@ -522,6 +577,30 @@ ScriptObject* ScriptManager::getAndDefinePointer(Kobold::String filename,
       cur = static_cast<ScriptObject*>(cur->getNext());
    }
    managerMutex.unlock();
+   return res;
+}
+
+/**************************************************************************
+ *                           getScriptObject                              *
+ **************************************************************************/
+ScriptObject* ScriptManager::getScriptObject(Kobold::String filename,
+               const ScriptObject::ScriptObjectType type)
+{
+   ScriptObject* res = NULL;
+   managerMutex.lock();
+   ScriptObject* cur = static_cast<ScriptObject*>(objects.getFirst());
+   for(int i = 0; i < objects.getTotal(); i++)
+   {
+      if((cur->getType() == type) && (cur->isEquivalent(filename)))
+      {
+         /* Found */
+         res = cur;
+         break;
+      }
+      cur = static_cast<ScriptObject*>(cur->getNext());
+   }
+   managerMutex.unlock();
+
    return res;
 }
 
@@ -564,30 +643,34 @@ ScriptObjectCharacter* ScriptManager::getCharacter(Kobold::String filename,
 ScriptObjectCharacter* ScriptManager::getCharacterByFilename(Kobold::String 
       filename)
 {
-   ScriptObjectCharacter* res = NULL;
-   managerMutex.lock();
-   ScriptObject* cur = static_cast<ScriptObject*>(objects.getFirst());
-   for(int i = 0; i < objects.getTotal(); i++)
-   {
-      if((cur->getType() == ScriptObject::TYPE_CHARACTER) &&
-         (cur->isEquivalent(filename)))
-      {
-         /* Found */
-         res = static_cast<ScriptObjectCharacter*>(cur);
-         break;
-      }
-      cur = static_cast<ScriptObject*>(cur->getNext());
-   }
+   ScriptObjectCharacter* res = static_cast<ScriptObjectCharacter*>(
+         getScriptObject(filename, ScriptObject::TYPE_CHARACTER));
 
    if(res == NULL)
    {
       /* Not found, must create one */
       res = new ScriptObjectCharacter(filename);
-      objects.insert(res);
+      insertScriptObject(res);
    }
 
-   managerMutex.unlock();
    return res;
+}
 
+/**************************************************************************
+ *                          getRuleDefinition                             *
+ **************************************************************************/
+ScriptObjectRuleDefinition* ScriptManager::getRuleDefinition(Kobold::String id)
+{
+   return static_cast<ScriptObjectRuleDefinition*>(
+         getScriptObject(id, ScriptObject::TYPE_RULE_DEFINITION));
+}
+
+/**************************************************************************
+ *                             getRuleGroup                               *
+ **************************************************************************/
+ScriptObjectRuleGroup* ScriptManager::getRuleGroup(Kobold::String id)
+{
+   return static_cast<ScriptObjectRuleGroup*>(
+         getScriptObject(id, ScriptObject::TYPE_RULE_GROUP));
 }
 

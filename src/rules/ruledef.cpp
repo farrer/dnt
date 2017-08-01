@@ -20,6 +20,11 @@
 
 #include "ruledef.h"
 #include "../lang/translate.h"
+#include "../core/game.h"
+#include "../ai/script/scriptobjectruledef.h"
+#include "../ai/script/scriptobjectrulegroup.h"
+#include "../ai/script/scriptmanager.h"
+#include "../ai/script/rulescript.h"
 #include <kobold/defparser.h>
 #include <kobold/log.h>
 #include <assert.h>
@@ -38,6 +43,9 @@ RuleGroup::RuleGroup(Kobold::String id)
 {
    this->id = id;
    this->type = TYPE_SELECTABLE;
+   this->scriptObject = new ScriptObjectRuleGroup(this);
+   this->scriptObject->addReference();
+   Game::getScriptManager()->insertScriptObject(this->scriptObject);
 }
 
 /******************************************************************
@@ -45,6 +53,7 @@ RuleGroup::RuleGroup(Kobold::String id)
  ******************************************************************/
 RuleGroup::~RuleGroup()
 {
+   this->scriptObject->release();
 }
 
 /******************************************************************
@@ -100,12 +109,13 @@ void RuleGroup::setDescription(Kobold::String desc)
 /******************************************************************
  *                            populate                            *
  ******************************************************************/
-void RuleGroup::populate(RuleGroupAvailableInfo* groupInfo)
+void RuleGroup::populate(RuleGroupAvailableInfo* groupInfo, 
+      Kobold::List* groupsInfo)
 {
    RuleDefinition* def = static_cast<RuleDefinition*>(definitions.getFirst());
    for(int i=0; i < definitions.getTotal(); i++)
    {
-      groupInfo->insert(def);
+      groupInfo->insert(def, groupsInfo);
       def = static_cast<RuleDefinition*>(def->getNext());
    }
 }
@@ -144,6 +154,7 @@ RulePreRequisite::~RulePreRequisite()
 RuleDefinition::RuleDefinition(Kobold::String id)
 {
    this->group = NULL;
+   this->related = NULL;
    this->id = id;
    this->image = NULL;
 }
@@ -165,6 +176,14 @@ RuleDefinition::~RuleDefinition()
 void RuleDefinition::setGroup(const RuleGroup* ruleGroup)
 {
    this->group = ruleGroup;
+}
+
+/******************************************************************
+ *                            setRelated                          *
+ ******************************************************************/
+void RuleDefinition::setRelated(const RuleDefinition* ruleDef)
+{
+   this->related = ruleDef;
 }
 
 /******************************************************************
@@ -209,10 +228,21 @@ void RuleDefinition::addPreRequisite(RulePreRequisite* preRequisite)
 /******************************************************************
  *                           Constructor                          *
  ******************************************************************/
-RuleDefinitionValue::RuleDefinitionValue(RuleDefinition* def)
+RuleDefinitionValue::RuleDefinitionValue(RuleDefinition* def, 
+      RuleDefinitionValue* related)
 {
+   char buf[256];
+   RuleDefinitionValue::count++;
+   sprintf(buf, "%s_%d", def->getId().c_str(), RuleDefinitionValue::count);
+   this->id = buf;
    this->ruleDef = def;
+   assert((related == NULL && def->getRelated() == NULL) ||
+          (related != NULL && related->getDefinition() == def->getRelated()));
+   this->related = related;
    this->value = 0;
+   this->scriptObject = new ScriptObjectRuleDefinition(this);
+   this->scriptObject->addReference();
+   Game::getScriptManager()->insertScriptObject(this->scriptObject);
 }
 
 /******************************************************************
@@ -220,6 +250,7 @@ RuleDefinitionValue::RuleDefinitionValue(RuleDefinition* def)
  ******************************************************************/
 RuleDefinitionValue::~RuleDefinitionValue()
 {
+   scriptObject->release();
 }
 
 /******************************************************************
@@ -237,6 +268,7 @@ void RuleDefinitionValue::setValue(int v)
 {
    this->value = v;
 }
+int RuleDefinitionValue::count = 0;
 
 ////////////////////////////////////////////////////////////////////////////
 //                                                                        //
@@ -277,9 +309,9 @@ void RuleGroupAvailableInfo::setTotal(int v)
 }
 
 /******************************************************************
- *                         getDefinition                          *
+ *                      getDefinitionValue                        *
  ******************************************************************/
-RuleDefinitionValue* RuleGroupAvailableInfo::getDefinition(
+RuleDefinitionValue* RuleGroupAvailableInfo::getDefinitionValue(
       const Kobold::String id)
 {
    RuleDefinitionValue* cur = static_cast<RuleDefinitionValue*>(
@@ -299,12 +331,41 @@ RuleDefinitionValue* RuleGroupAvailableInfo::getDefinition(
 /******************************************************************
  *                            insert                              *
  ******************************************************************/
-void RuleGroupAvailableInfo::insert(RuleDefinition* ruleDef)
+RuleDefinitionValue* RuleGroupAvailableInfo::insert(RuleDefinition* ruleDef, 
+      Kobold::List* groupsInfo)
 {
    assert(ruleDef != NULL);
-   assert(getDefinition(ruleDef->getId()) == NULL);
+   assert(getDefinitionValue(ruleDef->getId()) == NULL);
 
-   defValues.insert(new RuleDefinitionValue(ruleDef));
+   RuleDefinitionValue* related = NULL;
+   if(ruleDef->getRelated() != NULL)
+   {
+      /* must search for the related value */
+      const RuleGroup* relGroup = ruleDef->getRelated()->getGroup();
+      RuleGroupAvailableInfo* curGroup = static_cast<
+         RuleGroupAvailableInfo*>(groupsInfo->getFirst());
+      for(int i=0; i < groupsInfo->getTotal(); i++)
+      {
+         if(curGroup->getGroup() == relGroup)
+         {
+            related = curGroup->getDefinitionValue(
+                  ruleDef->getRelated()->getId());
+            if(!related)
+            {
+               Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+                     "Error: Couldn't found related RuleDefinitionValue '%s'",
+                     ruleDef->getRelated()->getId().c_str());
+            }
+            break;
+         }
+         curGroup = static_cast<RuleGroupAvailableInfo*>(curGroup->getNext());
+      }
+   }
+   
+   RuleDefinitionValue* res = new RuleDefinitionValue(ruleDef, related);
+   defValues.insert(res);
+
+   return res;
 }
 
 
@@ -319,6 +380,7 @@ void RuleGroupAvailableInfo::insert(RuleDefinition* ruleDef)
  ******************************************************************/
 void Rules::init(const Kobold::String filename)
 {
+   Kobold::Log::add("Initing Rules...");
    assert(groups == NULL);
    groups = new Kobold::List();
    if(!load(filename))
@@ -334,10 +396,16 @@ void Rules::init(const Kobold::String filename)
  ******************************************************************/
 void Rules::finish()
 {
+   Kobold::Log::add("Finishing Rules...");
    if(groups != NULL)
    {
       delete groups;
       groups = NULL;
+   }
+   if(scriptInstance)
+   {
+      Game::getScriptManager()->removeInstance(scriptInstance);
+      scriptInstance = NULL;
    }
 }
 
@@ -430,8 +498,6 @@ bool Rules::load(const Kobold::String filename)
 {
    Kobold::DefParser defParser;
 
-   Kobold::Log::add("Initing Rules...");
-
    if(!defParser.load(filename))
    {
       return false;
@@ -444,11 +510,18 @@ bool Rules::load(const Kobold::String filename)
    while(defParser.getNextTuple(key, value))
    {
       /* Rule Group */
-      if(key == "ruleGroup")
+      if(key == "ruleScript")
+      {
+         assert(scriptInstance == NULL);
+         /* Create the instance of the RuleController script */
+         scriptInstance = 
+            Game::getScriptManager()->createRuleScriptInstance(value);
+      }
+      else if(key == "ruleGroup")
       {
          curDef = NULL;
          curGroup = new RuleGroup(value);
-         groups->insert(curGroup);
+         groups->insertAtEnd(curGroup);
          Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
                "\tAdded group '%s'", curGroup->getId().c_str());
       }
@@ -516,6 +589,19 @@ bool Rules::load(const Kobold::String filename)
          checkNotNull(curDef, filename, key, "ruleDef");
          //curDef-> TODO
       }
+      else if(key == "ruleDefRelated")
+      {
+         checkNotNull(curDef, filename, key, "ruleDef");
+         RuleDefinition* related = getDefinition(value);
+         if(!related)
+         {
+            Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+                  "Error: '%s' couldn't find or not yet declared related '%s'",
+                  filename.c_str(), value.c_str());
+         }
+         assert(related != NULL);
+         curDef->setRelated(related);
+      }
       else if(key == "ruleDefGroup" || key == "ruleDefinitionGroup")
       {
          checkNotNull(curDef, filename, key, "ruleDef");
@@ -539,6 +625,12 @@ bool Rules::load(const Kobold::String filename)
    }
    
    checkIsNullOrHaveGroup(curDef, filename);
+   if(!scriptInstance)
+   {
+      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 
+            "Error: Rules must have a defined script!");
+   }
+   assert(scriptInstance);
 
    return true;
 }
@@ -558,10 +650,10 @@ void Rules::populate(Kobold::List* groupInfoList)
          (group->getType() == RuleGroup::TYPE_CALCULATED))
       {
          /* Insert all definitions */
-         group->populate(groupInfo);
+         group->populate(groupInfo, groupInfoList);
       }
       /* insert it */
-      groupInfoList->insert(groupInfo);
+      groupInfoList->insertAtEnd(groupInfo);
       group = static_cast<RuleGroup*>(group->getNext());
    }
 }
@@ -571,5 +663,6 @@ void Rules::populate(Kobold::List* groupInfoList)
  *                            members                             *
  ******************************************************************/
 Kobold::List* Rules::groups = NULL;
+RuleScriptInstance* Rules::scriptInstance = NULL;
 
 

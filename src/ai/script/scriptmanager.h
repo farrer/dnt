@@ -30,7 +30,9 @@
 #include <SDL2/SDL.h>
 #include "scriptcontroller.h"
 #include "scriptinstance.h"
+#include "scriptobject.h"
 #include "mapscript.h"
+#include "rulescript.h"
 
 /*! How much (in ms) should sleep before each step on ScriptManager */
 #define SCRIPT_UPDATE_TIME   100
@@ -52,6 +54,11 @@ namespace DNT
           * \return new instance of the loaded script */
          MapScriptInstance* createMapScriptInstance(
                Kobold::String filename, Kobold::String mapFilename);
+
+         /*! Create an instance of a rule script.
+          * \param filename name of the script to load
+          * \return new instance of the loaded script. */
+         RuleScriptInstance* createRuleScriptInstance(Kobold::String filename);
 
          /*! Call an specific instance function.
           * \param instance to call an specific function.
@@ -117,6 +124,9 @@ namespace DNT
          ScriptObject* getAndDefinePointer(Kobold::String filename,
                const Ogre::Vector3 pos, void* newPtr);
 
+         /*! Insert a script object on the objects list */
+         void insertScriptObject(ScriptObject* obj);
+
          /* Global Functions */
 
          /*! Play a sound */
@@ -130,6 +140,10 @@ namespace DNT
                float x, float y, float z);
          /*! \return a character by its name */
          ScriptObjectCharacter* getCharacterByFilename(Kobold::String filename);
+         /*! \return the RuleDefinition relative to this id */
+         ScriptObjectRuleDefinition* getRuleDefinition(Kobold::String id);
+         /*! \return the RuleDefinition relative to this id */
+         ScriptObjectRuleGroup* getRuleGroup(Kobold::String id);
 
       protected:
          /*! Get from already loaded controllers or load a new one, based
@@ -141,6 +155,13 @@ namespace DNT
                ScriptController::ScriptType type, Kobold::String filename);
 
       private:
+         /*! Insert a script instance to the list of instances. */
+         void insertInstance(ScriptInstance* instance);
+
+         /*! \return get an ScriptObject pointer by its filename, if exists */
+         ScriptObject* getScriptObject(Kobold::String filename, 
+               const ScriptObject::ScriptObjectType type);
+
          asIScriptEngine* asEngine; /**< The AngelScript engine */
 
          std::vector<asIScriptContext*> contexts; /**< Context pool */

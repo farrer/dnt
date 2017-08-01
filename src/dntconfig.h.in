@@ -109,8 +109,12 @@ namespace DNT
    class ScriptObject;
    class ScriptObjectCharacter;
    class ScriptObjectDice;
+   class ScriptObjectRuleDefinition;
+   class ScriptObjectRuleGroup;
    class MapScript;
    class MapScriptInstance;
+   class RuleScript;
+   class RuleScriptInstance;
    class PendingAction;
    class PendingActionSleep;
    class PendingActionMove;

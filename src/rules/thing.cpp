@@ -289,11 +289,34 @@ bool Thing::load(Kobold::String fileName,
       {
          setConversationFile(value);
       }
-      else
+      else if(!doSpecificParse(key, value))
       {
-         if(!doSpecificParse(key, value))
+         /* Ceck key as a rule definition */
+         RuleDefinition* ruleDef = Rules::getDefinition(key);
+         if(ruleDef)
          {
-            //TODO: check key as a rule def to load 
+            RuleDefinitionValue* val = NULL;
+            if((ruleDef->getGroup()->getType() == RuleGroup::TYPE_VALUE) || 
+               (ruleDef->getGroup()->getType() == RuleGroup::TYPE_CALCULATED))
+            {
+               /* Already have the definition, just set its value */
+               val = getRuleDefinition(ruleDef); 
+            }
+            else
+            {
+               /* Do not have it, must add and set its value */
+               RuleGroupAvailableInfo* group = getRuleGroup(
+                     ruleDef->getGroup()->getId());
+               val = group->insert(ruleDef, &ruleGroups);
+
+            }
+            assert(val != NULL);
+            int iValue = 0;
+            sscanf(value.c_str(), "%d", &iValue);
+            val->setValue(iValue);
+         }
+         else
+         {
             /* Got an unknow key. File definition should be fixed. */
             Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
                   "Warning: unknow key '%s' at thing's file '%s'",
@@ -613,7 +636,7 @@ RuleDefinitionValue* Thing::getRuleDefinition(const Kobold::String id)
          ruleGroups.getFirst());
    for(int i = 0; i < ruleGroups.getTotal(); i++)
    {
-      RuleDefinitionValue* val = cur->getDefinition(id);
+      RuleDefinitionValue* val = cur->getDefinitionValue(id);
       if(val)
       {
          return val;
@@ -632,7 +655,7 @@ RuleDefinitionValue* Thing::getRuleDefinition(const Kobold::String groupId,
    RuleGroupAvailableInfo* group = getRuleGroup(groupId);
    if(group)
    {
-      return group->getDefinition(id);
+      return group->getDefinitionValue(id);
    }
 
    return NULL;

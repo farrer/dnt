@@ -85,10 +85,20 @@ class RuleGroup : public Kobold::ListElement
       /*! \return a RuleDefinition within this group */
       RuleDefinition* getDefinition(const Kobold::String id);
 
-      /*! Populate the groupInfo with all the RuleDefinitions of this group */
-      void populate(RuleGroupAvailableInfo* groupInfo);
+      /*! Populate the groupInfo with all the RuleDefinitions of this group.
+       * \param groupInfo pointer to the RuleGroupAvailableInfo relative to the
+       *        same group as this one.
+       * \param groupsInfo pointer to the list of RuleGroupAvailableInfo,
+       *        for related search. */
+      void populate(RuleGroupAvailableInfo* groupInfo, 
+            Kobold::List* groupsInfo);
+
+      /*! \return the script object relative to the group */
+      ScriptObjectRuleGroup* getScriptObject() { return scriptObject; };
 
    private:
+      /*! ScriptObject relative to the group */
+      ScriptObjectRuleGroup* scriptObject; 
       RuleGroupType type; /**< Group type */
       Kobold::String id; /**< Group identifier */
       Kobold::String name; /**< Group name */
@@ -137,6 +147,11 @@ class RuleDefinition : public Kobold::ListElement
       /*! \return RuleDefinition's String identifier */
       const Kobold::String& getId() const { return id; };
 
+      /*! Set a related rule definition to this one */
+      void setRelated(const RuleDefinition* ruleDef);
+      /*! \return related RuleDefinition, if any */
+      const RuleDefinition* getRelated() { return related; };
+
       /*! Load RuleDefinition's image.
        * \param imageFilename filename of the image to load 
        * \note should be only called once. */
@@ -158,7 +173,7 @@ class RuleDefinition : public Kobold::ListElement
 
       /*! Add a prerequisite to the rule definition */
       void addPreRequisite(RulePreRequisite* preRequisite);
-
+      
       //TODO usableAsAction
       //TODO script instance.
       //TODO: function to receive a Thing and check its pre-requisites.
@@ -167,6 +182,7 @@ class RuleDefinition : public Kobold::ListElement
       Kobold::String id;   /**< String Identifier of the definition */
 
       const RuleGroup* group; /**< Its group */
+      const RuleDefinition* related; /**< A related RuleDefinition */
 
       Farso::Surface* image;  /**< Image representing the definition */
       Kobold::String name;        /**< Name of the definition */
@@ -181,8 +197,9 @@ class RuleDefinitionValue : public Kobold::ListElement
 {
    public:
       /*! Constructor
-       * \param def RuleDefinition to which the Thing has some value */
-      RuleDefinitionValue(RuleDefinition* def);
+       * \param def RuleDefinition to which the Thing has some value 
+       * \param related pointer to the related RuleDefinitionValue, if any. */
+      RuleDefinitionValue(RuleDefinition* def, RuleDefinitionValue* related);
       /*! Destructor */
       ~RuleDefinitionValue();
 
@@ -196,12 +213,29 @@ class RuleDefinitionValue : public Kobold::ListElement
       /*! \return current value */
       const int getValue() const { return value; };
 
+      /*! \return identifier of th RuleDefinitionValue
+       * \note it isn't the identifier of the RuleDefinition */
+      const Kobold::String& getId() { return id; };
+
       /*! \return its RuleDefinition pointer */
       RuleDefinition* getDefinition() { return ruleDef; };
 
+      /*! \return ScriptObject pointer relative to this RuleDefinition */
+      ScriptObjectRuleDefinition* getScriptObject() { return scriptObject; };
+
+      /*! \return the related RuleDefinitionValue. */
+      RuleDefinitionValue* getRelated() { return related;};
+
    private:
-      RuleDefinition* ruleDef; /**< RuleDefinition related */
+      /*! ScriptObject relative to the definition */
+      ScriptObjectRuleDefinition* scriptObject; 
+
+      RuleDefinition* ruleDef; /**< Respective RuleDefinition */
+      RuleDefinitionValue* related; /**< Related RuleDefinitionValue */
       int value;/**< How many points the Thing has on the RuleDefinition */
+      Kobold::String id; /**< Identifier */
+
+      static int count; /**< Counter for identifier generation */
 };
 
 /*! Represents both a list of RuleDefinitionValues of a group and the total 
@@ -228,11 +262,12 @@ class RuleGroupAvailableInfo : public Kobold::ListElement
       /*! Set the total points available */
       void setTotal(int t);
 
-      /*! \return a RuleDefinitionValue for the id given */
-      RuleDefinitionValue* getDefinition(const Kobold::String id);
+      /*! \return a RuleDefinitionValue for the RuleDefinition id given */
+      RuleDefinitionValue* getDefinitionValue(const Kobold::String id);
 
       /*! Insert a RuleDefinitionValue based on the given RuleDefinition */
-      void insert(RuleDefinition* ruleDef);
+      RuleDefinitionValue* insert(RuleDefinition* ruleDef, 
+            Kobold::List* groupsInfo);
 
    private:
       int total; /**< Total available to the group */
@@ -274,6 +309,7 @@ class Rules
       /*! Load the rules from a file. */
       static bool load(const Kobold::String filename);
 
+      static RuleScriptInstance* scriptInstance; /**< Rule Script instance */
       static Kobold::List* groups; /**< List of group of rules definitions */
 };
 

@@ -38,7 +38,8 @@ class ScriptController : public Kobold::ListElement
       /*! Type of ScriptController */
       enum ScriptType
       {
-          SCRIPT_TYPE_MAP
+          SCRIPT_TYPE_MAP,
+          SCRIPT_TYPE_RULE
       };
       /*! Constructor */
       ScriptController(ScriptType type, ScriptManager* manager);
