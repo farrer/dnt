@@ -71,27 +71,14 @@ namespace DNT
          /*! Set outer angle of the spotlight range */
          void setSpotlightRange(Ogre::Degree outerAngle);
 
-         /*! Add an affected area */
-         void addArea(int x1, int y1, int x2, int y2);
-
-         /*! \return if point is inner affected area */
-         bool isInner(int pX, int pZ);
-
-         /*! Set an Ogre light to be as defined by this LightInfo */
-         void setLight(Ogre::Light* light, Ogre::SceneNode* sceneNode);
-
          /*! Set attenuation factor (only used for point lights) */
          void setAttenuation(Ogre::Real range, Ogre::Real constant,
                Ogre::Real linear, Ogre::Real quadratic);
 
+         /*! Flush the defined parameters to the light */
+         void flush();
+
       private:
-         /*! A single area of influence of a light */
-         class Area : public Kobold::ListElement
-         {
-            public:
-               Farso::Rect rect;  /**< Area where the light will act */
-         };
-         
          Ogre::Light* ogreLight;  /**< Current active light (Ogre) */
          Ogre::SceneNode* lightSceneNode; /**< Node associated to the light */
          Ogre::ColourValue diffuse;   /**< Diffuse color */
@@ -103,8 +90,6 @@ namespace DNT
          Ogre::Degree outerAngle; /**< Spolight outerAngle */
 
          Ogre::Light::LightTypes type; /**< Type of the light used */
-
-         Kobold::List areas; /**< Afftecting areas */
 
          MapLights* mapLights; /**< Current lights */
 
@@ -130,25 +115,11 @@ namespace DNT
           * \return pointer to the created LightInfo */
          LightInfo* createLightInfo(Ogre::Light::LightTypes type);
 
-         /*! Set active light for position on map.
-          * \param pX X coordinate
-          * \param pZ Z coordinate
-          * \note if more than one light is defined for the position (ie: 
-          *       overlapped areas), the first one is used */
-         void setActiveLight(float pX, float pZ);
-
-         /*! Set the active light to an specific one */
-         void setActiveLight(LightInfo* lightInfo);
-
-         /*! \return if lightInfo is an active light or not */
-         const bool isLightActive(LightInfo* lightInfo) const;
-
          /*! Remove a light from the list (and delete its pointer */
          void removeLight(LightInfo* light);
 
       private:
-         Ogre::Light* light;  /**< Current active light (Ogre) */
-         Ogre::SceneNode* lightSceneNode; /**< Node associated to the light */
+
          LightInfo* curLight; /**< Current active light */
 
          int lastX;  /**< Last X coordinate of the last check */

@@ -72,7 +72,6 @@ using namespace DNT;
 #define MAP_TOKEN_LIGHT_DIFFUSE         "lightDiffuse"
 #define MAP_TOKEN_LIGHT_SPECULAR        "lightSpecular"
 #define MAP_TOKEN_LIGHT_SPOT_RANGE      "lightSpotRange"
-#define MAP_TOKEN_LIGHT_AREA            "lightArea"
 #define MAP_TOKEN_LIGHT_ATTENUATION     "lightAttenuation"
 
 #define MAP_VALUE_LIGHT_POINT           "point"
@@ -120,9 +119,6 @@ Map::~Map()
  **************************************************************************/
 void Map::update(Ogre::Vector3 refPos)
 {
-   /* Define which light to be the active one */
-   lights->setActiveLight(refPos.x, refPos.z);
-
    /* Update our dynamic objects */
    Thing* thing = static_cast<Thing*>(dynamicThings->getFirst());
    for(int i = 0; i < dynamicThings->getTotal(); i++)
@@ -201,7 +197,6 @@ void Map::create(int sizeX, int sizeZ)
    }
    floor.updateAllDirty();
    updateAllDirtyWalls();
-   lights->setActiveLight(0.0f, 0.0f);
 }
 
 /**************************************************************************
@@ -502,6 +497,10 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool forceDynamicModels)
       }
       else if(key == MAP_TOKEN_LIGHT)
       {
+         if(lastLight)
+         {
+            lastLight->flush();
+         }
          /* Create a new light */
          if(value == MAP_VALUE_LIGHT_POINT)
          {
@@ -574,21 +573,17 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool forceDynamicModels)
             lastLight->setAttenuation(r, c, l, q);
          }
       }
-      else if(key == MAP_TOKEN_LIGHT_AREA)
-      {
-         if(lastLight)
-         {
-            int x1=0, y1=0, x2=0, y2=0;
-            sscanf(value.c_str(), "%d %d %d %d", &x1, &y1, &x2, &y2);
-            lastLight->addArea(x1, y1, x2, y2);
-         }
-      }
       else 
       {
          Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
                "Warning: unknow key '%s' at map's definition file '%s'",
                key.c_str(), mapFileName.c_str());
       }
+   }
+
+   if(lastLight)
+   {
+      lastLight->flush();
    }
 
    /* Notify last thing dirty state, if needed. */
@@ -600,9 +595,6 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool forceDynamicModels)
    /* Update our floor and walls */
    floor.updateAllDirty();
    updateAllDirtyWalls();
-
-   /* Define an active light */
-   lights->setActiveLight(0.0f, 0.0f);
 
    return true;
 }

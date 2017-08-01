@@ -131,8 +131,6 @@ void PositionEditor::selectLight(DNT::LightInfo* light)
       setPosition(light->getPosition());
       showTranslationAxis();
 
-      DNT::Game::getCurrentMap()->getLights()->setActiveLight(
-            selectedLight);
       if(light->getType() != Ogre::Light::LT_POINT)
       {
          lightDirAxis.show();
