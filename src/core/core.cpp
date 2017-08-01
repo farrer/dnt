@@ -35,6 +35,8 @@
 
 #include <goblin/camera.h>
 #include <OGRE/Compositor/OgreCompositorManager2.h>
+#include <SDL2/SDL.h>
+#include <stdlib.h>
 
 using namespace DNT;
 
@@ -85,6 +87,7 @@ bool Core::doCycleInit(int callCounter, bool& shouldAbort)
          return true;
       }
       Goblin::Camera::setPosition(pc->getModel()->getPosition());
+      srand(SDL_GetTicks() + (int)(1 + 1000 * (rand() / (RAND_MAX + 1.0))));
 
       return true;
    }

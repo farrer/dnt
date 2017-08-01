@@ -44,6 +44,9 @@ namespace DNT
          /*! \return value */
          int getValue();
 
+         /*! \return the name of the rule definition */
+         Kobold::String getName();
+
          /*! \return identifier of the group */
          Kobold::String getGroupId();
 

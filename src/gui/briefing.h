@@ -71,13 +71,6 @@ class Briefing
       /*! Add an warning to the briefing */
       static bool addWarning(Kobold::String text);
 
-      /*! Add a check text to the briefieng
-       * \param testName -> name of the state tested
-       * \param value -> result tested value
-       * \param difficulty -> difficulty tested against */
-      static bool addCheckText(Kobold::String testName, int value, 
-            int difficulty);
-
       /*! Clear the briefing text */
       static void clear();
 

@@ -27,6 +27,9 @@
 #include "scriptobjectruledef.h"
 #include "scriptobjectrulegroup.h"
 #include "pendingaction.h"
+#include "../../gui/briefing.h"
+#include "../../lang/translate.h"
+
 #include <kobold/log.h>
 #include <kosound/sound.h>
 #include <assert.h>
@@ -74,7 +77,17 @@ ScriptManager::ScriptManager()
    r = asEngine->RegisterGlobalFunction("void print(string s)",
          asMETHOD(ScriptManager, print), asCALL_THISCALL_ASGLOBAL, this);
    assert(r >= 0);
-
+   r = asEngine->RegisterGlobalFunction("void brief(string s)",
+         asMETHOD(ScriptManager, brief), asCALL_THISCALL_ASGLOBAL, this);
+   assert(r >= 0);
+   r = asEngine->RegisterGlobalFunction(
+         "void brief(int r, int g, int b, string s)",
+         asMETHOD(ScriptManager, briefColor), asCALL_THISCALL_ASGLOBAL, this);
+   assert(r >= 0);
+   r = asEngine->RegisterGlobalFunction(
+         "string gettext(string s)",
+         asMETHOD(ScriptManager, translate), asCALL_THISCALL_ASGLOBAL, this);
+   assert(r >= 0);
 
    /* Functions to get character from game */
    r = asEngine->RegisterGlobalFunction(
@@ -633,6 +646,30 @@ void ScriptManager::sleep(int seconds)
 void ScriptManager::print(Kobold::String s)
 {
    Kobold::Log::add(s);
+}
+
+/**************************************************************************
+ *                               brief                                    *
+ **************************************************************************/
+void ScriptManager::brief(Kobold::String s)
+{
+   Briefing::addText(s);
+}
+
+/**************************************************************************
+ *                            briefColor                                  *
+ **************************************************************************/
+void ScriptManager::briefColor(Kobold::String s, int r, int g, int b)
+{
+   Briefing::addText(r, g, b, s);
+}
+
+/**************************************************************************
+ *                             translate                                  *
+ **************************************************************************/
+Kobold::String ScriptManager::translate(Kobold::String s)
+{
+   return gettext(s.c_str());
 }
 
 /**************************************************************************

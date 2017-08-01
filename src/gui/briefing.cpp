@@ -23,6 +23,7 @@
 #include "../lang/translate.h"
 
 #include <kosound/sound.h>
+#include <kobold/log.h>
 #include <stdarg.h>
 
 using namespace DNT;
@@ -94,6 +95,8 @@ bool Briefing::addText(int R, int G, int B, Kobold::String text, bool forceRep)
       briefTxt->addText(text, Farso::Color(R, G, B, 255));
       briefTxt->addLineBreak();
 
+      Kobold::Log::add(text);
+
       return true;
    }
 
@@ -131,31 +134,6 @@ bool Briefing::addText(const char* format, ...)
 
    /* Add the formated text */
    return addText(buf);
-}
-
-/***********************************************************************
- *                           addCheckText                              *
- ***********************************************************************/
-bool Briefing::addCheckText(Kobold::String testName, int value, int difficulty)
-{
-   char buffer[512];
-   bool res = (value >= difficulty);
-
-   /* Buffer it */
-   sprintf(&buffer[0], "%s: %d x %d: %s.",
-         testName.c_str(), value, difficulty,
-         res ? gettext("Success") : gettext("Failure"));
-
-   if(res)
-   {
-      /* With blue color */
-      return addText(27, 169, 245, buffer);
-   }
-   else
-   {
-      /* With red color */
-      return addText(233, 0, 5, buffer);
-   }
 }
 
 /***********************************************************************

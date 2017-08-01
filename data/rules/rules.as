@@ -34,11 +34,29 @@ class DNTRules : RuleController
       return res;
    }
 
+   /*! Add the roll check text to the briefieng */
+   void briefCheckText(string testName, int testRoll, int againstRoll)
+   {
+      bool res = testRoll >= againstRoll;
+      string briefText = testName + ": " + testRoll + " x " + 
+         againstRoll + ": ";
+      if(res)
+      {
+         briefText = briefText + gettext("Success.");
+      }
+      else
+      {
+         briefText = briefText + gettext("Failure.");
+      }
+      brief(briefText);
+   }
+
    /*! Roll a test of a RuleDefinition against another one */
    bool roll(RuleDefinition@ test, RuleDefinition@ against)
    {
       int testRoll = rollCheck(test);
       int againstRoll = rollCheck(against);
+      briefCheckText(test.getName(), testRoll, againstRoll);
       return testRoll >= againstRoll;
    }
 
@@ -46,6 +64,7 @@ class DNTRules : RuleController
    bool roll(RuleDefinition@ test, int against)
    {
       int testRoll = rollCheck(test);
+      briefCheckText(test.getName(), testRoll, against);
       return testRoll >= against;
    }
 

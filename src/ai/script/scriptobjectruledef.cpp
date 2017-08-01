@@ -77,6 +77,22 @@ int ScriptObjectRuleDefinition::getValue()
 }
 
 /**************************************************************************
+ *                                getName                                 *
+ **************************************************************************/
+Kobold::String ScriptObjectRuleDefinition::getName()
+{
+   Kobold::String res;
+   mutex.lock();
+   if(ruleDef)
+   {
+      res = ruleDef->getDefinition()->getName();
+   }
+   mutex.unlock();
+
+   return res;
+}
+
+/**************************************************************************
  *                               getGroupId                               *
  **************************************************************************/
 Kobold::String ScriptObjectRuleDefinition::getGroupId()
@@ -128,6 +144,11 @@ void ScriptObjectRuleDefinition::doScriptRegister(asIScriptEngine* asEngine)
 
    r = asEngine->RegisterObjectMethod("RuleDefinition",
          "int getValue()", asMETHOD(ScriptObjectRuleDefinition, getValue), 
+         asCALL_THISCALL);
+   assert(r >=0 );
+   r = asEngine->RegisterObjectMethod("RuleDefinition",
+         "string getName()", 
+         asMETHOD(ScriptObjectRuleDefinition, getName), 
          asCALL_THISCALL);
    assert(r >=0 );
    r = asEngine->RegisterObjectMethod("RuleDefinition",
