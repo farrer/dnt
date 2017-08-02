@@ -24,7 +24,7 @@ using namespace DNT;
 /**************************************************************************
  *                              Constructor                               *
  **************************************************************************/
-ScriptObjectRuleGroup::ScriptObjectRuleGroup(RuleGroup* groupPtr)
+ScriptObjectRuleGroup::ScriptObjectRuleGroup(RuleGroupAvailableInfo* groupPtr)
                   :ScriptObject(TYPE_RULE_GROUP, groupPtr->getId())
 {
    ruleGroup = groupPtr;
@@ -43,7 +43,7 @@ ScriptObjectRuleGroup::~ScriptObjectRuleGroup()
 void ScriptObjectRuleGroup::setPointer(void* newPtr)
 {
    mutex.lock();
-   ruleGroup = static_cast<RuleGroup*>(newPtr);
+   ruleGroup = static_cast<RuleGroupAvailableInfo*>(newPtr);
    mutex.unlock();
 }
 
@@ -54,6 +54,49 @@ const bool ScriptObjectRuleGroup::isValid()
 {
    mutex.lock();
    bool res = ruleGroup != NULL;
+   mutex.unlock();
+
+   return res;
+}
+
+/**************************************************************************
+ *                                 addTotal                               *
+ **************************************************************************/
+void ScriptObjectRuleGroup::addTotal(int val)
+{
+   mutex.lock();
+   if(ruleGroup)
+   {
+      ruleGroup->add(val);
+   }
+   mutex.unlock();
+}
+
+/**************************************************************************
+ *                                 setTotal                               *
+ **************************************************************************/
+void ScriptObjectRuleGroup::setTotal(int val)
+{
+   mutex.lock();
+   if(ruleGroup)
+   {
+      ruleGroup->setTotal(val);
+   }
+   mutex.unlock();
+}
+
+/**************************************************************************
+ *                                 getTotal                               *
+ **************************************************************************/
+int ScriptObjectRuleGroup::getTotal()
+{
+   int res = 0;
+
+   mutex.lock();
+   if(ruleGroup)
+   {
+      res = ruleGroup->getTotal();
+   }
    mutex.unlock();
 
    return res;
@@ -81,5 +124,19 @@ void ScriptObjectRuleGroup::registerClass(asIScriptEngine* asEngine)
  **************************************************************************/
 void ScriptObjectRuleGroup::registerFunctions(asIScriptEngine* asEngine)
 {
+   int r;
+   
+   r = asEngine->RegisterObjectMethod("RuleGroup", 
+         "void addTotal(int val)", 
+         asMETHOD(ScriptObjectRuleGroup, addTotal), asCALL_THISCALL);
+   assert(r >=0 );
+   r = asEngine->RegisterObjectMethod("RuleGroup", 
+         "void setTotal(int val)", 
+         asMETHOD(ScriptObjectRuleGroup, setTotal), asCALL_THISCALL);
+   assert(r >=0 );
+   r = asEngine->RegisterObjectMethod("RuleGroup", 
+         "int getTotal()", 
+         asMETHOD(ScriptObjectRuleGroup, getTotal), asCALL_THISCALL);
+   assert(r >=0 );
 }
 

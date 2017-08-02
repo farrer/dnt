@@ -34,12 +34,19 @@ namespace DNT
       public:
          /*! Constructor
           * \param groupPtr pointer to the group */
-         ScriptObjectRuleGroup(RuleGroup* groupPtr);
+         ScriptObjectRuleGroup(RuleGroupAvailableInfo* groupPtr);
          /*! Destructor */
          ~ScriptObjectRuleGroup();
 
          void setPointer(void* newPtr);
          const bool isValid();
+
+         /*! Add value to the total */
+         void addTotal(int val);
+         /*! Set total to the value */
+         void setTotal(int val);
+         /*! \return total value */
+         int getTotal();
 
          /*! Register the related class */
          static void registerClass(asIScriptEngine* asEngine);
@@ -47,7 +54,7 @@ namespace DNT
          static void registerFunctions(asIScriptEngine* asEngine);
 
       private:
-         RuleGroup* ruleGroup; /**< Referenced group */
+         RuleGroupAvailableInfo* ruleGroup; /**< Referenced group */
          Kobold::Mutex mutex; /**< Mutex used */
    };
 }

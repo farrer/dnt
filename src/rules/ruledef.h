@@ -93,12 +93,7 @@ class RuleGroup : public Kobold::ListElement
       void populate(RuleGroupAvailableInfo* groupInfo, 
             Kobold::List* groupsInfo);
 
-      /*! \return the script object relative to the group */
-      ScriptObjectRuleGroup* getScriptObject() { return scriptObject; };
-
-   private:
-      /*! ScriptObject relative to the group */
-      ScriptObjectRuleGroup* scriptObject; 
+   private: 
       RuleGroupType type; /**< Group type */
       Kobold::String id; /**< Group identifier */
       Kobold::String name; /**< Group name */
@@ -265,6 +260,10 @@ class RuleGroupAvailableInfo : public Kobold::ListElement
       /*! Destructor */
       ~RuleGroupAvailableInfo();
 
+      /*! \return identifier of th RuleGroupAvailableInfo
+       * \note it isn't the identifier of the RuleGroup */
+      const Kobold::String& getId() { return id; };
+
       /*! \return the group related */
       RuleGroup* getGroup() const { return group; };
       /*! \return total point available to group */
@@ -282,10 +281,18 @@ class RuleGroupAvailableInfo : public Kobold::ListElement
       RuleDefinitionValue* insert(RuleDefinition* ruleDef, 
             Kobold::List* groupsInfo);
 
+      /*! \return the script object relative to the group */
+      ScriptObjectRuleGroup* getScriptObject() { return scriptObject; };
+
    private:
+      /*! ScriptObject relative to the group */
+      ScriptObjectRuleGroup* scriptObject;
+
+      Kobold::String id; /**< Unique identifier */
       int total; /**< Total available to the group */
       RuleGroup* group; /**< The group which the info is related. */
       Kobold::List defValues; /**< List of RuleDefinitionValues */
+      static int count; /**< Counter for unique ids */
 };
 
 /*! The group of rules that defines the game. */

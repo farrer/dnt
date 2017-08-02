@@ -46,9 +46,6 @@ RuleGroup::RuleGroup(Kobold::String id)
 {
    this->id = id;
    this->type = TYPE_SELECTABLE;
-   this->scriptObject = new ScriptObjectRuleGroup(this);
-   this->scriptObject->addReference();
-   Game::getScriptManager()->insertScriptObject(this->scriptObject);
 }
 
 /******************************************************************
@@ -56,7 +53,6 @@ RuleGroup::RuleGroup(Kobold::String id)
  ******************************************************************/
 RuleGroup::~RuleGroup()
 {
-   this->scriptObject->release();
 }
 
 /******************************************************************
@@ -338,8 +334,16 @@ int RuleDefinitionValue::count = 0;
  ******************************************************************/
 RuleGroupAvailableInfo::RuleGroupAvailableInfo(RuleGroup* group)
 {
+   char buf[256];
+   RuleGroupAvailableInfo::count++;
+   sprintf(buf, "%s_%d", group->getId().c_str(), 
+         RuleGroupAvailableInfo::count);
+   this->id = buf;
    this->group = group;
    this->total = 0;
+   this->scriptObject = new ScriptObjectRuleGroup(this);
+   this->scriptObject->addReference();
+   Game::getScriptManager()->insertScriptObject(this->scriptObject);
 }
 
 /******************************************************************
@@ -347,6 +351,7 @@ RuleGroupAvailableInfo::RuleGroupAvailableInfo(RuleGroup* group)
  ******************************************************************/
 RuleGroupAvailableInfo::~RuleGroupAvailableInfo()
 {
+   this->scriptObject->release();
 }
 
 /******************************************************************
@@ -358,7 +363,7 @@ void RuleGroupAvailableInfo::add(int v)
 }
 
 /******************************************************************
- *                           setValue                             *
+ *                           setTotal                             *
  ******************************************************************/
 void RuleGroupAvailableInfo::setTotal(int v)
 {
@@ -424,6 +429,7 @@ RuleDefinitionValue* RuleGroupAvailableInfo::insert(RuleDefinition* ruleDef,
 
    return res;
 }
+int RuleGroupAvailableInfo::count = 0;
 
 
 ////////////////////////////////////////////////////////////////////////////
