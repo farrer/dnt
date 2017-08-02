@@ -411,6 +411,7 @@ bool PositionEditor::update(bool leftButtonPressed,
                ori.normalisedCopy(), Ogre::Node::TS_LOCAL,
                Ogre::Vector3::UNIT_Y);
             selectedLight->setDirection(ori.normalisedCopy());
+            selectedLight->flushToSceneNode();
          }
 
          /* Redefine axis position, based on Thing's. */

@@ -78,6 +78,9 @@ namespace DNT
          /*! Flush the defined parameters to the light */
          void flush();
 
+         /*! Flush the scene node related parameters only */
+         void flushToSceneNode();
+
       private:
          Ogre::Light* ogreLight;  /**< Current active light (Ogre) */
          Ogre::SceneNode* lightSceneNode; /**< Node associated to the light */

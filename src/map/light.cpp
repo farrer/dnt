@@ -138,7 +138,21 @@ void LightInfo::setAttenuation(Ogre::Real range, Ogre::Real constant,
 }
 
 /**************************************************************************
- *                               setLight                                 *
+ *                         flushToSceneNode                               *
+ **************************************************************************/
+void LightInfo::flushToSceneNode()
+{
+   lightSceneNode->resetOrientation();
+   lightSceneNode->setPosition(position);
+   if(type != Ogre::Light::LT_POINT)
+   {
+      /* Use direction */
+      lightSceneNode->setDirection(direction);
+   }
+}
+
+/**************************************************************************
+ *                                flush                                   *
  **************************************************************************/
 void LightInfo::flush()
 {
@@ -152,16 +166,8 @@ void LightInfo::flush()
    light->setShadowFarDistance(2000.0f);*/
    /* Define common light elements */
    ogreLight->setType(type);
-   lightSceneNode->resetOrientation();
-   lightSceneNode->setPosition(position);
    ogreLight->setDiffuseColour(diffuse);
    ogreLight->setSpecularColour(specular);
-
-   if(type != Ogre::Light::LT_POINT)
-   {
-      /* Use direction */
-      lightSceneNode->setDirection(direction);
-   }
 
    /* Define attenuation */
    ogreLight->setAttenuation(range, constant, linear, quadratic);
@@ -173,6 +179,8 @@ void LightInfo::flush()
       //FIXME: define radius attenuation by parameter
       //light->setAttenuationBasedOnRadius(10.0f, 0.01f);
    }
+
+   flushToSceneNode();
 }
 
 /**************************************************************************
