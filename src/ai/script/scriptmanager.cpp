@@ -106,17 +106,6 @@ ScriptManager::ScriptManager()
          asCALL_THISCALL_ASGLOBAL, this);
    assert(r >= 0);
 
-   /* Functions to get RuleDefinition and RuleGroup from game */
-   r = asEngine->RegisterGlobalFunction(
-         "RuleDefinition @+ getRuleDefinition(string id)",
-         asMETHOD(ScriptManager, getRuleDefinition),
-         asCALL_THISCALL_ASGLOBAL, this);
-   assert(r >= 0);
-   r = asEngine->RegisterGlobalFunction(
-         "RuleGroup @+ getRuleGroup(string id)",
-         asMETHOD(ScriptManager, getRuleGroup), asCALL_THISCALL_ASGLOBAL, this);
-   assert(r >= 0);
-
    /* Register our base interfaces */
    r = asEngine->RegisterInterface("MapController");
    assert(r >= 0);
@@ -823,23 +812,5 @@ ScriptObjectCharacter* ScriptManager::getCharacterByFilename(Kobold::String
    }
 
    return res;
-}
-
-/**************************************************************************
- *                          getRuleDefinition                             *
- **************************************************************************/
-ScriptObjectRuleDefinition* ScriptManager::getRuleDefinition(Kobold::String id)
-{
-   return static_cast<ScriptObjectRuleDefinition*>(
-         getScriptObject(id, ScriptObject::TYPE_RULE_DEFINITION));
-}
-
-/**************************************************************************
- *                             getRuleGroup                               *
- **************************************************************************/
-ScriptObjectRuleGroup* ScriptManager::getRuleGroup(Kobold::String id)
-{
-   return static_cast<ScriptObjectRuleGroup*>(
-         getScriptObject(id, ScriptObject::TYPE_RULE_GROUP));
 }
 

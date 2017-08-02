@@ -161,10 +161,6 @@ namespace DNT
                float x, float y, float z);
          /*! \return a character by its name */
          ScriptObjectCharacter* getCharacterByFilename(Kobold::String filename);
-         /*! \return the RuleDefinition relative to this id */
-         ScriptObjectRuleDefinition* getRuleDefinition(Kobold::String id);
-         /*! \return the RuleDefinition relative to this id */
-         ScriptObjectRuleGroup* getRuleGroup(Kobold::String id);
 
       protected:
          /*! Get from already loaded controllers or load a new one, based
