@@ -37,6 +37,11 @@ ruleGroup = attribute
    ruleGroupDesc = gettext("An attribute represents basic traits of a character.")
    ruleGroupType = value
 
+ruleGroup = trait
+   ruleGroupName = gettext("Trait")
+   ruleGroupDesc = gettext("Some automatic calculated values.")
+   ruleGroupType = calculated
+
 ruleGroup = course
    ruleGroupName = gettext("Course")
    ruleGroupdDesc = gettext("A course represents which basic areas of knowledge a character follows.")
@@ -56,6 +61,30 @@ ruleGroup = talent
    ruleGroupName = gettext("Talent")
    ruleGroupDesc = gettext("A talent is a special trait of a character.")
    ruleGroupType = selectable
+
+##############
+#   Traits   #
+##############
+
+ruleDef = life_points
+   ruleDefGroup = trait
+   ruleDefName = gettext("Life points")
+   ruleDefDesc = gettext("It's the creature's vital resistance. Measures how many strikes it can take before its vital collapse.")
+
+ruleDef = initiative
+   ruleDefGroup = trait
+   ruleDefName = gettext("Initiative")
+   ruleDefDesc = gettext("Measures the creature's velocity to react to danger events. Higher the bonus, higher the chance to the creature do the first attack.")
+
+ruleDef = protection
+   ruleDefGroup = trait
+   ruleDefName = gettext("Protection")
+   ruleDefDesc = gettext("Measures how much the creature is external protected to direct physical strikes.")
+
+ruleDef = i_am_not_a_fool
+   ruleDefGroup = trait
+   ruleDefName = gettext("I am not a fool")
+   ruleDefDesc = gettext("It's the resistance tested when the creature is against mental strikes.")
 
 ##############
 # Attributes #
