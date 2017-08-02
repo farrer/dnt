@@ -22,8 +22,8 @@ This is the Ogre3d port/rewrite of former DNT (http://dnt.dnteam.org).
 
 Usually, you build with the following commands:
 
-      **mkdir** build
-      **cd** build
+      mkdir build
+      cd build
       cmake ..
       make
 
