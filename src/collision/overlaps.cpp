@@ -39,6 +39,10 @@
 
 #include "overlaps.h"
 #include <OGRE/OgreMath.h>
+
+namespace DNT
+{
+
 #define FABS(x) (float(Ogre::Math::Abs(x))) 
 
 /* if USE_EPSILON_TEST is true then we do a check:
@@ -369,5 +373,7 @@ int intersect_triangle(float orig[3], float dir[3],
    /* calculate t, ray intersects triangle */
    *t = DOT(edge2, qvec) * inv_det;
    return 1;
+}
+
 }
 

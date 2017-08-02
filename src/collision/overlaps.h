@@ -21,6 +21,9 @@
 #ifndef _moller_overlaps_h
 #define _moller_overlaps_h
 
+namespace DNT
+{
+
 /*! Verify if two triangles overlaps
  * vertices of triangle 1: V0,V1,V2
  * vertices of triangle 2: U0,U1,U2
@@ -33,6 +36,7 @@ int intersect_triangle(float orig[3], float dir[3],
                        float vert0 [3], float vert1 [3], float vert2 [3],
                        float* t, float* u, float* v);
 
+}
 
 #endif
 
