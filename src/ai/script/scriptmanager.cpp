@@ -116,6 +116,8 @@ ScriptManager::ScriptManager()
    assert(r >= 0);
    r = asEngine->RegisterInterface("RuleController");
    assert(r >= 0);
+   r = asEngine->RegisterInterface("RuleDefinitionController");
+   assert(r >= 0);
    r = asEngine->RegisterInterface("MissionController");
    assert(r >= 0);
    r = asEngine->RegisterInterface("ObjectController");
@@ -453,6 +455,9 @@ ScriptController* ScriptManager::getOrLoadController(
       case ScriptController::SCRIPT_TYPE_RULE:
          ctrl = new RuleScript(this);
       break;
+      case ScriptController::SCRIPT_TYPE_RULE_DEFINITION:
+         ctrl = new RuleDefinitionScript(this);
+      break;
       default:
          ctrl = NULL;
       break;
@@ -477,7 +482,7 @@ ScriptController* ScriptManager::getOrLoadController(
  *                        createMapScriptInstance                         *
  **************************************************************************/
 MapScriptInstance* ScriptManager::createMapScriptInstance(
-      Kobold::String filename, Kobold::String mapFilename)
+      const Kobold::String& filename, const Kobold::String& mapFilename)
 {
    /* Load or get already loaded script controller */
    MapScript* ctrl = static_cast<MapScript*>(getOrLoadController(
@@ -499,7 +504,7 @@ MapScriptInstance* ScriptManager::createMapScriptInstance(
  *                        createRuleScriptInstance                        *
  **************************************************************************/
 RuleScriptInstance* ScriptManager::createRuleScriptInstance(
-      Kobold::String filename)
+      const Kobold::String& filename)
 {
    /* Load or get already loaded script controller */
    RuleScript* ctrl = static_cast<RuleScript*>(getOrLoadController(
@@ -516,6 +521,30 @@ RuleScriptInstance* ScriptManager::createRuleScriptInstance(
 
    return res;
 }
+
+/**************************************************************************
+ *                   createRuleDefinitionScriptInstance                   *
+ **************************************************************************/
+RuleDefinitionScriptInstance* ScriptManager::createRuleDefinitionScriptInstance(
+      const Kobold::String& filename)
+{
+   /* Load or get already loaded script controller */
+   RuleDefinitionScript* ctrl = static_cast<RuleDefinitionScript*>(
+         getOrLoadController(ScriptController::SCRIPT_TYPE_RULE_DEFINITION, 
+            filename));
+   if(!ctrl)
+   {
+      /* Couldn't load or compile the script, no instance will be created. */
+      return NULL;
+   }
+
+   /* Create a new instance of the script */
+   RuleDefinitionScriptInstance* res = ctrl->createInstance();
+   insertInstance(res);
+
+   return res;
+}
+
 
 /**************************************************************************
  *                             insertInstance                             *
@@ -602,6 +631,15 @@ void ScriptManager::callFunction(ScriptInstance* instance,
 {
    asIScriptContext* ctx = prepareContextFromPool(function);
    ctx->SetObject(instance->getObject());
+   executeWithSuspend(instance, ctx);
+}
+
+/**************************************************************************
+ *                          executeWithSuspend                            *
+ **************************************************************************/
+void ScriptManager::executeWithSuspend(ScriptInstance* instance, 
+      asIScriptContext* ctx)
+{
    int r = executeCall(ctx, instance);
    if(r == asEXECUTION_SUSPENDED)
    {

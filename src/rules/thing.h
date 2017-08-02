@@ -227,6 +227,9 @@ class Thing : public Kobold::ListElement
       /*! Define the script object related to this thing */
       void defineScriptObject(ScriptObject* sobj) { scriptObject = sobj; };
 
+      /*! \return the script object associated with the Thing. */
+      ScriptObject* getScriptObject() { return scriptObject; };
+
       /*! \return initial position on map */
       const Ogre::Vector3& getInitialPosition() const { return initialPos; };
       /*! Set initial position on map */

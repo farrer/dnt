@@ -152,6 +152,9 @@ class RuleDefinition : public Kobold::ListElement
       /*! \return related RuleDefinition, if any */
       const RuleDefinition* getRelated() { return related; };
 
+      /*! Set the script file to use, creating its instance */
+      void setScript(const Kobold::String& scriptFile);
+
       /*! Load RuleDefinition's image.
        * \param imageFilename filename of the image to load 
        * \note should be only called once. */
@@ -173,9 +176,17 @@ class RuleDefinition : public Kobold::ListElement
 
       /*! Add a prerequisite to the rule definition */
       void addPreRequisite(RulePreRequisite* preRequisite);
+
+      /*! \return if the RuleDefinition is usable by user initiative */
+      const bool isUsable() const;
       
-      //TODO usableAsAction
-      //TODO script instance.
+      /*! Should be called when the character selected the RuleDefinition 
+       * to your own. */
+      void onInsert(Character* owner);
+
+      /*! Call the use script function */
+      void use(Character* owner, Character* target);
+
       //TODO: function to receive a Thing and check its pre-requisites.
 
    private:
@@ -183,6 +194,8 @@ class RuleDefinition : public Kobold::ListElement
 
       const RuleGroup* group; /**< Its group */
       const RuleDefinition* related; /**< A related RuleDefinition */
+
+      RuleDefinitionScriptInstance* script; /**< Instance of the script */
 
       Farso::Surface* image;  /**< Image representing the definition */
       Kobold::String name;        /**< Name of the definition */

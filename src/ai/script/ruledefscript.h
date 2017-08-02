@@ -18,71 +18,73 @@
   along with DNT.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _dnt_rule_script_h
-#define _dnt_rule_script_h
+#ifndef _dnt_ruledef_script_h
+#define _dnt_ruledef_script_h
 
 #include "dntconfig.h"
 #include "scriptcontroller.h"
 #include "scriptinstance.h"
-
+#include <kobold/kstring.h>
 
 namespace DNT
 {
 
-/*! Instance of a RuleScript */
-class RuleScriptInstance: public ScriptInstance
+/*! Instance of a RuleDefinitionScript */
+class RuleDefinitionScriptInstance: public ScriptInstance
 {
    public:
       /*! Constructor */
-      RuleScriptInstance(asIScriptObject* obj, 
-            RuleScript* script, ScriptManager* manager);
+      RuleDefinitionScriptInstance(asIScriptObject* obj, 
+            RuleDefinitionScript* script, ScriptManager* manager);
       /*! Destructor */
-      ~RuleScriptInstance();
+      ~RuleDefinitionScriptInstance();
 
-      /*! Call its roll function */
-      bool callRoll(RuleDefinitionValue* testRule, 
-            RuleDefinitionValue* againstRule);
+      /*! Call its use function */
+      void callUse(ScriptObjectCharacter* owner, 
+            ScriptObjectCharacter* target);
 
-      /*! Call its rollValue function */
-      bool callRollValue(RuleDefinitionValue* testRule, int againstValue);
+      /*! Call its onInsert function */
+      void callOnInsert(ScriptObjectCharacter* owner);
+
 };
 
-/*! Script specific for the general Rules of the game. */
-class RuleScript : public ScriptController
+/*! Script for implementation of each RuleDefinition behaviour. */
+class RuleDefinitionScript : public ScriptController
 {
    public:
       /*! Constructor */
-      RuleScript(ScriptManager* manager);
+      RuleDefinitionScript(ScriptManager* manager); 
+
       /*! Destructor */
-      ~RuleScript();
+      ~RuleDefinitionScript();
       
       /*! \return a new instance of the script */
-      RuleScriptInstance* createInstance();
+      RuleDefinitionScriptInstance* createInstance();
 
       /*! \return pointer to the constructor function */
       asIScriptFunction* getFactoryFunction();
       /*! \return pointer to the function called on every cycle */
       asIScriptFunction* getStepFunction();
-      /*! \return pointer to the function called when needed to roll a
-       * RuleDefinition against another one. */
-      asIScriptFunction* getRollFunction();
-      /*! \return pointer to the function called when neede to roll a
-       * RuleDefinition against a value. */
-      asIScriptFunction* getRollValueFunction();
+      /*! \return pointer to the function called when used the RuleDefinition
+       * on a target character */
+      asIScriptFunction* getUseFunction();
+      /*! \return pointer to the function called when a character inserted
+       * a RuleDefinition on its owned RuleDefinitons */
+      asIScriptFunction* getOnInsertFunction();
 
    protected:
       void setFunctionPointers();
       const Ogre::String getMainTypeInterface() const 
       { 
-         return "RuleController";
+         return "RuleDefinitionController";
       };
 
    private:
 
       asIScriptFunction* factoryFunction; /**< Pointer to the factory */
       asIScriptFunction* stepFunction;    /**< Pointer to the step() */
-      asIScriptFunction* rollFunction;  /**< Pointer to roll */
-      asIScriptFunction* rollValueFunction; /**< Pointer to rollValue */
+      asIScriptFunction* useFunction;  /**< Pointer to use */
+      asIScriptFunction* onInsertFunction; /**< Pointer to onInsert */
 };
 
 }

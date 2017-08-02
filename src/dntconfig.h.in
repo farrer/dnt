@@ -115,6 +115,8 @@ namespace DNT
    class MapScriptInstance;
    class RuleScript;
    class RuleScriptInstance;
+   class RuleDefinitionScript;
+   class RuleDefinitionScriptInstance;
    class PendingAction;
    class PendingActionSleep;
    class PendingActionMove;

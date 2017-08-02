@@ -19,12 +19,15 @@
 */
 
 #include "ruledef.h"
+#include "character.h"
 #include "../lang/translate.h"
 #include "../core/game.h"
 #include "../ai/script/scriptobjectruledef.h"
 #include "../ai/script/scriptobjectrulegroup.h"
+#include "../ai/script/scriptobjectcharacter.h"
 #include "../ai/script/scriptmanager.h"
 #include "../ai/script/rulescript.h"
+#include "../ai/script/ruledefscript.h"
 #include <kobold/defparser.h>
 #include <kobold/log.h>
 #include <assert.h>
@@ -157,6 +160,7 @@ RuleDefinition::RuleDefinition(Kobold::String id)
    this->related = NULL;
    this->id = id;
    this->image = NULL;
+   this->script = NULL;
 }
 
 /******************************************************************
@@ -164,6 +168,10 @@ RuleDefinition::RuleDefinition(Kobold::String id)
  ******************************************************************/
 RuleDefinition::~RuleDefinition()
 {
+   if(script)
+   {
+      Game::getScriptManager()->removeInstance(script);
+   }
    if(image != NULL)
    {
       delete image;
@@ -210,10 +218,59 @@ void RuleDefinition::setDescription(Kobold::String desc)
 {
    this->description = desc;
 }
+
+/******************************************************************
+ *                             isUsable                           *
+ ******************************************************************/
+const bool RuleDefinition::isUsable() const
+{
+   if(script != NULL)
+   {
+      RuleDefinitionScript* ctrl = static_cast<RuleDefinitionScript*>(
+            script->getScript());
+      return ctrl->getUseFunction() != NULL;
+   }
+
+   return false;
+}
+
+/******************************************************************
+ *                           onInsert                             *
+ ******************************************************************/
+void RuleDefinition::onInsert(Character* owner)
+{
+   if(script)
+   {
+      script->callOnInsert(static_cast<ScriptObjectCharacter*>(
+               owner->getScriptObject()));
+   }
+}
+
+/******************************************************************
+ *                            setScript                           *
+ ******************************************************************/
+void RuleDefinition::setScript(const Kobold::String& scriptFile)
+{
+   assert(script == NULL);
+   Game::getScriptManager()->createRuleDefinitionScriptInstance(scriptFile);
+}
+
+/******************************************************************
+ *                              use                               *
+ ******************************************************************/
+void RuleDefinition::use(Character* owner, Character* target)
+{
+   if(script)
+   {
+      script->callUse(
+            static_cast<ScriptObjectCharacter*>(owner->getScriptObject()),
+            static_cast<ScriptObjectCharacter*>(target->getScriptObject()));
+   }
+}
  
 /******************************************************************
  *                        addPreRequisite                         *
- ******************************************************************/     
+ ******************************************************************/
 void RuleDefinition::addPreRequisite(RulePreRequisite* preRequisite)
 {
    this->requisites.insert(preRequisite);
@@ -587,7 +644,7 @@ bool Rules::load(const Kobold::String filename)
       else if(key == "ruleDefScript" || key == "ruleDefinitionScript")
       {
          checkNotNull(curDef, filename, key, "ruleDef");
-         //curDef-> TODO
+         curDef->setScript(value);
       }
       else if(key == "ruleDefRelated")
       {

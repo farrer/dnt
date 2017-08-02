@@ -18,11 +18,10 @@
   along with DNT.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "rulescript.h"
+#include "ruledefscript.h"
 #include "scriptinstance.h"
 #include "scriptmanager.h"
-#include "scriptobjectruledef.h"
-#include "../../rules/ruledef.h"
+#include "scriptobjectcharacter.h"
 #include <kobold/log.h>
 #include <assert.h>
 using namespace DNT;
@@ -30,7 +29,8 @@ using namespace DNT;
 /**************************************************************************
  *                              Constructor                               *
  **************************************************************************/
-RuleScriptInstance::RuleScriptInstance(asIScriptObject* obj, RuleScript* script,
+RuleDefinitionScriptInstance::RuleDefinitionScriptInstance(
+      asIScriptObject* obj, RuleDefinitionScript* script,
       ScriptManager* manager)
                   :ScriptInstance(obj, script, manager)
 {
@@ -39,92 +39,78 @@ RuleScriptInstance::RuleScriptInstance(asIScriptObject* obj, RuleScript* script,
 /**************************************************************************
  *                               Destructor                               *
  **************************************************************************/
-RuleScriptInstance::~RuleScriptInstance()
+RuleDefinitionScriptInstance::~RuleDefinitionScriptInstance()
 {
 }
 
 /**************************************************************************
- *                               callRoll                                 *
+ *                                callUse                                 *
  **************************************************************************/
-bool RuleScriptInstance::callRoll(RuleDefinitionValue* testRule, 
-      RuleDefinitionValue* againstRule)
+void RuleDefinitionScriptInstance::callUse(ScriptObjectCharacter* owner, 
+      ScriptObjectCharacter* target)
 {
-   bool res = false;
-   RuleScript* ruleScript = static_cast<RuleScript*>(script);
-   if(ruleScript->getRollFunction())
+   assert(owner != NULL);
+   assert(target != NULL);
+
+   RuleDefinitionScript* ruleScript = static_cast<RuleDefinitionScript*>(
+         script);
+
+   if(ruleScript->getUseFunction())
    {
       asIScriptContext* ctx = manager->prepareContextFromPool(
-            ruleScript->getRollFunction());
+            ruleScript->getOnInsertFunction());
       ctx->SetObject(getObject());
-      ctx->SetArgObject(0, testRule->getScriptObject());
-      ctx->SetArgObject(1, againstRule->getScriptObject());
-      int r = manager->executeCall(ctx, this);
-      assert(r == asEXECUTION_FINISHED);
-      if(r == asEXECUTION_FINISHED)
-      {
-         res = ctx->GetReturnByte(); 
-      }
-      manager->returnContextToPool(ctx);
+      ctx->SetArgObject(0, owner);
+      ctx->SetArgObject(1, target);
+      manager->executeWithSuspend(this, ctx);
    }
-
-   return res;
 }
 
 /**************************************************************************
- *                            callRollValue                               *
+ *                            callOnInsert                                *
  **************************************************************************/
-bool RuleScriptInstance::callRollValue(RuleDefinitionValue* testRule, 
-      int againstValue)
+void RuleDefinitionScriptInstance::callOnInsert(ScriptObjectCharacter* owner)
 {
-   assert(testRule != NULL);
-   assert(testRule->getScriptObject() != NULL);
+   assert(owner != NULL);
 
-   bool res = false;
-   RuleScript* ruleScript = static_cast<RuleScript*>(script);
-   if(ruleScript->getRollValueFunction())
+   RuleDefinitionScript* ruleScript = static_cast<RuleDefinitionScript*>(
+         script);
+
+   if(ruleScript->getOnInsertFunction())
    {
       asIScriptContext* ctx = manager->prepareContextFromPool(
-            ruleScript->getRollValueFunction());
+            ruleScript->getOnInsertFunction());
       ctx->SetObject(getObject());
-      ctx->SetArgObject(0, testRule->getScriptObject());
-      ctx->SetArgDWord(1, againstValue);
-      int r = manager->executeCall(ctx, this);
-      assert(r == asEXECUTION_FINISHED);
-      if(r == asEXECUTION_FINISHED)
-      {
-         res = ctx->GetReturnByte(); 
-      }
-      manager->returnContextToPool(ctx);
+      ctx->SetArgObject(0, owner);
+      manager->executeWithSuspend(this, ctx);
    }
-
-   return res;
 }
 
 /**************************************************************************
  *                              Constructor                               *
  **************************************************************************/
-RuleScript::RuleScript(ScriptManager* manager)
-          :ScriptController(SCRIPT_TYPE_RULE, manager)
+RuleDefinitionScript::RuleDefinitionScript(ScriptManager* manager)
+          :ScriptController(SCRIPT_TYPE_RULE_DEFINITION, manager)
 {
    this->factoryFunction = NULL;
    this->stepFunction = NULL;
-   this->rollFunction = NULL;
-   this->rollValueFunction = NULL;
+   this->useFunction = NULL;
+   this->onInsertFunction = NULL;
 }
 
 /**************************************************************************
  *                               Destructor                               *
  **************************************************************************/
-RuleScript::~RuleScript()
+RuleDefinitionScript::~RuleDefinitionScript()
 {
 }
 
 /**************************************************************************
  *                             createInstance                             *
  **************************************************************************/
-RuleScriptInstance* RuleScript::createInstance()
+RuleDefinitionScriptInstance* RuleDefinitionScript::createInstance()
 {
-   RuleScriptInstance* res = NULL;
+   RuleDefinitionScriptInstance* res = NULL;
 
    /* Call our factory function */
    assert(factoryFunction != NULL);
@@ -135,7 +121,7 @@ RuleScriptInstance* RuleScript::createInstance()
    {
       asIScriptObject* obj = *((asIScriptObject**) 
             ctx->GetAddressOfReturnValue());
-      res = new RuleScriptInstance(obj, this, manager);
+      res = new RuleDefinitionScriptInstance(obj, this, manager);
    }
    manager->returnContextToPool(ctx);
 
@@ -145,7 +131,7 @@ RuleScriptInstance* RuleScript::createInstance()
 /**************************************************************************
  *                          setFunctionPointers                           *
  **************************************************************************/
-void RuleScript::setFunctionPointers()
+void RuleDefinitionScript::setFunctionPointers()
 {
    Ogre::String factoryName = Ogre::String(mainType->GetName()) + "@" +
       Ogre::String(mainType->GetName()) + "()";
@@ -157,18 +143,16 @@ void RuleScript::setFunctionPointers()
             getFilename().c_str(), factoryName.c_str());
    }
    this->stepFunction = mainType->GetMethodByDecl("void step()");
-   this->rollFunction = mainType->GetMethodByDecl(
-         "bool roll(RuleDefinition @+, RuleDefinition @+)");
-   assert(this->rollFunction);
-   this->rollValueFunction = mainType->GetMethodByDecl(
-         "bool roll(RuleDefinition @+, int)");
-   assert(this->rollValueFunction);
+   this->useFunction = mainType->GetMethodByDecl(
+         "void use(Character @+, Character @+)");
+   this->onInsertFunction = mainType->GetMethodByDecl(
+         "void onInsert(Character @+)");
 }
 
 /**************************************************************************
  *                            getFactoryFunction                          *
  **************************************************************************/
-asIScriptFunction* RuleScript::getFactoryFunction()
+asIScriptFunction* RuleDefinitionScript::getFactoryFunction()
 {
    return factoryFunction;
 }
@@ -176,24 +160,25 @@ asIScriptFunction* RuleScript::getFactoryFunction()
 /**************************************************************************
  *                            getStepFunction                           *
  **************************************************************************/
-asIScriptFunction* RuleScript::getStepFunction()
+asIScriptFunction* RuleDefinitionScript::getStepFunction()
 {
    return stepFunction;
 }
 
 /**************************************************************************
- *                             getRollFunction                            *
+ *                              getUseFunction                            *
  **************************************************************************/
-asIScriptFunction* RuleScript::getRollFunction()
+asIScriptFunction* RuleDefinitionScript::getUseFunction()
 {
-   return rollFunction;
+   return useFunction;
 }
 
 /**************************************************************************
- *                           getRollValueFunction                         *
+ *                           getOnInsertFunction                          *
  **************************************************************************/
-asIScriptFunction* RuleScript::getRollValueFunction()
+asIScriptFunction* RuleDefinitionScript::getOnInsertFunction()
 {
-   return rollValueFunction;
+   return onInsertFunction;
 }
+
 

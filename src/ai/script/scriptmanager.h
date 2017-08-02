@@ -33,6 +33,7 @@
 #include "scriptobject.h"
 #include "mapscript.h"
 #include "rulescript.h"
+#include "ruledefscript.h"
 
 /*! How much (in ms) should sleep before each step on ScriptManager */
 #define SCRIPT_UPDATE_TIME   100
@@ -53,12 +54,20 @@ namespace DNT
           * \param mapFilename name of the map
           * \return new instance of the loaded script */
          MapScriptInstance* createMapScriptInstance(
-               Kobold::String filename, Kobold::String mapFilename);
+               const Kobold::String& filename, 
+               const Kobold::String& mapFilename);
 
          /*! Create an instance of a rule script.
           * \param filename name of the script to load
           * \return new instance of the loaded script. */
-         RuleScriptInstance* createRuleScriptInstance(Kobold::String filename);
+         RuleScriptInstance* createRuleScriptInstance(
+               const Kobold::String& filename);
+
+         /*! Create an instance of a rule definition script.
+          * \param filename name of the script to load
+          * \return new instance of the loaded script. */
+         RuleDefinitionScriptInstance* createRuleDefinitionScriptInstance(
+               const Kobold::String& filename);
 
          /*! Call an specific instance function.
           * \param instance to call an specific function.
@@ -70,6 +79,12 @@ namespace DNT
           *       some cycles latter. */
          void callFunction(ScriptInstance* instance, 
                asIScriptFunction* function); 
+
+         /*! Execute a prepared context, checking for suspension after it.
+          * \note this function will return the context to the pool when
+          *       the execution was not suspended. */
+         void executeWithSuspend(ScriptInstance* instance,
+               asIScriptContext* ctx);
 
          /*! Remove an instance, clearing all its related memmory,
           * but keeping alive its controller for future use */
