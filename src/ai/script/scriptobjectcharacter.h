@@ -90,6 +90,9 @@ namespace DNT
          void setAnimation(int index);
          /*! Open its dialog */
          void openDialog();
+         /*! \return rule definition defined by groupId and ruleDefId */
+         ScriptObjectRuleDefinition* getRuleDefinition(Kobold::String groupId,
+               Kobold::String ruleDefId);
 
      protected:
          /*! \return pointer to the referenced character */

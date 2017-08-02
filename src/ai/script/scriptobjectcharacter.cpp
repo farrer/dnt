@@ -340,6 +340,27 @@ void ScriptObjectCharacter::openDialog()
 }
 
 /**************************************************************************
+ *                           getRuleDefinition                            *
+ **************************************************************************/
+ScriptObjectRuleDefinition* ScriptObjectCharacter::getRuleDefinition(
+      Kobold::String groupId, Kobold::String ruleDefId)
+{
+   ScriptObjectRuleDefinition* res = NULL;
+   mutex.lock();
+   if(character)
+   {
+      RuleDefinitionValue* r = character->getRuleDefinition(groupId, ruleDefId);
+      if(r)
+      {
+         res = r->getScriptObject();
+      }
+   }
+   mutex.unlock();
+
+   return res;
+}
+
+/**************************************************************************
  *                            doScriptRegister                            *
  **************************************************************************/
 void ScriptObjectCharacter::doScriptRegister(asIScriptEngine* asEngine)
