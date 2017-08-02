@@ -49,8 +49,10 @@ namespace DNT
           * thus always valid). */
          const bool isValid() { return true; };
          
-         /*! Register our functions and types */
-         static void doScriptRegister(asIScriptEngine* asEngine);
+         /*! Register the related class */
+         static void registerClass(asIScriptEngine* asEngine);
+         /*! Register the related functions */
+         static void registerFunctions(asIScriptEngine* asEngine);
 
          /*! Factory function.
           * \param faces number of dice faces to create.

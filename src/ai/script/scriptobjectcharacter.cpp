@@ -361,24 +361,11 @@ ScriptObjectRuleDefinition* ScriptObjectCharacter::getRuleDefinition(
 }
 
 /**************************************************************************
- *                            doScriptRegister                            *
+ *                           registerFunctions                            *
  **************************************************************************/
-void ScriptObjectCharacter::doScriptRegister(asIScriptEngine* asEngine)
+void ScriptObjectCharacter::registerFunctions(asIScriptEngine* asEngine)
 {
-   int r;
-
-   /* Character object and its functions */
-   r = asEngine->RegisterObjectType("Character", 0, asOBJ_REF);
-   assert(r >= 0);
-   r = asEngine->RegisterObjectBehaviour("Character", asBEHAVE_ADDREF, 
-         "void f()", asMETHOD(ScriptObjectCharacter, addReference), 
-         asCALL_THISCALL);
-   assert(r >= 0);
-   r = asEngine->RegisterObjectBehaviour("Character", asBEHAVE_RELEASE, 
-         "void f()", asMETHOD(ScriptObjectCharacter, release), 
-         asCALL_THISCALL);
-   assert(r >= 0);
-   r = asEngine->RegisterObjectMethod("Character", 
+   int r = asEngine->RegisterObjectMethod("Character", 
          "void moveToPosition(float posX, float posZ)", 
          asMETHOD(ScriptObjectCharacter, moveToPosition), asCALL_THISCALL);
    assert(r >=0 );
@@ -401,5 +388,28 @@ void ScriptObjectCharacter::doScriptRegister(asIScriptEngine* asEngine)
    r = asEngine->RegisterObjectMethod("Character", "void openDialog()",
          asMETHOD(ScriptObjectCharacter, openDialog), asCALL_THISCALL);
    assert(r >=0 );
+   r = asEngine->RegisterObjectMethod("Character", 
+         "RuleDefinition@+ getRuleDefinition(string group, string id)",
+         asMETHOD(ScriptObjectCharacter, openDialog), asCALL_THISCALL);
+   assert(r >=0 );
+}
+
+/**************************************************************************
+ *                             registerClass                              *
+ **************************************************************************/
+void ScriptObjectCharacter::registerClass(asIScriptEngine* asEngine)
+{
+   int r;
+
+   r = asEngine->RegisterObjectType("Character", 0, asOBJ_REF);
+   assert(r >= 0);
+   r = asEngine->RegisterObjectBehaviour("Character", asBEHAVE_ADDREF, 
+         "void f()", asMETHOD(ScriptObjectCharacter, addReference), 
+         asCALL_THISCALL);
+   assert(r >= 0);
+   r = asEngine->RegisterObjectBehaviour("Character", asBEHAVE_RELEASE, 
+         "void f()", asMETHOD(ScriptObjectCharacter, release), 
+         asCALL_THISCALL);
+   assert(r >= 0);
 }
 

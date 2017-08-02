@@ -41,8 +41,10 @@ namespace DNT
          void setPointer(void* newPtr);
          const bool isValid();
 
-         /*! Register its type and functions */
-         static void doScriptRegister(asIScriptEngine* asEngine);
+         /*! Register the related class */
+         static void registerClass(asIScriptEngine* asEngine);
+         /*! Register the related functions */
+         static void registerFunctions(asIScriptEngine* asEngine);
 
       private:
          RuleGroup* ruleGroup; /**< Referenced group */

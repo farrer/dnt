@@ -106,9 +106,9 @@ ScriptObjectDice* ScriptObjectDice::factoryDice(int faces)
 }
 
 /**************************************************************************
- *                           doScriptRegister                             *
+ *                             registerClass                              *
  **************************************************************************/
-void ScriptObjectDice::doScriptRegister(asIScriptEngine* asEngine)
+void ScriptObjectDice::registerClass(asIScriptEngine* asEngine)
 {
    int r;
 
@@ -126,7 +126,15 @@ void ScriptObjectDice::doScriptRegister(asIScriptEngine* asEngine)
          "void f()", asMETHOD(ScriptObjectDice, release), 
          asCALL_THISCALL);
    assert(r >= 0);
-   r = asEngine->RegisterObjectMethod("Dice", 
+}
+
+
+/**************************************************************************
+ *                           registerFunctions                            *
+ **************************************************************************/
+void ScriptObjectDice::registerFunctions(asIScriptEngine* asEngine)
+{
+   int r = asEngine->RegisterObjectMethod("Dice", 
          "int roll()", asMETHOD(ScriptObjectDice, roll), asCALL_THISCALL);
    assert(r >=0 );
 

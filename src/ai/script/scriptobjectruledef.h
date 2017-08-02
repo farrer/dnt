@@ -53,8 +53,11 @@ namespace DNT
          /*! \return Related RuleDefinition pointer, if any */
          ScriptObjectRuleDefinition* getRelated();
 
-         /*! Register its type and functions */
-         static void doScriptRegister(asIScriptEngine* asEngine);
+         /*! Register the related class */
+         static void registerClass(asIScriptEngine* asEngine);
+         /*! Register the related functions */
+         static void registerFunctions(asIScriptEngine* asEngine);
+
 
       private:
          RuleDefinitionValue* ruleDef; /**< Referenced race */

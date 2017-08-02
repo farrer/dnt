@@ -60,13 +60,11 @@ const bool ScriptObjectRuleGroup::isValid()
 }
 
 /**************************************************************************
- *                            doScriptRegister                            *
+ *                             registerClass                              *
  **************************************************************************/
-void ScriptObjectRuleGroup::doScriptRegister(asIScriptEngine* asEngine)
+void ScriptObjectRuleGroup::registerClass(asIScriptEngine* asEngine)
 {
-   int r;
-
-   r = asEngine->RegisterObjectType("RuleGroup", 0, asOBJ_REF);
+   int r = asEngine->RegisterObjectType("RuleGroup", 0, asOBJ_REF);
    assert(r >= 0);
    r = asEngine->RegisterObjectBehaviour("RuleGroup", asBEHAVE_ADDREF, 
          "void f()", asMETHOD(ScriptObjectRuleGroup, addReference), 
@@ -76,5 +74,12 @@ void ScriptObjectRuleGroup::doScriptRegister(asIScriptEngine* asEngine)
          "void f()", asMETHOD(ScriptObjectRuleGroup, release), 
          asCALL_THISCALL);
    assert(r >= 0);
+}
+
+/**************************************************************************
+ *                            registerFunctions                           *
+ **************************************************************************/
+void ScriptObjectRuleGroup::registerFunctions(asIScriptEngine* asEngine)
+{
 }
 

@@ -125,13 +125,11 @@ ScriptObjectRuleDefinition* ScriptObjectRuleDefinition::getRelated()
 }
 
 /**************************************************************************
- *                            doScriptRegister                            *
+ *                             registerClass                              *
  **************************************************************************/
-void ScriptObjectRuleDefinition::doScriptRegister(asIScriptEngine* asEngine)
+void ScriptObjectRuleDefinition::registerClass(asIScriptEngine* asEngine)
 {
-   int r;
-
-   r = asEngine->RegisterObjectType("RuleDefinition", 0, asOBJ_REF);
+   int r = asEngine->RegisterObjectType("RuleDefinition", 0, asOBJ_REF);
    assert(r >= 0);
    r = asEngine->RegisterObjectBehaviour("RuleDefinition", asBEHAVE_ADDREF, 
          "void f()", asMETHOD(ScriptObjectRuleDefinition, addReference), 
@@ -141,6 +139,14 @@ void ScriptObjectRuleDefinition::doScriptRegister(asIScriptEngine* asEngine)
          "void f()", asMETHOD(ScriptObjectRuleDefinition, release), 
          asCALL_THISCALL);
    assert(r >= 0);
+}
+
+/**************************************************************************
+ *                            registerFunctions                           *
+ **************************************************************************/
+void ScriptObjectRuleDefinition::registerFunctions(asIScriptEngine* asEngine)
+{
+   int r;
 
    r = asEngine->RegisterObjectMethod("RuleDefinition",
          "int getValue()", asMETHOD(ScriptObjectRuleDefinition, getValue), 

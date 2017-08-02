@@ -61,10 +61,16 @@ ScriptManager::ScriptManager()
    RegisterStdString(asEngine);
 
    /* Register our classes */
-   ScriptObjectCharacter::doScriptRegister(asEngine);
-   ScriptObjectDice::doScriptRegister(asEngine);
-   ScriptObjectRuleDefinition::doScriptRegister(asEngine);
-   ScriptObjectRuleGroup::doScriptRegister(asEngine);
+   ScriptObjectCharacter::registerClass(asEngine);
+   ScriptObjectDice::registerClass(asEngine);
+   ScriptObjectRuleDefinition::registerClass(asEngine);
+   ScriptObjectRuleGroup::registerClass(asEngine);
+
+   /* Register classes functions */
+   ScriptObjectCharacter::registerFunctions(asEngine);
+   ScriptObjectDice::registerFunctions(asEngine);
+   ScriptObjectRuleDefinition::registerFunctions(asEngine);
+   ScriptObjectRuleGroup::registerFunctions(asEngine);
 
    /* Register our 'global' functions */
    r = asEngine->RegisterGlobalFunction(

@@ -35,9 +35,10 @@ namespace DNT
    {
       public:
 
-         /*! Register the object and its functions for script usage.
-          * \note should only be called by ScriptManager */
-         static void doScriptRegister(asIScriptEngine* asEngine);
+         /*! Register the related class */
+         static void registerClass(asIScriptEngine* asEngine);
+         /*! Register the related functions */
+         static void registerFunctions(asIScriptEngine* asEngine);
 
          /*! Constructor */
          ScriptObjectCharacter(Kobold::String filename, 
