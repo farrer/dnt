@@ -79,7 +79,7 @@ class ListAStar: public Kobold::List
 
 };
 
-#define ASTAR_SLEEP_TIME     50  /**< Sleep time between A* cycle call (ms) */
+#define ASTAR_EXEC_TIME     50  /**< Min time between A* cycle call (ms) */
 
 /*! A* implementation. The A* will be searching few nodes per cycle. 
  *  When running, state is RUNNING. When end running, state is
@@ -142,7 +142,7 @@ class AStar : Kobold::ParallelProcess
        * \note should only be called by the parallel thread. */
       bool step();
       /*! \return time (in ms) the search should sleep between steps */
-      unsigned int getSleepTime() { return ASTAR_SLEEP_TIME; };
+      unsigned int getExecutionFrequency() { return ASTAR_EXEC_TIME; };
 
    private:
 

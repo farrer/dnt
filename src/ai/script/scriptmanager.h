@@ -35,7 +35,7 @@
 #include "rulescript.h"
 #include "ruledefscript.h"
 
-/*! How much (in ms) should sleep before each step on ScriptManager */
+/*! Minimum time (in ms) between each step on ScriptManager */
 #define SCRIPT_UPDATE_TIME   100
 
 namespace DNT
@@ -124,7 +124,7 @@ namespace DNT
           * script thread) */
          bool step();
          /*! \return time (in ms) to sleep between each cycle */
-         unsigned int getSleepTime() { return SCRIPT_UPDATE_TIME; };
+         unsigned int getExecutionFrequency() { return SCRIPT_UPDATE_TIME; };
 
          /*! Suspend the current on-procces script until a pending 
           * action finishes.
