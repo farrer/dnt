@@ -24,6 +24,7 @@
 #include "scriptobject.h"
 #include "scriptobjectcharacter.h"
 #include "scriptobjectdice.h"
+#include "scriptobjectobject.h"
 #include "scriptobjectruledef.h"
 #include "scriptobjectrulegroup.h"
 #include "pendingaction.h"
@@ -63,12 +64,14 @@ ScriptManager::ScriptManager()
    /* Register our classes */
    ScriptObjectCharacter::registerClass(asEngine);
    ScriptObjectDice::registerClass(asEngine);
+   ScriptObjectObject::registerClass(asEngine);
    ScriptObjectRuleDefinition::registerClass(asEngine);
    ScriptObjectRuleGroup::registerClass(asEngine);
 
    /* Register classes functions */
    ScriptObjectCharacter::registerFunctions(asEngine);
    ScriptObjectDice::registerFunctions(asEngine);
+   ScriptObjectObject::registerFunctions(asEngine);
    ScriptObjectRuleDefinition::registerFunctions(asEngine);
    ScriptObjectRuleGroup::registerFunctions(asEngine);
 
@@ -95,7 +98,7 @@ ScriptManager::ScriptManager()
          asMETHOD(ScriptManager, translate), asCALL_THISCALL_ASGLOBAL, this);
    assert(r >= 0);
 
-   /* Functions to get character from game */
+   /* Functions to get character and object from game */
    r = asEngine->RegisterGlobalFunction(
          "Character @+ getCharacter(string file, float x, float y, float z)",
          asMETHOD(ScriptManager, getCharacter), asCALL_THISCALL_ASGLOBAL, this);
@@ -103,6 +106,15 @@ ScriptManager::ScriptManager()
    r = asEngine->RegisterGlobalFunction(
          "Character @+ getCharacter(string file)",
          asMETHOD(ScriptManager, getCharacterByFilename), 
+         asCALL_THISCALL_ASGLOBAL, this);
+   assert(r >= 0);
+   r = asEngine->RegisterGlobalFunction(
+         "Object @+ getObject(string file, float x, float y, float z)",
+         asMETHOD(ScriptManager, getObject), asCALL_THISCALL_ASGLOBAL, this);
+   assert(r >= 0);
+   r = asEngine->RegisterGlobalFunction(
+         "Object @+ getObject(string file)",
+         asMETHOD(ScriptManager, getObjectByFilename), 
          asCALL_THISCALL_ASGLOBAL, this);
    assert(r >= 0);
 
@@ -763,35 +775,44 @@ ScriptObject* ScriptManager::getScriptObject(Kobold::String filename,
 }
 
 /**************************************************************************
- *                             getCharacter                               *
+ *                           getScriptObject                              *
  **************************************************************************/
-ScriptObjectCharacter* ScriptManager::getCharacter(Kobold::String filename, 
-      float x, float y, float z)
+ScriptObject* ScriptManager::getScriptObject(Kobold::String filename, 
+      float x, float y, float z, const ScriptObject::ScriptObjectType type)
 {
-   ScriptObjectCharacter* res = NULL;
+   ScriptObject* res = NULL;
    Ogre::Vector3 pos(x, y, z);
    managerMutex.lock();
    ScriptObject* cur = static_cast<ScriptObject*>(objects.getFirst());
    for(int i = 0; i < objects.getTotal(); i++)
    {
-      if((cur->getType() == ScriptObject::TYPE_CHARACTER) &&
+      if((cur->getType() == type) &&
          (cur->isEquivalent(filename, pos)))
       {
          /* Found */
-         res = static_cast<ScriptObjectCharacter*>(cur);
+         res = cur;
          break;
       }
       cur = static_cast<ScriptObject*>(cur->getNext());
    }
+   managerMutex.unlock();
+   return res;
+}
 
+/**************************************************************************
+ *                             getCharacter                               *
+ **************************************************************************/
+ScriptObjectCharacter* ScriptManager::getCharacter(Kobold::String filename, 
+      float x, float y, float z)
+{
+   ScriptObjectCharacter* res = static_cast<ScriptObjectCharacter*>(
+         getScriptObject(filename, x, y, z, ScriptObject::TYPE_CHARACTER));
    if(res == NULL)
    {
       /* Not found, must create one */
-      res = new ScriptObjectCharacter(filename, pos);
-      objects.insert(res);
+      res = new ScriptObjectCharacter(filename, Ogre::Vector3(x, y, z));
+      insertScriptObject(res);
    }
-
-   managerMutex.unlock();
    return res;
 }
 
@@ -811,6 +832,42 @@ ScriptObjectCharacter* ScriptManager::getCharacterByFilename(Kobold::String
       insertScriptObject(res);
    }
 
+   return res;
+}
+
+/**************************************************************************
+ *                               getObject                                *
+ **************************************************************************/
+ScriptObjectObject* ScriptManager::getObjectByFilename(Kobold::String 
+      filename)
+{
+   ScriptObjectObject* res = static_cast<ScriptObjectObject*>(
+         getScriptObject(filename, ScriptObject::TYPE_OBJECT));
+
+   if(res == NULL)
+   {
+      /* Not found, must create one */
+      res = new ScriptObjectObject(filename);
+      insertScriptObject(res);
+   }
+
+   return res;
+}
+
+/**************************************************************************
+ *                               getObject                                *
+ **************************************************************************/
+ScriptObjectObject* ScriptManager::getObject(Kobold::String filename, 
+      float x, float y, float z)
+{
+   ScriptObjectObject* res = static_cast<ScriptObjectObject*>(
+         getScriptObject(filename, x, y, z, ScriptObject::TYPE_OBJECT));
+   if(res == NULL)
+   {
+      /* Not found, must create one */
+      res = new ScriptObjectObject(filename, Ogre::Vector3(x, y, z));
+      insertScriptObject(res);
+   }
    return res;
 }
 

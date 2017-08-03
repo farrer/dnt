@@ -161,6 +161,11 @@ namespace DNT
                float x, float y, float z);
          /*! \return a character by its name */
          ScriptObjectCharacter* getCharacterByFilename(Kobold::String filename);
+         /*! \return an object by its name and position */
+         ScriptObjectObject* getObject(Kobold::String filename, 
+               float x, float y, float z);
+         /*! \return an object by its name */
+         ScriptObjectObject* getObjectByFilename(Kobold::String filename);
 
       protected:
          /*! Get from already loaded controllers or load a new one, based
@@ -181,6 +186,11 @@ namespace DNT
          /*! \return get an ScriptObject pointer by its filename, if exists */
          ScriptObject* getScriptObject(Kobold::String filename, 
                const ScriptObject::ScriptObjectType type);
+
+         /*! \return an ScriptObject pointer by its filename and position, if
+          * exists */
+         ScriptObject* getScriptObject(Kobold::String filename, float x,
+               float y, float z, const ScriptObject::ScriptObjectType type);
 
          asIScriptEngine* asEngine; /**< The AngelScript engine */
 
