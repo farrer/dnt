@@ -89,6 +89,7 @@ set(AI_HEADERS
    src/ai/script/scriptobject.h
    src/ai/script/scriptobjectcharacter.h
    src/ai/script/scriptobjectdice.h
+   src/ai/script/scriptobjectobject.h
    src/ai/script/scriptobjectruledef.h
    src/ai/script/scriptobjectrulegroup.h
    src/ai/script/scriptstdstring.h
@@ -107,6 +108,7 @@ set(AI_SOURCES
    src/ai/script/scriptobject.cpp
    src/ai/script/scriptobjectcharacter.cpp
    src/ai/script/scriptobjectdice.cpp
+   src/ai/script/scriptobjectobject.cpp
    src/ai/script/scriptobjectruledef.cpp
    src/ai/script/scriptobjectrulegroup.cpp
    src/ai/script/scriptstdstring.cpp

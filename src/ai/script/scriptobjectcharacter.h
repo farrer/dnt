@@ -95,10 +95,6 @@ namespace DNT
          ScriptObjectRuleDefinition* getRuleDefinition(Kobold::String groupId,
                Kobold::String ruleDefId);
 
-     protected:
-         /*! \return pointer to the referenced character */
-         const void* getPointer() const { return character;};
-
      private:
          Character* character; /**< referenced character */
          Kobold::Mutex mutex; /**< For pointer access changes */

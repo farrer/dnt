@@ -634,6 +634,44 @@ void Map::removeThing(Thing* thing)
 }
 
 /**************************************************************************
+ *                                 getObject                              *
+ **************************************************************************/
+Object* Map::getObject(Kobold::String filename)
+{
+   return getObject(filename, Ogre::Vector3(0, 0, 0), false);
+}
+Object* Map::getObject(Kobold::String filename, const Ogre::Vector3& pos)
+{
+   return getObject(filename, pos, true);
+}
+Object* Map::getObject(Kobold::String filename, const Ogre::Vector3& pos, 
+      bool usePos)
+{
+   /* Let's first search on dynamic things */
+   Kobold::List* curList = dynamicThings;
+   for(int l=0; l < 2; l++)
+   {
+      Thing* t = static_cast<Thing*>(curList->getFirst());
+      for(int i=0; i < curList->getTotal(); i++)
+      {
+         if((t->getThingType() != Thing::THING_TYPE_CHARACTER) &&
+            (t->getFilename() == filename) &&
+            ((!usePos) || (t->getInitialPosition() == pos)))
+         {
+            assert(dynamic_cast<Object*>(t));
+            return static_cast<Object*>(t);
+         }
+         t = static_cast<Thing*>(t->getNext());
+      }
+      /* Not found on dynamic, let's try on static. */
+      curList = staticThings;
+   }
+
+   /* Not found */
+   return NULL;
+}
+
+/**************************************************************************
  *                             getInitialPosition                         *
  **************************************************************************/
 Ogre::Vector3 Map::getInitialPosition()

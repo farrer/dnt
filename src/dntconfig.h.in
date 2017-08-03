@@ -109,6 +109,7 @@ namespace DNT
    class ScriptObject;
    class ScriptObjectCharacter;
    class ScriptObjectDice;
+   class ScriptObjectObject;
    class ScriptObjectRuleDefinition;
    class ScriptObjectRuleGroup;
    class MapScript;

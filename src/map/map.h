@@ -116,6 +116,15 @@ class Map
       Thing* insertThing(Kobold::String filename, bool forceDynamic,
             const Ogre::Vector3& pos, const Ogre::Vector3& ori);
 
+      /*! \return pointer to the first object of filename on the map.
+       * \note usually used when filename is unique. */
+      Object* getObject(Kobold::String filename);
+
+      /*! \return pointer to object on the map at the original position 
+       * \note: the object must be in the map to be found. Otherwise,
+       *        this function should return NULL. */
+      Object* getObject(Kobold::String filename, const Ogre::Vector3& pos);
+
       /*! \return current map lights */
       MapLights* getLights() { return lights; };
      
@@ -133,6 +142,9 @@ class Map
 
       /*! Insert a new thing on the map */
       Thing* insertThing(Kobold::String filename, bool forceDynamic);
+      /*! \return object on map */
+      Object* getObject(Kobold::String filename, const Ogre::Vector3& pos,
+            bool usePos);
 
       MapMesh floor; /**< The indoor floor meshes */
       Kobold::List walls; /**< The indoor walls */

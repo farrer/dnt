@@ -42,6 +42,7 @@ namespace DNT
          {
             TYPE_CHARACTER,
             TYPE_DICE,
+            TYPE_OBJECT,
             TYPE_RULE_DEFINITION,
             TYPE_RULE_GROUP
          };

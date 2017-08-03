@@ -69,7 +69,7 @@ namespace DNT
          static Character* getCharacter(Kobold::String filename, 
                Ogre::Vector3 originalPos);
          /*! \return pointer to a character from the list */
-         static Character* getCharacter(Kobold::String filename); 
+         static Character* getCharacter(Kobold::String filename);  
 
          /*! Create a new object (with its specialization type) based on its
           * file extension.
