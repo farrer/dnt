@@ -26,6 +26,7 @@
 #include <kobold/kstring.h>
 #include <kobold/list.h>
 #include <farso/controller.h>
+#include <iostream>
 
 namespace DNT
 {
@@ -283,6 +284,10 @@ class RuleGroupAvailableInfo : public Kobold::ListElement
 
       /*! \return the script object relative to the group */
       ScriptObjectRuleGroup* getScriptObject() { return scriptObject; };
+
+      /*! Save the Group contents to a stream, in the form of
+       * 'ruleDefId = value' and 'ruleGroupId = total'. */
+      bool save(std::ofstream& file);
 
    private:
       /*! ScriptObject relative to the group */

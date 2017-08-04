@@ -291,7 +291,7 @@ bool Thing::load(Kobold::String fileName,
       }
       else if(!doSpecificParse(key, value))
       {
-         /* Ceck key as a rule definition */
+         /* Check key as a rule definition */
          RuleDefinition* ruleDef = Rules::getDefinition(key);
          if(ruleDef)
          {
@@ -317,10 +317,22 @@ bool Thing::load(Kobold::String fileName,
          }
          else
          {
-            /* Got an unknow key. File definition should be fixed. */
-            Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
-                  "Warning: unknow key '%s' at thing's file '%s'",
-                  key.c_str(), fileName.c_str());
+            /* Check key as RuleGroupId */
+            RuleGroupAvailableInfo* group = getRuleGroup(key);
+            if(group)
+            {
+               /* Set its group total */
+               int iValue = 0;
+               sscanf(value.c_str(), "%d", &iValue);
+               group->setTotal(iValue);
+            }
+            else
+            {
+               /* Got an unknow key. File definition should be fixed. */
+               Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+                     "Warning: unknow key '%s' at thing's file '%s'",
+                     key.c_str(), fileName.c_str());
+            }
          }
       }
    }
@@ -407,8 +419,15 @@ bool Thing::save(Kobold::String filename, bool fullPath)
         << (walkable ? THING_VALUE_TRUE : THING_VALUE_FALSE) << std::endl;
    file << THING_KEY_CONVERSATION << " = " << conversationFile << std::endl;
 
-   //TODO: Add RuleDefinitions!!
- 
+   /* Write the RuleDefinitions values */
+   RuleGroupAvailableInfo* group = static_cast<RuleGroupAvailableInfo*>(
+         ruleGroups.getFirst());
+   for(int g = 0; g < ruleGroups.getTotal(); g++)
+   {
+      success |= group->save(file);   
+      group = static_cast<RuleGroupAvailableInfo*>(group->getNext());
+   }
+
    /* Save specific implementation values */
    success |= doSpecificSave(file);
 

@@ -247,7 +247,7 @@ class Thing : public Kobold::ListElement
             const Kobold::String id);
       /*! \return RuleDefinitionValue or NULL if don't have it */
       RuleDefinitionValue* getRuleDefinition(RuleDefinition* def);
-      /*! \return RuleDefinitionValue for given identifier */
+      /*! \return RuleGroupAvailbleInfo for given group identifier */
       RuleGroupAvailableInfo* getRuleGroup(const Kobold::String id);
 
    protected:

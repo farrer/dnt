@@ -429,6 +429,31 @@ RuleDefinitionValue* RuleGroupAvailableInfo::insert(RuleDefinition* ruleDef,
 
    return res;
 }
+
+/******************************************************************
+ *                             save                               *
+ ******************************************************************/
+bool RuleGroupAvailableInfo::save(std::ofstream& file)
+{
+   /* Write the group total values */
+   file << group->getId() << " = " << total << std::endl;
+
+   /* Write each definition value */
+   RuleDefinitionValue* cur = static_cast<RuleDefinitionValue*>(
+         defValues.getFirst());
+   for(int i=0; i < defValues.getTotal(); i++)
+   {
+      file << cur->getDefinition()->getId() << " = " 
+           << cur->getValue() << std::endl;
+      cur = static_cast<RuleDefinitionValue*>(cur->getNext());
+   }
+
+   return true;
+}
+
+/******************************************************************
+ *                        static members                          *
+ ******************************************************************/
 int RuleGroupAvailableInfo::count = 0;
 
 
