@@ -33,6 +33,7 @@
 #include <kobold/userinfo.h>
 
 #include <OGRE/OgreWireAabb.h>
+#include <assert.h>
 
 using namespace DNT;
 
@@ -155,7 +156,8 @@ float Thing::getTurnAroundInterval()
 Kobold::String* Thing::getAnimationList()
 {
    Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 
-         "Warning: This thing implementation do not support animations");
+         "Warning: This thing implementation does not support animations");
+   assert(false);
    return NULL;
 }
 
