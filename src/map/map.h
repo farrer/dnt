@@ -65,11 +65,11 @@ class Map
       /*! Open a map to use. 
        * \param mapFileName name of the map file to load.
        * \param fullPath if mapFileName is defined as full path or inner file.
-       * \param forceDynamicModels force loading all models as dynamic ones (
-       *        MapEditor will need that to change their positions).
+       * \param editMode to load in edit mode, with secundary structures and
+       *        forcing load all models as dynamic ones. 
        * \return if load was successfull or not. */
       bool load(Kobold::String mapFileName, bool fullPath, 
-            bool forceDynamicModels = false);
+            bool editMode = false);
 
       /*! Save the map.
        * \param filename name of the file to save it (full path). */

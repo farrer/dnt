@@ -25,7 +25,7 @@ using namespace DNT;
 /**************************************************************************
  *                                Constructor                             *
  **************************************************************************/
-Wall::Wall()
+Wall::Wall(bool editMode)
 {
    count++;
    mesh = new MapMesh(Kobold::String("wall") + 
@@ -33,7 +33,15 @@ Wall::Wall()
 
    /* Define the upper wall texture */
    mesh->createSubMesh(MAP_UPPER_WALL_MATERIAL);
-
+   if(editMode)
+   {
+      wallInfo = new Ogre::Vector3[2];
+      matInfo = new Ogre::String[4];
+   }
+   else
+   {
+      wallInfo = NULL;
+   }
 }
 
 /**************************************************************************
@@ -42,10 +50,27 @@ Wall::Wall()
 Wall::~Wall()
 {
    delete mesh;
+   if(wallInfo)
+   {
+      delete[] wallInfo;
+   }
+   if(matInfo)
+   {
+      delete[] matInfo;
+   }
 }
 
 /**************************************************************************
- *                                  addFace                               *
+ *                                setInfo                                 *
+ **************************************************************************/
+void Wall::setInfo(Ogre::Vector3 min, Ogre::Vector3 max)
+{
+   wallInfo[0] = min;
+   wallInfo[1] = max;
+}
+
+/**************************************************************************
+ *                                addFace                                 *
  **************************************************************************/
 void Wall::addFace(Kobold::String material, 
       Ogre::Real x1, Ogre::Real y1, Ogre::Real z1,
@@ -58,6 +83,29 @@ void Wall::addFace(Kobold::String material,
       subMesh = mesh->createSubMesh(material);
    }
    subMesh->addSquare(x1, y1, z1, x2, y2, z2, normX, normY, normZ);
+   if(matInfo)
+   {
+      if(normZ == -1.0f)
+      {
+         /* Front texture */
+         matInfo[0] = material;
+      }
+      else if(normZ == 1.0f)
+      {
+         /* Back texture */
+         matInfo[1] = material;
+      }
+      else if(normX == -1.0f)
+      {
+         /* Left texture */
+         matInfo[2] = material;
+      }
+      else if(normX == 1.0f)
+      {
+         /* Right texture */
+         matInfo[3] = material;
+      }
+   }
 }
 
 /**************************************************************************

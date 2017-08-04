@@ -256,7 +256,7 @@ Thing* Map::insertThing(Kobold::String filename, bool forceDynamic,
 /**************************************************************************
  *                                 load                                   *
  **************************************************************************/
-bool Map::load(Ogre::String mapFileName, bool fullPath, bool forceDynamicModels)
+bool Map::load(Ogre::String mapFileName, bool fullPath, bool editMode)
 {
    Kobold::DefParser parser;
    Ogre::String key, value;
@@ -362,7 +362,12 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool forceDynamicModels)
          }
 
          /* Create the wall and add it to the list and collision system */
-         lastWall = new Wall();
+         lastWall = new Wall(editMode);
+         if(editMode)
+         {
+            lastWall->setInfo(Ogre::Vector3(wX1, wY1, wZ1),
+               Ogre::Vector3(wX2, wY2, wZ2));
+         }
          walls.insert(lastWall);
          Collision::addElement(Ogre::Vector3(wX1, wY1, wZ1),
                Ogre::Vector3(wX2, wY2, wZ2));
@@ -408,7 +413,7 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool forceDynamicModels)
       /* Define a thing (object, item, scenery, etc) on the map */
       else if((key == MAP_TOKEN_THING) || (key == MAP_TOKEN_DOOR))
       {
-         Thing* thing = insertThing(value, forceDynamicModels);
+         Thing* thing = insertThing(value, editMode);
          if(thing)
          {
             /* Notify last thing dirty state, if needed. */
@@ -679,7 +684,32 @@ bool Map::save(Kobold::String filename)
    }
 
    /* Save all Walls */
-   //TODO
+   Wall* w = static_cast<Wall*>(walls.getFirst());
+   for(int i=0; i < walls.getTotal(); i++)
+   {
+      file << MAP_TOKEN_WALL << " = " << w->getMin().x << ","
+           << w->getMin().y << "," << w->getMin().z 
+           << w->getMax().x << "," << w->getMax().y 
+           << w->getMax().z << std::endl;
+      Ogre::String* mats = w->getMaterialInfo();
+      if(!mats[0].empty())
+      {
+         file << MAP_TOKEN_WALL_TEXTURE_FRONT << " = " << mats[0] << std::endl;
+      }
+      else if(!mats[1].empty())
+      {
+         file << MAP_TOKEN_WALL_TEXTURE_BACK << " = " << mats[1] << std::endl;
+      } 
+      else if(!mats[2].empty())
+      {
+         file << MAP_TOKEN_WALL_TEXTURE_LEFT << " = " << mats[2] << std::endl;
+      }
+      else if(!mats[3].empty())
+      {
+         file << MAP_TOKEN_WALL_TEXTURE_RIGHT << " = " << mats[3] << std::endl;
+      }
+      w = static_cast<Wall*>(w->getNext());
+   }
 
    /* Save all Squares */
    //TODO

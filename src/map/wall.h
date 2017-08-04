@@ -36,7 +36,7 @@ namespace DNT
    {
       public:
          /*! Constructor */
-         Wall();
+         Wall(bool editMode);
          /*! Destructor */
          ~Wall();
 
@@ -49,8 +49,21 @@ namespace DNT
          /*! Update wall mesh if it is dirty */
          void updateMeshIfDirty();
 
+         /*! Set wall info (only on edit mode) */
+         void setInfo(Ogre::Vector3 min, Ogre::Vector3 max);
+
+         /*! \return wall info min (only on edit mode) */
+         const Ogre::Vector3& getMin() const { return wallInfo[0]; };
+         /*! \return wall info max (only on edit mode) */
+         const Ogre::Vector3& getMax() const { return wallInfo[1]; };
+         /*! \return material vector, as front, back, left, right 
+          * (only on edit mode). */
+         Ogre::String* getMaterialInfo() { return matInfo; };
+
       private:
          MapMesh* mesh;  /**< Mesh representation of the wall */
+         Ogre::Vector3* wallInfo; /**< Wall vertices info, only on edit mode */
+         Ogre::String* matInfo; /**< material info, only on edit mode */
          static Ogre::uint32 count; /**< wall counter */
    };
 
