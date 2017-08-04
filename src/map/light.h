@@ -54,26 +54,39 @@ namespace DNT
           * \param pos new light position */
          void setPosition(Ogre::Vector3 pos);
          /*! \return current lifght position */
-         const Ogre::Vector3 getPosition() const { return position; };
+         const Ogre::Vector3& getPosition() const { return position; };
 
          /*! Set light direction
           * \param dir new light direction */
          void setDirection(Ogre::Vector3 dir);
          /*! \return light direction */
-         const Ogre::Vector3 getDirection() const { return direction; };
+         const Ogre::Vector3& getDirection() const { return direction; };
 
          /*! Set diffuse light color */
          void setDiffuse(float r, float g, float b);
+         /*! \return diffuse color */
+         const Ogre::ColourValue& getDiffuse() const { return diffuse; };
 
          /*! Set specular light color */
          void setSpecular(float r, float g, float b);
+         /*! \return specular color */
+         const Ogre::ColourValue& getSpecular() const { return specular; };
 
          /*! Set outer angle of the spotlight range */
          void setSpotlightRange(Ogre::Degree outerAngle);
+         const Ogre::Degree& getSpotlightRange() const { return outerAngle; };
 
          /*! Set attenuation factor (only used for point lights) */
          void setAttenuation(Ogre::Real range, Ogre::Real constant,
-               Ogre::Real linear, Ogre::Real quadratic);
+               Ogre::Real linear, Ogre::Real quadric);
+         /*! \return attenuation range */
+         const Ogre::Real& getAttenuationRange() const { return range; };
+         /*! \return attenuation constant */
+         const Ogre::Real& getAttenuationConstant() const { return constant; };
+         /*! \return attenuation linear */
+         const Ogre::Real& getAttenuationLinear() const { return linear; };
+         /*! \return attenuation range */
+         const Ogre::Real& getAttenuationQuadric() const { return quadric; };
 
          /*! Flush the defined parameters to the light */
          void flush();
@@ -100,7 +113,7 @@ namespace DNT
          Ogre::Real range,    /**< range value for attenuation */
                     constant, /**< constant value for attenuation */
                     linear,   /**< linear value for attenuation */
-                    quadratic;/**< quadratic value for attenuation */
+                    quadric;  /**< quadric value for attenuation */
    };
 
    /*! Class that keeps information about all lights on a map, selecting

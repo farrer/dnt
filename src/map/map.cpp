@@ -31,6 +31,7 @@
 #include "../collision/collision.h"
 #include "../ai/script/mapscript.h"
 #include "../ai/script/scriptmanager.h"
+#include "../core/dialog.h"
 
 #include <kobold/defparser.h>
 #include <kobold/log.h>
@@ -596,6 +597,147 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool forceDynamicModels)
    floor.updateAllDirty();
    updateAllDirtyWalls();
 
+   return true;
+}
+
+/**************************************************************************
+ *                                   save                                 *
+ **************************************************************************/
+bool Map::save(Kobold::String filename)
+{
+   std::ofstream file;
+
+   /* let's try to create it */
+   file.open(filename.c_str(), std::ios::out | std::ios::binary);
+   if(!file)
+   {
+      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+            "Couldn't save map file '%s'", filename.c_str());
+      return false;
+   }
+
+   /* Add a comment about the creator version */
+   file << "# Created with DNT MapEditor, " << DNT_VERSION << std::endl;
+
+   /* Save size and metadata information */
+   file << MAP_TOKEN_SIZE << " = " << xSize << "x" << zSize << std::endl;
+   file << MAP_TOKEN_INITIAL << " = " << initialPos.x << "," 
+        << initialPos.z << std::endl;
+   file << MAP_TOKEN_NAME << " = " 
+        << "gettext(\"" << name << "\")" << std::endl;
+   if(script != NULL)
+   {
+      file << MAP_TOKEN_SCRIPT << " = " << script->getFilename() << std::endl;
+   }
+   file << MAP_TOKEN_MUSIC_FILE << " = " << musicFilename << std::endl;
+
+   /* Save all lights */
+   LightInfo* light = static_cast<LightInfo*>(lights->getFirst());
+   for(int i=0; i < lights->getTotal(); i++)
+   {
+      file << MAP_TOKEN_LIGHT << " = ";
+      switch(light->getType())
+      {
+         default:
+         case Ogre::Light::LT_POINT:
+            file << MAP_VALUE_LIGHT_POINT << std::endl;
+         break;
+         case Ogre::Light::LT_DIRECTIONAL:
+            file << MAP_VALUE_LIGHT_DIRECTIONAL << std::endl;
+         break;
+         case Ogre::Light::LT_SPOTLIGHT:
+            file << MAP_VALUE_LIGHT_SPOTLIGHT << std::endl;
+            file << MAP_TOKEN_LIGHT_SPOT_RANGE << " = " 
+                 << light->getSpotlightRange().valueDegrees() << std::endl;
+         break;
+      }
+      file << MAP_TOKEN_LIGHT_POS << " = " << light->getPosition().x 
+           << " " << light->getPosition().y << " " << light->getPosition().z
+           << std::endl;
+      if(light->getType() != Ogre::Light::LT_POINT)
+      {
+         file << MAP_TOKEN_LIGHT_DIR << " = " << light->getDirection().x
+              << " " << light->getDirection().y << " " 
+              << light->getDirection().z << std::endl;
+      }
+      file << MAP_TOKEN_LIGHT_DIFFUSE << " = " << light->getDiffuse().r
+           << " " << light->getDiffuse().g << " " 
+           << light->getDiffuse().b << std::endl;
+      file << MAP_TOKEN_LIGHT_SPECULAR << " = " << light->getSpecular().r
+           << " " << light->getSpecular().g << " " 
+           << light->getSpecular().b << std::endl;
+      if(light->getType() != Ogre::Light::LT_DIRECTIONAL)
+      {
+         file << MAP_TOKEN_LIGHT_ATTENUATION << " = " 
+              << light->getAttenuationRange() << " " 
+              << light->getAttenuationConstant() << " " 
+              << light->getAttenuationLinear() << " " 
+              << light->getAttenuationQuadric() << std::endl; 
+      }
+
+      light = static_cast<LightInfo*>(light->getNext());
+   }
+
+   /* Save all Walls */
+   //TODO
+
+   /* Save all Squares */
+   //TODO
+
+   /* Save all objects (dynamic and static ones) */
+   Kobold::List* curList = dynamicThings;
+   for(int l=0; l < 2; l++)
+   {
+      Thing* curThing = static_cast<Thing*>(curList->getFirst());
+      for(int i = 0; i < curList->getTotal(); i++)
+      {
+         if(curThing->getThingType() == Thing::THING_TYPE_DOOR)
+         {
+            /* Save as door */
+            Door* door = static_cast<Door*>(curThing); 
+            file << MAP_TOKEN_DOOR << " = " << door->getFilename() << std::endl;
+            file << MAP_TOKEN_DOOR_POSITION << " = "
+                 << door->getInitialPosition().x << ","
+                 << door->getInitialPosition().y << ","
+                 << door->getInitialPosition().z << std::endl;
+            file << MAP_TOKEN_DOOR_ORIENTATION << " = " 
+                 << door->getModel()->getOrientation() << std::endl;
+            if(door->getOpenStatus() == Door::DOOR_LOCKED)
+            {
+               file << MAP_TOKEN_DOOR_LOCK << " = " 
+                    << door->getDifficulty() << " " 
+                    << door->getHardness() << std::endl;
+               file << MAP_TOKEN_DOOR_LOCK_DIALOG << " = " 
+                    << door->getConversationFile() << std::endl;
+            }
+         }
+         else
+         {
+            /* Save as thing */
+            file << MAP_TOKEN_THING << " = " 
+                 << curThing->getFilename() << std::endl;
+            file << MAP_TOKEN_THING_POSITION << " = "
+                 << curThing->getInitialPosition().x << ","
+                 << curThing->getInitialPosition().y << ","
+                 << curThing->getInitialPosition().z << std::endl;
+            file << MAP_TOKEN_THING_ORIENTATION << " = " 
+                 << curThing->getModel()->getPitch() << ","
+                 << curThing->getModel()->getYaw() << ","
+                 << curThing->getModel()->getRoll() << std::endl;
+            if(curThing->isWalkable())
+            {
+               file << MAP_TOKEN_THING_WALKABLE << " = " 
+                    << MAP_VALUE_TRUE << std::endl;
+            }
+         }
+         curThing = static_cast<Thing*>(curThing->getNext());
+      }
+
+      /* now save the static ones */
+      curList = staticThings;
+   }
+   
+   file.close();
    return true;
 }
 

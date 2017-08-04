@@ -71,6 +71,10 @@ class Map
       bool load(Kobold::String mapFileName, bool fullPath, 
             bool forceDynamicModels = false);
 
+      /*! Save the map.
+       * \param filename name of the file to save it (full path). */
+      bool save(Kobold::String filename);
+
       /*! \return  map's name */
       Kobold::String getName();
       /*! Set map's name 

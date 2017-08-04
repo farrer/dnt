@@ -38,7 +38,7 @@ LightInfo::LightInfo(Ogre::Light::LightTypes type, MapLights* lights)
    this->range = 325;
    this->constant = 1.0;
    this->linear = 0.014; 
-   this->quadratic = 0.0007;
+   this->quadric = 0.0007;
 
    ogreLight = Game::getSceneManager()->createLight();
    lightSceneNode = 
@@ -81,7 +81,7 @@ void LightInfo::set(LightInfo* lightInfo)
       this->range = lightInfo->range;
       this->constant = lightInfo->constant;
       this->linear = lightInfo->linear;
-      this->quadratic = lightInfo->quadratic;
+      this->quadric = lightInfo->quadric;
    }
 }
 
@@ -129,12 +129,12 @@ void LightInfo::setSpotlightRange(Ogre::Degree outerAngle)
  *                            setAttenuation                              *
  **************************************************************************/
 void LightInfo::setAttenuation(Ogre::Real range, Ogre::Real constant,
-      Ogre::Real linear, Ogre::Real quadratic)
+      Ogre::Real linear, Ogre::Real quadric)
 {
    this->range = range;
    this->constant = constant;
    this->linear = linear;
-   this->quadratic = quadratic;
+   this->quadric = quadric;
 }
 
 /**************************************************************************
@@ -169,15 +169,16 @@ void LightInfo::flush()
    ogreLight->setDiffuseColour(diffuse);
    ogreLight->setSpecularColour(specular);
 
-   /* Define attenuation */
-   ogreLight->setAttenuation(range, constant, linear, quadratic);
+   if(type != Ogre::Light::LT_DIRECTIONAL)
+   {
+      /* Define attenuation */
+      ogreLight->setAttenuation(range, constant, linear, quadric);
+   }
 
    if(type == Ogre::Light::LT_SPOTLIGHT)
    {
       /* Set spotlight outer angle */
       ogreLight->setSpotlightRange(Ogre::Degree(0), outerAngle);
-      //FIXME: define radius attenuation by parameter
-      //light->setAttenuationBasedOnRadius(10.0f, 0.01f);
    }
 
    flushToSceneNode();

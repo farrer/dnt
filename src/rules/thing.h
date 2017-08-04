@@ -147,6 +147,10 @@ class Thing : public Kobold::ListElement
        * \param fileName name of the conversation file */
       void setConversationFile(Kobold::String fileName);
 
+      /*! \return the conversation filename */
+      const Kobold::String& getConversationFile() const 
+      { return conversationFile; };
+
       /*! Do a RuleDefinition against a fixed value difficulty. */
       bool doCheck(RuleDefinition* ruleDef, int difficulty);
       

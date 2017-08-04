@@ -21,11 +21,14 @@
 #ifndef _dnt_script_instance_h
 #define _dnt_script_instance_h
 
+#include "dntconfig.h"
+
 #include <angelscript.h>
 #include <OGRE/OgreString.h>
 #include <kobold/list.h>
 #include <kobold/mutex.h>
-#include "dntconfig.h"
+#include <kobold/kstring.h>
+#include "scriptcontroller.h"
 
 namespace DNT
 {
@@ -98,6 +101,9 @@ class ScriptInstance : public Kobold::ListElement
 
       /*! Add a suspended context to the script */
       void addSuspendedContext(asIScriptContext* ctx, PendingAction* act);
+
+      /*! \return name of the script file used */
+      const Kobold::String getFilename() { return script->getFilename(); };
 
    protected:
 
