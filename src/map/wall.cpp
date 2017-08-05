@@ -36,7 +36,7 @@ Wall::Wall(bool editMode)
    if(editMode)
    {
       wallInfo = new Ogre::Vector3[2];
-      matInfo = new Ogre::String[4];
+      matInfo = new Kobold::String[4];
    }
    else
    {

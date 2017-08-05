@@ -99,6 +99,7 @@ Map::Map()
    this->lights = new MapLights();
    this->script = NULL;
    this->floorMaterials = NULL;
+   this->initialPos = Ogre::Vector3(0.0f, 0.0f, 0.0f);
 }
 
 /**************************************************************************
@@ -183,17 +184,23 @@ void Map::create(int sizeX, int sizeZ)
    xSize = sizeX;
    zSize = sizeZ;
 
+   /* Default initial pos at center */
+   initialPos = Ogre::Vector3(xSize / 2.0f, 0.0f, zSize / 2.0f);
+
    Collision::init(xSize, zSize, MAP_SQUARE_SIZE);
+   createAuxiliarEditStructs();
 
    /* Define the upper wall texture */
    //walls.createTextureMesh(MAP_UPPER_WALL_MATERIAL);
 
    /* Create the mesh for default texture */
-   MapSubMesh* mesh = floor.createSubMesh("concrete6");
+   Kobold::String matName = "concrete6";
+   MapSubMesh* mesh = floor.createSubMesh(matName);
    for(int squareZ = 0; squareZ < sizeZ; squareZ++)
    {
       for(int squareX = 0; squareX < sizeX; squareX++)
       {
+         floorMaterials[squareZ * xSize + squareX] = matName;
          mesh->addSquare(squareX * MAP_SQUARE_SIZE, 0.0f, 
                          squareZ * MAP_SQUARE_SIZE, 
                          (squareX + 1) * MAP_SQUARE_SIZE, 0.0f,
@@ -259,6 +266,20 @@ Thing* Map::insertThing(Kobold::String filename, bool forceDynamic,
 }
 
 /**************************************************************************
+ *                      createAuxiliarEditStructs                         *
+ **************************************************************************/
+void Map::createAuxiliarEditStructs()
+{
+   if(floorMaterials)
+   {
+      delete floorMaterials;
+      floorMaterials = NULL;
+   }
+   /* Create the auxiliar material name keeper for edit */
+   floorMaterials = new Kobold::String[xSize * zSize];
+}
+
+/**************************************************************************
  *                                 load                                   *
  **************************************************************************/
 bool Map::load(Ogre::String mapFileName, bool fullPath, bool editMode)
@@ -290,8 +311,7 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool editMode)
    Collision::init(xSize, zSize, MAP_SQUARE_SIZE);
    if(editMode)
    {
-      /* Create the auxiliar material name keeper for edit */
-      floorMaterials = new Kobold::String[xSize * zSize];
+      createAuxiliarEditStructs();
    }
 
    /* Reset square position counters */
@@ -384,7 +404,7 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool editMode)
             lastWall->setInfo(Ogre::Vector3(wX1, wY1, wZ1),
                Ogre::Vector3(wX2, wY2, wZ2));
          }
-         walls.insert(lastWall);
+         walls.insertAtEnd(lastWall);
          Collision::addElement(Ogre::Vector3(wX1, wY1, wZ1),
                Ogre::Vector3(wX2, wY2, wZ2));
 
@@ -636,6 +656,7 @@ bool Map::save(Kobold::String filename)
             "Couldn't save map file '%s'", filename.c_str());
       return false;
    }
+   this->filename = filename;
 
    /* Add a comment about the creator version */
    file << "# Created with DNT MapEditor, " << DNT_VERSION << std::endl;
@@ -650,7 +671,10 @@ bool Map::save(Kobold::String filename)
    {
       file << MAP_TOKEN_SCRIPT << " = " << script->getFilename() << std::endl;
    }
-   file << MAP_TOKEN_MUSIC_FILE << " = " << musicFilename << std::endl;
+   if(!musicFilename.empty())
+   {
+      file << MAP_TOKEN_MUSIC_FILE << " = " << musicFilename << std::endl;
+   }
 
    /* Save all lights */
    LightInfo* light = static_cast<LightInfo*>(lights->getFirst());
@@ -704,25 +728,28 @@ bool Map::save(Kobold::String filename)
    for(int i=0; i < walls.getTotal(); i++)
    {
       file << MAP_TOKEN_WALL << " = " << w->getMin().x << ","
-           << w->getMin().y << "," << w->getMin().z 
-           << w->getMax().x << "," << w->getMax().y 
+           << w->getMin().y << "," << w->getMin().z << "," 
+           << w->getMax().x << "," << w->getMax().y  << ","
            << w->getMax().z << std::endl;
-      Ogre::String* mats = w->getMaterialInfo();
-      if(!mats[0].empty())
+      if(!w->getMaterialInfo(0).empty())
       {
-         file << MAP_TOKEN_WALL_TEXTURE_FRONT << " = " << mats[0] << std::endl;
+         file << MAP_TOKEN_WALL_TEXTURE_FRONT << " = " 
+              << w->getMaterialInfo(0) << std::endl;
       }
-      else if(!mats[1].empty())
+      if(!w->getMaterialInfo(1).empty())
       {
-         file << MAP_TOKEN_WALL_TEXTURE_BACK << " = " << mats[1] << std::endl;
+         file << MAP_TOKEN_WALL_TEXTURE_BACK << " = " 
+              << w->getMaterialInfo(1) << std::endl;
       } 
-      else if(!mats[2].empty())
+      if(!w->getMaterialInfo(2).empty())
       {
-         file << MAP_TOKEN_WALL_TEXTURE_LEFT << " = " << mats[2] << std::endl;
+         file << MAP_TOKEN_WALL_TEXTURE_LEFT << " = " 
+              << w->getMaterialInfo(2) << std::endl;
       }
-      else if(!mats[3].empty())
+      if(!w->getMaterialInfo(3).empty())
       {
-         file << MAP_TOKEN_WALL_TEXTURE_RIGHT << " = " << mats[3] << std::endl;
+         file << MAP_TOKEN_WALL_TEXTURE_RIGHT << " = " 
+              << w->getMaterialInfo(3) << std::endl;
       }
       w = static_cast<Wall*>(w->getNext());
    }

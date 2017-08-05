@@ -498,6 +498,22 @@ bool MainGui::checkEvents(PositionEditor* positionEditor)
          {
             openLoadOrSaveWindow(true);
          }
+         else if(fileMenu->getCurrentItem() == menuItemSave)
+         {
+            DNT::Map* curMap = DNT::Game::getCurrentMap();
+            if(curMap->save(curMap->getFilename()))
+            {
+               //TODO: add a success message.
+            }
+            else
+            {
+               //TODO: show error message.
+            }
+         }
+         else if(fileMenu->getCurrentItem() == menuItemSaveAs)
+         {
+            openLoadOrSaveWindow(false);
+         }
       }
       /* Edit Menu */
       else if(event.getWidget() == editMenu)
@@ -582,6 +598,15 @@ bool MainGui::checkEvents(PositionEditor* positionEditor)
          else
          {
             /* Must save the map */
+            if(DNT::Game::getCurrentMap()->save(
+                     loadSaveSelector->getFilename()))
+            {
+               /* TODO: Show success message */
+            }
+            else
+            {
+               /* TODO: Show error message */
+            }
          }
          loadSaveWindow->close();
       }

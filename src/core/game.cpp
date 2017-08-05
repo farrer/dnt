@@ -106,7 +106,7 @@ void Game::setCurrentMap(Map* map)
  *                               loadMap                                *
  ************************************************************************/
 Map* Game::loadMap(Kobold::String filename, bool fullPath, 
-      bool setPCsPositions, bool forceDynamicModels)
+      bool setPCsPositions, bool editMode)
 {
    /* Must freed any loaded map */
    if(currentMap)
@@ -117,7 +117,7 @@ Map* Game::loadMap(Kobold::String filename, bool fullPath,
 
    /* Create and try to load map */
    Map* map = new DNT::Map();
-   if(!map->load(filename, fullPath, forceDynamicModels))
+   if(!map->load(filename, fullPath, editMode))
    {
       /* Must delete the failed to load map */
       delete map;
@@ -147,7 +147,7 @@ Map* Game::loadMap(Kobold::String filename, bool fullPath,
 
    /* Call the On Load action, if defined */
    MapScriptInstance* script = map->getScriptInstance();
-   if(script)
+   if(script && !editMode)
    {
       script->callOnLoad();
    }

@@ -150,6 +150,9 @@ class Map
       Object* getObject(Kobold::String filename, const Ogre::Vector3& pos,
             bool usePos);
 
+      /*! Create all auxiliar edit-mode structures */
+      void createAuxiliarEditStructs();
+
       MapMesh floor; /**< The indoor floor meshes */
       Kobold::List walls; /**< The indoor walls */
       Kobold::String* floorMaterials; /**< The materials used for floor 

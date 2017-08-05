@@ -58,12 +58,13 @@ namespace DNT
          const Ogre::Vector3& getMax() const { return wallInfo[1]; };
          /*! \return material vector, as front, back, left, right 
           * (only on edit mode). */
-         Ogre::String* getMaterialInfo() { return matInfo; };
+         const Kobold::String& getMaterialInfo(int i) const 
+         { return matInfo[i]; };
 
       private:
          MapMesh* mesh;  /**< Mesh representation of the wall */
          Ogre::Vector3* wallInfo; /**< Wall vertices info, only on edit mode */
-         Ogre::String* matInfo; /**< material info, only on edit mode */
+         Kobold::String* matInfo; /**< material info, only on edit mode */
          static Ogre::uint32 count; /**< wall counter */
    };
 

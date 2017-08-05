@@ -47,10 +47,10 @@ namespace DNT
           * \param fullPath if filename is defined with full path or as
           *        an inner file.
           * \param setPCsPositions set or not PCs at initial map position.
-          * \param forceDynamicModels true to force load all models as dynamic.
+          * \param edit true to load map on edit mode.
           * \return loaded Map pointer (NULL if fail to load). */
          static Map* loadMap(Kobold::String filename, bool fullPath=false, 
-               bool setPCsPositions=true, bool forceDynamicModels=false);
+               bool setPCsPositions=true, bool editMode=false);
 
          /*! \return current loaded map */
          static Map* getCurrentMap();
