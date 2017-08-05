@@ -152,6 +152,8 @@ class Map
 
       MapMesh floor; /**< The indoor floor meshes */
       Kobold::List walls; /**< The indoor walls */
+      Kobold::String* floorMaterials; /**< The materials used for floor 
+                                           (only defined on EditMode) */
 
       Kobold::String name;     /**< Map's name */
       Kobold::String filename; /**< Map's filename */

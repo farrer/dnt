@@ -98,6 +98,7 @@ Map::Map()
    this->dynamicThings = new Kobold::List(Kobold::LIST_TYPE_ADD_AT_END);
    this->lights = new MapLights();
    this->script = NULL;
+   this->floorMaterials = NULL;
 }
 
 /**************************************************************************
@@ -109,6 +110,10 @@ Map::~Map()
   delete this->staticThings;
   delete this->dynamicThings;
   delete this->lights;
+  if(this->floorMaterials)
+  {
+     delete[] floorMaterials;
+  }
   if(this->script)
   {
      Game::getScriptManager()->removeInstance(script);
@@ -280,7 +285,14 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool editMode)
       return false;
    }
    sscanf(value.c_str(), "%dx%d", &xSize, &zSize);
+   assert(xSize > 0);
+   assert(zSize > 0);
    Collision::init(xSize, zSize, MAP_SQUARE_SIZE);
+   if(editMode)
+   {
+      /* Create the auxiliar material name keeper for edit */
+      floorMaterials = new Kobold::String[xSize * zSize];
+   }
 
    /* Reset square position counters */
    int squareX = -1;
@@ -327,6 +339,10 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool editMode)
          if(!subMesh)
          {
             subMesh = floor.createSubMesh(value);
+         }
+         if(editMode)
+         {
+            floorMaterials[squareZ * xSize + squareX] = value;
          }
          subMesh->addSquare(squareX * MAP_SQUARE_SIZE, 0.0f, 
                          squareZ * MAP_SQUARE_SIZE, 
@@ -712,7 +728,18 @@ bool Map::save(Kobold::String filename)
    }
 
    /* Save all Squares */
-   //TODO
+   for(int z=0; z < zSize; z++)
+   {
+      file << "#Z: " << z << std::endl;
+      for(int x=0; x < xSize; x++)
+      {
+         //TODO: square height.
+         file << MAP_TOKEN_SQUARE << " = "
+              << "1,0.000000,0.000000,0.000000,0.000000" << std::endl;
+         file << MAP_TOKEN_USE_TEXTURE << " = " 
+              << floorMaterials[z * xSize + x] << std::endl;
+      }
+   }
 
    /* Save all objects (dynamic and static ones) */
    Kobold::List* curList = dynamicThings;
