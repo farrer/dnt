@@ -98,6 +98,7 @@ Map::Map()
    this->dynamicThings = new Kobold::List(Kobold::LIST_TYPE_ADD_AT_END);
    this->lights = new MapLights();
    this->script = NULL;
+   this->scriptFilename = "";
    this->floorMaterials = NULL;
    this->initialPos = Ogre::Vector3(0.0f, 0.0f, 0.0f);
 }
@@ -335,8 +336,12 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool editMode)
       else if(key == MAP_TOKEN_SCRIPT)
       {
          assert(script == NULL);
-         script = Game::getScriptManager()->createMapScriptInstance(value,
-               mapFileName);
+         if(!editMode)
+         {
+            script = Game::getScriptManager()->createMapScriptInstance(value,
+                  mapFileName);
+         }
+         scriptFilename = value;
       }
       /* Square definition */
       else if(key == MAP_TOKEN_SQUARE)
@@ -667,9 +672,9 @@ bool Map::save(Kobold::String filename)
         << initialPos.z << std::endl;
    file << MAP_TOKEN_NAME << " = " 
         << "gettext(\"" << name << "\")" << std::endl;
-   if(script != NULL)
+   if(!scriptFilename.empty())
    {
-      file << MAP_TOKEN_SCRIPT << " = " << script->getFilename() << std::endl;
+      file << MAP_TOKEN_SCRIPT << " = " << scriptFilename << std::endl;
    }
    if(!musicFilename.empty())
    {

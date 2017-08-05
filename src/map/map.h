@@ -165,7 +165,9 @@ class Map
 
       MapLights* lights; /**< All light definitions for map */
 
-      MapScriptInstance* script; /**< Script used for the map */
+      MapScriptInstance* script; /**< Script used for the map (only created 
+                                      when not on edit mode) */
+      Kobold::String scriptFilename; /**< Filename of the script to use */
 
       //FIXME: use a more suitable structure.
       Kobold::List* dynamicThings; /**< Dynamic things list */
