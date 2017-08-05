@@ -41,6 +41,7 @@ Wall::Wall(bool editMode)
    else
    {
       wallInfo = NULL;
+      matInfo = NULL;
    }
 }
 
@@ -83,7 +84,7 @@ void Wall::addFace(Kobold::String material,
       subMesh = mesh->createSubMesh(material);
    }
    subMesh->addSquare(x1, y1, z1, x2, y2, z2, normX, normY, normZ);
-   if(matInfo)
+   if(matInfo != NULL)
    {
       if(normZ == -1.0f)
       {
