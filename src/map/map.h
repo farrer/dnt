@@ -132,8 +132,14 @@ class Map
       /*! \return current map lights */
       MapLights* getLights() { return lights; };
      
-      /*! \return ScriptInstance used for this map */
+      /*! \return ScriptInstance used for this map
+       * \note only valid when not on edit mode. */
       MapScriptInstance* getScriptInstance() { return script; };
+      /*! \return filename of the script to use */
+      const Kobold::String& getScriptFilename() { return scriptFilename; };
+      /*! Set script filename.
+       * \note only use this function on edit mode */
+      void setScriptFilename(const Kobold::String& filename);
 
       /*! \return list of static things on the map */
       Kobold::List* getStaticThings() { return staticThings; };

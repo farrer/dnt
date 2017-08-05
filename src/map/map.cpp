@@ -161,6 +161,15 @@ void Map::setName(Kobold::String name)
 }
 
 /**************************************************************************
+ *                           setScriptFilename                            *
+ **************************************************************************/
+void Map::setScriptFilename(const Kobold::String& filename)
+{
+   assert(script == NULL);
+   this->scriptFilename = filename;
+}
+
+/**************************************************************************
  *                           getMusicFilename                             *
  **************************************************************************/
 Kobold::String Map::getMusicFilename()

@@ -50,19 +50,24 @@ namespace DNTMapEditor
          const bool isOpened() const { return metadataWindow != NULL; };
 
       private:
-         /*! Open a window to select music file */
-         void openSelectMusicWindow();
+         /*! Open a window to select a file
+          * \param music true to selec a music (.ogg) file. 
+          *              false for script scelection (*.as). */
+         void openSelectWindow(bool music);
 
          /* Map Metadata widgets */
          Farso::Window* metadataWindow; /**< Its window */
          Farso::TextEntry* mapNameTextEntry; /**< Text for map name */
          Farso::TextEntry* mapMusicTextEntry; /**< Text for map music */
          Farso::Button* buttonSelectMusic; /**< Button to select music */
+         Farso::TextEntry* mapScriptTextEntry; /**< Text for map script */
+         Farso::Button* buttonSelectScript; /**< Button to select script */
          Farso::Button* buttonApplyMetadata; /**< Button to apply */
 
-         /* select music widgets */
+         /* select music/script widgets */
          Farso::Window* selectWindow; /**< The select window */
-         Farso::FileSelector* musicSelector; /**< Its selector */
+         Farso::FileSelector* fileSelector; /**< Its selector */
+         bool selectMusic; /**< True is selecting music, false script */
 
 
    };

@@ -26,6 +26,7 @@
 using namespace DNTMapEditor;
 
 #define DNT_MUSIC_PREFIX "../data/music/"
+#define DNT_SCRIPT_PREFIX "../data/scripts/"
  
 /***********************************************************************
  *                           Consstructor                              *
@@ -36,10 +37,12 @@ MetadataGui::MetadataGui()
    mapNameTextEntry = NULL;
    mapMusicTextEntry = NULL;
    buttonSelectMusic = NULL;
+   mapScriptTextEntry = NULL;
+   buttonSelectScript = NULL;
    buttonApplyMetadata = NULL;
 
    selectWindow = NULL;
-   musicSelector = NULL;
+   fileSelector = NULL;
 }
 
 /***********************************************************************
@@ -57,7 +60,7 @@ void MetadataGui::open()
    Ogre::StringStream ss;
 
    close();
-   metadataWindow = new Farso::Window(300, 125, "Metadata");
+   metadataWindow = new Farso::Window(300, 145, "Metadata");
 
    ss << "Size: ";
    ss << DNT::Game::getCurrentMap()->getSizeX();
@@ -73,6 +76,13 @@ void MetadataGui::open()
          DNT::Game::getCurrentMap()->getMusicFilename());
    mapMusicTextEntry->disable();
    buttonSelectMusic = new Farso::Button(205, 45, 80, 21, "Select", 
+         metadataWindow);
+   new Farso::Label(0, 67, 44, 21, "Script:", metadataWindow);
+   mapScriptTextEntry = new Farso::TextEntry(45, 67, 155, 21, metadataWindow); 
+   mapScriptTextEntry->setCaption(
+         DNT::Game::getCurrentMap()->getScriptFilename());
+   mapScriptTextEntry->disable();
+   buttonSelectScript = new Farso::Button(205, 67, 80, 21, "Select", 
          metadataWindow);
    Farso::Container* cont = new Farso::Container(
          Farso::Container::TYPE_BOTTOM_CENTERED, metadataWindow);
@@ -99,9 +109,9 @@ void MetadataGui::close()
 }
 
 /***********************************************************************
- *                        openSelectMusicWindow                        *
+ *                           openSelectWindow                          *
  ***********************************************************************/
-void MetadataGui::openSelectMusicWindow()
+void MetadataGui::openSelectWindow(bool music)
 {
    /* Remove if already created */
    if(selectWindow)
@@ -109,10 +119,13 @@ void MetadataGui::openSelectMusicWindow()
       selectWindow->close();
    }
    /* Create the window */
-   selectWindow = new Farso::Window(300, 250, "Select Music");
-   musicSelector = new Farso::FileSelector(true, DNT_MUSIC_PREFIX, false, 
-         selectWindow);
-   musicSelector->setFilter(".ogg");
+   selectWindow = new Farso::Window(300, 250, 
+         ((music) ? "Select Music" : "Select Script"));
+   fileSelector = new Farso::FileSelector(true, 
+         ((music) ? DNT_MUSIC_PREFIX : DNT_SCRIPT_PREFIX), 
+         !music, selectWindow);
+   selectMusic = music;
+   fileSelector->setFilter((music) ? ".ogg" : ".as");
    selectWindow->setExternPointer(&selectWindow);
    selectWindow->open();
    selectWindow->setPosition(Kobold::Mouse::getX(), Kobold::Mouse::getY());
@@ -129,7 +142,13 @@ bool MetadataGui::checkEvents()
       if(event.getWidget() == buttonSelectMusic)
       {
          /* Open the music selector */
-         openSelectMusicWindow();
+         openSelectWindow(true);
+         return true;
+      }
+      else if(event.getWidget() == buttonSelectScript)
+      {
+         /* Open the script selector */
+         openSelectWindow(false);
          return true;
       }
       else if(event.getWidget() == buttonApplyMetadata)
@@ -138,18 +157,29 @@ bool MetadataGui::checkEvents()
          DNT::Game::getCurrentMap()->setName(mapNameTextEntry->getCaption());
          DNT::Game::getCurrentMap()->setMusicFilename(
                mapMusicTextEntry->getCaption());
+         DNT::Game::getCurrentMap()->setScriptFilename(
+               mapScriptTextEntry->getCaption());
          close();
          return true;
       }
    }
    else if(event.getType() == Farso::EVENT_FILESELECTOR_ACCEPT)
    {
-      if(event.getWidget() == musicSelector)
+      if(event.getWidget() == fileSelector)
       {
          /* Define the new filename (without prefix) and close the window */
-         mapMusicTextEntry->setCaption(
-               Ogre::StringUtil::replaceAll(musicSelector->getFilename(),
-                                            DNT_MUSIC_PREFIX, ""));
+         if(selectMusic)
+         {
+            mapMusicTextEntry->setCaption(
+                  Ogre::StringUtil::replaceAll(fileSelector->getFilename(),
+                                               DNT_MUSIC_PREFIX, ""));
+         }
+         else
+         {
+            mapScriptTextEntry->setCaption(
+                  Ogre::StringUtil::replaceAll(fileSelector->getFilename(),
+                                               DNT_SCRIPT_PREFIX, ""));
+         }
          selectWindow->close();
          if(metadataWindow)
          {
@@ -160,7 +190,7 @@ bool MetadataGui::checkEvents()
    }
    else if(event.getType() == Farso::EVENT_FILESELECTOR_CANCEL)
    {
-      if(event.getWidget() == musicSelector)
+      if(event.getWidget() == fileSelector)
       {
          /* Just close the dialog */
          selectWindow->close();
