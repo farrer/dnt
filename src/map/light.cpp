@@ -86,6 +86,14 @@ void LightInfo::set(LightInfo* lightInfo)
 }
 
 /**************************************************************************
+ *                                 setType                                *
+ **************************************************************************/
+void LightInfo::setType(Ogre::Light::LightTypes type)
+{
+   this->type = type;
+}
+
+/**************************************************************************
  *                               setPosition                              *
  **************************************************************************/
 void LightInfo::setPosition(Ogre::Vector3 pos)
@@ -99,6 +107,7 @@ void LightInfo::setPosition(Ogre::Vector3 pos)
 void LightInfo::setDirection(Ogre::Vector3 dir)
 {
    this->direction = dir;
+   this->direction.normalise();
 }
 
 /**************************************************************************
@@ -143,7 +152,10 @@ void LightInfo::setAttenuation(Ogre::Real range, Ogre::Real constant,
 void LightInfo::flushToSceneNode()
 {
    lightSceneNode->resetOrientation();
-   lightSceneNode->setPosition(position);
+   if(type != Ogre::Light::LT_DIRECTIONAL)
+   {
+      lightSceneNode->setPosition(position);
+   }
    if(type != Ogre::Light::LT_POINT)
    {
       /* Use direction */

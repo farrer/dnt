@@ -197,6 +197,7 @@ set(DNT_HEADERS
 )
 
 set(DNT_MAP_EDITOR_SOURCES
+   src/apps/mapeditor/lightwindow.cpp
    src/apps/mapeditor/main.cpp
    src/apps/mapeditor/maingui.cpp
    src/apps/mapeditor/mapeditor.cpp
@@ -204,14 +205,19 @@ set(DNT_MAP_EDITOR_SOURCES
    src/apps/mapeditor/nodeswindow.cpp
    src/apps/mapeditor/positioneditor.cpp
    src/apps/mapeditor/transformwindow.cpp
+   src/apps/mapeditor/attenuationtextentry.cpp
+   src/apps/mapeditor/vector3textentry.cpp
    ${WIN_SOURCES}
 )
 set(DNT_MAP_EDITOR_HEADERS
+   src/apps/mapeditor/lightwindow.h
    src/apps/mapeditor/maingui.h
    src/apps/mapeditor/mapeditor.h
    src/apps/mapeditor/metadatagui.h
    src/apps/mapeditor/nodeswindow.h
    src/apps/mapeditor/positioneditor.h
    src/apps/mapeditor/transformwindow.h
+   src/apps/mapeditor/attenuationtextentry.h
+   src/apps/mapeditor/vector3textentry.h
 )
 

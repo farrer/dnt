@@ -26,6 +26,7 @@
 #include "nodeswindow.h"
 #include "positioneditor.h"
 #include "transformwindow.h"
+#include "lightwindow.h"
 
 namespace DNTMapEditor
 {
@@ -86,6 +87,8 @@ namespace DNTMapEditor
          void toggleMetadataWindow();
          /*! Open/Close the transform window */
          void toggleTransformWindow();
+         /*! Open/Close the light window */
+         void toggleLightWindow();
 
       private:
 
@@ -132,6 +135,7 @@ namespace DNTMapEditor
          Farso::Menu::MenuItem* menuItemMetadata; /**< Metadata item */
          Farso::Menu::MenuItem* menuItemNodes; /**< Nodes item */
          Farso::Menu::MenuItem* menuItemTransform; /**< Transform item */
+         Farso::Menu::MenuItem* menuItemLight; /**< Light item */
 
          /* View button and Menu */
          Farso::Button* viewButton; /**< View button */
@@ -153,6 +157,7 @@ namespace DNTMapEditor
          MetadataGui metadataGui; /**< Metadata editor gui */
          NodesWindow nodesWindow; /**< Nodes selector window */
          TransformWindow transformWindow; /**< Node transform window */
+         LightWindow lightWindow; /**< Light edit window */
    };
 
 

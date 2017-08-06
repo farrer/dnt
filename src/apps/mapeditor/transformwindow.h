@@ -24,6 +24,7 @@
 #include <farso/controller.h>
 #include <map>
 #include "positioneditor.h"
+#include "vector3textentry.h"
 
 namespace DNTMapEditor
 {
@@ -62,13 +63,10 @@ namespace DNTMapEditor
          /*! Update current transform texts with ones defined by the thing */
          void updateTexts(DNT::Thing* thing);
 
-         /*! Parse value from text entry. on error, use previous value */
-         float parse(Farso::TextEntry* textEntry, float previousValue);
-
          Farso::Window* window; /**< The window */
-         Farso::TextEntry* position[3]; /**< Each position to edit */
-         Farso::TextEntry* rotation[3]; /**< Each rotation to edit */
-         Farso::TextEntry* scale[3]; /**< Each scale to edit */
+         Vector3TextEntry* position; /**< Position editor */
+         Vector3TextEntry* rotation; /**< Rotation editor */
+         Vector3TextEntry* scale; /**< Scale editor */
    };
 
 }

@@ -95,6 +95,8 @@ MainGui::MainGui()
    dialogsMenu->insertSeparator();
    menuItemNodes = dialogsMenu->insertItem("Nodes", "ALT+N");
    menuItemTransform = dialogsMenu->insertItem("Transform", "ALT+T");
+   dialogsMenu->insertSeparator();
+   menuItemLight = dialogsMenu->insertItem("Light", "ALT+L");
    dialogsMenu->endCreate();
    dialogsButton->setMenu(dialogsMenu);
 
@@ -181,6 +183,7 @@ void MainGui::toggleMenuStatus()
       }
       menuItemSaveAs->enable();
       menuItemTransform->enable();
+      menuItemLight->enable();
 
       menuItemToggleLight->enable();
       menuItemShowConnections->enable();
@@ -193,6 +196,7 @@ void MainGui::toggleMenuStatus()
       menuItemSave->disable();
       menuItemSaveAs->disable();
       menuItemTransform->disable();
+      menuItemLight->disable();
       menuItemMetadata->disable();
       menuItemNodes->disable();
       disableEditItems();
@@ -261,6 +265,7 @@ void MainGui::closeMapRelatedWindows(PositionEditor* positionEditor)
    metadataGui.close();
    nodesWindow.close();
    transformWindow.close();
+   lightWindow.close();
    if(positionEditor)
    {
       positionEditor->clear();
@@ -328,6 +333,26 @@ void MainGui::toggleTransformWindow()
 }
 
 /***********************************************************************
+ *                         toggleLightWindow                           *
+ ***********************************************************************/
+void MainGui::toggleLightWindow()
+{
+   if(!DNT::Game::getCurrentMap())
+   {
+      return;
+   }
+
+   if(lightWindow.isOpened())
+   {
+      lightWindow.close();
+   }
+   else
+   {
+      lightWindow.open();
+   }
+}
+
+/***********************************************************************
  *                           openLoadOrSave                            *
  ***********************************************************************/
 void MainGui::openLoadOrSaveWindow(bool loading)
@@ -384,6 +409,7 @@ void MainGui::openNewMapWindow()
 void MainGui::update(PositionEditor* positionEditor)
 {
    transformWindow.update(positionEditor);
+   lightWindow.update(positionEditor);
 }
 
 /***********************************************************************
@@ -552,9 +578,13 @@ bool MainGui::checkEvents(PositionEditor* positionEditor)
          {
             nodesWindow.open();
          }
-         if(dialogsMenu->getCurrentItem() == menuItemTransform)
+         else if(dialogsMenu->getCurrentItem() == menuItemTransform)
          {
             transformWindow.open();
+         }
+         else if(dialogsMenu->getCurrentItem() == menuItemLight)
+         {
+            lightWindow.open();
          }
       }
    }
@@ -625,6 +655,9 @@ bool MainGui::checkEvents(PositionEditor* positionEditor)
    {
    }
    else if(transformWindow.checkEvents(positionEditor))
+   {
+   }
+   else if(lightWindow.checkEvents(positionEditor))
    {
    }
 

@@ -68,7 +68,7 @@ void NodesWindow::open()
 
       /* Open and set its position */
       window->open();
-      window->setPosition(Farso::Controller::getWidth() - 320, 24);
+      window->setPosition(Farso::Controller::getWidth() - 320, 23);
    }
 }
 

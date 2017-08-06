@@ -165,6 +165,13 @@ void MapEditor::checkKeyboardInput()
          mainGui->toggleTransformWindow();
          lastKey = Kobold::KOBOLD_KEY_T;
       }
+      else if((lastKey != Kobold::KOBOLD_KEY_L) && 
+         (Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_L)))
+      {
+         /* Transform window toggle */
+         mainGui->toggleLightWindow();
+         lastKey = Kobold::KOBOLD_KEY_L;
+      }
       else if((lastKey != Kobold::KOBOLD_KEY_M) && 
          (Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_M)))
       {

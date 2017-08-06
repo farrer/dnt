@@ -47,6 +47,9 @@ namespace DNT
           * \param lightInfo pointer to LightInfo to clone its information. */
          void set(LightInfo* lightInfo);
 
+         /*! Change the light type */
+         void setType(Ogre::Light::LightTypes type);
+
          /*! \return Light type of this light */
          const Ogre::Light::LightTypes getType() const { return type; };
 
