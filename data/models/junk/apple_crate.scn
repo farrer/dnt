@@ -2,4 +2,3 @@ name = gettext("Apple Crate")
 description = gettext("An empty crate used to store apples.")
 model = junk/apple_crate.mesh
 walkable = false
-

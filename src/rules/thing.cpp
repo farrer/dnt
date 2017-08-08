@@ -64,8 +64,8 @@ Thing::Thing(ThingType type, int totalAnimations)
    this->lifePoints = 0;
    this->armatureClass = 0;
    this->initiativeBonus = 0;
-   this->displacement = 60.0f;
-   this->walkInterval = 1.2f; 
+   this->displacement = 3.0f;
+   this->walkInterval = 0.06f; 
    this->turnAroundInterval = 3.5f; 
    this->model = NULL;
    this->conversation = NULL;
@@ -258,6 +258,10 @@ bool Thing::load(Kobold::String fileName,
       {
          /* Let's load its scale (to apply later) */
          sscanf(value.c_str(), "%f", &scale);
+         /* Must redefine its bounds applying the scale factor */
+         Ogre::Aabb aabb = model->getItem()->getLocalAabb();
+         aabb.mHalfSize *= scale;
+         model->getItem()->setLocalAabb(aabb);
       }
       else if(key == THING_KEY_STATE)
       {

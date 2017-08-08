@@ -52,7 +52,7 @@ void Collision::init(int x, int z, float squareSize)
          Collision::grid[i][j].setBoundingBox(
                Ogre::Vector3(i * squareSize, 0.0f, j * squareSize),
                Ogre::Vector3((i + 1) * squareSize, 
-                  400.0f, (j + 1) * squareSize));
+                  20.0f, (j + 1) * squareSize));
       }
    }
    rwLock->unlockForWrite();

@@ -168,14 +168,8 @@ void LightInfo::flushToSceneNode()
  **************************************************************************/
 void LightInfo::flush()
 {
-   //FIXME: PI used to work before update to current 
-   //       2.1 commit on 2 july 2017.
-   //light->setPowerScale(Ogre::Math::PI); 
-   ogreLight->setPowerScale(50); 
+   ogreLight->setPowerScale(Ogre::Math::PI); 
 
-   /*light->setShadowNearClipDistance(2.2f);
-   light->setShadowFarClipDistance(2200.0f);
-   light->setShadowFarDistance(2000.0f);*/
    /* Define common light elements */
    ogreLight->setType(type);
    ogreLight->setDiffuseColour(diffuse);

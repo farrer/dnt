@@ -42,15 +42,15 @@ PositionEditor::PositionEditor(Ogre::SceneManager* sceneManager)
          zRot("zRot", "mapeditor/rotation_circle.mesh", sceneManager, 
                Goblin::Model3d::MODEL_DYNAMIC)
 {
-   xAxis.setScaleNow(5.0f, 5.0f, 5.0f);
-   yAxis.setScaleNow(5.0f, 5.0f, 5.0f);
-   zAxis.setScaleNow(5.0f, 5.0f, 5.0f);
+   xAxis.setScaleNow(0.25f, 0.25f, 0.25f);
+   yAxis.setScaleNow(0.25f, 0.25f, 0.25f);
+   zAxis.setScaleNow(0.25f, 0.25f, 0.25f);
 
-   lightDirAxis.setScaleNow(5.0f, 5.0f, 5.0f);
+   lightDirAxis.setScaleNow(0.25f, 0.25f, 0.25f);
 
-   xRot.setScaleNow(4.0f, 4.0f, 4.0f);
-   yRot.setScaleNow(4.0f, 4.0f, 4.0f);
-   zRot.setScaleNow(4.0f, 4.0f, 4.0f);
+   xRot.setScaleNow(0.2f, 0.2f, 0.2f);
+   yRot.setScaleNow(0.2f, 0.2f, 0.2f);
+   zRot.setScaleNow(0.2f, 0.2f, 0.2f);
 
    yAxis.setMaterial("greenVector");
    yRot.setMaterial("greenVector");
@@ -63,13 +63,7 @@ PositionEditor::PositionEditor(Ogre::SceneManager* sceneManager)
    zAxis.setOrientationNow(0.0f, 90.0f, 90.0f);
    zRot.setOrientationNow(0.0f, 90.0f, 90.0f);
 
-   xAxis.setPositionNow(10.0f, 0.0f, 0.0f);
-   xRot.setPositionNow(12.0f, 0.0f, 0.0f);
-   yAxis.setPositionNow(0.0f, 10.0f, 0.0f);
-   yRot.setPositionNow(0.0f, 12.0f, 0.0f);
-   zAxis.setPositionNow(0.0f, 0.0f, 10.0f);
-   zRot.setPositionNow(0.0f, 0.0f, 12.0f);
-   lightDirAxis.setPositionNow(0.0f, 0.0f, 0.0f);
+   setPosition(Ogre::Vector3(0.0f, 0.0f, 0.0f));
 
    xAxis.getItem()->setCastShadows(false);
    xRot.getItem()->setCastShadows(false);
@@ -316,7 +310,7 @@ bool PositionEditor::update(bool leftButtonPressed,
    if((selectedAxis) && (leftButtonPressed) && (hasSelection()))
    {
       /* define our current value */
-      int curValue;
+      float curValue;
       if(selectedAxis == &xAxis)
       {
          curValue = floorMouse.x;
@@ -350,7 +344,7 @@ bool PositionEditor::update(bool leftButtonPressed,
       else if(reference != curValue)
       {
          /* Must move */
-         int totalToMove = curValue - reference;
+         float totalToMove = curValue - reference;
 
          Ogre::Vector3 curPos;
          Ogre::Vector3 ori;
@@ -376,7 +370,7 @@ bool PositionEditor::update(bool leftButtonPressed,
          {
             /* Move on Y (with div factor, as not using real world 
              * coordinates to the cursor position) */
-            curPos.y += (totalToMove / 2.0f);
+            curPos.y += (totalToMove * 0.025f);
          }
          else if(selectedAxis == &zAxis)
          {
@@ -448,12 +442,12 @@ void PositionEditor::updateAxisPosition()
  ***********************************************************************/
 void PositionEditor::setPosition(Ogre::Vector3 pos)
 {
-   xAxis.setPositionNow(pos.x + 10.0f, pos.y, pos.z);
-   xRot.setPositionNow(pos.x + 12.0f, pos.y, pos.z);
-   yAxis.setPositionNow(pos.x, pos.y + 10.0f, pos.z);
-   yRot.setPositionNow(pos.x, pos.y + 12.0f, pos.z);
-   zAxis.setPositionNow(pos.x, pos.y, pos.z + 10.0f);
-   zRot.setPositionNow(pos.x, pos.y, pos.z + 12.0f);
+   xAxis.setPositionNow(pos.x + 0.5f, pos.y, pos.z);
+   xRot.setPositionNow(pos.x + 0.6f, pos.y, pos.z);
+   yAxis.setPositionNow(pos.x, pos.y + 0.5f, pos.z);
+   yRot.setPositionNow(pos.x, pos.y + 0.6f, pos.z);
+   zAxis.setPositionNow(pos.x, pos.y, pos.z + 0.5f);
+   zRot.setPositionNow(pos.x, pos.y, pos.z + 0.6f);
 
    lightDirAxis.setPositionNow(pos);
 }

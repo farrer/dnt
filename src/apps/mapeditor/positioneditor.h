@@ -111,7 +111,7 @@ namespace DNTMapEditor
          DNT::Thing* selectedThing;  /**< Thing selected */
          DNT::LightInfo* selectedLight; /**< Light selected */
 
-         int reference; /**< Internal reference value */
+         float reference; /**< Internal reference value */
 
    };
 

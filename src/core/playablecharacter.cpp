@@ -34,10 +34,10 @@ using namespace DNT;
 /*! How faster run is than walk */
 #define RUN_MULTIPLIER 2.8f 
 /*! Distance to toggle walk/run in constinous mouse move */
-#define CONTINUOUS_RUN_DISTANCE 60 
+#define CONTINUOUS_RUN_DISTANCE 3 
 /*! Minimum distance floorMouse should be to the character pos to change its
  * angle (too near and some indecision happens) */
-#define MIN_DISTANCE_TO_CHANGE_ANGLE 10
+#define MIN_DISTANCE_TO_CHANGE_ANGLE 0.5f
 
 
 /*********************************************************************
@@ -82,7 +82,7 @@ void PlayableCharacter::doAfterLoad()
    direction = new Goblin::Model3d("directMesh", 
          "other/direc.mesh", Game::getSceneManager(),
          Goblin::Model3d::MODEL_DYNAMIC);
-   direction->setScaleNow(2.6f, 2.6f, 2.6f);
+   direction->setScaleNow(0.13f, 0.13f, 0.13f);
    direction->hide();
 }
 
@@ -135,7 +135,7 @@ bool PlayableCharacter::doMovementByMouse(const Ogre::Vector3& floorMouse,
        * the toggle distance nearer the character. This way, we avoid
        * unwanted effects of run/walk/run/walk glitches when mouse
        * is near CONTINUOUS_RUN_DISTANCE. */
-      run = dist >= CONTINUOUS_RUN_DISTANCE - 10.0f;
+      run = dist >= CONTINUOUS_RUN_DISTANCE - 0.5f;
    }
    else
    {
@@ -144,12 +144,12 @@ bool PlayableCharacter::doMovementByMouse(const Ogre::Vector3& floorMouse,
    wasRunning = run;
 
    /* define direction model angle and position */
-   float deltaRadius = (run) ? 30.0f : 12.0f;
+   float deltaRadius = (run) ? 1.5f : 0.6f;
    direction->setOrientationNow(-90.0f, 0.0f, walkAngle - 180);
    Ogre::Aabb aabb = getWalkableBounds();
    direction->setPositionNow(
          curPos.x + (aabb.mCenter.x + deltaRadius) * dir[0], 
-         curPos.y + 10.0f, 
+         curPos.y + 0.5f, 
          curPos.z + (aabb.mCenter.z + deltaRadius) * dir[1]);
    
    /* Reset, now for the continuous walk, the interval */

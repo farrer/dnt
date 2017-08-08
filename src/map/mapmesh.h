@@ -35,7 +35,7 @@
 #include <OGRE/Vao/OgreVaoManager.h>
 
 
-#define MAP_SQUARE_SIZE                 64.0f
+#define MAP_SQUARE_SIZE                 3.2f
 
 namespace DNT
 {

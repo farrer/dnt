@@ -28,7 +28,7 @@
 
 using namespace DNT;
 
-#define MAX_WALKABLE_DIFF_HEIGHT  1.5f
+#define MAX_WALKABLE_DIFF_HEIGHT  0.08f
 
 /***********************************************************************
  *                          Constructor                                *

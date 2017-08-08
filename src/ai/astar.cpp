@@ -33,6 +33,8 @@
 
 #define STEP_FACTOR        20  /**< Factor to step search */
 #define STEP_FACTOR_INDOOR 10  /**< Indor Factor to step search */
+#define ASTAR_MIN_DIST     0.25f /**< Minimun distance from character to start 
+                                      a valid search */
 #define MAX_DIST_FACTOR    10  /**< Only visit nodes at max X times 
                                     distant to the goal than the current one */
 
@@ -169,7 +171,7 @@ void AStar::findPath(Character* actor, float x, float z, float stepSize,
       /* Set maxDist */
       maxDist = dist*MAX_DIST_FACTOR;
 
-      if(dist < 5)
+      if(dist < ASTAR_MIN_DIST)
       {
          /* too near */
          state = ASTAR_STATE_NOT_FOUND;
@@ -690,10 +692,10 @@ PointAStar* ListAStar::find(float x, float z)
    PointAStar* tmp = static_cast<PointAStar*>(getFirst());
    for(aux = 0; aux < getTotal(); aux++)
    {
-      if( (tmp->x >= x-0.1f) && 
-          (tmp->x <= x+0.1f) &&
-          (tmp->z >= z-0.1f) &&
-          (tmp->z <= z+0.1f) )
+      if( (tmp->x >= x-0.005f) && 
+          (tmp->x <= x+0.005f) &&
+          (tmp->z >= z-0.005f) &&
+          (tmp->z <= z+0.005f) )
       {
          return tmp;
       }

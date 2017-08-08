@@ -42,6 +42,7 @@ using namespace DNT;
  *                              Constructor                            *
  ***********************************************************************/
 CommonApp::CommonApp()
+          :BaseApp(Goblin::CameraConfig())
 {
    thingUnderCursor = NULL;
    lastMouseX = -1;

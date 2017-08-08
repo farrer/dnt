@@ -39,7 +39,7 @@
 
 using namespace DNT;
 
-#define MAP_WALL_HEIGHT                 64
+#define MAP_WALL_HEIGHT                 3.2
 
 #define MAP_TOKEN_SIZE                  "size"
 
