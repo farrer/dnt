@@ -201,7 +201,7 @@ bool CommonApp::doCommonCycleInit(int callCounter, bool& shouldAbort)
          DNT::Rules::init("rules.dnt");
 
          /* Set camera initial position */
-         Goblin::Camera::set(200.0f, 30.0f, 120.0f, 0.0f, 89.0f, 410.0f);
+         Goblin::Camera::set(0.0f, 2.0f, 0.0f, 0.0f, 70.0f, 22.30f);
          Farso::Cursor::show();
          
          /* Create a SceneQuery */
