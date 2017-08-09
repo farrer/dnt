@@ -357,13 +357,11 @@
          "workflow" : "specular_ogre",
          "diffuse":
          {
-            "value" : [1.0, 1.0, 1.0],
             "texture" : "pia.png",
             "sampler" : "SamplerBlock_furniture1"
          },
          "normal":
          {
-            "value" : 1,
             "texture" : "pia_n.png",
             "sampler" : "SamplerBlock_furniture1"
          },
