@@ -276,18 +276,23 @@ bool LightWindow::checkEvents(PositionEditor* positionEditor)
             light->setType(Ogre::Light::LT_POINT);
             updateTexts(light);
             light->flush();
+            /* Note: when changed type, must select light again to display
+             * the correct axis to manipulate. */
+            positionEditor->selectLight(light);
          }
          else if(event.getWidget() == useSpot)
          {
             light->setType(Ogre::Light::LT_SPOTLIGHT);
             updateTexts(light);
             light->flush();
+            positionEditor->selectLight(light);
          }
          else if(event.getWidget() == useDirec)
          {
             light->setType(Ogre::Light::LT_DIRECTIONAL);
             updateTexts(light);
             light->flush();
+            positionEditor->selectLight(light);
          }
       }
       else if(event.getType() == Farso::EVENT_USER_DEFINED)
@@ -308,6 +313,7 @@ bool LightWindow::checkEvents(PositionEditor* positionEditor)
          {
             light->setPosition(pointPosition->getValue());
             light->flushToSceneNode();
+            positionEditor->updateAxisPosition();
          }
          else if(event.getWidget() == pointAttenuation)
          {
@@ -321,11 +327,13 @@ bool LightWindow::checkEvents(PositionEditor* positionEditor)
          {
             light->setPosition(spotPosition->getValue());
             light->flushToSceneNode();
+            positionEditor->updateAxisPosition();
          }
          else if(event.getWidget() == spotDirection)
          {
             light->setDirection(spotDirection->getValue());
             light->flushToSceneNode();
+            positionEditor->updateAxisPosition();
          }
          else if(event.getWidget() == spotAttenuation)
          {

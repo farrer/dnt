@@ -122,8 +122,15 @@ void PositionEditor::selectLight(DNT::LightInfo* light)
    selectedLight = light;
    if(light)
    {
-      setPosition(light->getPosition());
-      showTranslationAxis();
+      if(light->getType() != Ogre::Light::LT_DIRECTIONAL)
+      {
+         setPosition(light->getPosition());
+         showTranslationAxis();
+      }
+      else
+      {
+         hideTranslationAxis();
+      }
 
       if(light->getType() != Ogre::Light::LT_POINT)
       {
