@@ -49,9 +49,18 @@ namespace DNT
 
          /*! Change the light type */
          void setType(Ogre::Light::LightTypes type);
-
          /*! \return Light type of this light */
          const Ogre::Light::LightTypes getType() const { return type; };
+
+         /*! Set light power scale */
+         void setPowerScale(Ogre::Real powerScale);
+         /*! \return light's power scale */
+         const Ogre::Real& getPowerScale() const { return powerScale; };
+
+         /*! Set if using HDR (true) or LDR (false) system */
+         void setHdr(bool hdr);
+         /*! \return if using HDR (true) or LDR (false) */
+         const bool getHdr() const { return hdr; };
 
          /*! Set light position
           * \param pos new light position */
@@ -111,6 +120,9 @@ namespace DNT
          Ogre::Light::LightTypes type; /**< Type of the light used */
 
          MapLights* mapLights; /**< Current lights */
+
+         Ogre::Real powerScale; /**< Light power scale */
+         bool hdr;              /**< True if HDR system, false if LDR */
 
          /* Attenuation values */
          Ogre::Real range,    /**< range value for attenuation */

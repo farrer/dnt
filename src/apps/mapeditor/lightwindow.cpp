@@ -43,19 +43,22 @@ void LightWindow::open()
 {
    if(!window)
    {
-      window = new Farso::Window(320, 210, "Light");
+      window = new Farso::Window(320, 224, "Light");
       window->setExternPointer(&window);
 
       /* Create light color texts */
-      diffuse = new Vector3TextEntry(0, 0, Vector3TextEntry::TYPE_RGB,
+      new Farso::Label(0, 0, 75, 21, "Power Scale", window);
+      powerScale = new Farso::TextEntry(74, 0, 60, 21, window);
+      hdr = new Farso::CheckBox(145, 0, 100, "HDR", false, window); 
+      diffuse = new Vector3TextEntry(0, 22, Vector3TextEntry::TYPE_RGB,
             "Diffuse", window);
-      specular = new Vector3TextEntry(0, 22, Vector3TextEntry::TYPE_RGB,
+      specular = new Vector3TextEntry(0, 44, Vector3TextEntry::TYPE_RGB,
             "Specular", window);
 
       /* Create the light type stack tab */
       Farso::Container* tabCont = new Farso::Container(
             Farso::Container::TYPE_TOP_LEFT, 
-            Farso::Rect(0, 44, 0, 1), window);
+            Farso::Rect(0, 66, 0, 1), window);
       tab = new Farso::StackTab(tabCont);
       
       /* Point light */
@@ -107,6 +110,8 @@ void LightWindow::setEnabled(bool enable)
    if((enable) && (!diffuse->isAvailable()))
    {
       /* Should enable to edit */
+      powerScale->enable();
+      hdr->enable();
       specular->enable();
       diffuse->enable();
       usePoint->enable();
@@ -119,6 +124,8 @@ void LightWindow::setEnabled(bool enable)
    else if((!enable) && (diffuse->isAvailable()))
    {
       /* Should disable the edition */
+      powerScale->disable();
+      hdr->disable();
       specular->disable();
       diffuse->disable();
       usePoint->disable();
@@ -147,6 +154,8 @@ void LightWindow::enablePoint()
 {
    pointPosition->enable();
    pointAttenuation->enable();
+   powerScale->enable();
+   hdr->enable();
 }
 
 /************************************************************************
@@ -170,6 +179,8 @@ void LightWindow::enableSpot()
    spotDirection->enable();
    spotOuterAngle->enable();
    spotAttenuation->enable();
+   powerScale->enable();
+   hdr->enable();
 }
 
 /************************************************************************
@@ -187,6 +198,8 @@ void LightWindow::disableDirectional()
 void LightWindow::enableDirectional()
 {
    direcDirection->enable();
+   powerScale->disable();
+   hdr->disable();
 }
 
 /************************************************************************
@@ -194,6 +207,16 @@ void LightWindow::enableDirectional()
  ************************************************************************/
 void LightWindow::updateTexts(DNT::LightInfo* light)
 {
+   if(light->getHdr())
+   {
+      hdr->check();
+   }
+   else
+   {
+      hdr->uncheck();
+   }
+   powerScale->setCaption(Ogre::StringConverter::toString(
+               light->getPowerScale()));
    diffuse->setValue(light->getDiffuse());
    specular->setValue(light->getSpecular());
    if(light->getType() == Ogre::Light::LT_POINT)
@@ -268,10 +291,29 @@ bool LightWindow::checkEvents(PositionEditor* positionEditor)
                         light->getSpotlightRange().valueDegrees())));
             light->flush();
          }
+         else if(event.getWidget() == powerScale)
+         {
+            light->setPowerScale(Ogre::StringConverter::parseReal(
+                     powerScale->getCaption(), light->getPowerScale()));
+            light->flush();
+         }
+      }
+      else if(event.getType() == Farso::EVENT_CHECKBOX_UNCHECKED)
+      {
+         if(event.getWidget() == hdr)
+         {
+            light->setHdr(false);
+            light->flush();
+         }
       }
       else if(event.getType() == Farso::EVENT_CHECKBOX_CHECKED)
       {
-         if(event.getWidget() == usePoint)
+         if(event.getWidget() == hdr)
+         {
+            light->setHdr(true);
+            light->flush();
+         }
+         else if(event.getWidget() == usePoint)
          {
             light->setType(Ogre::Light::LT_POINT);
             updateTexts(light);

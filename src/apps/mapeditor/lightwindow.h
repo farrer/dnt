@@ -78,6 +78,8 @@ namespace DNTMapEditor
          Farso::Window* window; /**< The window */
          Vector3TextEntry* diffuse; /**< Light diffuse color */
          Vector3TextEntry* specular; /**< Light specular color */
+         Farso::TextEntry* powerScale; /**< Light power scale */
+         Farso::CheckBox* hdr; /**< If light is in HDR or LDR */
 
          Farso::StackTab* tab; /**< The light-type tab */
 

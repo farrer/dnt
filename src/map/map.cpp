@@ -74,6 +74,8 @@ using namespace DNT;
 #define MAP_TOKEN_LIGHT_SPECULAR        "lightSpecular"
 #define MAP_TOKEN_LIGHT_SPOT_RANGE      "lightSpotRange"
 #define MAP_TOKEN_LIGHT_ATTENUATION     "lightAttenuation"
+#define MAP_TOKEN_LIGHT_POWER_SCALE     "lightPowerScale"
+#define MAP_TOKEN_LIGHT_HDR             "lightHdr"
 
 #define MAP_VALUE_LIGHT_POINT           "point"
 #define MAP_VALUE_LIGHT_SPOTLIGHT       "spot"
@@ -82,6 +84,7 @@ using namespace DNT;
 #define MAP_TOKEN_INITIAL               "initial"
 
 #define MAP_VALUE_TRUE                  "true"
+#define MAP_VALUE_FALSE                 "false"
 
 /**************************************************************************
  *                                Constructor                             *
@@ -629,6 +632,22 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool editMode)
             lastLight->setAttenuation(r, c, l, q);
          }
       }
+      else if(key == MAP_TOKEN_LIGHT_POWER_SCALE)
+      {
+         if(lastLight)
+         {
+            float power=1.0f;
+            sscanf(value.c_str(), "%f", &power);
+            lastLight->setPowerScale(power);
+         }
+      }
+      else if(key == MAP_TOKEN_LIGHT_HDR)
+      {
+         if(lastLight)
+         {
+            lastLight->setHdr(value == MAP_VALUE_TRUE);
+         }
+      }
       else 
       {
          Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
@@ -725,6 +744,11 @@ bool Map::save(Kobold::String filename)
       file << MAP_TOKEN_LIGHT_SPECULAR << " = " << light->getSpecular().r
            << " " << light->getSpecular().g << " " 
            << light->getSpecular().b << std::endl;
+      file << MAP_TOKEN_LIGHT_POWER_SCALE << " = " << light->getPowerScale()
+           << std::endl;
+      file << MAP_TOKEN_LIGHT_HDR << " = " 
+           << (light->getHdr() ? MAP_VALUE_TRUE : MAP_VALUE_FALSE) 
+           << std::endl;
       if(light->getType() != Ogre::Light::LT_DIRECTIONAL)
       {
          file << MAP_TOKEN_LIGHT_ATTENUATION << " = " 

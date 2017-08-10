@@ -39,6 +39,8 @@ LightInfo::LightInfo(Ogre::Light::LightTypes type, MapLights* lights)
    this->constant = 1.0;
    this->linear = 0.014; 
    this->quadric = 0.0007;
+   this->powerScale = 1.2f;
+   this->hdr = true;
 
    ogreLight = Game::getSceneManager()->createLight();
    lightSceneNode = 
@@ -91,6 +93,22 @@ void LightInfo::set(LightInfo* lightInfo)
 void LightInfo::setType(Ogre::Light::LightTypes type)
 {
    this->type = type;
+}
+
+/**************************************************************************
+ *                              setPowerScale                             *
+ **************************************************************************/
+void LightInfo::setPowerScale(Ogre::Real powerScale)
+{
+   this->powerScale = powerScale;
+}
+
+/**************************************************************************
+ *                                 setHdr                                 *
+ **************************************************************************/
+void LightInfo::setHdr(bool hdr)
+{
+   this->hdr = hdr;
 }
 
 /**************************************************************************
@@ -168,8 +186,6 @@ void LightInfo::flushToSceneNode()
  **************************************************************************/
 void LightInfo::flush()
 {
-   ogreLight->setPowerScale(Ogre::Math::PI); 
-
    /* Define common light elements */
    ogreLight->setType(type);
    ogreLight->setDiffuseColour(diffuse);
@@ -179,6 +195,15 @@ void LightInfo::flush()
    {
       /* Define attenuation */
       ogreLight->setAttenuation(range, constant, linear, quadric);
+      /* Define power scale */
+      if(hdr)
+      {
+         ogreLight->setPowerScale(powerScale); 
+      }
+      else
+      {
+         ogreLight->setPowerScale(powerScale * Ogre::Math::PI); 
+      }
    }
 
    if(type == Ogre::Light::LT_SPOTLIGHT)
