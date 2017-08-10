@@ -30,18 +30,21 @@ using namespace DNT;
  *                                Constructor                             *
  **************************************************************************/
 LightInfo::LightInfo(Ogre::Light::LightTypes type, MapLights* lights)
-{
-   this->type = type;
-   this->mapLights = lights;
-   this->direction = Ogre::Vector3(0.0f, -1.0f, 0.0f);
-   this->outerAngle = Ogre::Degree(120.0f);
-   this->range = 325;
-   this->constant = 1.0;
-   this->linear = 0.014; 
-   this->quadric = 0.0007;
-   this->powerScale = 1.2f;
-   this->hdr = true;
+          :diffuse(0.1f, 0.1f, 0.1f),
+           specular(0.1f, 0.1f, 0.1f),
+           position(0.0f, 0.0f, 0.0f),
+           direction(0.0f, -1.0f, 0.0f),
+           outerAngle(Ogre::Degree(120.0f)),
+           type(type),
+           mapLights(lights),
+           powerScale(1.6f),
+           hdr(false),
+           range(325),
+           constant(1.0f),
+           linear(0.014f),
+           quadric(0.007f)
 
+{
    ogreLight = Game::getSceneManager()->createLight();
    lightSceneNode = 
       Game::getSceneManager()->getRootSceneNode()->createChildSceneNode();
