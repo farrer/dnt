@@ -194,7 +194,11 @@ void MapEditor::checkKeyboardInput()
  ***********************************************************************/
 bool MapEditor::specialSelect(Ogre::SceneNode* sceneNode)
 {
-   return positionEditor->selectAxis(sceneNode);
+   if(DNT::Game::getCurrentMap() != NULL)
+   {
+      return positionEditor->selectAxis(sceneNode);
+   }
+   return false;
 }
 
 /***********************************************************************
