@@ -120,8 +120,10 @@ void MapEditor::doSendToForeground()
 /***********************************************************************
  *                          checkKeyboardInput                         *
  ***********************************************************************/
-void MapEditor::checkKeyboardInput()
+bool MapEditor::checkKeyboardInput()
 {
+   bool res = false;
+
    if((Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_LCTRL)) ||
       (Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_RCTRL)))
    {
@@ -131,6 +133,7 @@ void MapEditor::checkKeyboardInput()
          /* Should duplicate current selection */
          mainGui->duplicateSelection(positionEditor);
          lastKey = Kobold::KOBOLD_KEY_D;
+         res = true;
       }
       else if((lastKey != Kobold::KOBOLD_KEY_BACKSPACE) && 
               (Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_BACKSPACE)))
@@ -139,6 +142,7 @@ void MapEditor::checkKeyboardInput()
          mainGui->removeSelection(positionEditor);
          lastKey = Kobold::KOBOLD_KEY_BACKSPACE;
          thingUnderCursor = NULL;
+         res = true;
       }
       else if((lastKey != Kobold::KOBOLD_KEY_U) && 
               (Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_U)))
@@ -146,6 +150,7 @@ void MapEditor::checkKeyboardInput()
          /* Should unselect current selection */
          mainGui->unselect(positionEditor);
          lastKey = Kobold::KOBOLD_KEY_U;
+         res = true;
       }
    }
    else if((Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_LALT)) ||
@@ -157,6 +162,7 @@ void MapEditor::checkKeyboardInput()
          /* Node window toggle */
          mainGui->toggleNodeWindow();
          lastKey = Kobold::KOBOLD_KEY_N;
+         res = true;
       }
       else if((lastKey != Kobold::KOBOLD_KEY_T) && 
          (Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_T)))
@@ -164,6 +170,7 @@ void MapEditor::checkKeyboardInput()
          /* Transform window toggle */
          mainGui->toggleTransformWindow();
          lastKey = Kobold::KOBOLD_KEY_T;
+         res = true;
       }
       else if((lastKey != Kobold::KOBOLD_KEY_L) && 
          (Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_L)))
@@ -171,6 +178,7 @@ void MapEditor::checkKeyboardInput()
          /* Transform window toggle */
          mainGui->toggleLightWindow();
          lastKey = Kobold::KOBOLD_KEY_L;
+         res = true;
       }
       else if((lastKey != Kobold::KOBOLD_KEY_M) && 
          (Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_M)))
@@ -178,6 +186,7 @@ void MapEditor::checkKeyboardInput()
          /* Metadata window toggle */
          mainGui->toggleMetadataWindow();
          lastKey = Kobold::KOBOLD_KEY_M;
+         res = true;
       }
    }
    
@@ -187,6 +196,8 @@ void MapEditor::checkKeyboardInput()
       /* Last key no more pressed, must clear it */
       lastKey = Kobold::KOBOLD_KEY_UNKNOWN;
    }
+
+   return res;
 }
 
 /***********************************************************************
@@ -234,13 +245,17 @@ void MapEditor::doAfterRender()
       mainGui->update(positionEditor);
 
       /* Let's check keyboard input for selections */
-      checkKeyboardInput();
- 
-      /* Update mouse world and thing under mouse */
-      updateMouseWorld(!positionEditor->isMoving());
+      if(!checkKeyboardInput())
+      {
+         /* No valid input via keyboard happened, so no changes on world
+          * after the render: we can check mouse world and do ray queries.*/
 
-      /* Let's update our position editor */
-      positionEditor->update(leftButtonPressed, floorMouse, mouseX, mouseY);
+         /* Update mouse world and thing under mouse */
+         updateMouseWorld(!positionEditor->isMoving());
+
+         /* Let's update our position editor */
+         positionEditor->update(leftButtonPressed, floorMouse, mouseX, mouseY);
+      }
    }
 
    if(thingUnderCursor)

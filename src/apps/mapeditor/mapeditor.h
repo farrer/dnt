@@ -68,7 +68,7 @@ class MapEditor : public DNT::CommonApp
 
    private:
       /*! Check keyboard input for editor */
-      void checkKeyboardInput();
+      bool checkKeyboardInput();
 
       MainGui* mainGui; /**< Main editor's gui */
       PositionEditor* positionEditor; /**< Position editor */
