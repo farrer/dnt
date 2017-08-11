@@ -39,6 +39,7 @@ LightInfo::LightInfo(Ogre::Light::LightTypes type, MapLights* lights)
            mapLights(lights),
            powerScale(1.6f),
            hdr(false),
+           castShadows(true),
            range(325),
            constant(1.0f),
            linear(0.014f),
@@ -112,6 +113,14 @@ void LightInfo::setPowerScale(Ogre::Real powerScale)
 void LightInfo::setHdr(bool hdr)
 {
    this->hdr = hdr;
+}
+
+/**************************************************************************
+ *                            setCastShadows                              *
+ **************************************************************************/
+void LightInfo::setCastShadows(bool cast)
+{
+   this->castShadows = cast;
 }
 
 /**************************************************************************
@@ -193,6 +202,7 @@ void LightInfo::flush()
    ogreLight->setType(type);
    ogreLight->setDiffuseColour(diffuse);
    ogreLight->setSpecularColour(specular);
+   ogreLight->setCastShadows(castShadows);
 
    if(type != Ogre::Light::LT_DIRECTIONAL)
    {

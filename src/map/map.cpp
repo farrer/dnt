@@ -76,6 +76,7 @@ using namespace DNT;
 #define MAP_TOKEN_LIGHT_ATTENUATION     "lightAttenuation"
 #define MAP_TOKEN_LIGHT_POWER_SCALE     "lightPowerScale"
 #define MAP_TOKEN_LIGHT_HDR             "lightHdr"
+#define MAP_TOKEN_LIGHT_CAST_SHADOWS    "lightCastShadows"
 
 #define MAP_VALUE_LIGHT_POINT           "point"
 #define MAP_VALUE_LIGHT_SPOTLIGHT       "spot"
@@ -648,6 +649,13 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool editMode)
             lastLight->setHdr(value == MAP_VALUE_TRUE);
          }
       }
+      else if(key == MAP_TOKEN_LIGHT_CAST_SHADOWS)
+      {
+         if(lastLight)
+         {
+            lastLight->setCastShadows(value == MAP_VALUE_TRUE);
+         }
+      }
       else 
       {
          Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
@@ -749,6 +757,11 @@ bool Map::save(Kobold::String filename)
       file << MAP_TOKEN_LIGHT_HDR << " = " 
            << (light->getHdr() ? MAP_VALUE_TRUE : MAP_VALUE_FALSE) 
            << std::endl;
+      if(!light->getCastShadows())
+      {
+         file << MAP_TOKEN_LIGHT_CAST_SHADOWS << " = " 
+              << MAP_VALUE_FALSE << std::endl;
+      }
       if(light->getType() != Ogre::Light::LT_DIRECTIONAL)
       {
          file << MAP_TOKEN_LIGHT_ATTENUATION << " = " 

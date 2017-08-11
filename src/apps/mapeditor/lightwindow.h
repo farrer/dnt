@@ -80,6 +80,7 @@ namespace DNTMapEditor
          Vector3TextEntry* specular; /**< Light specular color */
          Farso::TextEntry* powerScale; /**< Light power scale */
          Farso::CheckBox* hdr; /**< If light is in HDR or LDR */
+         Farso::CheckBox* castShadows; /**< If light should cast shadows */
 
          Farso::StackTab* tab; /**< The light-type tab */
 

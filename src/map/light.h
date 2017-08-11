@@ -62,6 +62,11 @@ namespace DNT
          /*! \return if using HDR (true) or LDR (false) */
          const bool getHdr() const { return hdr; };
 
+         /*! Set if the light should cast shadows or not */
+         void setCastShadows(bool cast);
+         /*! \return if the light cast shadows or not */
+         const bool getCastShadows() { return castShadows; };
+
          /*! Set light position
           * \param pos new light position */
          void setPosition(Ogre::Vector3 pos);
@@ -123,6 +128,7 @@ namespace DNT
 
          Ogre::Real powerScale; /**< Light power scale */
          bool hdr;              /**< True if HDR system, false if LDR */
+         bool castShadows;      /**< If the light cast shadows or not */
 
          /* Attenuation values */
          Ogre::Real range,    /**< range value for attenuation */

@@ -49,7 +49,9 @@ void LightWindow::open()
       /* Create light color texts */
       new Farso::Label(0, 0, 75, 21, "Power Scale", window);
       powerScale = new Farso::TextEntry(74, 0, 60, 21, window);
-      hdr = new Farso::CheckBox(145, 0, 100, "HDR", false, window); 
+      hdr = new Farso::CheckBox(145, 0, 50, "HDR", false, window); 
+      castShadows = new Farso::CheckBox(200, 0, 100, "Cast Shadows", 
+            true, window); 
       diffuse = new Vector3TextEntry(0, 22, Vector3TextEntry::TYPE_RGB,
             "Diffuse", window);
       specular = new Vector3TextEntry(0, 44, Vector3TextEntry::TYPE_RGB,
@@ -112,6 +114,7 @@ void LightWindow::setEnabled(bool enable)
       /* Should enable to edit */
       powerScale->enable();
       hdr->enable();
+      castShadows->enable();
       specular->enable();
       diffuse->enable();
       usePoint->enable();
@@ -126,6 +129,7 @@ void LightWindow::setEnabled(bool enable)
       /* Should disable the edition */
       powerScale->disable();
       hdr->disable();
+      castShadows->disable();
       specular->disable();
       diffuse->disable();
       usePoint->disable();
@@ -207,14 +211,8 @@ void LightWindow::enableDirectional()
  ************************************************************************/
 void LightWindow::updateTexts(DNT::LightInfo* light)
 {
-   if(light->getHdr())
-   {
-      hdr->check();
-   }
-   else
-   {
-      hdr->uncheck();
-   }
+   (light->getHdr()) ? hdr->check() : hdr->uncheck();
+   (light->getCastShadows()) ? castShadows->check() : castShadows->uncheck();
    powerScale->setCaption(Ogre::StringConverter::toString(
                light->getPowerScale()));
    diffuse->setValue(light->getDiffuse());
@@ -304,6 +302,11 @@ bool LightWindow::checkEvents(PositionEditor* positionEditor)
          {
             light->setHdr(false);
             light->flush();
+         } 
+         else if(event.getWidget() == castShadows)
+         {
+            light->setCastShadows(false);
+            light->flush();
          }
       }
       else if(event.getType() == Farso::EVENT_CHECKBOX_CHECKED)
@@ -311,6 +314,11 @@ bool LightWindow::checkEvents(PositionEditor* positionEditor)
          if(event.getWidget() == hdr)
          {
             light->setHdr(true);
+            light->flush();
+         }
+         else if(event.getWidget() == castShadows)
+         {
+            light->setCastShadows(true);
             light->flush();
          }
          else if(event.getWidget() == usePoint)
