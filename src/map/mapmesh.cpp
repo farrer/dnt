@@ -337,34 +337,11 @@ MapSubMesh::MapSubMesh(Ogre::MeshPtr mesh, Ogre::String datablockName)
  **************************************************************************/
 MapSubMesh::~MapSubMesh()
 {
-   /* Must destroy if created the submesh */
+   /* Must destroy if created the submesh: note the VAO is destructed within 
+    * the submesh destroy. */
    if(this->subMesh)
    {
       this->mesh->destroySubMesh(this->subMeshIndex);
-      //FIXME: the destroy isn't freeing it all!
-   }
-
-   /* let's destroy VAO related buffers */
-   Ogre::VaoManager* vaoManager = 
-      Ogre::Root::getSingletonPtr()->getRenderSystem()->getVaoManager();
-   if(vao)
-   {
-      vaoManager->destroyVertexArrayObject(vao);
-      vao = NULL;
-   }
-   if(vertexBuffer)
-   {
-      //if defined to dynamic.
-      //vertexBuffer->map( 0, vertexBuffer->getNumElements());
-      //vertexBuffer->unmap(Ogre::UO_UNMAP_ALL);
-
-      vaoManager->destroyVertexBuffer(vertexBuffer);
-      vertexBuffer = NULL;
-   }
-   if(indexBuffer)
-   {
-      vaoManager->destroyIndexBuffer(indexBuffer);
-      indexBuffer = NULL;
    }
 }
 
