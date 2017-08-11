@@ -421,7 +421,7 @@ void MainGui::duplicateSelection(PositionEditor* positionEditor)
    {
       DNT::Thing* thing = positionEditor->getSelectedThing();
       Ogre::Vector3 pos = thing->getModel()->getPosition();
-      pos.x += 10;
+      pos.x += 0.5f;
       //TODO: check if new position is inner the map!
       DNT::Thing* newThing = DNT::Game::getCurrentMap()->insertThing(
             thing->getFilename(), true, pos, 
@@ -440,7 +440,7 @@ void MainGui::duplicateSelection(PositionEditor* positionEditor)
    {
       DNT::LightInfo* lightInfo = positionEditor->getSelectedLight();
       Ogre::Vector3 pos = lightInfo->getPosition();
-      pos.x += 10;
+      pos.x += 0.5f;
       //TODO: check if new position is inner the map!
       DNT::LightInfo* newLight = DNT::Game::getCurrentMap()->
          getLights()->createLightInfo(lightInfo->getType());
@@ -454,6 +454,7 @@ void MainGui::duplicateSelection(PositionEditor* positionEditor)
          nodesWindow.setSelectedNodeByData(newLight);
       }
       positionEditor->selectLight(newLight);
+      newLight->flush();
    }
 }
 

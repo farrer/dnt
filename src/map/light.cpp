@@ -84,6 +84,9 @@ void LightInfo::set(LightInfo* lightInfo)
       this->diffuse = lightInfo->diffuse;
       this->specular = lightInfo->specular;
       this->outerAngle = lightInfo->outerAngle;
+      this->powerScale = lightInfo->powerScale;
+      this->hdr = lightInfo->hdr;
+      this->castShadows = lightInfo->castShadows;
       this->range = lightInfo->range;
       this->constant = lightInfo->constant;
       this->linear = lightInfo->linear;
