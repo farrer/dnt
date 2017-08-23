@@ -97,7 +97,7 @@ int SkinScriptInstance::getTotalElements()
  *                              Constructor                               *
  **************************************************************************/
 SkinScript::SkinScript(ScriptManager* manager)
-           :ScriptController(SCRIPT_TYPE_RULE, manager),
+           :ScriptController(SCRIPT_TYPE_SKIN, manager),
             factoryFunction(NULL),
             stepFunction(NULL),
             totalElementsFunction(NULL),

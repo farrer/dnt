@@ -465,6 +465,9 @@ ScriptController* ScriptManager::getOrLoadController(
       case ScriptController::SCRIPT_TYPE_RULE_DEFINITION:
          ctrl = new RuleDefinitionScript(this);
       break;
+      case ScriptController::SCRIPT_TYPE_SKIN:
+         ctrl = new SkinScript(this);
+      break;
       default:
          ctrl = NULL;
       break;
@@ -547,6 +550,25 @@ RuleDefinitionScriptInstance* ScriptManager::createRuleDefinitionScriptInstance(
 
    /* Create a new instance of the script */
    RuleDefinitionScriptInstance* res = ctrl->createInstance();
+   insertInstance(res);
+
+   return res;
+}
+
+/**************************************************************************
+ *                        createSkinScriptInstance                        *
+ **************************************************************************/
+SkinScriptInstance* ScriptManager::createSkinScriptInstance(
+      const Kobold::String& filename)
+{
+   SkinScript* ctrl = static_cast<SkinScript*>(getOrLoadController(
+            ScriptController::SCRIPT_TYPE_SKIN, filename));
+   if(!ctrl)
+   {
+      return NULL;
+   }
+
+   SkinScriptInstance* res = ctrl->createInstance();
    insertInstance(res);
 
    return res;

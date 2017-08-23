@@ -34,6 +34,7 @@
 #include "mapscript.h"
 #include "rulescript.h"
 #include "ruledefscript.h"
+#include "skinscript.h"
 
 /*! Minimum time (in ms) between each step on ScriptManager */
 #define SCRIPT_UPDATE_TIME   100
@@ -67,6 +68,12 @@ namespace DNT
           * \param filename name of the script to load
           * \return new instance of the loaded script. */
          RuleDefinitionScriptInstance* createRuleDefinitionScriptInstance(
+               const Kobold::String& filename);
+
+         /*! Create an instance of a skin script 
+          * \param filename name of the script to load
+          * \return new instance of the loaded script */
+         SkinScriptInstance* createSkinScriptInstance(
                const Kobold::String& filename);
 
          /*! Call an specific instance function.
