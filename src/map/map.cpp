@@ -29,8 +29,8 @@
 #include "../core/game.h"
 #include "../lang/translate.h"
 #include "../collision/collision.h"
-#include "../ai/script/mapscript.h"
-#include "../ai/script/scriptmanager.h"
+#include "../script/mapscript.h"
+#include "../script/scriptmanager.h"
 #include "../core/dialog.h"
 
 #include <kobold/defparser.h>

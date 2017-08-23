@@ -22,7 +22,7 @@
 #include "scriptinstance.h"
 #include "scriptmanager.h"
 #include "scriptobjectruledef.h"
-#include "../../rules/ruledef.h"
+#include "../rules/ruledef.h"
 #include <kobold/log.h>
 #include <assert.h>
 using namespace DNT;

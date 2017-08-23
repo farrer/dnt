@@ -29,7 +29,7 @@
 
 #include "../map/map.h"
 #include "../rules/character.h"
-#include "../ai/script/scriptmanager.h"
+#include "../script/scriptmanager.h"
 
 #include <kobold/log.h>
 using namespace DNT;

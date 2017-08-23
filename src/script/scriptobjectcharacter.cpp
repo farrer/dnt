@@ -21,11 +21,11 @@
 #include "scriptobjectcharacter.h"
 #include "scriptmanager.h"
 #include "pendingaction.h"
-#include "../../rules/character.h"
-#include "../../core/game.h"
-#include "../../core/util.h"
-#include "../../core/playablecharacter.h"
-#include "../../gui/dialogwindow.h"
+#include "../rules/character.h"
+#include "../core/game.h"
+#include "../core/util.h"
+#include "../core/playablecharacter.h"
+#include "../gui/dialogwindow.h"
 #include <kobold/log.h>
 #include <stdlib.h>
 using namespace DNT;

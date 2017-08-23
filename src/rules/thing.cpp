@@ -25,8 +25,8 @@
 #include "../core/dialog.h"
 #include "../core/game.h"
 #include "../map/map.h"
-#include "../ai/script/scriptobject.h"
-#include "../ai/script/scriptmanager.h"
+#include "../script/scriptobject.h"
+#include "../script/scriptmanager.h"
 
 #include <kobold/defparser.h>
 #include <kobold/log.h>

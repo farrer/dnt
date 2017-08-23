@@ -20,8 +20,8 @@
 
 #include "pendingaction.h"
 #include "scriptobjectcharacter.h"
-#include "../astar.h"
-#include "../../rules/character.h"
+#include "../ai/astar.h"
+#include "../rules/character.h"
 using namespace DNT;
 
 /**************************************************************************

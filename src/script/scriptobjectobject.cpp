@@ -21,9 +21,9 @@
 #include "scriptobjectobject.h"
 #include "scriptmanager.h"
 #include "pendingaction.h"
-#include "../../core/object.h"
-#include "../../core/game.h"
-#include "../../map/map.h"
+#include "../core/object.h"
+#include "../core/game.h"
+#include "../map/map.h"
 #include <kobold/log.h>
 #include <stdlib.h>
 using namespace DNT;

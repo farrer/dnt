@@ -28,8 +28,8 @@
 #include "scriptobjectruledef.h"
 #include "scriptobjectrulegroup.h"
 #include "pendingaction.h"
-#include "../../gui/briefing.h"
-#include "../../lang/translate.h"
+#include "../gui/briefing.h"
+#include "../lang/translate.h"
 
 #include <kobold/log.h>
 #include <kosound/sound.h>

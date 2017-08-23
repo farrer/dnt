@@ -79,39 +79,43 @@ set(AI_HEADERS
    src/ai/agent.h
    src/ai/astar.h
    src/ai/patternagent.h
-   src/ai/script/mapscript.h
-   src/ai/script/pendingaction.h
-   src/ai/script/rulescript.h
-   src/ai/script/ruledefscript.h
-   src/ai/script/scriptcontroller.h
-   src/ai/script/scriptinstance.h
-   src/ai/script/scriptmanager.h
-   src/ai/script/scriptobject.h
-   src/ai/script/scriptobjectcharacter.h
-   src/ai/script/scriptobjectdice.h
-   src/ai/script/scriptobjectobject.h
-   src/ai/script/scriptobjectruledef.h
-   src/ai/script/scriptobjectrulegroup.h
-   src/ai/script/scriptstdstring.h
 )
 set(AI_SOURCES
    src/ai/agent.cpp
    src/ai/astar.cpp
    src/ai/patternagent.cpp
-   src/ai/script/mapscript.cpp
-   src/ai/script/pendingaction.cpp
-   src/ai/script/rulescript.cpp
-   src/ai/script/ruledefscript.cpp
-   src/ai/script/scriptcontroller.cpp
-   src/ai/script/scriptinstance.cpp
-   src/ai/script/scriptmanager.cpp
-   src/ai/script/scriptobject.cpp
-   src/ai/script/scriptobjectcharacter.cpp
-   src/ai/script/scriptobjectdice.cpp
-   src/ai/script/scriptobjectobject.cpp
-   src/ai/script/scriptobjectruledef.cpp
-   src/ai/script/scriptobjectrulegroup.cpp
-   src/ai/script/scriptstdstring.cpp
+)
+set(SCRIPT_HEADERS
+   src/script/mapscript.h
+   src/script/pendingaction.h
+   src/script/rulescript.h
+   src/script/ruledefscript.h
+   src/script/scriptcontroller.h
+   src/script/scriptinstance.h
+   src/script/scriptmanager.h
+   src/script/scriptobject.h
+   src/script/scriptobjectcharacter.h
+   src/script/scriptobjectdice.h
+   src/script/scriptobjectobject.h
+   src/script/scriptobjectruledef.h
+   src/script/scriptobjectrulegroup.h
+   src/script/scriptstdstring.h
+)
+set(SCRIPT_SOURCES
+   src/script/mapscript.cpp
+   src/script/pendingaction.cpp
+   src/script/rulescript.cpp
+   src/script/ruledefscript.cpp
+   src/script/scriptcontroller.cpp
+   src/script/scriptinstance.cpp
+   src/script/scriptmanager.cpp
+   src/script/scriptobject.cpp
+   src/script/scriptobjectcharacter.cpp
+   src/script/scriptobjectdice.cpp
+   src/script/scriptobjectobject.cpp
+   src/script/scriptobjectruledef.cpp
+   src/script/scriptobjectrulegroup.cpp
+   src/script/scriptstdstring.cpp
 )
 set(LANG_SOURCES
    src/lang/translate.cpp
@@ -163,6 +167,7 @@ ENDIF(${WIN32} OR ${MINGW})
 
 set(DNT_LIB_HEADERS
    ${AI_HEADERS}
+   ${SCRIPT_HEADERS}
    ${CORE_HEADERS}
    ${MAP_HEADERS}
    ${RULES_HEADERS}
@@ -176,6 +181,7 @@ set(DNT_LIB_HEADERS
 
 set(DNT_LIB_SOURCES
    ${AI_SOURCES}
+   ${SCRIPT_SOURCES}
    ${CORE_SOURCES}
    ${MAP_SOURCES}
    ${RULES_SOURCES}

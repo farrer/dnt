@@ -22,7 +22,7 @@
 #define _dnt_script_object_race_h
 
 #include "scriptobject.h"
-#include "../../rules/ruledef.h"
+#include "../rules/ruledef.h"
 #include <kobold/mutex.h>
 #include <angelscript.h>
 

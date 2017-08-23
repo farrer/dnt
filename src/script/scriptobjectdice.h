@@ -23,7 +23,7 @@
 
 #include "dntconfig.h"
 #include "scriptobject.h"
-#include "../../rules/dices.h"
+#include "../rules/dices.h"
 #include <angelscript.h>
 
 namespace DNT
