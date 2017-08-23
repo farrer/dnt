@@ -121,6 +121,8 @@ namespace DNT
    class PendingAction;
    class PendingActionSleep;
    class PendingActionMove;
+   class SkinScript;
+   class SkinScriptInstance;
 
 }
 

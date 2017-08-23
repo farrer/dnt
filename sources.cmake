@@ -100,6 +100,7 @@ set(SCRIPT_HEADERS
    src/script/scriptobjectruledef.h
    src/script/scriptobjectrulegroup.h
    src/script/scriptstdstring.h
+   src/script/skinscript.h
 )
 set(SCRIPT_SOURCES
    src/script/mapscript.cpp
@@ -116,6 +117,7 @@ set(SCRIPT_SOURCES
    src/script/scriptobjectruledef.cpp
    src/script/scriptobjectrulegroup.cpp
    src/script/scriptstdstring.cpp
+   src/script/skinscript.cpp
 )
 set(LANG_SOURCES
    src/lang/translate.cpp
