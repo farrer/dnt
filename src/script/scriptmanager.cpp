@@ -131,6 +131,8 @@ ScriptManager::ScriptManager()
    assert(r >= 0);
    r = asEngine->RegisterInterface("CharacterController");
    assert(r >= 0);
+   r = asEngine->RegisterInterface("SkinController");
+   assert(r >= 0);
    
    /* Start our thread */
    createThread();

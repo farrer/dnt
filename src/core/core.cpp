@@ -32,6 +32,7 @@
 
 #include "../core/playablecharacter.h"
 #include "../collision/collision.h"
+#include "../gui/skin.h"
 
 #include <goblin/camera.h>
 #include <OGRE/Compositor/OgreCompositorManager2.h>
@@ -64,6 +65,11 @@ bool Core::doCycleInit(int callCounter, bool& shouldAbort)
 {
    if(doCommonCycleInit(callCounter, shouldAbort))
    {
+
+      //TODO: The skin definiton should be at the mod load, not here
+      /* note that the skin deallocation will be made by Farso. */
+      new Skin("skins/gameskin.as");
+
       //FIXME: for outdoor maps, must define the hemisphere colors with
       //       different values.
       getSceneManager()->setAmbientLight(

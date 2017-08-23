@@ -37,6 +37,9 @@ namespace DNT
          /*! Destructor */
          ~SkinScriptInstance();
 
+         /*! \return the .skin definition filename to use */
+         Kobold::String getSkinFilename();
+
          /*! \return total SkinElements defined by the script */
          int getTotalElements();
          /*! \return index of the SkinElement [0, total) for the element 
@@ -58,11 +61,15 @@ namespace DNT
          asIScriptFunction* getFactoryFunction();
          /*! \return pointer to the function called on every cycle */
          asIScriptFunction* getStepFunction();
-         /*! \return pointer to be called */
+         /*! \return pointer to be receive the total new Skin elements 
+          * defined */
          asIScriptFunction* getTotalElementsFunction();
-         /*! \return pointer to the function called when needed to roll a
-          * RuleDefinition against another one. */
+         /*! \return pointer to the function called to parse a skin element
+          * defined by this skin */
          asIScriptFunction* getElementTypeFunction();
+         /*! \return pointer to the function called to get the skin filename
+          * to use */
+         asIScriptFunction* getSkinFilenameFunction();
 
       protected:
          void setFunctionPointers();
@@ -76,6 +83,7 @@ namespace DNT
          asIScriptFunction* stepFunction;
          asIScriptFunction* totalElementsFunction;
          asIScriptFunction* elementTypeFunction;
+         asIScriptFunction* skinFilenameFunction;
    };
 
 }

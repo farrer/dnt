@@ -41,6 +41,31 @@ SkinScriptInstance::~SkinScriptInstance()
 }
 
 /**************************************************************************
+ *                          getSkinFilename                               *
+ **************************************************************************/
+Kobold::String SkinScriptInstance::getSkinFilename()
+{
+   Kobold::String res = "";
+
+   SkinScript* skinScript = static_cast<SkinScript*>(script);
+   if(skinScript->getSkinFilenameFunction())
+   {
+      asIScriptContext* ctx = manager->prepareContextFromPool(
+            skinScript->getSkinFilenameFunction());
+      ctx->SetObject(getObject());
+      int r = manager->executeCall(ctx, this);
+      assert(r == asEXECUTION_FINISHED);
+      if(r == asEXECUTION_FINISHED)
+      {
+         res = *static_cast<Kobold::String*>(ctx->GetReturnObject()); 
+      }
+      manager->returnContextToPool(ctx);
+   }
+
+   return res;
+}
+
+/**************************************************************************
  *                           getElementType                               *
  **************************************************************************/
 int SkinScriptInstance::getElementType(const Kobold::String& name)
@@ -101,7 +126,8 @@ SkinScript::SkinScript(ScriptManager* manager)
             factoryFunction(NULL),
             stepFunction(NULL),
             totalElementsFunction(NULL),
-            elementTypeFunction(NULL)
+            elementTypeFunction(NULL),
+            skinFilenameFunction(NULL)
 {
 }
 
@@ -156,6 +182,9 @@ void SkinScript::setFunctionPointers()
    this->elementTypeFunction = mainType->GetMethodByDecl(
          "int getElementType(string)");
    assert(this->elementTypeFunction);
+   this->skinFilenameFunction = mainType->GetMethodByDecl(
+         "string getSkinFilename()");
+   assert(this->skinFilenameFunction);
 }
 
 /**************************************************************************
@@ -190,4 +219,11 @@ asIScriptFunction* SkinScript::getElementTypeFunction()
    return elementTypeFunction;
 }
 
+/**************************************************************************
+ *                          getSkinFilenameFunction                       *
+ **************************************************************************/
+asIScriptFunction* SkinScript::getSkinFilenameFunction()
+{
+   return skinFilenameFunction;
+}
 
