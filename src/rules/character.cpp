@@ -256,7 +256,8 @@ void Character::update()
       if(aStar->getNewPosition(pos, ori, false, 1.0f))
       {
          getModel()->setPosition(pos);
-         getModel()->setOrientation(ori);
+         getModel()->setTargetOrientation(getModel()->getPitch(), 
+               ori, getModel()->getRoll(), 4);
          if(getCurrentAnimation() != CHARACTER_ANIMATION_WALK)
          {
             setAnimation(CHARACTER_ANIMATION_WALK, true);
