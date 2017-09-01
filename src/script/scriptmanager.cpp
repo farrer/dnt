@@ -282,12 +282,14 @@ asIScriptContext* ScriptManager::prepareContextFromPool(
 void ScriptManager::returnContextToPool(asIScriptContext* ctx)
 {
    assert(ctx != NULL);
+
+   /* Unprepare the context before returning to pool, to avoid
+    * someone get it before it was really 'freed'. */
+   ctx->Unprepare();
    
    managerMutex.lock();
    contexts.push_back(ctx);
    managerMutex.unlock();
-
-   ctx->Unprepare();
 }
 
 /**************************************************************************
