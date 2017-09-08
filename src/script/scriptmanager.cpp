@@ -217,9 +217,8 @@ bool ScriptManager::step()
    /* No more steping any instance, must unset the current. */
    managerMutex.lock();
    currentOnStep = NULL;
-   managerMutex.unlock();
-
    asEngine->GarbageCollect(asGC_ONE_STEP);
+   managerMutex.unlock();
 
    return true;
 }
