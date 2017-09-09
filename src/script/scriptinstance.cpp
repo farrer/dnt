@@ -139,7 +139,7 @@ void ScriptInstance::addSuspendedContext(asIScriptContext* ctx,
    SuspendedInfo* last = static_cast<SuspendedInfo*>(suspended.getLast());
    if((last == NULL) || (last->getContext() != ctx))
    {
-      suspended.insert(new SuspendedInfo(ctx, act, manager));
+      suspended.insertAtEnd(new SuspendedInfo(ctx, act, manager));
    }
 
    mutex.unlock();

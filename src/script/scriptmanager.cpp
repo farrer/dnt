@@ -167,7 +167,7 @@ ScriptManager::~ScriptManager()
    /* Release all created contexts */
    Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL,
          "\tReleasing context pool...");
-   while(contexts.size())
+   while(contexts.size() > 0)
    {
       /* Get avaiable context from pool */
       asIScriptContext* ctx = *contexts.rbegin();
@@ -428,6 +428,7 @@ int ScriptManager::executeCall(asIScriptContext* ctx,
          }
       }
    }
+   assert(r >= 0);
 
    /* Clear current running */
    curRunningInstance = NULL;
