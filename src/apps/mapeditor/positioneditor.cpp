@@ -27,19 +27,19 @@ using namespace DNTMapEditor;
  *                           PositionEditor                            *
  ***********************************************************************/
 PositionEditor::PositionEditor(Ogre::SceneManager* sceneManager)
-        :xAxis("xAxys", "mapeditor/vector.mesh", sceneManager, 
+        :xAxis("xAxys", "mapeditor/vector.mesh", "models", sceneManager, 
                Goblin::Model3d::MODEL_DYNAMIC),
-         yAxis("yAxys", "mapeditor/vector.mesh", sceneManager, 
+         yAxis("yAxys", "mapeditor/vector.mesh", "models", sceneManager, 
                Goblin::Model3d::MODEL_DYNAMIC), 
-         zAxis("zAxys", "mapeditor/vector.mesh", sceneManager, 
+         zAxis("zAxys", "mapeditor/vector.mesh", "models", sceneManager, 
                Goblin::Model3d::MODEL_DYNAMIC),
-         lightDirAxis("lightDirAxys", "mapeditor/vector.mesh", sceneManager, 
+         lightDirAxis("lightDirAxys", "mapeditor/vector.mesh", "models", 
+               sceneManager, Goblin::Model3d::MODEL_DYNAMIC),
+         xRot("xRot", "mapeditor/rotation_circle.mesh", "models", sceneManager, 
                Goblin::Model3d::MODEL_DYNAMIC),
-         xRot("xRot", "mapeditor/rotation_circle.mesh", sceneManager, 
+         yRot("yRot", "mapeditor/rotation_circle.mesh", "models", sceneManager, 
                Goblin::Model3d::MODEL_DYNAMIC),
-         yRot("yRot", "mapeditor/rotation_circle.mesh", sceneManager, 
-               Goblin::Model3d::MODEL_DYNAMIC),
-         zRot("zRot", "mapeditor/rotation_circle.mesh", sceneManager, 
+         zRot("zRot", "mapeditor/rotation_circle.mesh", "models", sceneManager, 
                Goblin::Model3d::MODEL_DYNAMIC)
 {
    xAxis.setScaleNow(0.25f, 0.25f, 0.25f);

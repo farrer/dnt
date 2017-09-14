@@ -218,7 +218,7 @@ bool Thing::load(Kobold::String fileName,
          if(model == NULL)
          {
             modelFileName = value;
-            model = new Goblin::Model3d(modelName, modelFileName, 
+            model = new Goblin::Model3d(modelName, modelFileName, "models", 
                   Game::getSceneManager(), modelType);
          }
       }
@@ -229,9 +229,9 @@ bool Thing::load(Kobold::String fileName,
          if(model == NULL)
          {
             modelFileName = value;
-            model = new Goblin::AnimatedModel3d(modelName, modelFileName,
-                    Game::getSceneManager(), getAnimationList(),
-                    totalAnimations);
+            model = new Goblin::AnimatedModel3d(modelName, modelFileName, 
+                  "models", Game::getSceneManager(), getAnimationList(),
+                  totalAnimations);
          }
       }
       else if(key == THING_KEY_REDEFINE_BOUNDS)
