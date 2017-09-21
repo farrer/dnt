@@ -103,6 +103,7 @@ set(SCRIPT_HEADERS
    src/script/scriptobjectrulegroup.h
    src/script/scriptstdstring.h
    src/script/skinscript.h
+   src/script/widgetscript.h
 )
 set(SCRIPT_SOURCES
    src/script/mapscript.cpp
@@ -120,6 +121,7 @@ set(SCRIPT_SOURCES
    src/script/scriptobjectrulegroup.cpp
    src/script/scriptstdstring.cpp
    src/script/skinscript.cpp
+   src/script/widgetscript.cpp
 )
 set(LANG_SOURCES
    src/lang/translate.cpp

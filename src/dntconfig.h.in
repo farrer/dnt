@@ -123,6 +123,8 @@ namespace DNT
    class PendingActionMove;
    class SkinScript;
    class SkinScriptInstance;
+   class WidgetScript;
+   class WidgetScriptInstance;
 
 }
 

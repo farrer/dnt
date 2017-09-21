@@ -41,7 +41,8 @@ class ScriptController : public Kobold::ListElement
           SCRIPT_TYPE_MAP,
           SCRIPT_TYPE_RULE,
           SCRIPT_TYPE_RULE_DEFINITION,
-          SCRIPT_TYPE_SKIN
+          SCRIPT_TYPE_SKIN,
+          SCRIPT_TYPE_WIDGET
       };
       /*! Constructor */
       ScriptController(ScriptType type, ScriptManager* manager);

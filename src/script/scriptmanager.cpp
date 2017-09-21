@@ -133,6 +133,8 @@ ScriptManager::ScriptManager()
    assert(r >= 0);
    r = asEngine->RegisterInterface("SkinController");
    assert(r >= 0);
+   r = asEngine->RegisterInterface("WidgetController");
+   assert(r >= 0);
    
    /* Start our thread */
    createThread();
@@ -472,6 +474,9 @@ ScriptController* ScriptManager::getOrLoadController(
       case ScriptController::SCRIPT_TYPE_SKIN:
          ctrl = new SkinScript(this);
       break;
+      case ScriptController::SCRIPT_TYPE_WIDGET:
+         ctrl = new WidgetScript(this);
+      break;
       default:
          ctrl = NULL;
       break;
@@ -573,6 +578,25 @@ SkinScriptInstance* ScriptManager::createSkinScriptInstance(
    }
 
    SkinScriptInstance* res = ctrl->createInstance();
+   insertInstance(res);
+
+   return res;
+}
+
+/**************************************************************************
+ *                       createWidgetScriptInstance                       *
+ **************************************************************************/
+WidgetScriptInstance* ScriptManager::createWidgetScriptInstance(
+      const Kobold::String& filename)
+{
+   WidgetScript* ctrl = static_cast<WidgetScript*>(getOrLoadController(
+            ScriptController::SCRIPT_TYPE_WIDGET, filename));
+   if(!ctrl)
+   {
+      return NULL;
+   }
+
+   WidgetScriptInstance* res = ctrl->createInstance();
    insertInstance(res);
 
    return res;
