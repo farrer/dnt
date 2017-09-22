@@ -101,6 +101,7 @@ set(SCRIPT_HEADERS
    src/script/scriptobjectobject.h
    src/script/scriptobjectruledef.h
    src/script/scriptobjectrulegroup.h
+   src/script/scriptobjectwidget.h
    src/script/scriptstdstring.h
    src/script/skinscript.h
    src/script/widgetscript.h
@@ -119,6 +120,7 @@ set(SCRIPT_SOURCES
    src/script/scriptobjectobject.cpp
    src/script/scriptobjectruledef.cpp
    src/script/scriptobjectrulegroup.cpp
+   src/script/scriptobjectwidget.cpp
    src/script/scriptstdstring.cpp
    src/script/skinscript.cpp
    src/script/widgetscript.cpp

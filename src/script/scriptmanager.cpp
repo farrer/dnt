@@ -27,6 +27,7 @@
 #include "scriptobjectobject.h"
 #include "scriptobjectruledef.h"
 #include "scriptobjectrulegroup.h"
+#include "scriptobjectwidget.h"
 #include "pendingaction.h"
 #include "../gui/briefing.h"
 #include "../lang/translate.h"
@@ -67,6 +68,7 @@ ScriptManager::ScriptManager()
    ScriptObjectObject::registerClass(asEngine);
    ScriptObjectRuleDefinition::registerClass(asEngine);
    ScriptObjectRuleGroup::registerClass(asEngine);
+   ScriptObjectWidget::registerClass(asEngine);
 
    /* Register classes functions */
    ScriptObjectCharacter::registerFunctions(asEngine);
@@ -74,6 +76,7 @@ ScriptManager::ScriptManager()
    ScriptObjectObject::registerFunctions(asEngine);
    ScriptObjectRuleDefinition::registerFunctions(asEngine);
    ScriptObjectRuleGroup::registerFunctions(asEngine);
+   ScriptObjectWidget::registerFunctions(asEngine);
 
    /* Register our 'global' functions */
    r = asEngine->RegisterGlobalFunction(

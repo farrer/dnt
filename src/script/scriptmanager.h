@@ -100,7 +100,7 @@ namespace DNT
          void executeWithSuspend(ScriptInstance* instance,
                asIScriptContext* ctx);
 
-         /*! Remove an instance, clearing all its related memmory,
+         /*! Remove an instance, clearing all its related memory,
           * but keeping alive its controller for future use */
          void removeInstance(ScriptInstance* instance);
 

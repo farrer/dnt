@@ -99,6 +99,31 @@ void WidgetScriptInstance::onEvent(const Farso::EventType& eventType,
    }
 }
 
+/**************************************************************************
+ *                              shouldQuit                                *
+ **************************************************************************/
+bool WidgetScriptInstance::shouldQuit()
+{
+   bool res = false;
+
+   WidgetScript* widgetScript = static_cast<WidgetScript*>(script);
+   if(widgetScript->getShouldQuitFunction())
+   {
+      asIScriptContext* ctx = manager->prepareContextFromPool(
+            widgetScript->getWidgetFilenameFunction());
+      ctx->SetObject(getObject());
+      int r = manager->executeCall(ctx, this);
+      assert(r == asEXECUTION_FINISHED);
+      if(r == asEXECUTION_FINISHED)
+      {
+         res = ctx->GetReturnByte();
+      }
+      manager->returnContextToPool(ctx);
+   }
+
+   return res;
+}
+
 
 /**************************************************************************
  *                              Constructor                               *
@@ -170,6 +195,8 @@ void WidgetScript::setFunctionPointers()
    this->treatEventFunction = mainType->GetMethodByDecl(
          "void onEvent(int, string)");
    assert(this->treatEventFunction);
+   this->shouldQuitFunction = mainType->GetMethodByDecl(
+         "bool shouldQuit()");
 }
 
 /**************************************************************************
@@ -189,7 +216,7 @@ asIScriptFunction* WidgetScript::getStepFunction()
 }
 
 /**************************************************************************
- *                          getTreatEventFunction                          *
+ *                          getTreatEventFunction                         *
  **************************************************************************/
 asIScriptFunction* WidgetScript::getTreatEventFunction()
 {
@@ -197,11 +224,19 @@ asIScriptFunction* WidgetScript::getTreatEventFunction()
 }
 
 /**************************************************************************
- *                          getWidgetFilenameFunction                       *
+ *                          getWidgetFilenameFunction                     *
  **************************************************************************/
 asIScriptFunction* WidgetScript::getWidgetFilenameFunction()
 {
    return widgetFilenameFunction;
+}
+
+/**************************************************************************
+ *                         getShouldQuitFunction                          *
+ **************************************************************************/
+asIScriptFunction* WidgetScript::getShouldQuitFunction()
+{
+   return shouldQuitFunction;
 }
 
 /************************************************************************
@@ -213,7 +248,8 @@ Kobold::String WidgetScript::loadFile(const Kobold::String& filename)
    FILE* pFile = fopen(filename.c_str(), "rb");
    if(!pFile)
    {
-      Kobold::Log::add("Error: couldn't open file!");
+      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 
+            "Error: couldn't open file '%s'", filename.c_str());
       return "";
    }
    stat(filename.c_str(), &tagStat);
@@ -221,7 +257,8 @@ Kobold::String WidgetScript::loadFile(const Kobold::String& filename)
    size_t result = fread((void*)buf, 1, tagStat.st_size, pFile);
    if(result != (size_t)tagStat.st_size)
    {
-      Kobold::Log::add("Error: couldn't load the file");
+      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 
+            "Error: couldn't load file '%s'", filename.c_str());
       return "";
    }
 

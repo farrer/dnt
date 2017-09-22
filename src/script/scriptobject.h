@@ -44,7 +44,8 @@ namespace DNT
             TYPE_DICE,
             TYPE_OBJECT,
             TYPE_RULE_DEFINITION,
-            TYPE_RULE_GROUP
+            TYPE_RULE_GROUP,
+            TYPE_WIDGET
          };
 
          /*! Constructor

@@ -44,6 +44,10 @@ namespace DNT
           * the widget(s) to load */
          Kobold::String getWidgetFilename();
 
+         /*! \return if shoud exit the script instance (ie: the widget is no 
+          * longer necessary). */
+         bool shouldQuit();
+
          /*! Call to treat some Farso event on the widget.
           * \param eventType type of the event to treat.
           * \param widgetId widget's identifier. */
@@ -71,6 +75,8 @@ namespace DNT
          asIScriptFunction* getWidgetFilenameFunction();
          /*! \return pointer to the function called to treat events */
          asIScriptFunction* getTreatEventFunction();
+         /*! \return pointer to the shouldQuit function */
+         asIScriptFunction* getShouldQuitFunction();
 
       protected:
          void setFunctionPointers();
@@ -85,6 +91,7 @@ namespace DNT
          asIScriptFunction* stepFunction;
          asIScriptFunction* widgetFilenameFunction;
          asIScriptFunction* treatEventFunction;
+         asIScriptFunction* shouldQuitFunction;
    };
 
 }
