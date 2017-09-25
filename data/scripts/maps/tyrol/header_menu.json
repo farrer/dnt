@@ -1,0 +1,77 @@
+{
+   "widget":
+   {
+      "type" : "menu",
+      "id" : "fileMenu",
+      "items" :
+      [
+         {
+            "caption" : "New",
+            "right" : "CTRL+N",
+            "separator" : true
+         },
+         {
+            "caption" : "Load",
+            "right" : "CTRL+L"
+         },
+         {
+            "caption" : "Save",
+            "right" : "CTRL+S"
+         },
+         {
+            "caption" : "Save as",
+            "separator" : true
+         },
+         {
+            "caption" : "Exit",
+            "right" : "CTRL+X"
+         }
+      ]
+   },
+   "widget":
+   {
+      "type": "menu",
+      "id" : "editMenu",
+      "items":
+      [
+         {
+            "caption" : "Unselect", 
+            "right": "CTRL+U"
+         },
+         {
+            "caption" : "Duplicade",
+            "right" : "CTRL+D",
+            "separator" : true
+         },
+         {
+            "caption" : "Remove",
+            "right" : "CTRL+BACKSPACE"
+         }
+      ]
+   },
+   "widget":
+   {
+      "type" : "container",
+      "containerType" : "topLeft",
+      "position" : [0, 0],
+      "size" : [1024, 23],
+      "filled" : true,
+      "children" :
+      [
+         {
+            "type" : "button",
+            "position" : [1, 1],
+            "size" : [80, 21],
+            "caption" : "File",
+            "menu" : "fileMenu"
+         },
+         {
+            "type" : "button",
+            "position" : [81, 1],
+            "size" : [80, 21],
+            "caption" : "Edit",
+            "menu" : "editMenu"
+         }
+      ]
+   }
+}

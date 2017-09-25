@@ -22,6 +22,8 @@
 #include "scriptmanager.h"
 #include <farso/controller.h>
 #include <kobold/log.h>
+#include <OGRE/OgreDataStream.h>
+#include <OGRE/OgreResourceGroupManager.h>
 using namespace DNT;
 
 /**************************************************************************
@@ -244,27 +246,21 @@ asIScriptFunction* WidgetScript::getShouldQuitFunction()
  ************************************************************************/
 Kobold::String WidgetScript::loadFile(const Kobold::String& filename)
 {
-   struct stat tagStat;
-   FILE* pFile = fopen(filename.c_str(), "rb");
-   if(!pFile)
+   Ogre::DataStreamPtr fileData;
+   try
+   {
+      fileData = Ogre::ResourceGroupManager::getSingleton().openResource(
+            filename);
+   }
+   catch(Ogre::FileNotFoundException)
    {
       Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 
             "Error: couldn't open file '%s'", filename.c_str());
       return "";
    }
-   stat(filename.c_str(), &tagStat);
-   char* buf = new char[tagStat.st_size];
-   size_t result = fread((void*)buf, 1, tagStat.st_size, pFile);
-   if(result != (size_t)tagStat.st_size)
-   {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 
-            "Error: couldn't load file '%s'", filename.c_str());
-      return "";
-   }
 
-   buf[tagStat.st_size-1] = '\0';
-   Kobold::String res = buf;
-   delete[] buf;
+   Kobold::String res = fileData->getAsString();
+   fileData->close();
 
    return res;
 }
