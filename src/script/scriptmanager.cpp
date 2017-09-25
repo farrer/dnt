@@ -590,7 +590,7 @@ SkinScriptInstance* ScriptManager::createSkinScriptInstance(
  *                       createWidgetScriptInstance                       *
  **************************************************************************/
 WidgetScriptInstance* ScriptManager::createWidgetScriptInstance(
-      const Kobold::String& filename)
+      const Kobold::String& filename, ScriptObjectWidget* widget)
 {
    WidgetScript* ctrl = static_cast<WidgetScript*>(getOrLoadController(
             ScriptController::SCRIPT_TYPE_WIDGET, filename));
@@ -599,7 +599,7 @@ WidgetScriptInstance* ScriptManager::createWidgetScriptInstance(
       return NULL;
    }
 
-   WidgetScriptInstance* res = ctrl->createInstance();
+   WidgetScriptInstance* res = ctrl->createInstance(widget);
    insertInstance(res);
 
    return res;

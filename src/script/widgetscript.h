@@ -36,7 +36,8 @@ namespace DNT
       public:
          /*! Constructor */
          WidgetScriptInstance(asIScriptObject* obj, 
-               WidgetScript* script, ScriptManager* manager);
+               WidgetScript* script, ScriptManager* manager, 
+               ScriptObjectWidget* widget);
          /*! Destructor */
          ~WidgetScriptInstance();
 
@@ -55,6 +56,9 @@ namespace DNT
 
          /*! From Farso::WidgetEventListener */
          void onEvent(const Farso::EventType& eventType, Farso::Widget* widget);
+
+      private:
+         ScriptObjectWidget* widget; /**< The related widget */
    };
 
    /*! A script for controlling Farso's widgets defined by a JSON file. */
@@ -65,7 +69,7 @@ namespace DNT
          ~WidgetScript();
 
          /*! \return a new instance of the script */
-         WidgetScriptInstance* createInstance();
+         WidgetScriptInstance* createInstance(ScriptObjectWidget* widget);
          
          /*! \return pointer to the constructor function */
          asIScriptFunction* getFactoryFunction();

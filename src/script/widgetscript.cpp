@@ -20,6 +20,7 @@
 
 #include "widgetscript.h"
 #include "scriptmanager.h"
+#include "scriptobjectwidget.h"
 #include <farso/controller.h>
 #include <kobold/log.h>
 #include <OGRE/OgreDataStream.h>
@@ -30,9 +31,11 @@ using namespace DNT;
  *                              Constructor                               *
  **************************************************************************/
 WidgetScriptInstance::WidgetScriptInstance(asIScriptObject* obj, 
-      WidgetScript* script, ScriptManager* manager)
+      WidgetScript* script, ScriptManager* manager,
+      ScriptObjectWidget* widget)
                   :ScriptInstance(obj, script, manager)
 {
+   this->widget = widget;
 }
 
 /**************************************************************************
@@ -40,6 +43,7 @@ WidgetScriptInstance::WidgetScriptInstance(asIScriptObject* obj,
  **************************************************************************/
 WidgetScriptInstance::~WidgetScriptInstance()
 {
+   this->widget->setPointer(NULL);
 }
 
 /**************************************************************************
@@ -149,7 +153,7 @@ WidgetScript::~WidgetScript()
 /**************************************************************************
  *                             createInstance                             *
  **************************************************************************/
-WidgetScriptInstance* WidgetScript::createInstance()
+WidgetScriptInstance* WidgetScript::createInstance(ScriptObjectWidget* widget)
 {
    WidgetScriptInstance* res = NULL;
 
@@ -162,7 +166,7 @@ WidgetScriptInstance* WidgetScript::createInstance()
    {
       asIScriptObject* obj = *((asIScriptObject**) 
             ctx->GetAddressOfReturnValue());
-      res = new WidgetScriptInstance(obj, this, manager);
+      res = new WidgetScriptInstance(obj, this, manager, widget);
    }
    manager->returnContextToPool(ctx);
 

@@ -40,7 +40,9 @@ namespace DNT
          /*! Destructor */
          ~ScriptObjectWidget();
 
-         /*! Makes no sense here. assert(false) */
+         /*! Reset the WidgetScript pointer.
+          * \note only called on WidgetScript destructor, to avoid 
+          *       double free. */
          void setPointer(void* newPtr);
 
          /*!\ return if the widget is actually valid */ 

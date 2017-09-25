@@ -81,7 +81,8 @@ namespace DNT
           * \param filename name of the script to load
           * \return new instance of the loaded script */
          WidgetScriptInstance* createWidgetScriptInstance(
-               const Kobold::String& filename);
+               const Kobold::String& filename,
+               ScriptObjectWidget* widget);
 
          /*! Call an specific instance function.
           * \param instance to call an specific function.

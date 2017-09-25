@@ -32,10 +32,8 @@ using namespace DNT;
 ScriptObjectWidget::ScriptObjectWidget(const Kobold::String& filename)
                    :ScriptObject(TYPE_WIDGET)
 {
-   printf("Will create instance for: %s\n", filename.c_str());
    widgetScript = Game::getScriptManager()->createWidgetScriptInstance(
-         filename);
-   printf("Done creating instance for: %s\n", filename.c_str());
+         filename, this);
 }
 
 /**************************************************************************
@@ -54,8 +52,9 @@ ScriptObjectWidget::~ScriptObjectWidget()
  **************************************************************************/
 void ScriptObjectWidget::setPointer(void* newPtr)
 {
-   /* Should not be called! */
-   assert(false);
+   /* Should only be called to clear the widgetScript and avoid double free */
+   assert(newPtr == NULL);
+   widgetScript = NULL;
 }
 
 /**************************************************************************
