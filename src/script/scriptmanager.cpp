@@ -51,6 +51,7 @@ ScriptManager::ScriptManager()
    Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL,
          "Initing ScriptManager...");
 
+   asPrepareMultithread();
    /* Create the Engine and set its message and line callbacks */
    asEngine = asCreateScriptEngine();
    asEngine->SetEngineProperty(asEP_DISALLOW_GLOBAL_VARS, true);
@@ -194,6 +195,7 @@ ScriptManager::~ScriptManager()
    {
       asEngine->ShutDownAndRelease();
    }
+   asUnprepareMultithread();
 }
 
 /**************************************************************************
@@ -258,6 +260,7 @@ void ScriptManager::messageCallback(const asSMessageInfo& msg)
 asIScriptContext* ScriptManager::prepareContextFromPool(
       asIScriptFunction* f)
 {
+   assert(f != NULL);
    asIScriptContext* ctx = NULL;
    managerMutex.lock();
    if(contexts.size())

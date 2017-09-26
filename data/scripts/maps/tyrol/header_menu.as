@@ -13,6 +13,7 @@ class HeaderMenu : WidgetController
 
    void onEvent(int type, string id)
    {
+      print(id);
    }
 
    bool shouldQuit()

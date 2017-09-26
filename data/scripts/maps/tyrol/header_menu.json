@@ -3,6 +3,7 @@
    {
       "type" : "menu",
       "id" : "fileMenu",
+      "listener" : true,
       "items" :
       [
          {
@@ -32,6 +33,7 @@
    {
       "type": "menu",
       "id" : "editMenu",
+      "listener" : true,
       "items":
       [
          {
@@ -63,6 +65,8 @@
             "position" : [1, 1],
             "size" : [80, 21],
             "caption" : "File",
+            "listener" : true,
+            "id" : "fileButton",
             "menu" : "fileMenu"
          },
          {
@@ -70,6 +74,8 @@
             "position" : [81, 1],
             "size" : [80, 21],
             "caption" : "Edit",
+            "listener" : true,
+            "id" : "editButton",
             "menu" : "editMenu"
          }
       ]

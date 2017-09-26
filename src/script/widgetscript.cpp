@@ -80,13 +80,13 @@ void WidgetScriptInstance::treatEvent(int eventType,
    Kobold::String id = widgetId;
 
    WidgetScript* widgetScript = static_cast<WidgetScript*>(script);
-   if(widgetScript->getWidgetFilenameFunction())
+   if(widgetScript->getTreatEventFunction())
    {
       asIScriptContext* ctx = manager->prepareContextFromPool(
-            widgetScript->getWidgetFilenameFunction());
-      ctx->SetObject(getObject());
-      ctx->SetArgWord(0, eventType);
+            widgetScript->getTreatEventFunction());
+      ctx->SetArgDWord(0, eventType);
       ctx->SetArgObject(1, &id);
+      ctx->SetObject(getObject());
       int r = manager->executeCall(ctx, this);
       assert(r == asEXECUTION_FINISHED);
       manager->returnContextToPool(ctx);
