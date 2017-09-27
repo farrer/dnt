@@ -7,23 +7,28 @@
       "items" :
       [
          {
+            "id" : "fileMenuNew",
             "caption" : "New",
             "right" : "CTRL+N",
             "separator" : true
          },
          {
+            "id" : "fileMenuLoad",
             "caption" : "Load",
             "right" : "CTRL+L"
          },
          {
+            "id" : "fileMenuSave",
             "caption" : "Save",
             "right" : "CTRL+S"
          },
          {
+            "id" : "fileMenuSaveAs",
             "caption" : "Save as",
             "separator" : true
          },
          {
+            "id" : "fileMenuExit",
             "caption" : "Exit",
             "right" : "CTRL+X"
          }
@@ -37,15 +42,18 @@
       "items":
       [
          {
+            "id" : "editMenuUnselect",
             "caption" : "Unselect", 
             "right": "CTRL+U"
          },
          {
-            "caption" : "Duplicade",
+            "id" : "editMenuDuplicate",
+            "caption" : "Duplicate",
             "right" : "CTRL+D",
             "separator" : true
          },
          {
+            "id" : "editMenuRemove",
             "caption" : "Remove",
             "right" : "CTRL+BACKSPACE"
          }

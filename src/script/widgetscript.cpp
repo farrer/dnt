@@ -101,7 +101,17 @@ void WidgetScriptInstance::onEvent(const Farso::EventType& eventType,
 {
    if(widget)
    {
-      treatEvent(eventType, widget->getId());
+      if((eventType == Farso::EVENT_MENU_SELECTED) && 
+         (widget->getType() == Farso::Widget::WIDGET_TYPE_MENU))
+      {
+         /* Should pass the id of the menu item */
+         Farso::Menu* menu = static_cast<Farso::Menu*>(widget);
+         treatEvent(eventType, menu->getCurrentItem()->getId());
+      }
+      else
+      {
+         treatEvent(eventType, widget->getId());
+      }
    }
 }
 
