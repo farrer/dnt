@@ -112,6 +112,13 @@ class ScriptInstance : public Kobold::ListElement
        * \return AngelScript return integer. */
       int resume(asIScriptContext* ctx);
 
+      /*! Help function to call a Script function which receives no arguments 
+       * and returnis a string, without suspending. 
+       * \param func pointer to the function to call. Will check for NULL 
+       *        (returning empty string on it).
+       * \return the returned string from the function. */
+      Kobold::String getStringFromFunction(asIScriptFunction* func);
+
       asIScriptObject* obj; /**< AngelScript object as instance of script */
       ScriptController* script; /**< The script the object is an instance of */
       ScriptManager* manager; /**< Script manager used */

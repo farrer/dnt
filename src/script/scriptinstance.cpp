@@ -146,6 +146,29 @@ void ScriptInstance::addSuspendedContext(asIScriptContext* ctx,
 }
 
 /**************************************************************************
+ *                          getStringFromFunction                         *
+ **************************************************************************/
+Kobold::String ScriptInstance::getStringFromFunction(asIScriptFunction* func)
+{
+   Kobold::String res = "";
+
+   if(func)
+   {
+      asIScriptContext* ctx = manager->prepareContextFromPool(func);
+      ctx->SetObject(getObject());
+      int r = manager->executeCall(ctx, this);
+      assert(r == asEXECUTION_FINISHED);
+      if(r == asEXECUTION_FINISHED)
+      {  
+         res = *static_cast<Kobold::String*>(ctx->GetReturnObject());
+      }
+      manager->returnContextToPool(ctx);
+   }
+
+   return res;
+}
+
+/**************************************************************************
  *                                   step                                 *
  **************************************************************************/
 void ScriptInstance::step()

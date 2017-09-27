@@ -51,24 +51,9 @@ WidgetScriptInstance::~WidgetScriptInstance()
  **************************************************************************/
 Kobold::String WidgetScriptInstance::getWidgetFilename()
 {
-   Kobold::String res = "";
-
    WidgetScript* widgetScript = static_cast<WidgetScript*>(script);
-   if(widgetScript->getWidgetFilenameFunction())
-   {
-      asIScriptContext* ctx = manager->prepareContextFromPool(
-            widgetScript->getWidgetFilenameFunction());
-      ctx->SetObject(getObject());
-      int r = manager->executeCall(ctx, this);
-      assert(r == asEXECUTION_FINISHED);
-      if(r == asEXECUTION_FINISHED)
-      {
-         res = *static_cast<Kobold::String*>(ctx->GetReturnObject()); 
-      }
-      manager->returnContextToPool(ctx);
-   }
 
-   return res;
+   return getStringFromFunction(widgetScript->getWidgetFilenameFunction());
 }
 
 /**************************************************************************

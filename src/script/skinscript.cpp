@@ -45,24 +45,9 @@ SkinScriptInstance::~SkinScriptInstance()
  **************************************************************************/
 Kobold::String SkinScriptInstance::getSkinFilename()
 {
-   Kobold::String res = "";
-
    SkinScript* skinScript = static_cast<SkinScript*>(script);
-   if(skinScript->getSkinFilenameFunction())
-   {
-      asIScriptContext* ctx = manager->prepareContextFromPool(
-            skinScript->getSkinFilenameFunction());
-      ctx->SetObject(getObject());
-      int r = manager->executeCall(ctx, this);
-      assert(r == asEXECUTION_FINISHED);
-      if(r == asEXECUTION_FINISHED)
-      {
-         res = *static_cast<Kobold::String*>(ctx->GetReturnObject()); 
-      }
-      manager->returnContextToPool(ctx);
-   }
 
-   return res;
+   return getStringFromFunction(skinScript->getSkinFilenameFunction());
 }
 
 /**************************************************************************
