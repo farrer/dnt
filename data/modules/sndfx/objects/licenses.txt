@@ -1,0 +1,12 @@
+drop_item.ogg  
+et.ogg  
+take_item.ogg
+   Author: DNTeam
+   License: GPLv3 or later
+
+refmachine/*
+   author: cmusounddesign
+   license: CC-BY 3.0
+   source: http://www.freesound.org/people/cmusounddesign/sounds/84710/
+
+
