@@ -65,7 +65,7 @@ bool ScriptController::loadAndCompile(Ogre::String filename)
    try
    {
       fileData = Ogre::ResourceGroupManager::getSingleton().openResource(
-            filename, "scripts");
+            filename);
    }
    catch(Ogre::FileNotFoundException)
    {

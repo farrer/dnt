@@ -125,6 +125,8 @@ ScriptManager::ScriptManager()
    /* Register our base interfaces */
    r = asEngine->RegisterInterface("MapController");
    assert(r >= 0);
+   r = asEngine->RegisterInterface("ModuleController");
+   assert(r >= 0);
    r = asEngine->RegisterInterface("RuleController");
    assert(r >= 0);
    r = asEngine->RegisterInterface("RuleDefinitionController");
@@ -471,6 +473,9 @@ ScriptController* ScriptManager::getOrLoadController(
       case ScriptController::SCRIPT_TYPE_MAP:
          ctrl = new MapScript(this);
       break;
+      case ScriptController::SCRIPT_TYPE_MODULE:
+         ctrl = new ModuleScript(this);
+      break;
       case ScriptController::SCRIPT_TYPE_RULE:
          ctrl = new RuleScript(this);
       break;
@@ -520,6 +525,28 @@ MapScriptInstance* ScriptManager::createMapScriptInstance(
 
    /* Create a new instance of the script */
    MapScriptInstance* res = ctrl->createInstance(mapFilename);
+   insertInstance(res);
+
+   return res;
+}
+
+/**************************************************************************
+ *                       createModuleScriptInstance                       *
+ **************************************************************************/
+ModuleScriptInstance* ScriptManager::createModuleScriptInstance(
+      const Kobold::String& filename)
+{
+   /* Load or get already loaded script controller */
+   ModuleScript* ctrl = static_cast<ModuleScript*>(getOrLoadController(
+            ScriptController::SCRIPT_TYPE_MODULE, filename));
+   if(!ctrl)
+   {
+      /* Couldn't load or compile the script, no instance will be created. */
+      return NULL;
+   }
+
+   /* Create a new instance of the script */
+   ModuleScriptInstance* res = ctrl->createInstance();
    insertInstance(res);
 
    return res;

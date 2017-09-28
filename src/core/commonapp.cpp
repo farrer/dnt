@@ -57,7 +57,6 @@ CommonApp::CommonApp()
  ***********************************************************************/
 CommonApp::~CommonApp()
 {
-   DNT::Rules::finish();
    DNT::Game::finish();
 
    DNT::Briefing::finish();
@@ -117,88 +116,38 @@ bool CommonApp::doCommonCycleInit(int callCounter, bool& shouldAbort)
          progressBar->setValue(20);
       }
       break;
+      case 2:
+      {
+         Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
+               getDataPath() + "modules", "FileSystem", 
+               "dnt_modules", false);
+         Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
+               "dnt_modules", false);
+      }
       case 3:
       {
          Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
-               getDataPath() + "textures/doors", "FileSystem", 
-               "doors_textures", true);
+               getDataPath() + "common/textures/other", "FileSystem", 
+               "dnt_other_textures", true);
          Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
-               "doors_textures", true);
-         Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
-               getDataPath() + "textures/other", "FileSystem", 
-               "other_textures", true);
-         Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
-               "other_textures", true);
-         progressBar->setValue(30);
+               "dnt_other_textures", true);
+         progressBar->setValue(50);
       }
       break;
       case 4:
       {
          Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
-               getDataPath() + "textures/furniture", "FileSystem", 
-               "furniture_textures", true);
+               getDataPath() + "common/textures/general", "FileSystem", 
+               "dnt_general_textures", true);
          Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
-               "furniture_textures", true);
-         progressBar->setValue(40);
+               "dnt_general_textures", true);
+         progressBar->setValue(80);
       }
       break;
       case 5:
       {
-         Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
-               getDataPath() + "textures/general", "FileSystem", 
-               "general_textures", true);
-         Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
-               "general_textures", true);
-         progressBar->setValue(50);
-      }
-      break;
-      case 6:
-      {
-         Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
-               getDataPath() + "textures/humans", "FileSystem", 
-               "humans_textures", true);
-         Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
-               "humans_textures", true);
-         progressBar->setValue(60);
-      }
-      break;
-      case 7:
-      {
-         Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
-               getDataPath() + "textures/portraits", "FileSystem", 
-               "portraits_textures", true);
-         Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
-               "portraits_textures", true);
-         progressBar->setValue(70);
-      }
-      break;
-      case 8:
-      {
-         Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
-               getDataPath() + "textures/junk", "FileSystem", 
-               "junk_textures", true);
-         Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
-               "junk_textures", true);
-         progressBar->setValue(80);
-      }
-      break;
-      case 9:
-      {
-         Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
-               getDataPath() + "textures/indoor", "FileSystem", 
-               "indoor_textures", true);
-         Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
-               "indoor_textures", true);
-         progressBar->setValue(90);
-      }
-      break;
-      case 10:
-      {
          /* Init the Game controller */
          DNT::Game::init(ogreSceneManager);
-
-         /* Init our rules (FIXME: should be inside module init) */
-         DNT::Rules::init("rules.dnt");
 
          /* Set camera initial position */
          Goblin::Camera::set(0.0f, 2.0f, 0.0f, 0.0f, 70.0f, 22.30f);
@@ -229,11 +178,12 @@ bool CommonApp::doCommonCycleInit(int callCounter, bool& shouldAbort)
 void CommonApp::getDataDirectories(Ogre::String** dataDirectories,
       Ogre::String** dataGroups, int& total)
 {
-   static Ogre::String dirs[] = {"gui", "compositors", "maps", "models", 
-      "fonts", "rules", "skeletons", "sndfx", "dialogs", "scripts"};
+   static Ogre::String dirs[] = {"common/gui", "common/compositors", 
+      "common/fonts", "common/models", "common/sndfx",
+      "common/dialogs"};
    (*dataDirectories) = &dirs[0];
    (*dataGroups) = &dirs[0];
-   total = 10;
+   total = 6;
 }
 
 /***********************************************************************

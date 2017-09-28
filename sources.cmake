@@ -13,6 +13,7 @@ set(CORE_SOURCES
    src/core/item.cpp
    src/core/itemslot.cpp
    src/core/modstate.cpp
+   src/core/module.cpp
    src/core/money.cpp
    src/core/object.cpp
    src/core/playablecharacter.cpp
@@ -28,6 +29,7 @@ set(CORE_HEADERS
    src/core/item.h
    src/core/itemslot.h
    src/core/modstate.h
+   src/core/module.h
    src/core/money.h
    src/core/nonplayablecharacter.h
    src/core/object.h
@@ -89,6 +91,7 @@ set(AI_SOURCES
 )
 set(SCRIPT_HEADERS
    src/script/mapscript.h
+   src/script/modulescript.h
    src/script/pendingaction.h
    src/script/rulescript.h
    src/script/ruledefscript.h
@@ -108,6 +111,7 @@ set(SCRIPT_HEADERS
 )
 set(SCRIPT_SOURCES
    src/script/mapscript.cpp
+   src/script/modulescript.cpp
    src/script/pendingaction.cpp
    src/script/rulescript.cpp
    src/script/ruledefscript.cpp

@@ -73,6 +73,7 @@ namespace DNT
 
    class Core;
    class Util;
+   class Module;
 
    class TalkAction;
    class TalkTest;
@@ -115,6 +116,8 @@ namespace DNT
    class ScriptObjectWidget;
    class MapScript;
    class MapScriptInstance;
+   class ModuleScript;
+   class ModuleScriptInstance;
    class RuleScript;
    class RuleScriptInstance;
    class RuleDefinitionScript;

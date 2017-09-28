@@ -49,6 +49,7 @@ Core::Core()
    testedThingUnderCursor = NULL;
    testedAtSightResult = false;
    treatedGui = false;
+   module = NULL;
 }
 
 /***********************************************************************
@@ -56,6 +57,10 @@ Core::Core()
  ***********************************************************************/
 Core::~Core()
 {
+   if(module)
+   {
+      delete module;
+   }
 }
 
 /***********************************************************************
@@ -63,13 +68,17 @@ Core::~Core()
  ***********************************************************************/
 bool Core::doCycleInit(int callCounter, bool& shouldAbort)
 {
-   if(doCommonCycleInit(callCounter, shouldAbort))
+   if((doCommonCycleInit(callCounter, shouldAbort)) && (module == NULL))
    {
-
-      //TODO: The skin definiton should be at the mod load, not here
-      /* note that the skin deallocation will be made by Farso. */
-      new Skin("skins/gameskin.as");
-
+      /* Create and load the module */
+      //TODO: Should define module inner a menu or by command line
+      module = new Module("dnt/module.as");
+      progressBar->show();
+   }
+   else if((module != NULL) && 
+           (module->doCycleInit(true, getDataPath() + "modules/dnt/", 
+                                progressBar)))
+   {
       //FIXME: for outdoor maps, must define the hemisphere colors with
       //       different values.
       getSceneManager()->setAmbientLight(
@@ -85,9 +94,11 @@ bool Core::doCycleInit(int callCounter, bool& shouldAbort)
 
       Game::getPcs()->insertCharacter(pc);
 
+      progressBar->hide();
+
       /* Load a map to test. FIXME: remove from here when reimplemented our
        * initial window. */
-      if(!Game::loadMap("tyrol/house1.map"))
+      if(!module->loadInitialMap())
       {
          shouldAbort = true;
          return true;

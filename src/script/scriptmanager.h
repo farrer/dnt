@@ -32,6 +32,7 @@
 #include "scriptinstance.h"
 #include "scriptobject.h"
 #include "mapscript.h"
+#include "modulescript.h"
 #include "rulescript.h"
 #include "ruledefscript.h"
 #include "skinscript.h"
@@ -58,6 +59,12 @@ namespace DNT
          MapScriptInstance* createMapScriptInstance(
                const Kobold::String& filename, 
                const Kobold::String& mapFilename);
+
+         /*! Create an instance of a module script.
+          * \param filename name of the script to load
+          * \return new instance of the loaded script. */
+         ModuleScriptInstance* createModuleScriptInstance(
+               const Kobold::String& filename);
 
          /*! Create an instance of a rule script.
           * \param filename name of the script to load

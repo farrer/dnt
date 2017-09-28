@@ -80,7 +80,7 @@ void PlayableCharacter::doAfterLoad()
 {
    Character::doAfterLoad();
    direction = new Goblin::Model3d("directMesh", 
-         "other/direc.mesh", "models", Game::getSceneManager(),
+         "direc.mesh", "models", Game::getSceneManager(),
          Goblin::Model3d::MODEL_DYNAMIC);
    direction->setScaleNow(0.13f, 0.13f, 0.13f);
    direction->hide();

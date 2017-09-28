@@ -24,6 +24,7 @@
 
 #include "dntconfig.h"
 #include "commonapp.h"
+#include "module.h"
 
 namespace DNT
 {
@@ -64,7 +65,8 @@ class Core : public CommonApp
       bool specialSelect(Ogre::SceneNode* sceneNode);
 
    private:
-
+      
+      Module* module; /**< The module used */
       Thing* testedThingUnderCursor; /**< Thing under cursor of the last 
                                           atSight test */
       bool testedAtSightResult;  /**< Result of the atSight for last test */
