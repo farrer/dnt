@@ -34,8 +34,16 @@ Module::Module(const Kobold::String& filename)
 {
    Kobold::Log::add("Initing Module...");
 
+   Kobold::String basename;
+   Ogre::StringUtil::splitFilename(filename, basename, path);
+
+   //TODO: Add support for modules outside 'modules' directory!.
+   /* Remove '../datamodules/' if defined */
+   Kobold::String file = Ogre::StringUtil::replaceAll(filename, 
+         "../data/modules/", "");
+
    /* Load our module script */
-   script = Game::getScriptManager()->createModuleScriptInstance(filename);
+   script = Game::getScriptManager()->createModuleScriptInstance(file);
 
    /* Parse our directories list */
    dirs = Ogre::StringUtil::split(script->getBaseFolders(), "\t\n;");

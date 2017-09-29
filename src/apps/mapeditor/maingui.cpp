@@ -38,6 +38,8 @@ MainGui::MainGui()
    spinNewMapSizeX = NULL;
    spinNewMapSizeZ = NULL;
    buttonNewMapCreate = NULL;
+   module = NULL;
+   loadingModule = false;
 
    /* Create the progress bar */
    progressBar = new Farso::ProgressBar(412, 374, 200, 20, NULL);
@@ -51,6 +53,8 @@ MainGui::MainGui()
    fileButton = new Farso::Button(pX, 1, 80, 21, "File", cont);
    fileMenu = new Farso::Menu(100);
    fileMenu->beginCreate();
+   menuItemOpenModule = fileMenu->insertItem("Open Module...");
+   fileMenu->insertSeparator();
    menuItemNewIndoor = fileMenu->insertItem("New Indoor Map...");
    menuItemNewOutdoor = fileMenu->insertItem("New Outdoor Map...");
    fileMenu->insertSeparator();
@@ -117,6 +121,10 @@ MainGui::~MainGui()
    {
       newMapWindow->close();
    }
+   if(module)
+   {
+      delete module;
+   }
 }
 
 /***********************************************************************
@@ -165,9 +173,27 @@ void MainGui::hideProgressBar()
  ***********************************************************************/
 void MainGui::toggleMenuStatus()
 {
-   menuItemNewIndoor->enable();
-   menuItemNewOutdoor->enable();
-   menuItemLoad->enable();
+   if((module != NULL) && (!loadingModule))
+   {
+      menuItemOpenModule->disable();
+      menuItemNewIndoor->enable();
+      menuItemNewOutdoor->enable();
+      menuItemLoad->enable();
+   }
+   else
+   {
+      if(!loadingModule)
+      {
+         menuItemOpenModule->enable();
+      }
+      else
+      {
+         menuItemOpenModule->disable();
+      }
+      menuItemNewIndoor->disable();
+      menuItemNewOutdoor->disable();
+      menuItemLoad->disable();
+   }
    menuItemExit->enable();
 
    if(DNT::Game::getCurrentMap())
@@ -355,18 +381,33 @@ void MainGui::toggleLightWindow()
 /***********************************************************************
  *                           openLoadOrSave                            *
  ***********************************************************************/
-void MainGui::openLoadOrSaveWindow(bool loading)
+void MainGui::openLoadOrSaveWindow(bool loading, bool map)
 {
    /* Remove if already created */
    if(loadSaveWindow)
    {
       loadSaveWindow->close();
    }
+
+   /* Define directory */
+   Kobold::String dir, filter;
+   if(map)
+   {
+      dir = module->getPath() + "/maps/";
+      filter = ".map";
+   }
+   else
+   {
+      dir = "../data/modules/";
+      filter = ".as";
+   }
+
+
    /* Create the window */
    loadSaveWindow = new Farso::Window(300, 250, ((loading) ? "Load" : "Save"));
-   loadSaveSelector = new Farso::FileSelector(loading, "../data/maps/", true, 
+   loadSaveSelector = new Farso::FileSelector(loading, dir, true, 
          loadSaveWindow);
-   loadSaveSelector->setFilter(".map");
+   loadSaveSelector->setFilter(filter);
    loadSaveWindow->setExternPointer(&loadSaveWindow);
    loadSaveWindow->open();
    loadSaveWindow->setPosition(40, 40);
@@ -410,6 +451,20 @@ void MainGui::update(PositionEditor* positionEditor)
 {
    transformWindow.update(positionEditor);
    lightWindow.update(positionEditor);
+
+   /* Check if we are on a cycle of loading module. */
+   if(loadingModule)
+   {
+      progressBar->show();
+      loadingModule = !module->doCycleInit(false, module->getPath(), 
+            progressBar);
+      if(!loadingModule)
+      {
+         /* Finished loading */
+         toggleMenuStatus();
+         progressBar->hide();
+      }
+   }
 }
 
 /***********************************************************************
@@ -495,6 +550,11 @@ void MainGui::unselect(PositionEditor* positionEditor)
  ***********************************************************************/
 bool MainGui::checkEvents(PositionEditor* positionEditor)
 {
+   if(loadingModule)
+   {
+      return false;
+   }
+
    /* Check if need to change EditItems available status */
    if((menuItemUnselect->isEnabled()) && (!positionEditor->hasSelection()))
    {
@@ -512,7 +572,11 @@ bool MainGui::checkEvents(PositionEditor* positionEditor)
    {
       if(event.getWidget() == fileMenu)
       {
-         if(fileMenu->getCurrentItem() == menuItemNewIndoor)
+         if(fileMenu->getCurrentItem() == menuItemOpenModule)
+         {
+            openLoadOrSaveWindow(true, false);
+         }
+         else if(fileMenu->getCurrentItem() == menuItemNewIndoor)
          {
             openNewMapWindow();
          }
@@ -523,7 +587,7 @@ bool MainGui::checkEvents(PositionEditor* positionEditor)
          }
          else if(fileMenu->getCurrentItem() == menuItemLoad)
          {
-            openLoadOrSaveWindow(true);
+            openLoadOrSaveWindow(true, true);
          }
          else if(fileMenu->getCurrentItem() == menuItemSave)
          {
@@ -539,7 +603,7 @@ bool MainGui::checkEvents(PositionEditor* positionEditor)
          }
          else if(fileMenu->getCurrentItem() == menuItemSaveAs)
          {
-            openLoadOrSaveWindow(false);
+            openLoadOrSaveWindow(false, true);
          }
       }
       /* Edit Menu */
@@ -614,15 +678,25 @@ bool MainGui::checkEvents(PositionEditor* positionEditor)
          if(loadSaveSelector->isLoadType())
          {
             closeMapRelatedWindows(positionEditor);
-            /* Must load the map */
-            if(DNT::Game::loadMap(loadSaveSelector->getFilename(), true, 
-                     true, true))
+
+            if(module != NULL)
             {
-               setCameraOnMap();
+               /* Must load the map */
+               if(DNT::Game::loadMap(loadSaveSelector->getFilename(), true, 
+                        true, true))
+               {
+                  setCameraOnMap();
+               }
+               else
+               {
+                  /* TODO: Show error! */
+               }
             }
             else
             {
-               /* TODO: Show error! */
+               /* Create and load the module */
+               module = new DNT::Module(loadSaveSelector->getFilename());
+               loadingModule = true;
             }
             toggleMenuStatus();
          }

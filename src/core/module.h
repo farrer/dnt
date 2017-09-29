@@ -58,12 +58,16 @@ namespace DNT
           * \return if successful */
          bool loadInitialMap();
 
+         /*! \return path to module's root directory. */
+         const Kobold::String& getPath() const { return path; };
+
       private:
          ModuleScriptInstance* script; /**< ModulerController script */
          Ogre::vector<Kobold::String>::type dirs; /**< Vector of base dirs */
          int curLoad; /**< Current loaded at cycle init */
          Farso::ProgressBar* progressBar; /**< For load signal */
          int totalInitCycles; /**< Total Cycles needed to init */
+         Kobold::String path; /**< Path to module's root directory */
    };
 
 }

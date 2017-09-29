@@ -27,6 +27,7 @@
 #include "positioneditor.h"
 #include "transformwindow.h"
 #include "lightwindow.h"
+#include "../../core/module.h"
 
 namespace DNTMapEditor
 {
@@ -93,8 +94,9 @@ namespace DNTMapEditor
       private:
 
          /*! Open the dialog window to load or save.
-          * \param loading true will open a load dialog, false a save one */
-         void openLoadOrSaveWindow(bool loading);
+          * \param loading true will open a load dialog, false a save one 
+          * \param map true if loading/saving a map, false if a module. */
+         void openLoadOrSaveWindow(bool loading, bool map);
          /*! Open the New Map window */
          void openNewMapWindow();
          /*! Toggle menu availability status */
@@ -115,6 +117,7 @@ namespace DNTMapEditor
          /* File button and Menu */
          Farso::Button* fileButton; /**< The file button */
          Farso::Menu* fileMenu;     /**< The file menu */
+         Farso::Menu::MenuItem* menuItemOpenModule; /**< Open Module */
          Farso::Menu::MenuItem* menuItemNewIndoor; /**< New Infoor map */
          Farso::Menu::MenuItem* menuItemNewOutdoor; /**< New outdoor map */
          Farso::Menu::MenuItem* menuItemLoad; /**< Load map */
@@ -158,6 +161,8 @@ namespace DNTMapEditor
          NodesWindow nodesWindow; /**< Nodes selector window */
          TransformWindow transformWindow; /**< Node transform window */
          LightWindow lightWindow; /**< Light edit window */
+         DNT::Module* module; /**< Module to use */
+         bool loadingModule; /**< If loading module */
    };
 
 

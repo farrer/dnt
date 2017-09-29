@@ -76,10 +76,22 @@ bool MapEditor::doCycleInit(int callCounter, bool& shouldAbort)
 
       /* init mapeditor own textures */
       Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
-            getDataPath() + "textures/mapeditor", "FileSystem", 
+            getDataPath() + "mapeditor/textures", "FileSystem", 
             "mapeditor_textures", true);
       Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
             "mapeditor_textures", true);
+      Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
+            getDataPath() + "mapeditor/models", "FileSystem", 
+            "mapeditor_models", true);
+      Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
+            "mapeditor_models", true);
+
+      /* Init base module's path */
+      Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
+            getDataPath() + "modules", "FileSystem",
+            "mapeditor_modules", false);
+      Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
+            "mapeditor_modules", true);
 
       /* Create Map Editor's GUI */
       mainGui = new MainGui();
