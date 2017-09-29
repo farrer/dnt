@@ -463,6 +463,8 @@ void MainGui::update(PositionEditor* positionEditor)
          /* Finished loading */
          toggleMenuStatus();
          progressBar->hide();
+         Farso::Cursor::show();
+         cont->show();
       }
    }
 }
@@ -697,6 +699,8 @@ bool MainGui::checkEvents(PositionEditor* positionEditor)
                /* Create and load the module */
                module = new DNT::Module(loadSaveSelector->getFilename());
                loadingModule = true;
+               Farso::Cursor::hide();
+               cont->hide();
             }
             toggleMenuStatus();
          }
