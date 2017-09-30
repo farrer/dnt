@@ -80,6 +80,19 @@ Kobold::String ModuleScriptInstance::getInitialMap()
 }
 
 /**************************************************************************
+ *                            callOnInitGame                              *
+ **************************************************************************/
+void ModuleScriptInstance::callOnInitGame()
+{
+   ModuleScript* moduleScript = static_cast<ModuleScript*>(script);
+   if(moduleScript->getOnInitGameFunction())
+   {
+      manager->callFunction(this, moduleScript->getOnInitGameFunction()); 
+   }
+}
+
+
+/**************************************************************************
  *                              Constructor                               *
  **************************************************************************/
 ModuleScript::ModuleScript(ScriptManager* manager)
@@ -89,7 +102,8 @@ ModuleScript::ModuleScript(ScriptManager* manager)
               baseFoldersFunction(NULL),
               rulesFilenameFunction(NULL),
               skinFilenameFunction(NULL),
-              initialMapFunction(NULL)
+              initialMapFunction(NULL),
+              onInitGameFunction(NULL)
 {
 }
 
@@ -150,6 +164,7 @@ void ModuleScript::setFunctionPointers()
    this->baseFoldersFunction = mainType->GetMethodByDecl(
          "string getBaseFolders()");
    assert(this->baseFoldersFunction);
+   this->onInitGameFunction = mainType->GetMethodByDecl("void onInitGame()");
 }
 
 /**************************************************************************
@@ -199,4 +214,13 @@ asIScriptFunction* ModuleScript::getInitialMapFunction()
 {
    return initialMapFunction;
 }
+
+/**************************************************************************
+ *                            getOnInitGameFunction                       *
+ **************************************************************************/
+asIScriptFunction* ModuleScript::getOnInitGameFunction()
+{
+   return onInitGameFunction;
+}
+
 

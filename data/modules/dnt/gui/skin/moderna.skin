@@ -1,5 +1,5 @@
 # Moderna skin definition file
-atlas = skins/moderna.png
+atlas = skin/moderna.png
 defaultFont = LiberationSerif-Regular.ttf
 defaultFontSize = 10
 defaultFontColor = 255,255,255,255
@@ -295,4 +295,39 @@ element = menu
    element = menuSeparator
       borderDelta = 4,8,6,0
       topBorder = 23,166,24,168
+
+element = iconsPanel
+  cornerDelta = 0,0,0,0
+  topLeftCorner = 309,230,438,253
+
+element = exitIcon
+   cornerDelta = 0,0,0,0
+   topLeftCorner = 310,167,337,194
+
+element = loadIcon
+   cornerDelta = 0,0,0,0
+   topLeftCorner = 341,167,368,194
+
+element = saveIcon
+   cornerDelta = 0,0,0,0
+   topLeftCorner = 371,167,398,194
+
+element = attackIcon
+   cornerDelta = 0,0,0,0
+   topLeftCorner = 401,167,428,194
+
+element = endTurnIcon
+   cornerDelta = 0,0,0,0
+   topLeftCorner = 432,167,459,194
+
+element = questLogIcon
+   cornerDelta = 0,0,0,0
+   topLeftCorner = 432,197,459,224
+
+element = panelGrid
+   cornerDelta = 0,0,0,0
+   topLeftCorner = 134,1,135,44
+   topRightCorner = 177,1,179,44
+   backgroundDelta = 2,0,3,0
+   background = 139,1,173,44
 

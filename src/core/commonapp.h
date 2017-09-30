@@ -30,7 +30,7 @@ namespace DNT
 {
 
 #define DEFAULT_WINDOW_WIDTH     1024
-#define DEFAULT_WINDOW_HEIGHT     768
+#define DEFAULT_WINDOW_HEIGHT     700
 #define WIDTH_TO_DOUBLE_SIZE     2000
 #define BASE_DATA_DIR           "../data"
 

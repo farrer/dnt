@@ -1,0 +1,59 @@
+{
+   "widget":
+   {
+      "type" : "container",
+      "containerType" : "bottomCentered",
+      "relPosition" : [0,0.9],
+      "relSize": [1.0, 0.1],
+      "filled" : false,
+      "children" :
+      [
+         {
+            "type" : "container",
+            "skin" : "iconsPanel",
+            "position" : [237,0],
+            "size" : [129,23]
+         },
+         {
+            "type" : "container",
+            "skin" : "iconsPanel",
+            "position" : [-237,0],
+            "size" : [129,23]
+         },
+         {
+            "type" : "container",
+            "skin" : "panelGrid",
+            "position" : [0,0],
+            "size" : [354, 44]
+         },
+         {
+            "type" : "button",
+            "skin" : "exitIcon",
+            "mouseHint" : "Exit",
+            "position": [273, 10],
+            "size" : [28, 28]
+         },
+         {
+            "type" : "button",
+            "skin" : "loadIcon",
+            "mouseHint" : "Load",
+            "position": [237, 10],
+            "size" : [28, 28]
+         },
+         {
+            "type" : "button",
+            "skin" : "saveIcon",
+            "mouseHint" : "Save",
+            "position": [201, 10],
+            "size" : [28, 28]
+         },
+         {
+            "type" : "button",
+            "skin" : "attackIcon",
+            "position": [-201, 10],
+            "size" : [28, 28]
+         }
+      ]
+   }
+}
+

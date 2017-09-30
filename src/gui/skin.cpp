@@ -68,7 +68,7 @@ int Skin::getExtendedElementType(Kobold::String typeName)
    if(res != Farso::Skin::SKIN_TYPE_UNKNOWN)
    {
       /* The index should be after the last default element */
-      res += (Farso::Skin::TOTAL_BASIC_SKIN_ELEMENT_TYPES - 1);
+      res += Farso::Skin::TOTAL_BASIC_SKIN_ELEMENT_TYPES;
    }
 
    return res;

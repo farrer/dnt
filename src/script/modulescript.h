@@ -46,6 +46,10 @@ namespace DNT
          Kobold::String getRulesFilename();
          /*! \return filename of the initial map to load */
          Kobold::String getInitialMap();
+
+         /*! Function called when init the game, just after call to load 
+          * a map. */
+         void callOnInitGame();
    };
 
    /*! A script for controlling Farso's widgets defined by a JSON file. */
@@ -65,6 +69,7 @@ namespace DNT
          asIScriptFunction* getSkinFilenameFunction();
          asIScriptFunction* getRulesFilenameFunction();
          asIScriptFunction* getInitialMapFunction();
+         asIScriptFunction* getOnInitGameFunction();
 
       protected:
          void setFunctionPointers();
@@ -81,6 +86,7 @@ namespace DNT
          asIScriptFunction* rulesFilenameFunction;
          asIScriptFunction* skinFilenameFunction;
          asIScriptFunction* initialMapFunction;
+         asIScriptFunction* onInitGameFunction;
    };
 
 }

@@ -1,0 +1,7 @@
+moderna skin
+ \
+  Adapted by DNTeam from:
+  author: Jorge Avila
+  license: CC-By 3.0
+  source: http://opengameart.org/content/moderna-graphical-interface
+

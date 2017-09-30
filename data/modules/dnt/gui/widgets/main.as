@@ -1,25 +1,22 @@
-
-class HeaderMenu : WidgetController
+/* Main Screen implementation */
+class MainWidget : WidgetController
 {
-
-   HeaderMenu()
+   MainWidget()
    {
    }
 
    string getWidgetFilename()
    {
-      return "maps/tyrol/header_menu.json";
+      return "widgets/main.json";
    }
 
    void onEvent(int type, string id)
    {
-      print(id);
    }
 
    bool shouldQuit()
    {
       return false;
    }
-
 }
 

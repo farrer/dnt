@@ -21,6 +21,5 @@ class House1Ctrl : MapController
    }
 
    string mapName;
-   Widget widget("maps/tyrol/header_menu.as");
 }
 

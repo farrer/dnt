@@ -30,7 +30,7 @@ namespace DNT
 {
 
 #define APP_NAME "dnt"
-#define APP_SKIN "skins/moderna.skin"
+#define APP_SKIN "skins/clean.skin"
 
 /*! The core (main entry) implementation of DNT. */
 class Core : public CommonApp

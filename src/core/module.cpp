@@ -105,6 +105,12 @@ bool Module::doCycleInit(bool changeSkin, const Kobold::String& dataPath,
  ***********************************************************************/
 bool Module::loadInitialMap()
 {
-   return Game::loadMap(script->getInitialMap());
+   if(Game::loadMap(script->getInitialMap()))
+   {
+      script->callOnInitGame();
+      return true;
+   }
+
+   return false;
 }
 

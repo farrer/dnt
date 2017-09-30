@@ -9,7 +9,7 @@ class DNTModule : ModuleController
    /*! \return semicolon (;) separated folders to initialize */
    string getBaseFolders()
    {
-      string res = "textures/doors;textures/other;textures/furniture;";
+      string res = "gui;textures/doors;textures/other;textures/furniture;";
       res += "textures/general;textures/humans;textures/portraits;";
       res += "textures/junk;textures/indoor;maps;models;rules;skeletons;";
       res += "sndfx;dialogs;scripts";
@@ -19,7 +19,7 @@ class DNTModule : ModuleController
    /*! \return file with the SkinController to use */
    string getSkinFilename()
    {
-      return "skins/gameskin.as";
+      return "skin/gameskin.as";
    }
 
    /*! \return Rule definition file */
@@ -39,10 +39,16 @@ class DNTModule : ModuleController
       return false;
    }
 
+   void onInitGame()
+   {
+      /* Create our main widget */
+      @widget = @Widget("widgets/main.as");
+   }
+
    void step()
    {
    }
 
-
+   Widget@ widget=null;
 }
 
