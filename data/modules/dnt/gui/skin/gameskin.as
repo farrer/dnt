@@ -8,7 +8,7 @@ class GameSkin : SkinController
 
    int getTotalElements()
    {
-      return 12;
+      return 11;
    }
 
    int getElementType(string name)
@@ -23,45 +23,41 @@ class GameSkin : SkinController
       {
          res = 1;
       }
-      else if(name == "experienceBar")
+      else if(name == "exitIcon")
       {
          res = 2;
       }
-      else if(name == "healthBar")
+      else if(name == "loadIcon")
       {
          res = 3;
       }
-      else if(name == "exitIcon")
+      else if(name == "saveIcon")
       {
          res = 4;
       }
-      else if(name == "loadIcon")
+      else if(name == "attackIcon")
       {
          res = 5;
       }
-      else if(name == "saveIcon")
+      else if(name == "endTurnIcon")
       {
          res = 6;
       }
-      else if(name == "attackIcon")
+      else if(name == "questLogIcon")
       {
          res = 7;
       }
-      else if(name == "endTurnIcon")
+      else if(name == "iconsPanel")
       {
          res = 8;
       }
-      else if(name == "questLogIcon")
+      else if(name == "portraitArea")
       {
          res = 9;
       }
-      else if(name == "iconsPanel")
+      else if(name == "lifeBarFill")
       {
          res = 10;
-      }
-      else if(name == "portraitArea")
-      {
-         res = 11;
       }
 
       return res;

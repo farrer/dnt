@@ -73,7 +73,25 @@
       "containerType" : "topLeft",
       "skin" : "portraitArea",
       "position" : [0, 0],
-      "size" : [256,128]
+      "size" : [256,128],
+      "children":
+      [
+         {
+            "id" : "healthBar",
+            "type" : "progressBar",
+            "position" : [80, 11],
+            "size" : [123, 12],
+            "fillElement" : "lifeBarFill",
+            "value" : 78
+         },
+         {
+            "id" : "experienceBar",
+            "type" : "progressBar",
+            "position" : [80, 25],
+            "size" : [123, 12],
+            "value" : 45
+         }
+      ]
    }
 }
 
