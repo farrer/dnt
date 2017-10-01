@@ -10,16 +10,16 @@ element = window
    background = 6,6,55,55
 
    cornerDelta = 0,0,0,0
-   topLeftCorner = 67,50,169,107,
-   topRightCorner = 238,50,340,107
-   bottomRightCorner = 311,117,340,147
-   bottomLeftCorner = 67,117,96,147
+   topLeftCorner = 57,50,159,107,
+   topRightCorner = 178,50,280,107
+   bottomRightCorner = 251,117,280,147
+   bottomLeftCorner = 57,117,86,147
 
    borderDelta = 0,42,0,0
-   topBorder = 175,92,179,107
-   leftBorder = 67,110,78,113
-   rightBorder = 329,110,340,113
-   bottomBorder = 307,129,310,147
+   topBorder = 165,92,169,107
+   leftBorder = 57,110,68,113
+   rightBorder = 269,110,280,113
+   bottomBorder = 247,129,250,147
 
    # Window Active Title bar
    element = windowActiveTitleBar
@@ -330,4 +330,8 @@ element = panelGrid
    topRightCorner = 177,1,179,44
    backgroundDelta = 2,0,3,0
    background = 139,1,173,44
+
+element = portraitArea
+   cornerDelta = 0,0,0,0
+   topLeftCorner = 290,0,511,83
 

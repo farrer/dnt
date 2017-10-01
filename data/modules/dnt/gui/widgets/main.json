@@ -52,8 +52,28 @@
             "skin" : "attackIcon",
             "position": [-201, 10],
             "size" : [28, 28]
+         },
+         {
+            "type" : "button",
+            "skin" : "endTurnIcon",
+            "position": [-237, 10],
+            "size" : [28, 28]
+         },
+         {
+            "type" : "button",
+            "skin" : "questLogIcon",
+            "position": [-273, 10],
+            "size" : [28, 28]
          }
       ]
+   },
+   "widget":
+   {
+      "type" : "container",
+      "containerType" : "topLeft",
+      "skin" : "portraitArea",
+      "position" : [0, 0],
+      "size" : [256,128]
    }
 }
 
