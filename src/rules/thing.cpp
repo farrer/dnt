@@ -60,10 +60,6 @@ using namespace DNT;
  **************************************************************************/
 Thing::Thing(ThingType type, int totalAnimations)
 {
-   this->maxLifePoints = 0;
-   this->lifePoints = 0;
-   this->armatureClass = 0;
-   this->initiativeBonus = 0;
    this->displacement = 3.0f;
    this->walkInterval = 0.06f; 
    this->turnAroundInterval = 3.5f; 
@@ -116,22 +112,6 @@ Thing::~Thing()
 Thing::ThingType Thing::getThingType()
 {
    return thingType;
-}
-
-/**************************************************************************
- *                           getArmatureClass                             *
- **************************************************************************/
-int Thing::getArmatureClass()
-{
-   return armatureClass;
-}
-
-/**************************************************************************
- *                           setArmatureClass                             *
- **************************************************************************/
-void Thing::setArmatureClass(int value)
-{
-   armatureClass = value;
 }
 
 /**************************************************************************
@@ -614,51 +594,6 @@ bool Thing::doCheck(RuleDefinition* ruleDef, RuleDefinitionValue* against)
    }
 
    return false;
-}
-
-/******************************************************
- *                    getLifePoints                   *
- ******************************************************/
-int Thing::getLifePoints()
-{
-   return lifePoints;
-}
-
-/******************************************************
- *                     addLifePoints                  *
- ******************************************************/
-void Thing::addLifePoints(int points)
-{
-   lifePoints += points;
-   if(lifePoints > maxLifePoints)
-   {
-      lifePoints = maxLifePoints;
-   }
-}
-
-/******************************************************
- *                   setLifePoints                    *
- ******************************************************/
-void Thing::setLifePoints(int points)
-{
-   lifePoints = points;
-}
-
-/******************************************************
- *                  getMaxLifePoints                  *
- ******************************************************/
-int Thing::getMaxLifePoints()
-{
-   return maxLifePoints;
-}
-
-/******************************************************
- *                  setMaxLifePoints                  *
- ******************************************************/
-void Thing::setMaxLifePoints(int points)
-{
-   maxLifePoints = points;
-   lifePoints = maxLifePoints;
 }
 
 /**************************************************************************

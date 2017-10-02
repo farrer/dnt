@@ -157,31 +157,8 @@ class Thing : public Kobold::ListElement
       /*! Do a RuleDefinition check against a RuleDefinition */ 
       bool doCheck(RuleDefinition* ruleDef, RuleDefinitionValue* against);
 
-      /*! Get the current number of life points
-       * \return -> current life points */
-      int getLifePoints();
-      /*! Add some points to the current life
-       * \param points -> points to add */
-      void addLifePoints(int points);
-      /*! Set the current life points
-       * \param points -> new life value */
-      void setLifePoints(int points);
-
-      /*! Get the current max life points
-       * \return -> max life points */
-      int getMaxLifePoints();
-      /*! Set the current max life points
-       * \param points -> new max life points*/
-      void setMaxLifePoints(int points);
-
       /*! \return thing's type */
       ThingType getThingType();
-
-      /*! \return current armature class value */
-      int getArmatureClass();
-      /*! Set current armature class
-       * \param value armature class value */
-      void setArmatureClass(int value);
 
       /*! \return our 'playable character walking bounding box':
        * This is a regular squared one, in which rotations will never happen,
@@ -292,10 +269,6 @@ class Thing : public Kobold::ListElement
                                           Used for hash key. */
       Kobold::String description; /**< Text describing the thing */
 
-      int lifePoints;    /**< Current life points. If <= 0 could be dead
-                              or broken (or something near that state). */
-      int maxLifePoints; /**< Max number of life points the thing can have */
-
       int state; /**< Current state. What this represents, depends on 
                       respective implementations. Defaults to 0. */
 
@@ -314,10 +287,7 @@ class Thing : public Kobold::ListElement
       Thing* currentEnemy; /**< Pointer to current target enemy, if any */
       PsychoState psychoState; /**< State to Playable Characters */
 
-      int armatureClass; /**< Armature class protection value */
       int displacement;       /**< Thing's Displacement (in meters) */
-      int initiativeBonus;    /**< Thing's initiative bonus value */
-
       float walkInterval; /**< Distance can move each frame */
       float turnAroundInterval; /**< Distance can rotate each frame */
 
