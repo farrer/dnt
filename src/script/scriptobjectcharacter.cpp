@@ -76,6 +76,19 @@ ScriptObjectCharacter::ScriptObjectCharacter(Kobold::String filename)
 }
 
 /**************************************************************************
+ *                              Constructor                               *
+ **************************************************************************/
+ScriptObjectCharacter::ScriptObjectCharacter(Character* c) 
+                      :ScriptObject(ScriptObject::TYPE_CHARACTER, 
+                                    c->getFilename(),
+                                    c->getInitialPosition()) 
+{
+   mutex.lock();
+   c->defineScriptObject(this);
+   mutex.unlock();
+}
+
+/**************************************************************************
  *                               Destructor                               *
  **************************************************************************/
 ScriptObjectCharacter::~ScriptObjectCharacter()

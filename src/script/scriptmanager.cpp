@@ -32,6 +32,8 @@
 #include "farsofunctions.h"
 #include "../gui/briefing.h"
 #include "../lang/translate.h"
+#include "../core/game.h"
+#include "../rules/character.h"
 
 #include <kobold/log.h>
 #include <kosound/sound.h>
@@ -111,6 +113,11 @@ ScriptManager::ScriptManager()
    r = asEngine->RegisterGlobalFunction(
          "Character @+ getCharacter(string file)",
          asMETHOD(ScriptManager, getCharacterByFilename), 
+         asCALL_THISCALL_ASGLOBAL, this);
+   assert(r >= 0);
+   r = asEngine->RegisterGlobalFunction(
+         "Character @+ getPlayableCharacter()",
+         asMETHOD(ScriptManager, getFirstPlayableCharacter), 
          asCALL_THISCALL_ASGLOBAL, this);
    assert(r >= 0);
    r = asEngine->RegisterGlobalFunction(
@@ -919,6 +926,31 @@ ScriptObjectCharacter* ScriptManager::getCharacterByFilename(Kobold::String
    }
 
    return res;
+}
+
+/**************************************************************************
+ *                        getFirstPlayableCharacter                       *
+ **************************************************************************/
+ScriptObjectCharacter* ScriptManager::getFirstPlayableCharacter()
+{
+   CharacterList* pcs = Game::getPcs();
+   Character* c = static_cast<Character*>(pcs->getFirst());
+   if(c != NULL)
+   {
+      ScriptObjectCharacter* res = static_cast<ScriptObjectCharacter*>(
+            c->getScriptObject());
+
+      if(res == NULL)
+      {
+         /* Without script object, must create one */
+         res = new ScriptObjectCharacter(c);
+         insertScriptObject(res);
+      }
+
+      return res;
+   }
+
+   return NULL;
 }
 
 /**************************************************************************

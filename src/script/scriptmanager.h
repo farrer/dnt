@@ -183,6 +183,8 @@ namespace DNT
                float x, float y, float z);
          /*! \return a character by its name */
          ScriptObjectCharacter* getCharacterByFilename(Kobold::String filename);
+         /*! \return first playable character on list */
+         ScriptObjectCharacter* getFirstPlayableCharacter();
          /*! \return an object by its name and position */
          ScriptObjectObject* getObject(Kobold::String filename, 
                float x, float y, float z);

@@ -45,6 +45,8 @@ namespace DNT
                Ogre::Vector3 originalPos);
          /*! Constructor */
          ScriptObjectCharacter(Kobold::String filename);
+         /*! Constructor */
+         ScriptObjectCharacter(Character* c);
          /*! Destructor */
          ~ScriptObjectCharacter();
         
