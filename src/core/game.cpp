@@ -32,6 +32,7 @@
 #include "../script/scriptmanager.h"
 
 #include <kobold/log.h>
+#include <goblin/camera.h>
 using namespace DNT;
 
 /************************************************************************
@@ -234,6 +235,16 @@ Character* Game::getCharacter(Kobold::String filename,
 Ogre::SceneManager* Game::getSceneManager()
 {
    return sceneManager;
+}
+
+/************************************************************************
+ *                        updateCameraPosition                          *
+ ************************************************************************/
+void Game::updateCameraPosition(Character* pc)
+{
+   Ogre::Vector3 pos = pc->getModel()->getPosition();
+   pos.y += 1.0f;
+   Goblin::Camera::setPosition(pos);
 }
 
 /************************************************************************

@@ -265,7 +265,7 @@ void Character::update()
          /* Move the camera, if we are the active playable character */
          if(Game::getPcs()->getActiveCharacter() == this)
          {
-            Goblin::Camera::setPosition(pos);
+            Game::updateCameraPosition(this);
          }
       }
       else

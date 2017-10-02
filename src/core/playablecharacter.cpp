@@ -244,7 +244,7 @@ bool PlayableCharacter::checkMouseInputForMovement(
       {
          getModel()->setPosition(pos);
          getModel()->setTargetOrientation(0.0f, ori, 0.0f, 4);
-         Goblin::Camera::setPosition(pos);
+         Game::updateCameraPosition(this);
          moved = true;
          return true;
       }
@@ -297,7 +297,7 @@ bool PlayableCharacter::tryWalk(float varX, float varZ)
    {
       curPos.y = newHeight;
       getModel()->setPosition(curPos);
-      Goblin::Camera::setPosition(curPos);
+      Game::updateCameraPosition(this);
    }
 
    return moved;

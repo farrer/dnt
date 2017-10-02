@@ -103,7 +103,7 @@ bool Core::doCycleInit(int callCounter, bool& shouldAbort)
          shouldAbort = true;
          return true;
       }
-      Goblin::Camera::setPosition(pc->getModel()->getPosition());
+      Game::updateCameraPosition(pc);
       srand(SDL_GetTicks() + (int)(1 + 1000 * (rand() / (RAND_MAX + 1.0))));
 
       return true;

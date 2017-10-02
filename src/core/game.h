@@ -90,6 +90,10 @@ namespace DNT
          /*! \return if is at fight mode or normal */
          static const bool isAtFightMode() { return fightMode; };
 
+         /*! Update camera position, based on a character position (usually
+          * the main PlayableCharacter). */
+         static void updateCameraPosition(Character* pc);
+
       private:
          /*! Get a character from the lists of #pcs and #npcs */
          static Character* getCharacter(Kobold::String filename, 
