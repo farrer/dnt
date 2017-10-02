@@ -90,6 +90,7 @@ set(AI_SOURCES
    src/ai/patternagent.cpp
 )
 set(SCRIPT_HEADERS
+   src/script/farsofunctions.h
    src/script/mapscript.h
    src/script/modulescript.h
    src/script/pendingaction.h
@@ -110,6 +111,7 @@ set(SCRIPT_HEADERS
    src/script/widgetscript.h
 )
 set(SCRIPT_SOURCES
+   src/script/farsofunctions.cpp
    src/script/mapscript.cpp
    src/script/modulescript.cpp
    src/script/pendingaction.cpp

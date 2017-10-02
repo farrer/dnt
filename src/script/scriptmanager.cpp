@@ -29,6 +29,7 @@
 #include "scriptobjectrulegroup.h"
 #include "scriptobjectwidget.h"
 #include "pendingaction.h"
+#include "farsofunctions.h"
 #include "../gui/briefing.h"
 #include "../lang/translate.h"
 
@@ -121,6 +122,8 @@ ScriptManager::ScriptManager()
          asMETHOD(ScriptManager, getObjectByFilename), 
          asCALL_THISCALL_ASGLOBAL, this);
    assert(r >= 0);
+
+   FarsoFunctions::registerFunctions(asEngine);
 
    /* Register our base interfaces */
    r = asEngine->RegisterInterface("MapController");

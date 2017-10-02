@@ -23,7 +23,7 @@
 
 #include "dntconfig.h"
 #include "scriptobject.h"
-#include "angelscript.h"
+#include <angelscript.h>
 #include <kobold/mutex.h>
 #include <OGRE/Math/Simple/OgreAabb.h>
 
