@@ -215,12 +215,18 @@ class RuleDefinitionValue : public Kobold::ListElement
       /*! Add to the value.
        * \param v value to add to current value */
       void add(int v);
-      /*! Set its value
+      /*! Set its current value.
        * \param v new value .*/
       void setValue(int v);
 
+      /*! Set its maximum value
+       * \param v max value */
+      void setMaxValue(int v);
+
       /*! \return current value */
       const int getValue() const { return value; };
+      /*! \return maximum value */
+      const int getMaxValue() const { return maxValue; };
 
       /*! \return identifier of th RuleDefinitionValue
        * \note it isn't the identifier of the RuleDefinition */
@@ -242,6 +248,7 @@ class RuleDefinitionValue : public Kobold::ListElement
       RuleDefinition* ruleDef; /**< Respective RuleDefinition */
       RuleDefinitionValue* related; /**< Related RuleDefinitionValue */
       int value;/**< How many points the Thing has on the RuleDefinition */
+      int maxValue; /**< How many points the Thing could have on this */
       Kobold::String id; /**< Identifier */
 
       static int count; /**< Counter for identifier generation */

@@ -293,6 +293,7 @@ RuleDefinitionValue::RuleDefinitionValue(RuleDefinition* def,
           (related != NULL && related->getDefinition() == def->getRelated()));
    this->related = related;
    this->value = 0;
+   this->maxValue = 0;
    this->scriptObject = new ScriptObjectRuleDefinition(this);
    this->scriptObject->addReference();
    Game::getScriptManager()->insertScriptObject(this->scriptObject);
@@ -312,6 +313,10 @@ RuleDefinitionValue::~RuleDefinitionValue()
 void RuleDefinitionValue::add(int v)
 {
    this->value += v;
+   if(this->value > this->maxValue)
+   {
+      this->value = maxValue;
+   }
 }
 
 /******************************************************************
@@ -320,6 +325,22 @@ void RuleDefinitionValue::add(int v)
 void RuleDefinitionValue::setValue(int v)
 {
    this->value = v;
+   if(this->value > this->maxValue)
+   {
+      this->value = maxValue;
+   }
+}
+
+/******************************************************************
+ *                         setMaxValue                            *
+ ******************************************************************/
+void RuleDefinitionValue::setMaxValue(int v)
+{
+   this->maxValue = v;
+   if(this->value > this->maxValue)
+   {
+      this->value = maxValue;
+   }
 }
 int RuleDefinitionValue::count = 0;
 

@@ -77,19 +77,21 @@
       "children":
       [
          {
-            "id" : "healthBar",
+            "id" : "hpBar",
             "type" : "progressBar",
             "position" : [80, 11],
             "size" : [123, 12],
             "fillElement" : "lifeBarFill",
-            "value" : 78
+            "value" : 0,
+            "maxValue" : 1
          },
          {
-            "id" : "experienceBar",
+            "id" : "xpBar",
             "type" : "progressBar",
             "position" : [80, 25],
             "size" : [123, 12],
-            "value" : 45
+            "value" : 0,
+            "maxValue" : 1
          }
       ]
    }

@@ -278,7 +278,7 @@ Farso::Widget* FarsoFunctions::getWidget(const Kobold::String& id,
       res = NULL;
    }
 
-   return NULL;
+   return res;
 }
 
 /************************************************************************

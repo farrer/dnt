@@ -84,7 +84,8 @@ ScriptObjectCharacter::ScriptObjectCharacter(Character* c)
                                     c->getInitialPosition()) 
 {
    mutex.lock();
-   c->defineScriptObject(this);
+   character = c;
+   character->defineScriptObject(this);
    mutex.unlock();
 }
 
@@ -403,7 +404,7 @@ void ScriptObjectCharacter::registerFunctions(asIScriptEngine* asEngine)
    assert(r >=0 );
    r = asEngine->RegisterObjectMethod("Character", 
          "RuleDefinition@+ getRuleDefinition(string group, string id)",
-         asMETHOD(ScriptObjectCharacter, openDialog), asCALL_THISCALL);
+         asMETHOD(ScriptObjectCharacter, getRuleDefinition), asCALL_THISCALL);
    assert(r >=0 );
 }
 

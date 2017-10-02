@@ -44,6 +44,9 @@ namespace DNT
          /*! \return value */
          int getValue();
 
+         /*! \return maximum value */
+         int getMaxValue();
+
          /*! \return the name of the rule definition */
          Kobold::String getName();
 

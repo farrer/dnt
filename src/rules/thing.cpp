@@ -691,6 +691,11 @@ RuleDefinitionValue* Thing::getRuleDefinition(const Kobold::String groupId,
    {
       return group->getDefinitionValue(id);
    }
+   else
+   {
+      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 
+            "Error: no RuleGroup with identifier '%s'", groupId.c_str());
+   }
 
    return NULL;
 }

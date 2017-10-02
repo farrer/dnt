@@ -77,6 +77,22 @@ int ScriptObjectRuleDefinition::getValue()
 }
 
 /**************************************************************************
+ *                              getMaxValue                               *
+ **************************************************************************/
+int ScriptObjectRuleDefinition::getMaxValue()
+{
+   int res = 0;
+   mutex.lock();
+   if(ruleDef)
+   {
+      res = ruleDef->getMaxValue();
+   }
+   mutex.unlock();
+
+   return res;
+}
+
+/**************************************************************************
  *                                getName                                 *
  **************************************************************************/
 Kobold::String ScriptObjectRuleDefinition::getName()
@@ -151,6 +167,10 @@ void ScriptObjectRuleDefinition::registerFunctions(asIScriptEngine* asEngine)
    r = asEngine->RegisterObjectMethod("RuleDefinition",
          "int getValue()", asMETHOD(ScriptObjectRuleDefinition, getValue), 
          asCALL_THISCALL);
+   assert(r >=0 );
+   r = asEngine->RegisterObjectMethod("RuleDefinition",
+         "int getMaxValue()", asMETHOD(ScriptObjectRuleDefinition, 
+         getMaxValue), asCALL_THISCALL);
    assert(r >=0 );
    r = asEngine->RegisterObjectMethod("RuleDefinition",
          "string getName()", 
