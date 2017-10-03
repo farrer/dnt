@@ -48,8 +48,6 @@ ScriptManager::ScriptManager()
    int r;
 
    currentOnStep = NULL;
-   curRunningInstance = NULL;
-   curRunningContext = NULL;
 
    Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL,
          "Initing ScriptManager...");
@@ -407,8 +405,7 @@ int ScriptManager::executeCall(asIScriptContext* ctx,
    managerMutex.lock();
 
    /* Set current running pointers */
-   curRunningInstance = instance;
-   curRunningContext = ctx;
+   runningInfo.push(new RunningInfo(instance, ctx));
 
    /* Set our line-time-out check function */
    Uint8 timeout = SDL_GetTicks() + maxTime;
@@ -451,8 +448,9 @@ int ScriptManager::executeCall(asIScriptContext* ctx,
    assert(r >= 0);
 
    /* Clear current running */
-   curRunningInstance = NULL;
-   curRunningContext = NULL;
+   RunningInfo* info = runningInfo.top();
+   runningInfo.pop();
+   delete info;
 
    managerMutex.unlock();
    return r;
@@ -758,8 +756,9 @@ void ScriptManager::executeWithSuspend(ScriptInstance* instance,
  **************************************************************************/
 void ScriptManager::suspendByPendingAction(PendingAction* pendingAction)
 {
-   curRunningInstance->addSuspendedContext(curRunningContext, pendingAction);
-   curRunningContext->Suspend();
+   RunningInfo* info = runningInfo.top();
+   info->instance->addSuspendedContext(info->context, pendingAction);
+   info->context->Suspend();
 }
 
 /**************************************************************************

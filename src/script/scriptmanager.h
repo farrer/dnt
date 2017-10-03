@@ -24,6 +24,7 @@
 #include <angelscript.h>
 #include <OGRE/OgreString.h>
 #include <vector>
+#include <stack>
 #include <kobold/list.h>
 #include <kobold/kstring.h>
 #include <kobold/parallelprocess.h>
@@ -224,8 +225,28 @@ namespace DNT
          Kobold::List objects; /**< List of ScriptObjects */
          Kobold::Mutex managerMutex; /**< Mutex for access */
          ScriptInstance* currentOnStep; /**< Current onStep instance */
-         ScriptInstance* curRunningInstance; /**< Current running instance */
-         asIScriptContext* curRunningContext; /**< Current running context */
+
+         /*! Class which keeps information about running contexts at a single
+          * time. This is needed, due to the current running context could call
+          * a function which need to call another script (ie: scripts calls 
+          * could be nested). */
+         class RunningInfo
+         {
+            public:
+               /*! Quick assign contructor */
+               RunningInfo(ScriptInstance* i, asIScriptContext* c)
+               {
+                  instance = i;
+                  context = c;
+               };
+
+               ScriptInstance* instance; /**< Current running instance */
+               asIScriptContext* context; /**< Current running context */
+         };
+
+         std::stack<RunningInfo*> runningInfo; /**< Running information */
+
+
    };
 }
 
