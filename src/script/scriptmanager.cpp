@@ -756,6 +756,10 @@ void ScriptManager::executeWithSuspend(ScriptInstance* instance,
  **************************************************************************/
 void ScriptManager::suspendByPendingAction(PendingAction* pendingAction)
 {
+   //FIXME: what happens when a script called a function which calls
+   //another script and this last one is suspended? Probably we'll
+   //need to do something different for this case with the running context
+   //stack!
    RunningInfo* info = runningInfo.top();
    info->instance->addSuspendedContext(info->context, pendingAction);
    info->context->Suspend();
