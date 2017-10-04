@@ -25,6 +25,7 @@
 #include <kosound/sound.h>
 #include <kobold/log.h>
 #include <stdarg.h>
+#include <farso/controller.h>
 
 using namespace DNT;
 
@@ -37,9 +38,7 @@ void Briefing::init()
 {
    lastAddTimer.reset();
 
-   briefTxt = new Farso::ScrollText(0, 0, 320, 160, 
-         "LiberationSans-Regular.ttf", 10, Farso::Colors::colorText, NULL);
-   briefTxt->hide();
+   scrollId = "";
 }
 
 /***********************************************************************
@@ -48,13 +47,41 @@ void Briefing::init()
 void Briefing::finish()
 {
 }
+/***********************************************************************
+ *                         setScrollTextId                             *
+ ***********************************************************************/
+void Briefing::setScrollTextId(const Kobold::String& id)
+{
+   scrollId = id;
+}
+
+/***********************************************************************
+ *                          getScrollText                              *
+ ***********************************************************************/
+Farso::ScrollText* Briefing::getScrollText()
+{
+   Farso::ScrollText* scrollText = NULL;
+   if(!scrollId.empty())
+   {
+      scrollText = static_cast<Farso::ScrollText*>(
+            Farso::Controller::getWidgetById(scrollId));
+   }
+
+   return scrollText;
+}
 
 /***********************************************************************
  *                              isOpened                               *
  ***********************************************************************/
 bool Briefing::isDisplayed()
 {
-   return briefTxt->isVisible();
+   Farso::ScrollText* briefTxt = getScrollText();
+   if(briefTxt)
+   {
+      return briefTxt->isVisible();
+   }
+
+   return false;
 }
 
 /***********************************************************************
@@ -62,7 +89,11 @@ bool Briefing::isDisplayed()
  ***********************************************************************/
 void Briefing::show()
 {
-   briefTxt->show();
+   Farso::ScrollText* briefTxt = getScrollText();
+   if(briefTxt)
+   {
+      briefTxt->show();
+   }
 }
 
 /***********************************************************************
@@ -70,7 +101,11 @@ void Briefing::show()
  ***********************************************************************/
 void Briefing::hide()
 {
-   briefTxt->hide();
+   Farso::ScrollText* briefTxt = getScrollText();
+   if(briefTxt)
+   {
+      briefTxt->hide();
+   }
 }
 
 /***********************************************************************
@@ -92,8 +127,13 @@ bool Briefing::addText(int R, int G, int B, Kobold::String text, bool forceRep)
    {
       lastText = text;
       lastAddTimer.reset();
-      briefTxt->addText(text, Farso::Color(R, G, B, 255));
-      briefTxt->addLineBreak();
+
+      Farso::ScrollText* briefTxt = getScrollText();
+      if(briefTxt)
+      {
+         briefTxt->addText(text, Farso::Color(R, G, B, 255));
+         briefTxt->addLineBreak();
+      }
 
       Kobold::Log::add(text);
 
@@ -139,7 +179,7 @@ bool Briefing::addText(const char* format, ...)
 /***********************************************************************
  *                           Static Members                            *
  ***********************************************************************/
-Farso::ScrollText* Briefing::briefTxt = NULL;
+Kobold::String Briefing::scrollId = "";
 Kobold::Timer Briefing::lastAddTimer;
-Kobold::String Briefing::lastText;
+Kobold::String Briefing::lastText = "";
 

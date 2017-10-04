@@ -51,6 +51,16 @@ Kobold::String SkinScriptInstance::getSkinFilename()
 }
 
 /**************************************************************************
+ *                        getLogScrollTextId                              *
+ **************************************************************************/
+Kobold::String SkinScriptInstance::getLogScrollTextId()
+{
+   SkinScript* skinScript = static_cast<SkinScript*>(script);
+
+   return getStringFromFunction(skinScript->getLogScrollTextIdFunction());
+}
+
+/**************************************************************************
  *                           getElementType                               *
  **************************************************************************/
 int SkinScriptInstance::getElementType(const Kobold::String& name)
@@ -112,7 +122,8 @@ SkinScript::SkinScript(ScriptManager* manager)
             stepFunction(NULL),
             totalElementsFunction(NULL),
             elementTypeFunction(NULL),
-            skinFilenameFunction(NULL)
+            skinFilenameFunction(NULL),
+            logScrollTextIdFunction(NULL)
 {
 }
 
@@ -170,6 +181,8 @@ void SkinScript::setFunctionPointers()
    this->skinFilenameFunction = mainType->GetMethodByDecl(
          "string getSkinFilename()");
    assert(this->skinFilenameFunction);
+   this->logScrollTextIdFunction = mainType->GetMethodByDecl(
+         "string getLogScrollTextId()");
 }
 
 /**************************************************************************
@@ -210,5 +223,13 @@ asIScriptFunction* SkinScript::getElementTypeFunction()
 asIScriptFunction* SkinScript::getSkinFilenameFunction()
 {
    return skinFilenameFunction;
+}
+
+/**************************************************************************
+ *                        getLogScrollTextIdFunction                      *
+ **************************************************************************/
+asIScriptFunction* SkinScript::getLogScrollTextIdFunction()
+{
+   return logScrollTextIdFunction;
 }
 

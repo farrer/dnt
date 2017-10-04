@@ -40,6 +40,10 @@ namespace DNT
          /*! \return the .skin definition filename to use */
          Kobold::String getSkinFilename();
 
+         /*! \return string identifier of the ScrollText to be populated
+          * with game log. */
+         Kobold::String getLogScrollTextId();
+
          /*! \return total SkinElements defined by the script */
          int getTotalElements();
          /*! \return index of the SkinElement [0, total) for the element 
@@ -71,6 +75,10 @@ namespace DNT
           * to use */
          asIScriptFunction* getSkinFilenameFunction();
 
+         /*! \return pointer to the function called to get the identifier
+          * of the game log ScrollText */
+         asIScriptFunction* getLogScrollTextIdFunction();
+
       protected:
          void setFunctionPointers();
          const Ogre::String getMainTypeInterface() const 
@@ -84,6 +92,7 @@ namespace DNT
          asIScriptFunction* totalElementsFunction;
          asIScriptFunction* elementTypeFunction;
          asIScriptFunction* skinFilenameFunction;
+         asIScriptFunction* logScrollTextIdFunction;
    };
 
 }

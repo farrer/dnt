@@ -24,9 +24,9 @@
 #include "dntconfig.h"
 
 #include "../lang/translate.h"
-
-#include <farso/controller.h>
+#include <farso/scrolltext.h>
 #include <kobold/kstring.h>
+#include <kobold/timer.h>
 
 namespace DNT
 {
@@ -36,12 +36,13 @@ namespace DNT
 class Briefing
 {
    public:
-      /*! Init the use of briefing 
-       * \note should be called at DNT init. */
+      /*! Init briefing structures */
       static void init();
-      /*! Done with briefing use.
-       * \note should be called at DNT finish. */
+      /*! Free all briefing structures. */
       static void finish();
+
+      /*! Set identifier of the ScrollText to use for game log */ 
+      static void setScrollTextId(const Kobold::String& id);
 
       /*! Display the hidden Briefing widget */
       static void show();
@@ -75,7 +76,11 @@ class Briefing
       static void clear();
 
    protected:
-      static Farso::ScrollText* briefTxt; /**< Briefing Text */
+      /*! \return ScrollText defined by scrollId, if any */
+      static Farso::ScrollText* getScrollText(); 
+
+   private:
+      static Kobold::String scrollId; /**< Id of the ScrollText to use */
       static Kobold::String lastText; /**< last text added */
       static Kobold::Timer lastAddTimer;  /**< Timer to avoid same text added */
 };

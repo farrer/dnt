@@ -68,5 +68,10 @@ class GameSkin : SkinController
       return "skin/moderna.skin";
    }
 
+   string getLogScrollTextId()
+   {
+      return "logScroll";
+   }
+
 }
 

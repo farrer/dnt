@@ -39,6 +39,9 @@ namespace DNT
          /*! Destructor */
          ~Skin();
 
+         /*! \return identifier of the ScrollText to use for game log */
+         Kobold::String getLogScrollTextId();
+
       protected:
          /*! \return from script the total elements defined */
          int getTotalElements();

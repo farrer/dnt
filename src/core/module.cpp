@@ -23,6 +23,7 @@
 #include "../script/scriptmanager.h"
 #include "../rules/ruledef.h"
 #include "../gui/skin.h"
+#include "../gui/briefing.h"
 #include <farso/controller.h>
 #include <kobold/log.h>
 using namespace DNT;
@@ -87,7 +88,8 @@ bool Module::doCycleInit(bool changeSkin, const Kobold::String& dataPath,
       {
          /* Initialize our skin definition
           * Note: the skin dealloc will be made by Farso.*/
-         new Skin(script->getSkinFilename());
+         Skin* sk = new Skin(script->getSkinFilename());
+         DNT::Briefing::setScrollTextId(sk->getLogScrollTextId());
       }
 
       /* Load our rules */

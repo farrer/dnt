@@ -3,10 +3,10 @@ class MainWidget : WidgetController
 {
    MainWidget()
    {
-      curXp = 0;
-      maxXp = 0;
-      curHp = 0;
-      maxHp = 0;
+      curXp = -1;
+      maxXp = -1;
+      curHp = -1;
+      maxHp = -1;
    }
 
    string getWidgetFilename()
@@ -39,12 +39,16 @@ class MainWidget : WidgetController
          curXp = xpVal;
          maxXp = xpMax;
          progressBarSet("xpBar", curXp, maxXp);
+         widgetSetMouseHint("xpBar", 
+               "XP: " + formatInt(curXp) + "/" + formatInt(maxXp));
       }
       if((hpVal != curHp) || (hpMax != maxHp))
       {
          curHp = hpVal;
          maxHp = hpMax;
          progressBarSet("hpBar", curHp, maxHp);
+         widgetSetMouseHint("hpBar", 
+               "HP: " + formatInt(curHp) + "/" + formatInt(maxHp));
       }
    }
 
