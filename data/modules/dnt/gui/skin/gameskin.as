@@ -8,7 +8,7 @@ class GameSkin : SkinController
 
    int getTotalElements()
    {
-      return 11;
+      return 12;
    }
 
    int getElementType(string name)
@@ -58,6 +58,10 @@ class GameSkin : SkinController
       else if(name == "lifeBarFill")
       {
          res = 10;
+      }
+      else if(name == "logArea")
+      {
+         res = 11;
       }
 
       return res;

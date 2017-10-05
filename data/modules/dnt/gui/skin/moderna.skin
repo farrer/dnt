@@ -352,3 +352,17 @@ element = lifeBarFill
    backgroundDelta = 8,6,8,6
    background = 20,120,23,121
 
+element = logArea
+   cornerDelta = 0,0,0,0
+   topLeftCorner = 291,126,292,127
+   topRightCorner = 311,126,312,127
+   bottomLeftCorner = 291,146,292,147
+   bottomRightCorner = 311,146,312,147
+   borderDelta = 0,0,0,0
+   leftBorder = 291,129,292,129
+   rightBorder = 311,129,311,129
+   topBorder = 302,126,302,126
+   bottomBorder = 302,146,302,147
+   backgroundDelta = 2,2,2,2
+   background = 300,132,300,132
+

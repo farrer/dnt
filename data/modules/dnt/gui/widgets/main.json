@@ -5,12 +5,13 @@
       "containerType" : "bottomLeft",
       "relPosition" : [0, 0.8],
       "relSize" : [0.2, 0.2],
-      "filled": true,
+      "skin": "logArea",
       "children" :
       [
         {
             "type" : "scrollText",
             "id" : "logScroll",
+            "scrollBar" : false,
             "position": [0, 0],
             "relSize": [0.2, 0.2]
          }
