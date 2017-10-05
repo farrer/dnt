@@ -144,7 +144,7 @@ bool PlayableCharacter::doMovementByMouse(const Ogre::Vector3& floorMouse,
    wasRunning = run;
 
    /* define direction model angle and position */
-   float deltaRadius = (run) ? 1.5f : 0.6f;
+   float deltaRadius = (run) ? 1.5f : 0.8f;
    direction->setOrientationNow(-90.0f, 0.0f, walkAngle - 180);
    Ogre::Aabb aabb = getWalkableBounds();
    direction->setPositionNow(
