@@ -2,9 +2,9 @@
    "widget":
    {
       "type" : "container",
-      "containerType" : "bottomLeft",
-      "relPosition" : [0, 0.8],
-      "relSize" : [0.2, 0.2],
+      "containerType" : "topLeft",
+      "relPosition" : [0.6, 0.0],
+      "relSize" : [0.4, 0.14],
       "skin": "logArea",
       "children" :
       [
@@ -13,7 +13,7 @@
             "id" : "logScroll",
             "scrollBar" : false,
             "position": [0, 0],
-            "relSize": [0.2, 0.2]
+            "relSize": [0.4, 0.14]
          }
       ]
    },
