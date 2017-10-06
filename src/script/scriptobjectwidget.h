@@ -47,6 +47,9 @@ namespace DNT
 
          /*!\ return if the widget is actually valid */ 
          const bool isValid();
+
+         /*! Close widget (or at least call its function to close). */
+         void close();
          
          /*! Register the related class */
          static void registerClass(asIScriptEngine* asEngine);

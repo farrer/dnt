@@ -59,6 +59,9 @@ Core::~Core()
 {
    if(module)
    {
+      //TODO: when with initial screen implemented, should call exit
+      //when returning to it (not here).
+      module->onExitGame();
       delete module;
    }
 }

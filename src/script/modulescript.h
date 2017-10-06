@@ -52,6 +52,9 @@ namespace DNT
          /*! Function called when init the game, just after call to load 
           * a map. */
          void callOnInitGame();
+         /*! Function called when finished with the game, just after calling
+          * to exit it */
+         void callOnExitGame();
    };
 
    /*! A script for controlling Farso's widgets defined by a JSON file. */
@@ -73,6 +76,7 @@ namespace DNT
          asIScriptFunction* getRulesFilenameFunction();
          asIScriptFunction* getInitialMapFunction();
          asIScriptFunction* getOnInitGameFunction();
+         asIScriptFunction* getOnExitGameFunction();
 
       protected:
          void setFunctionPointers();
@@ -91,6 +95,7 @@ namespace DNT
          asIScriptFunction* skinFilenameFunction;
          asIScriptFunction* initialMapFunction;
          asIScriptFunction* onInitGameFunction;
+         asIScriptFunction* onExitGameFunction;
    };
 
 }

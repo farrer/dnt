@@ -2,6 +2,7 @@
    "widget":
    {
       "type" : "container",
+      "id" : "mainLogContainer",
       "containerType" : "topLeft",
       "relPosition" : [0.6, 0.0],
       "relSize" : [0.4, 0.14],
@@ -20,6 +21,7 @@
    "widget":
    {
       "type" : "container",
+      "id" : "mainIconsContainer",
       "containerType" : "bottomCentered",
       "relPosition" : [0,0.9],
       "relSize": [1.0, 0.1],
@@ -91,6 +93,7 @@
    "widget":
    {
       "type" : "container",
+      "id" : "mainPortraitContainer",
       "containerType" : "topLeft",
       "skin" : "portraitArea",
       "position" : [0, 0],

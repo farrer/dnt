@@ -49,6 +49,9 @@ namespace DNT
           * longer necessary). */
          bool shouldQuit();
 
+         /*! Call the function to close the widget. */
+         void close();
+
          /*! Call to treat some Farso event on the widget.
           * \param eventType type of the event to treat.
           * \param widgetId widget's identifier. */
@@ -81,6 +84,8 @@ namespace DNT
          asIScriptFunction* getTreatEventFunction();
          /*! \return pointer to the shouldQuit function */
          asIScriptFunction* getShouldQuitFunction();
+         /*! \return pointer to the close function */
+         asIScriptFunction* getCloseFunction();
 
       protected:
          void setFunctionPointers();
@@ -96,6 +101,7 @@ namespace DNT
          asIScriptFunction* widgetFilenameFunction;
          asIScriptFunction* treatEventFunction;
          asIScriptFunction* shouldQuitFunction;
+         asIScriptFunction* closeFunction;
    };
 
 }

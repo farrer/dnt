@@ -58,6 +58,17 @@ void ScriptObjectWidget::setPointer(void* newPtr)
 }
 
 /**************************************************************************
+ *                              widgetScript                              *
+ **************************************************************************/
+void ScriptObjectWidget::close()
+{
+   if(widgetScript)
+   {
+      widgetScript->close();
+   }
+}
+
+/**************************************************************************
  *                                 isValid                                *
  **************************************************************************/
 const bool ScriptObjectWidget::isValid()
@@ -105,5 +116,8 @@ void ScriptObjectWidget::registerClass(asIScriptEngine* asEngine)
  **************************************************************************/
 void ScriptObjectWidget::registerFunctions(asIScriptEngine* asEngine)
 {
+   int r = asEngine->RegisterObjectMethod("Widget", 
+         "void close()", asMETHOD(ScriptObjectWidget, close), asCALL_THISCALL);
+   assert(r >= 0);
 }
 

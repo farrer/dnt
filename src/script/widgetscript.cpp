@@ -101,6 +101,15 @@ void WidgetScriptInstance::onEvent(const Farso::EventType& eventType,
 }
 
 /**************************************************************************
+ *                                close                                   *
+ **************************************************************************/
+void WidgetScriptInstance::close()
+{
+   WidgetScript* widgetScript = static_cast<WidgetScript*>(script);
+   callProcedureWithoutParams(widgetScript->getCloseFunction());
+}
+
+/**************************************************************************
  *                              shouldQuit                                *
  **************************************************************************/
 bool WidgetScriptInstance::shouldQuit()
@@ -134,7 +143,9 @@ WidgetScript::WidgetScript(ScriptManager* manager)
             factoryFunction(NULL),
             stepFunction(NULL),
             widgetFilenameFunction(NULL),
-            treatEventFunction(NULL)
+            treatEventFunction(NULL),
+            shouldQuitFunction(NULL),
+            closeFunction(NULL)
 {
 }
 
@@ -198,6 +209,8 @@ void WidgetScript::setFunctionPointers()
    assert(this->treatEventFunction);
    this->shouldQuitFunction = mainType->GetMethodByDecl(
          "bool shouldQuit()");
+   this->closeFunction = mainType->GetMethodByDecl(
+         "void close()");
 }
 
 /**************************************************************************
@@ -238,6 +251,14 @@ asIScriptFunction* WidgetScript::getWidgetFilenameFunction()
 asIScriptFunction* WidgetScript::getShouldQuitFunction()
 {
    return shouldQuitFunction;
+}
+
+/**************************************************************************
+ *                           getCloseFunction                             *
+ **************************************************************************/
+asIScriptFunction* WidgetScript::getCloseFunction()
+{
+   return closeFunction;
 }
 
 /************************************************************************

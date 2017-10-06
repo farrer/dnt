@@ -14,6 +14,13 @@ class MainWidget : WidgetController
       return "widgets/main.json";
    }
 
+   void close()
+   {
+      rootWidgetRemove("mainLogContainer");
+      rootWidgetRemove("mainIconsContainer");
+      rootWidgetRemove("mainPortraitContainer");
+   }
+
    void onEvent(int type, string id)
    {
    }

@@ -131,3 +131,11 @@ bool Module::loadInitialMap()
    return false;
 }
 
+/***********************************************************************
+ *                               exitGame                              *
+ ***********************************************************************/
+void Module::onExitGame()
+{
+   script->callOnExitGame();
+}
+

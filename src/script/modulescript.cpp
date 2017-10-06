@@ -101,6 +101,18 @@ void ModuleScriptInstance::callOnInitGame()
    }
 }
 
+/**************************************************************************
+ *                            callOnExitGame                              *
+ **************************************************************************/
+void ModuleScriptInstance::callOnExitGame()
+{
+   ModuleScript* moduleScript = static_cast<ModuleScript*>(script);
+   if(moduleScript->getOnExitGameFunction())
+   {
+      manager->callFunction(this, moduleScript->getOnExitGameFunction()); 
+   }
+}
+
 
 /**************************************************************************
  *                              Constructor                               *
@@ -114,7 +126,8 @@ ModuleScript::ModuleScript(ScriptManager* manager)
               rulesFilenameFunction(NULL),
               skinFilenameFunction(NULL),
               initialMapFunction(NULL),
-              onInitGameFunction(NULL)
+              onInitGameFunction(NULL),
+              onExitGameFunction(NULL)
 {
 }
 
@@ -178,6 +191,7 @@ void ModuleScript::setFunctionPointers()
    this->skinFolderFunction = mainType->GetMethodByDecl(
          "string getSkinFolder()");
    this->onInitGameFunction = mainType->GetMethodByDecl("void onInitGame()");
+   this->onExitGameFunction = mainType->GetMethodByDecl("void onExitGame()");
 }
 
 /**************************************************************************
@@ -244,4 +258,11 @@ asIScriptFunction* ModuleScript::getOnInitGameFunction()
    return onInitGameFunction;
 }
 
+/**************************************************************************
+ *                            getOnExitGameFunction                       *
+ **************************************************************************/
+asIScriptFunction* ModuleScript::getOnExitGameFunction()
+{
+   return onExitGameFunction;
+}
 

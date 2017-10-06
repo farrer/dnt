@@ -61,6 +61,9 @@ namespace DNT
          /*! \return path to module's root directory. */
          const Kobold::String& getPath() const { return path; };
 
+         /*! Calledn when exit a game from this module */
+         void onExitGame();
+
       private:
          ModuleScriptInstance* script; /**< ModulerController script */
          Ogre::vector<Kobold::String>::type dirs; /**< Vector of base dirs */

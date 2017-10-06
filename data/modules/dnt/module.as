@@ -51,6 +51,16 @@ class DNTModule : ModuleController
       @widget = @Widget("widgets/main.as");
    }
 
+   void onExitGame()
+   {
+      /* Finish our main widget */
+      if(widget != null)
+      {
+         widget.close();
+         @widget = null;
+      }
+   }
+
    void step()
    {
    }

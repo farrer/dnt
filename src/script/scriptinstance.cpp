@@ -169,6 +169,22 @@ Kobold::String ScriptInstance::getStringFromFunction(asIScriptFunction* func)
 }
 
 /**************************************************************************
+ *                        callProcedureWithoutParams                      *
+ **************************************************************************/
+void ScriptInstance::callProcedureWithoutParams(asIScriptFunction* func)
+{
+   if(func)
+   {
+      asIScriptContext* ctx = manager->prepareContextFromPool(func);
+      ctx->SetObject(getObject());
+      int r = manager->executeCall(ctx, this);
+      assert(r == asEXECUTION_FINISHED);
+      
+      manager->returnContextToPool(ctx);
+   }
+}
+
+/**************************************************************************
  *                                   step                                 *
  **************************************************************************/
 void ScriptInstance::step()
