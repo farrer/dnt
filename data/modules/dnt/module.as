@@ -9,11 +9,17 @@ class DNTModule : ModuleController
    /*! \return semicolon (;) separated folders to initialize */
    string getBaseFolders()
    {
-      string res = "gui;textures/doors;textures/other;textures/furniture;";
+      string res = "textures/doors;textures/other;textures/furniture;";
       res += "textures/general;textures/humans;textures/portraits;";
       res += "textures/junk;textures/indoor;maps;models;rules;skeletons;";
       res += "sndfx;dialogs;scripts";
       return res;
+   }
+
+   /*! \return folder that need to be loaded before setting the skin to use */
+   string getSkinFolder()
+   {
+      return "gui";
    }
 
    /*! \return file with the SkinController to use */

@@ -74,24 +74,39 @@ Module::~Module()
 bool Module::doCycleInit(bool changeSkin, const Kobold::String& dataPath,
                Farso::ProgressBar* progressBar)
 {
-   if(curLoad < totalInitCycles - 1)
+   if((curLoad > 0) && (curLoad < totalInitCycles))
    {
+      /* Parse a defined base folder */
       Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
-            dataPath + dirs[curLoad], "FileSystem", dirs[curLoad], true);
+            dataPath + dirs[curLoad-1], "FileSystem", dirs[curLoad-1], true);
       Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
-            dirs[curLoad], true);
+            dirs[curLoad-1], true);
       progressBar->setValue(((float)curLoad / totalInitCycles) * 100);
    }
-   else
+   else if(curLoad == 0)
    {
       if(changeSkin)
       {
+         Kobold::String skinFolder = script->getSkinFolder();
+         if(!skinFolder.empty())
+         {
+            /* Parse the skin folder */
+            Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
+                  dataPath + skinFolder, "FileSystem", skinFolder, true);
+            Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
+                  skinFolder, true);
+         }
+
          /* Initialize our skin definition
           * Note: the skin dealloc will be made by Farso.*/
          Skin* sk = new Skin(script->getSkinFilename());
          DNT::Briefing::setScrollTextId(sk->getLogScrollTextId());
-      }
 
+      }
+      progressBar->setValue(((float)curLoad / totalInitCycles) * 100);
+   }
+   else
+   {
       /* Load our rules */
       DNT::Rules::init(script->getRulesFilename());
 

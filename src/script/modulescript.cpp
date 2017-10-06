@@ -40,6 +40,16 @@ ModuleScriptInstance::~ModuleScriptInstance()
 }
 
 /**************************************************************************
+ *                            getSkinFolder                               *
+ **************************************************************************/
+Kobold::String ModuleScriptInstance::getSkinFolder()
+{
+   ModuleScript* moduleScript = static_cast<ModuleScript*>(script);
+   
+   return getStringFromFunction(moduleScript->getSkinFolderFunction());
+}
+
+/**************************************************************************
  *                           getBaseFolders                               *
  **************************************************************************/
 Kobold::String ModuleScriptInstance::getBaseFolders()
@@ -99,6 +109,7 @@ ModuleScript::ModuleScript(ScriptManager* manager)
              :ScriptController(SCRIPT_TYPE_MODULE, manager),
               factoryFunction(NULL),
               stepFunction(NULL),
+              skinFolderFunction(NULL),
               baseFoldersFunction(NULL),
               rulesFilenameFunction(NULL),
               skinFilenameFunction(NULL),
@@ -164,6 +175,8 @@ void ModuleScript::setFunctionPointers()
    this->baseFoldersFunction = mainType->GetMethodByDecl(
          "string getBaseFolders()");
    assert(this->baseFoldersFunction);
+   this->skinFolderFunction = mainType->GetMethodByDecl(
+         "string getSkinFolder()");
    this->onInitGameFunction = mainType->GetMethodByDecl("void onInitGame()");
 }
 
@@ -181,6 +194,14 @@ asIScriptFunction* ModuleScript::getFactoryFunction()
 asIScriptFunction* ModuleScript::getStepFunction()
 {
    return stepFunction;
+}
+
+/**************************************************************************
+ *                           getSkinFolderFunction                        *
+ **************************************************************************/
+asIScriptFunction* ModuleScript::getSkinFolderFunction()
+{
+   return skinFolderFunction;
 }
 
 /**************************************************************************

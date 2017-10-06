@@ -37,6 +37,8 @@ namespace DNT
          /*! Destructor */
          ~ModuleScriptInstance();
 
+         /*! \return folder that need to be loaded before setting the skin */
+         Kobold::String getSkinFolder();
          /*! \return semicolon separated string with all folders to init */
          Kobold::String getBaseFolders();
 
@@ -65,6 +67,7 @@ namespace DNT
          asIScriptFunction* getFactoryFunction();
          asIScriptFunction* getStepFunction();
 
+         asIScriptFunction* getSkinFolderFunction();
          asIScriptFunction* getBaseFoldersFunction();
          asIScriptFunction* getSkinFilenameFunction();
          asIScriptFunction* getRulesFilenameFunction();
@@ -82,6 +85,7 @@ namespace DNT
          Kobold::String loadFile(const Kobold::String& filename);
          asIScriptFunction* factoryFunction;
          asIScriptFunction* stepFunction;
+         asIScriptFunction* skinFolderFunction;
          asIScriptFunction* baseFoldersFunction;
          asIScriptFunction* rulesFilenameFunction;
          asIScriptFunction* skinFilenameFunction;
