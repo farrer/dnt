@@ -49,6 +49,8 @@ namespace DNT
          static void widgetSetVisible(const Kobold::String& id, bool value);
          /*! \return if a Farso::Widget is visible or not */
          static bool widgetIsVisible(const Kobold::String& id);
+         /*! Remove (ie: close) a root widget from current widgets */
+         static void rootWidgetRemove(const Kobold::String& id);
 
          /*! Set status of a Farso::CheckBox (checked or unchecked) */
          static void checkBoxSet(const Kobold::String& id, bool value);

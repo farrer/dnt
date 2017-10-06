@@ -50,6 +50,9 @@ void FarsoFunctions::registerFunctions(asIScriptEngine* asEngine)
    r = asEngine->RegisterGlobalFunction("bool widgetIsVisible(string)",
          asFUNCTION(FarsoFunctions::widgetIsVisible), asCALL_CDECL); 
    assert(r >= 0);
+   r = asEngine->RegisterGlobalFunction("void rootWidgetRemove(string)",
+         asFUNCTION(FarsoFunctions::rootWidgetRemove), asCALL_CDECL); 
+   assert(r >= 0);
 
    /* CheckBox functions */
    r = asEngine->RegisterGlobalFunction("void checkBoxSet(string, bool)",
@@ -159,6 +162,27 @@ bool FarsoFunctions::widgetIsVisible(const Kobold::String& id)
    }
 
    return false;
+}
+
+/************************************************************************
+ *                           rootWidgetRemove                           *
+ ************************************************************************/
+void FarsoFunctions::rootWidgetRemove(const Kobold::String& id)
+{
+   Farso::Widget* widget = getWidget(id);
+   if(widget)
+   {
+      if(widget->getParent() == NULL)
+      {
+         Farso::Controller::markToRemoveWidget(widget);
+      }
+      else
+      {
+         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 
+            "Error: rootWidgetRemove function is only valid for root widgets."
+            " '%s' isn't a root one.", id.c_str());
+      }
+   }
 }
 
 /************************************************************************
