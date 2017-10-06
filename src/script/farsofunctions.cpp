@@ -82,6 +82,11 @@ void FarsoFunctions::registerFunctions(asIScriptEngine* asEngine)
    r = asEngine->RegisterGlobalFunction("float spinGetFloat(string)",
          asFUNCTION(FarsoFunctions::spinGetFloat), asCALL_CDECL); 
    assert(r >= 0);
+
+   /* Window functions */
+   r = asEngine->RegisterGlobalFunction("bool windowIsOpened(string)",
+         asFUNCTION(FarsoFunctions::windowIsOpened), asCALL_CDECL);
+   assert(r >= 0);
 }
 
 /************************************************************************
@@ -283,6 +288,17 @@ float FarsoFunctions::spinGetFloat(const Kobold::String& id)
    }
 
    return 0.0f;
+}
+
+/************************************************************************
+ *                           windowIsOpened                             *
+ ************************************************************************/
+bool FarsoFunctions::windowIsOpened(const Kobold::String& id)
+{
+   Farso::Window* window = static_cast<Farso::Window*>(
+         getWidget(id, Farso::Widget::WIDGET_TYPE_WINDOW));
+
+   return window != NULL;
 }
 
 /************************************************************************

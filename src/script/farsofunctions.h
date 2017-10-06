@@ -72,6 +72,9 @@ namespace DNT
          /*! \return Farso::Spin float value */
          static float spinGetFloat(const Kobold::String& id);
 
+         /*! \return if a Farso::Window is opened */
+         static bool windowIsOpened(const Kobold::String& id);
+
       private:
          /*! \return pointer to the Widget of type with defined id */
          static Farso::Widget* getWidget(const Kobold::String& id, 
