@@ -84,12 +84,13 @@ int ScriptObject::addReference()
 int ScriptObject::release()
 {
    asAtomicDec(references);
+   int val = references;
    if((references == 0) && (fullOnScript))
    {
       delete this;
    }
 
-   return references;
+   return val;
 }
 
 /**************************************************************************
