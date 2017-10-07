@@ -65,6 +65,12 @@ namespace DNT
          static void progressBarSet(const Kobold::String& id, 
                int curValue, int maxValue);
 
+         /*! Add an options to a Farso::TextSelector */
+         static void textSelectorAddOption(const Kobold::String& id, 
+               const Kobold::String& text, int index);
+         /*! Clear all elements of a Farso::TextSelector */
+         static void textSelectorClear(const Kobold::String& id);
+
          /*! Set Farso::Spin value */
          static void spinSet(const Kobold::String& id, float value);
          /*! \return Farso::Spin integer value */

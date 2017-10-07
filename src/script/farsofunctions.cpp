@@ -72,6 +72,15 @@ void FarsoFunctions::registerFunctions(asIScriptEngine* asEngine)
          asFUNCTION(FarsoFunctions::progressBarSet), asCALL_CDECL); 
    assert(r >= 0);
 
+   /* TextSelector functions */
+   r = asEngine->RegisterGlobalFunction(
+         "void textSelectorAddOption(string, string, int)",
+         asFUNCTION(FarsoFunctions::textSelectorAddOption), asCALL_CDECL); 
+   assert(r >= 0);
+   r = asEngine->RegisterGlobalFunction("void textSelectorClear(string)",
+         asFUNCTION(FarsoFunctions::textSelectorClear), asCALL_CDECL); 
+   assert(r >= 0);
+
    /* Spin functions */
    r = asEngine->RegisterGlobalFunction("void spinSet(string, float)",
          asFUNCTION(FarsoFunctions::spinSet), asCALL_CDECL); 
@@ -244,6 +253,33 @@ void FarsoFunctions::progressBarSet(const Kobold::String& id,
    {
       bar->setMaxValue(maxValue);
       bar->setValue(curValue);
+   }
+}
+
+/************************************************************************
+ *                         textSelectorAddOption                        *
+ ************************************************************************/
+void FarsoFunctions::textSelectorAddOption(const Kobold::String& id, 
+      const Kobold::String& text, int index)
+{
+   Farso::TextSelector* tsel = static_cast<Farso::TextSelector*>(
+         getWidget(id, Farso::Widget::WIDGET_TYPE_TEXT_SELECTOR));
+   if(tsel)
+   {
+      tsel->addOption(text, index);
+   }
+}
+
+/************************************************************************
+ *                           textSelectorClear                          *
+ ************************************************************************/
+void FarsoFunctions::textSelectorClear(const Kobold::String& id)
+{
+   Farso::TextSelector* tsel = static_cast<Farso::TextSelector*>(
+         getWidget(id, Farso::Widget::WIDGET_TYPE_TEXT_SELECTOR));
+   if(tsel)
+   {
+      tsel->clearOptions();
    }
 }
 
