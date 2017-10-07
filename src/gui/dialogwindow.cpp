@@ -294,6 +294,39 @@ void DialogWindow::closeNow()
    }
 }
 
+/**************************************************************************
+ *                                   clear                                *
+ **************************************************************************/
+void DialogWindow::clear()
+{
+   if(window)
+   {
+      ownerText->clear();
+      pcOptions->clearOptions();
+   }
+}
+
+/**************************************************************************
+ *                               setOwnerText                             *
+ **************************************************************************/
+void DialogWindow::setOwnerText(const Kobold::String& text)
+{
+   if(window)
+   {
+      ownerText->setText(text);
+   }
+}
+
+/**************************************************************************
+ *                                 addOption                              *
+ **************************************************************************/
+void DialogWindow::addOption(const Kobold::String& text, int index)
+{
+   if(window)
+   {
+      pcOptions->addOption(text, index);
+   }
+}
 
 /**************************************************************************
  *                               Static Members                           *

@@ -51,7 +51,14 @@ namespace DNT
           * Thing */
          static bool isOpened(Thing* owner);
 
-         friend class Conversation;
+         /*! Clear the dialog window elements */
+         static void clear();
+         /*! Set Owner text on dialog */
+         static void setOwnerText(const Kobold::String& text);
+         /*! Add an dialog option to the PC selections
+          * \param text option's text
+          * \param index option index [0,n) */
+         static void addOption(const Kobold::String& text, int index);
 
       private:
 

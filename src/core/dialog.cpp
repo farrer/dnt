@@ -1634,15 +1634,16 @@ void Conversation::changeDialog(int numDialog)
       return;
    }
 
+   DialogWindow::clear();
+
    /* Define the current Dialog number */
    current = numDialog;
 
    /* Define the NPC Text */
-   DialogWindow::ownerText->setText(dlg->getOwnerText());
+   DialogWindow::setOwnerText(dlg->getOwnerText());
 
    /* Define the options */
    int curOpt = 0;
-   DialogWindow::pcOptions->clearOptions();
    Kobold::List* options = dlg->getOptions();
    DialogOption* opt = static_cast<DialogOption*>(options->getFirst()); 
    for(int i = 0; i < options->getTotal(); i++)
@@ -1672,7 +1673,7 @@ void Conversation::changeDialog(int numDialog)
             /* Add the text*/
             text += opt->text;
 
-            DialogWindow::pcOptions->addOption(text, i);
+            DialogWindow::addOption(text, i);
             curOpt++;
          }
       }
