@@ -70,7 +70,7 @@ int Skin::getTotalElements()
 /****************************************************************************
  *                          getExtendedElementType                          *
  ****************************************************************************/
-int Skin::getExtendedElementType(Kobold::String typeName)
+int Skin::getExtendedElementType(const Kobold::String& typeName)
 {
    assert(script);
    int res = script->getElementType(typeName);

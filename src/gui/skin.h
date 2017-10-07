@@ -46,7 +46,7 @@ namespace DNT
          /*! \return from script the total elements defined */
          int getTotalElements();
          /*! \return from script the extended Farso::SkinElement index */
-         int getExtendedElementType(Kobold::String typeName);
+         int getExtendedElementType(const Kobold::String& typeName);
 
       private:
          SkinScriptInstance* script; /**< Instance of the Skin Script */

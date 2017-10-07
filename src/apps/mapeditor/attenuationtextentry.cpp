@@ -82,7 +82,7 @@ void AttenuationTextEntry::setValue(const Ogre::Real range,
 /************************************************************************
  *                               doDraw                                 *
  ************************************************************************/
-void AttenuationTextEntry::doDraw(Farso::Rect pBody)
+void AttenuationTextEntry::doDraw(const Farso::Rect& pBody)
 {
    Farso::Rect parentBody = getParent()->getBody();
    if((parentBody.getWidth() != body.getWidth()) ||

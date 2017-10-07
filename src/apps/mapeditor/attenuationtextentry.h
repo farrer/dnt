@@ -36,7 +36,7 @@ namespace DNTMapEditor
          ~AttenuationTextEntry();
 
          /*! \return parent's body */
-         Farso::Rect getBody() { return body; };
+         const Farso::Rect& getBody() { return body; };
          /*! Set dirty. */
          void setDirty();
          /*! enable the widget (and its children) */
@@ -58,7 +58,7 @@ namespace DNTMapEditor
 
       protected:
          /*! Draw the widget */
-         void doDraw(Farso::Rect pBody);
+         void doDraw(const Farso::Rect& pBody);
          /*! Treat widget events */
          bool doTreat(bool leftButtonPressed, bool rightButtonPressed,
             int mouseX, int mouseY, int mrX, int mrY);

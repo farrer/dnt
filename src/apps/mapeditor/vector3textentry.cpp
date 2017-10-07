@@ -99,7 +99,7 @@ void Vector3TextEntry::setValue(const Ogre::ColourValue& val)
 /************************************************************************
  *                               doDraw                                 *
  ************************************************************************/
-void Vector3TextEntry::doDraw(Farso::Rect pBody)
+void Vector3TextEntry::doDraw(const Farso::Rect& pBody)
 {
    Farso::Rect parentBody = getParent()->getBody();
    if((parentBody.getWidth() != body.getWidth()) ||
