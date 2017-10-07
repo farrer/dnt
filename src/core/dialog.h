@@ -203,7 +203,12 @@ class DialogOption : public Kobold::ListElement
       void executeElseActions(Conversation* conv, PlayableCharacter* pc, 
             Thing* owner, Kobold::String ownerMap);
 
-      friend class Conversation;
+      /* Accessors */
+      Kobold::List* getPreTests() { return &preTests; };
+      const Kobold::String& getText() const { return text; };
+      TalkTest* getPostTest() { return postTest; };
+      Kobold::List* getIfActions() { return &ifActions; };
+      Kobold::List* getElseActions() { return &elseActions; };
 
    private:
       Kobold::List preTests; /**< Pre-Tests (if all passed, the option is 

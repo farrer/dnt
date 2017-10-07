@@ -1649,13 +1649,14 @@ void Conversation::changeDialog(int numDialog)
    for(int i = 0; i < options->getTotal(); i++)
    {
       /* Only insert the option if isn't empty */
-      if(!opt->text.empty())
+      if(!opt->getText().empty())
       {
          bool res = true;
 
          /* And passes all preTests */
-         TalkTest* preTest = static_cast<TalkTest*>(opt->preTests.getFirst());
-         for(int j = 0; j < opt->preTests.getTotal(); j++)
+         TalkTest* preTest = static_cast<TalkTest*>(
+               opt->getPreTests()->getFirst());
+         for(int j = 0; j < opt->getPreTests()->getTotal(); j++)
          {
             res &= preTest->doTest(currentPC, owner);
             preTest = static_cast<TalkTest*>(preTest->getNext());
@@ -1665,13 +1666,13 @@ void Conversation::changeDialog(int numDialog)
          if(res)
          {
             text = "";
-            if(opt->postTest)
+            if(opt->getPostTest())
             {
-               text += opt->postTest->getTestName();
+               text += opt->getPostTest()->getTestName();
             }
 
             /* Add the text*/
-            text += opt->text;
+            text += opt->getText();
 
             DialogWindow::addOption(text, i);
             curOpt++;
