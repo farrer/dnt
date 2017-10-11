@@ -41,10 +41,6 @@ void DialogWindow::init(const Kobold::String& widgetFilename)
    rootId = script->getRootWidgetId();
 
    owner = NULL;
-   window = NULL;
-   picture = NULL;
-   ownerText = NULL;
-   pcOptions = NULL;
    keyPressed = -1;
    lastPosX = -1;
    lastPosY = -1;
@@ -359,10 +355,6 @@ void DialogWindow::addOption(const Kobold::String& text, int index)
  *                               Static Members                           *
  **************************************************************************/
 Thing* DialogWindow::owner = NULL;
-Farso::Window* DialogWindow::window = NULL;
-Farso::Picture* DialogWindow::picture = NULL;
-Farso::ScrollText* DialogWindow::ownerText = NULL;
-Farso::TextSelector* DialogWindow::pcOptions = NULL;
 int DialogWindow::keyPressed = -1;
 int DialogWindow::lastPosX = -1;
 int DialogWindow::lastPosY = -1;

@@ -81,11 +81,6 @@ namespace DNT
 
          static Thing* owner; /**< Current owner of the dialog window */
 
-         static Farso::Window* window; /**< The window itself */
-         static Farso::Picture* picture; /**< Owner's portrait */
-         static Farso::ScrollText* ownerText; /**< Owner's current text */
-         static Farso::TextSelector* pcOptions; /**< Current PC text options */
-
          static int lastPosX; /**< Last widget X position */
          static int lastPosY; /**< Last widget Y position */
 
