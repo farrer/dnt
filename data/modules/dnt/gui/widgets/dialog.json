@@ -1,0 +1,52 @@
+{
+   "widget":
+   {
+      "type" : "window",
+      "size" : [480, 360],
+      "position" : [0, 160],
+      "id" : "dialogWindow",
+      "children" : 
+      [
+         {
+            "type" : "container",
+            "containerType" : "topCentered",
+            "rect" : [0, 0, 390, 0],
+            "children" :
+            [
+               {
+                  "type" : "picture",
+                  "size" : [54, 54],
+                  "id" : "dialogPortrait"
+               }
+            ]
+         },
+         {
+            "type" : "container",
+            "containerType" : "topRight",
+            "children" :
+            [
+               {
+                  "type" : "scrollText",
+                  "id" : "dialogText",
+                  "size" : [390, 108]
+               }
+            ]
+         },
+         {
+            "type" : "container",
+            "containerType" : "topLeft",
+            "position" : [0, 110],
+            "size" : [423, 240],
+            "children" :
+            [
+               {
+                  "type" : "textSelector",
+                  "id" : "dialogOptions",
+                  "listener" : true
+               }
+            ]
+         }
+      ]
+   }
+}
+
