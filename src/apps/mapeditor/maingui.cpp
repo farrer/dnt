@@ -655,7 +655,7 @@ bool MainGui::checkEvents(PositionEditor* positionEditor)
          }
       }
    }
-   else if(event.getType() == Farso::EVENT_BUTTON_RELEASE)
+   else if(event.getType() == Farso::EVENT_BUTTON_RELEASED)
    {
       /* Check creation of a new map */
       if(event.getWidget() == buttonNewMapCreate)

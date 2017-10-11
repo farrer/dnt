@@ -70,6 +70,17 @@ namespace DNT
                const Kobold::String& text, int index);
          /*! Clear all elements of a Farso::TextSelector */
          static void textSelectorClear(const Kobold::String& id);
+         /*! \return selected option from a Farso::TextSelector */
+         static int textSelectorGetSelected(const Kobold::String& id);
+         /*! Check if a Farso::TextSelector has an option of defined index. */
+         static bool textSelectorHaveOption(const Kobold::String& id,
+               int index);
+
+         /*! Set a Farso::ScrollText text */
+         static void scrollTextSet(const Kobold::String& id, 
+               const Kobold::String& text);
+         /*! Clear a Farso::ScrollText */
+         static void scrollTextClear(const Kobold::String& id);
 
          /*! Set Farso::Spin value */
          static void spinSet(const Kobold::String& id, float value);

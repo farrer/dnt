@@ -169,6 +169,29 @@ Kobold::String ScriptInstance::getStringFromFunction(asIScriptFunction* func)
 }
 
 /**************************************************************************
+ *                            getIntFromFunction                          *
+ **************************************************************************/
+int ScriptInstance::getIntFromFunction(asIScriptFunction* func)
+{
+   int res = 0;
+
+   if(func)
+   {
+      asIScriptContext* ctx = manager->prepareContextFromPool(func);
+      ctx->SetObject(getObject());
+      int r = manager->executeCall(ctx, this);
+      assert(r == asEXECUTION_FINISHED);
+      if(r == asEXECUTION_FINISHED)
+      {  
+         res = ctx->GetReturnDWord();
+      }
+      manager->returnContextToPool(ctx);
+   }
+
+   return res;
+}
+
+/**************************************************************************
  *                        callProcedureWithoutParams                      *
  **************************************************************************/
 void ScriptInstance::callProcedureWithoutParams(asIScriptFunction* func)
@@ -180,6 +203,50 @@ void ScriptInstance::callProcedureWithoutParams(asIScriptFunction* func)
       int r = manager->executeCall(ctx, this);
       assert(r == asEXECUTION_FINISHED);
       
+      manager->returnContextToPool(ctx);
+   }
+}
+
+/**************************************************************************
+ *                         passStringByFunction                           *
+ **************************************************************************/
+void ScriptInstance::passStringByFunction(asIScriptFunction* func, 
+      const Kobold::String& str)
+{
+   Kobold::String s = str;
+   passObjectByFunction(func, &s);
+}
+
+/**************************************************************************
+ *                         passObjectByFunction                           *
+ **************************************************************************/
+void ScriptInstance::passObjectByFunction(asIScriptFunction* func, void* obj)
+{
+   if(func)
+   {
+      asIScriptContext* ctx = manager->prepareContextFromPool(func);
+      ctx->SetObject(getObject());
+      ctx->SetArgObject(0, obj);
+      int r = manager->executeCall(ctx, this);
+      assert(r == asEXECUTION_FINISHED);
+
+      manager->returnContextToPool(ctx);
+   }
+}
+
+/**************************************************************************
+ *                           passIntByFunction                            *
+ **************************************************************************/
+void ScriptInstance::passIntByFunction(asIScriptFunction* func, int value)
+{
+   if(func)
+   {
+      asIScriptContext* ctx = manager->prepareContextFromPool(func);
+      ctx->SetObject(getObject());
+      ctx->SetArgDWord(0, value);
+      int r = manager->executeCall(ctx, this);
+      assert(r == asEXECUTION_FINISHED);
+
       manager->returnContextToPool(ctx);
    }
 }

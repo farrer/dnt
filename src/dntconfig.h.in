@@ -129,6 +129,8 @@ namespace DNT
    class SkinScriptInstance;
    class WidgetScript;
    class WidgetScriptInstance;
+   class DialogWidgetScript;
+   class DialogWidgetScriptInstance;
 
 }
 

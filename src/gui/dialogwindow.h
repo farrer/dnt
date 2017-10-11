@@ -31,6 +31,10 @@ namespace DNT
    class DialogWindow
    {
       public:
+         /*! Init the dialog window to use, usually at module's init */
+         static void init(const Kobold::String& widgetFilename); 
+         /*! Finish the use of dialog window, usually at module's end. */
+         static void finish();
 
          /*! Open the dialog window for a Thing conversation.
           * \param owner Thing's to open its conversation.
@@ -70,6 +74,10 @@ namespace DNT
          /*! Close the current opened DialogWindow */
          static void closeNow();
 
+         static Kobold::String rootId; /**< Identifier of the root widget */
+         /*! Instance of the dialog widget controller script */
+         static DialogWidgetScriptInstance* script;
+
 
          static Thing* owner; /**< Current owner of the dialog window */
 
@@ -78,8 +86,8 @@ namespace DNT
          static Farso::ScrollText* ownerText; /**< Owner's current text */
          static Farso::TextSelector* pcOptions; /**< Current PC text options */
 
-         static int lastPosX; /**< Last window X position */
-         static int lastPosY; /**< Last window Y position */
+         static int lastPosX; /**< Last widget X position */
+         static int lastPosY; /**< Last widget Y position */
 
          static int keyPressed; /**< Current pressed option key */
 

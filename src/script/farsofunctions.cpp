@@ -80,6 +80,22 @@ void FarsoFunctions::registerFunctions(asIScriptEngine* asEngine)
    r = asEngine->RegisterGlobalFunction("void textSelectorClear(string)",
          asFUNCTION(FarsoFunctions::textSelectorClear), asCALL_CDECL); 
    assert(r >= 0);
+   r = asEngine->RegisterGlobalFunction(
+         "int textSelectorGetSelected(string)",
+         asFUNCTION(FarsoFunctions::textSelectorGetSelected), asCALL_CDECL); 
+   assert(r >= 0);
+   r = asEngine->RegisterGlobalFunction(
+         "bool textSelectorHaveOption(string, int)",
+         asFUNCTION(FarsoFunctions::textSelectorHaveOption), asCALL_CDECL); 
+   assert(r >= 0);
+
+   /* ScrollText functions */
+   r = asEngine->RegisterGlobalFunction("void scrollTextSet(string, string)",
+         asFUNCTION(FarsoFunctions::scrollTextSet), asCALL_CDECL); 
+   assert(r >= 0);
+   r = asEngine->RegisterGlobalFunction("void scrollTextClear(string)",
+         asFUNCTION(FarsoFunctions::scrollTextClear), asCALL_CDECL); 
+   assert(r >= 0);
 
    /* Spin functions */
    r = asEngine->RegisterGlobalFunction("void spinSet(string, float)",
@@ -95,6 +111,161 @@ void FarsoFunctions::registerFunctions(asIScriptEngine* asEngine)
    /* Window functions */
    r = asEngine->RegisterGlobalFunction("bool windowIsOpened(string)",
          asFUNCTION(FarsoFunctions::windowIsOpened), asCALL_CDECL);
+   assert(r >= 0);
+
+
+   /* Add events constants */
+   r = asEngine->RegisterEnum("FarsoEvent");
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", "FARSO_EVENT_NONE", 
+         Farso::EVENT_NONE);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", "FARSO_EVENT_USER_DEFINED", 
+         Farso::EVENT_USER_DEFINED);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", "FARSO_EVENT_WINDOW_MOVE_INIT",
+         Farso::EVENT_WINDOW_MOVE_INIT);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", "FARSO_EVENT_WINDOW_MOVING", 
+         Farso::EVENT_WINDOW_MOVING);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", "FARSO_EVENT_WINDOW_MOVE_END", 
+         Farso::EVENT_WINDOW_MOVE_END);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", 
+         "FARSO_EVENT_WINDOW_WILL_ACTIVATE", Farso::EVENT_WINDOW_WILL_ACTIVATE);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", "FARSO_EVENT_WINDOW_ACTIVATED",
+         Farso::EVENT_WINDOW_ACTIVATED);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", "FARSO_EVENT_WINDOW_CLICKED", 
+         Farso::EVENT_WINDOW_CLICKED);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", 
+         "FARSO_EVENT_WINDOW_WILL_CLOSE", Farso::EVENT_WINDOW_WILL_CLOSE);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", 
+         "FARSO_EVENT_BUTTON_PRESS_INIT", Farso::EVENT_BUTTON_PRESS_INIT);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", "FARSO_EVENT_BUTTON_PRESSING", 
+         Farso::EVENT_BUTTON_PRESSING);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", 
+         "FARSO_EVENT_BUTTON_NOT_PRESSING", Farso::EVENT_BUTTON_NOT_PRESSING);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", 
+         "FARSO_EVENT_BUTTON_PRESS_CANCELLED", 
+         Farso::EVENT_BUTTON_PRESS_CANCELLED);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", "FARSO_EVENT_BUTTON_RELEASED", 
+         Farso::EVENT_BUTTON_RELEASED);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", "FARSO_EVENT_LABEL_CLICKED", 
+         Farso::EVENT_LABEL_CLICKED);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", 
+         "FARSO_EVENT_CHECKBOX_PRESSING", Farso::EVENT_CHECKBOX_PRESSING);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", "FARSO_EVENT_CHECKBOX_CHECKED",
+         Farso::EVENT_CHECKBOX_CHECKED);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", 
+         "FARSO_EVENT_CHECKBOX_UNCHECKED", Farso::EVENT_CHECKBOX_UNCHECKED);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", 
+         "FARSO_EVENT_TEXTSELECTOR_OPTION_SELECTED", 
+         Farso::EVENT_TEXTSELECTOR_OPTION_SELECTED);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", 
+         "FARSO_EVENT_SCROLLBAR_CHANGED", Farso::EVENT_SCROLLBAR_CHANGED);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", 
+         "FARSO_EVENT_SCROLLBAR_UNCHANGED", 
+         Farso::EVENT_SCROLLBAR_UNCHANGED);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", "FARSO_EVENT_STACKTAB_CHANGED",
+         Farso::EVENT_STACKTAB_CHANGED);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", 
+         "FARSO_EVENT_STACKTAB_UNCHANGED", Farso::EVENT_STACKTAB_UNCHANGED);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", 
+         "FARSO_EVENT_TEXTENTRY_EDITION_START", 
+         Farso::EVENT_TEXTENTRY_EDITION_START);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", 
+         "FARSO_EVENT_TEXTENTRY_EDITING", Farso::EVENT_TEXTENTRY_EDITING);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", 
+         "FARSO_EVENT_TEXTENTRY_EDITION_DONE", 
+         Farso::EVENT_TEXTENTRY_EDITION_DONE);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", 
+         "FARSO_EVENT_GRID_CLICKING_ELEMENT", 
+         Farso::EVENT_GRID_CLICKING_ELEMENT);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", 
+         "FARSO_EVENT_GRID_SELECTED_ELEMENT", 
+         Farso::EVENT_GRID_SELECTED_ELEMENT);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", 
+         "FARSO_EVENT_FILESELECTOR_ACCEPT", 
+         Farso::EVENT_FILESELECTOR_ACCEPT);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", 
+         "FARSO_EVENT_FILESELECTOR_CANCEL", 
+         Farso::EVENT_FILESELECTOR_CANCEL);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", 
+         "FARSO_EVENT_FILESELECTOR_SELECTED_FILE", 
+         Farso::EVENT_FILESELECTOR_SELECTED_FILE);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", 
+         "FARSO_EVENT_FILESELECTOR_SELECTED_DIRECTORY", 
+         Farso::EVENT_FILESELECTOR_SELECTED_DIRECTORY);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", "FARSO_EVENT_MENU_PRESSING", 
+         Farso::EVENT_MENU_PRESSING);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", "FARSO_EVENT_MENU_SELECTED", 
+         Farso::EVENT_MENU_SELECTED);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", "FARSO_EVENT_MENU_CLOSED", 
+         Farso::EVENT_MENU_CLOSED);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", "FARSO_EVENT_MENU_OPENED", 
+         Farso::EVENT_MENU_OPENED);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", 
+         "FARSO_EVENT_LABELLEDPICTURE_PRESSING", 
+         Farso::EVENT_LABELLEDPICTURE_PRESSING);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", 
+         "FARSO_EVENT_LABELLEDPICTURE_CLICKED", 
+         Farso::EVENT_LABELLEDPICTURE_CLICKED);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", 
+         "FARSO_EVENT_CLICKABLEPICTURE_PRESSING", 
+         Farso::EVENT_CLICKABLEPICTURE_PRESSING);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", 
+         "FARSO_EVENT_CLICKABLEPICTURE_CLICKED", 
+         Farso::EVENT_CLICKABLEPICTURE_CLICKED);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", "FARSO_EVENT_SPIN_CHANGED", 
+         Farso::EVENT_SPIN_CHANGED);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", 
+         "FARSO_EVENT_TREEVIEW_EXPANDED", 
+         Farso::EVENT_TREEVIEW_EXPANDED);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", 
+         "FARSO_EVENT_TREEVIEW_COLLAPSED", 
+         Farso::EVENT_TREEVIEW_COLLAPSED);
+   assert(r >= 0);
+   r = asEngine->RegisterEnumValue("FarsoEvent", 
+         "FARSO_EVENT_TREEVIEW_SELECTED", 
+         Farso::EVENT_TREEVIEW_SELECTED);
    assert(r >= 0);
 }
 
@@ -280,6 +451,66 @@ void FarsoFunctions::textSelectorClear(const Kobold::String& id)
    if(tsel)
    {
       tsel->clearOptions();
+   }
+}
+
+/************************************************************************
+ *                        textSelectorGetSelected                       *
+ ************************************************************************/
+int FarsoFunctions::textSelectorGetSelected(const Kobold::String& id)
+{
+   int res = -1;
+   Farso::TextSelector* tsel = static_cast<Farso::TextSelector*>(
+         getWidget(id, Farso::Widget::WIDGET_TYPE_TEXT_SELECTOR));
+   if(tsel)
+   {
+      res = tsel->getSelectedOption();
+   }
+
+   return res;
+}
+
+/************************************************************************
+ *                        textSelectorHaveOption                        *
+ ************************************************************************/
+bool FarsoFunctions::textSelectorHaveOption(const Kobold::String& id,
+      int index)
+{
+   bool res = false;
+   Farso::TextSelector* tsel = static_cast<Farso::TextSelector*>(
+         getWidget(id, Farso::Widget::WIDGET_TYPE_TEXT_SELECTOR));
+   if(tsel)
+   {
+      res = tsel->haveOption(index);
+   }
+
+   return res;
+}
+
+/************************************************************************
+ *                             scrollTxtSet                             *
+ ************************************************************************/
+void FarsoFunctions::scrollTextSet(const Kobold::String& id, 
+      const Kobold::String& text)
+{
+   Farso::ScrollText* scroll = static_cast<Farso::ScrollText*>(
+         getWidget(id, Farso::Widget::WIDGET_TYPE_SCROLL_TEXT));
+   if(scroll)
+   {
+      scroll->setText(text);
+   }
+}
+
+/************************************************************************
+ *                            scrollTxtClear                            *
+ ************************************************************************/
+void FarsoFunctions::scrollTextClear(const Kobold::String& id)
+{
+   Farso::ScrollText* scroll = static_cast<Farso::ScrollText*>(
+         getWidget(id, Farso::Widget::WIDGET_TYPE_SCROLL_TEXT));
+   if(scroll)
+   {
+      scroll->clear();
    }
 }
 

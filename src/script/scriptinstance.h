@@ -119,9 +119,28 @@ class ScriptInstance : public Kobold::ListElement
        * \return the returned string from the function. */
       Kobold::String getStringFromFunction(asIScriptFunction* func);
       
+      /*! Help function to get an integer from a Script function without args.
+       * \param func function pointer. Will check for NULL.
+       * \return integer got. */
+      int getIntFromFunction(asIScriptFunction* func);
+      
       /*! Call a procedure without parameters (ie: 'void func(void)').
        * \param func pointer to the procedure to call. Will check for NULL. */
       void callProcedureWithoutParams(asIScriptFunction* func);
+
+      /*! Pass a string to the script by a function call ('void func(string)').
+       * \param func pointer to the function. Will check for NULL.
+       * \param str string to pass */
+      void passStringByFunction(asIScriptFunction* func, 
+            const Kobold::String& str);
+      /*! Pass an object to the script by a function call.
+       * \param func pointer to the function. Will check for NULL.
+       * \param obj pointer to the object to pass */
+      void passObjectByFunction(asIScriptFunction* func, void* obj);
+      /*! Pass an integer value to the script by a function call.
+       * \param func pointer to the function. Will check for NULL.
+       * \param value integer to pass to */
+      void passIntByFunction(asIScriptFunction* func, int value);
 
       asIScriptObject* obj; /**< AngelScript object as instance of script */
       ScriptController* script; /**< The script the object is an instance of */

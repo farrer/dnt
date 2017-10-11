@@ -92,24 +92,8 @@ int SkinScriptInstance::getElementType(const Kobold::String& name)
  **************************************************************************/
 int SkinScriptInstance::getTotalElements()
 {
-   int res = 0;
-
    SkinScript* skinScript = static_cast<SkinScript*>(script);
-   if(skinScript->getTotalElementsFunction())
-   {
-      asIScriptContext* ctx = manager->prepareContextFromPool(
-            skinScript->getTotalElementsFunction());
-      ctx->SetObject(getObject());
-      int r = manager->executeCall(ctx, this);
-      assert(r == asEXECUTION_FINISHED);
-      if(r == asEXECUTION_FINISHED)
-      {
-         res = ctx->GetReturnWord(); 
-      }
-      manager->returnContextToPool(ctx);
-   }
-
-   return res;
+   return getIntFromFunction(skinScript->getTotalElementsFunction());
 }
 
 

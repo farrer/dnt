@@ -90,6 +90,16 @@ Kobold::String ModuleScriptInstance::getInitialMap()
 }
 
 /**************************************************************************
+ *                           getDialogWidget                              *
+ **************************************************************************/
+Kobold::String ModuleScriptInstance::getDialogWidget()
+{
+   ModuleScript* moduleScript = static_cast<ModuleScript*>(script);
+   
+   return getStringFromFunction(moduleScript->getDialogWidgetFunction());
+}
+
+/**************************************************************************
  *                            callOnInitGame                              *
  **************************************************************************/
 void ModuleScriptInstance::callOnInitGame()
@@ -126,6 +136,7 @@ ModuleScript::ModuleScript(ScriptManager* manager)
               rulesFilenameFunction(NULL),
               skinFilenameFunction(NULL),
               initialMapFunction(NULL),
+              dialogWidgetFunction(NULL),
               onInitGameFunction(NULL),
               onExitGameFunction(NULL)
 {
@@ -185,6 +196,9 @@ void ModuleScript::setFunctionPointers()
    this->initialMapFunction = mainType->GetMethodByDecl(
          "string getInitialMap()");
    assert(this->initialMapFunction);
+   this->dialogWidgetFunction = mainType->GetMethodByDecl(
+         "string getDialogWidget()");
+   assert(this->dialogWidgetFunction);
    this->baseFoldersFunction = mainType->GetMethodByDecl(
          "string getBaseFolders()");
    assert(this->baseFoldersFunction);
@@ -248,6 +262,14 @@ asIScriptFunction* ModuleScript::getRulesFilenameFunction()
 asIScriptFunction* ModuleScript::getInitialMapFunction()
 {
    return initialMapFunction;
+}
+
+/**************************************************************************
+ *                           getDialogWidgetFunction                      *
+ **************************************************************************/
+asIScriptFunction* ModuleScript::getDialogWidgetFunction()
+{
+   return dialogWidgetFunction;
 }
 
 /**************************************************************************

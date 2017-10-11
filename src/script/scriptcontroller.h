@@ -22,8 +22,8 @@
 #define _dnt_script_controller_h
 
 #include <angelscript.h>
-#include <OGRE/OgreString.h>
 #include <kobold/list.h>
+#include <kobold/kstring.h>
 #include "dntconfig.h"
 
 namespace DNT
@@ -43,7 +43,8 @@ class ScriptController : public Kobold::ListElement
           SCRIPT_TYPE_RULE,
           SCRIPT_TYPE_RULE_DEFINITION,
           SCRIPT_TYPE_SKIN,
-          SCRIPT_TYPE_WIDGET
+          SCRIPT_TYPE_WIDGET,
+          SCRIPT_TYPE_DIALOG_WIDGET
       };
       /*! Constructor */
       ScriptController(ScriptType type, ScriptManager* manager);
@@ -81,7 +82,7 @@ class ScriptController : public Kobold::ListElement
 
       /*! \return String with the name of the interface to be implemented
        * by the main class of the script. */
-      virtual const Ogre::String getMainTypeInterface() const = 0;
+      virtual const Kobold::String getMainTypeInterface() const = 0;
 
       /*! Get the first class which implements an scpecific interface 
        * on the script.

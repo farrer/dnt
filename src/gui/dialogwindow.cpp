@@ -22,10 +22,54 @@
 #include "../rules/thing.h"
 #include "../core/playablecharacter.h"
 #include "../core/dialog.h"
+#include "../script/scriptmanager.h"
+#include "../core/game.h"
 
 #include <assert.h>
 
 using namespace DNT;
+
+/**************************************************************************
+ *                                    init                                *
+ **************************************************************************/
+void DialogWindow::init(const Kobold::String& widgetFilename)
+{
+   mutex.lock();
+
+   script = Game::getScriptManager()->createDialogWidgetScriptInstance(
+         widgetFilename);
+   rootId = script->getRootWidgetId();
+
+   owner = NULL;
+   window = NULL;
+   picture = NULL;
+   ownerText = NULL;
+   pcOptions = NULL;
+   keyPressed = -1;
+   lastPosX = -1;
+   lastPosY = -1;
+   toOpenOwner = NULL; 
+   toOpenPC = NULL;
+   shouldClose = false;
+
+   mutex.unlock();
+}
+
+/**************************************************************************
+ *                                  finish                                *
+ **************************************************************************/
+void DialogWindow::finish()
+{
+   mutex.lock();
+   closeNow();
+   rootId = "";
+   if(script)
+   {
+      Game::getScriptManager()->removeInstance(script);
+      script = NULL;
+   }
+   mutex.unlock();
+}
 
 /**************************************************************************
  *                                    open                                *
@@ -55,60 +99,42 @@ void DialogWindow::openNow(Thing* owner, PlayableCharacter* pc)
    assert(owner != NULL);
    assert(owner->getConversation() != NULL);
    assert(pc != NULL);
-
+   
    /* Close the window, if currently opened */
-   if(window != NULL)
+   if((!rootId.empty()) && (Farso::Controller::getWidgetById(rootId) == NULL))
    {
-      if(DialogWindow::owner == owner)
+      /* Open the widget */
+      DialogWidgetScript* dialogScript = static_cast<DialogWidgetScript*>(
+            script->getScript());
+
+      /* Note: as we shouldn't map the Ogre::Renderable buffer more than once
+       * per frame, we should not set the window position if we plan to 
+       * change it latter. */
+      bool changePos = (lastPosX != -1) && (lastPosY != -1);
+      Farso::Controller::insertFromJson(dialogScript->getJson(), script,
+            !changePos);
+      
+      /* Reset to our last position, if any (to let the widget open
+       * on the area the user liked it to be). */
+      if(changePos)
       {
-         /* Dialog is already opened for the same owner, let's keep it. */
-         return;
+         Farso::Widget* widget = Farso::Controller::getWidgetById(rootId);
+         if((widget->getX() != lastPosX) || (widget->getY() != lastPosY))
+         {
+            widget->setPosition(lastPosX, lastPosY);
+         }
+         if(widget->getType() == Farso::Widget::WIDGET_TYPE_WINDOW)
+         {
+            Farso::Window* window = static_cast<Farso::Window*>(widget);
+            window->open();
+         }
       }
-      window->close();
    }
 
    /* Define our pointers and set conversation */
    DialogWindow::owner = owner;
    owner->getConversation()->setPlayableCharacter(pc);
-
-   /* Create the window */
-   window = new Farso::Window(480, 360, owner->getName());
-
-   if((lastPosX == -1) || (lastPosY == -1))
-   {
-      /* Use default position */
-      window->setPosition(Farso::Controller::getWidth() - 480, 0);
-   }
-   else
-   {
-      /* Use last position */
-      window->setPosition(lastPosX, lastPosY);
-   }
-
-   /* Barter button (only for characters) */
-   if(owner->getThingType() == Thing::THING_TYPE_CHARACTER)
-   {
-      //TODO
-   }
-   /* Add portrait picture */
-   Farso::Container* cont = new Farso::Container(
-         Farso::Container::TYPE_TOP_CENTERED,
-         Farso::Rect(0, 0, 390, 0), window);
-   assert(owner->getPortraitFilename() != "");
-   picture = new Farso::Picture(0, 0, owner->getPortraitFilename(), cont);
-
-   /* Add the owner's scrollable text */
-   cont = new Farso::Container(Farso::Container::TYPE_TOP_RIGHT, window);
-   ownerText = new Farso::ScrollText(0, 0, 390, 108, cont);
-
-   /* Add the text selector for PC options */
-   cont = new Farso::Container(
-         Farso::Container::TYPE_TOP_LEFT,
-         0, 110, window->getBody().getWidth() - 32, 10, window);
-   pcOptions = new Farso::TextSelector(cont);
-
-   window->setExternPointer(&window);
-   window->open();
+   script->setOwner(owner);
 
    /* Set the initial dialog. */
    owner->getConversation()->changeDialog();
@@ -119,8 +145,14 @@ void DialogWindow::openNow(Thing* owner, PlayableCharacter* pc)
  **************************************************************************/
 bool DialogWindow::checkEvents()
 {
-
    mutex.lock();
+
+   if(rootId.empty())
+   {
+      /* Dialog undefined, nothing to do here. */
+      mutex.unlock();
+      return false;
+   }
 
    /* Check if we should close the current window */
    if(shouldClose)
@@ -141,108 +173,92 @@ bool DialogWindow::checkEvents()
       return true;
    }
 
-   if(window != NULL)
+   bool checkKeyboard = true;
+   Farso::Widget* widget = Farso::Controller::getWidgetById(rootId);
+   if(widget)
    {
-      if(Farso::Controller::getActiveWindow() == window)
+      if(widget->getParent() == NULL)
       {
-         /* Update our last coordinates, to keep them on next open */
-         lastPosX = window->getWidgetRenderer()->getPositionX();
-         lastPosY = window->getWidgetRenderer()->getPositionY();
-
-         /* Check option selection by key */
-         if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_1))
-         {
-            keyPressed = 1;
-         }
-         else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_2))
-         {
-            keyPressed = 2;
-         }
-         else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_3))
-         {
-            keyPressed = 3;
-         }
-         else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_4))
-         {
-            keyPressed = 4;
-         }
-         else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_5))
-         {
-            keyPressed = 5;
-         }
-         else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_6))
-         {
-            keyPressed = 6;
-         }
-         else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_7))
-         {
-            keyPressed = 7;
-         }
-         else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_8))
-         {
-            keyPressed = 8;
-         }
-         else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_9))
-         {
-            keyPressed = 9;
-         }
-         else if(keyPressed != -1)
-         {
-            /* Selected an option by keyabord. */
-            if(pcOptions->haveOption(keyPressed - 1))
-            {
-               pcOptions->forceSelection(keyPressed - 1);
-               /* TODO: Play gui sound */
-               /* Proccess the action */
-               owner->getConversation()->proccessAction(
-                     pcOptions->getSelectedOption());
-            }
-            keyPressed = -1;
-
-            mutex.unlock();
-            return true;
-         }
-
-         if(keyPressed != -1)
-         {
-            /* Done the current selection by keyboard */
-            pcOptions->forceSelection(keyPressed - 1);
-         }
-         else
-         {
-            /* Check selection by Farso event */
-            Farso::Event event = Farso::Controller::getLastEvent();
-            if((event.getType() == Farso::EVENT_TEXTSELECTOR_OPTION_SELECTED) &&
-                  (event.getWidget() == pcOptions))
-            {
-               owner->getConversation()->proccessAction(
-                     pcOptions->getSelectedOption());
-               mutex.unlock();
-               return true;
-            }
-            //TODO: check barter button.
-         }
+         /* Keep last widget position, to open at the same next time */
+         lastPosX = widget->getWidgetRenderer()->getPositionX();
+         lastPosY = widget->getWidgetRenderer()->getPositionY();
       }
-      else
+      if(widget->getType() == Farso::Widget::WIDGET_TYPE_WINDOW)
       {
-         keyPressed = -1;
+         /* Should only check keyboard if the window is the active one. */
+         Farso::Window* window = static_cast<Farso::Window*>(widget);
+         checkKeyboard = Farso::Controller::getActiveWindow() == window;
       }
+   }
+   else
+   {
+      /* Dialog not opened, nothing to check here. */
+      mutex.unlock();
+      return false;
+   }
 
-      /* Check window close (needed, to keep our pointer access atomic). */
-      Farso::Event event = Farso::Controller::getLastEvent();
-      if((event.getType() == Farso::EVENT_WINDOW_WILL_CLOSE) &&
-            (event.getWidget() == window))
+   if(checkKeyboard)
+   {
+      /* Check option selection by key */
+      if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_1))
       {
-         /* Unset the pointer */
-         window->clearExternPointer();
-         window = NULL;
+         keyPressed = 1;
+      }
+      else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_2))
+      {
+         keyPressed = 2;
+      }
+      else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_3))
+      {
+         keyPressed = 3;
+      }
+      else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_4))
+      {
+         keyPressed = 4;
+      }
+      else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_5))
+      {
+         keyPressed = 5;
+      }
+      else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_6))
+      {
+         keyPressed = 6;
+      }
+      else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_7))
+      {
+         keyPressed = 7;
+      }
+      else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_8))
+      {
+         keyPressed = 8;
+      }
+      else if(Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_9))
+      {
+         keyPressed = 9;
+      }
+      else if(keyPressed != -1)
+      {
+         /* Selected an option by keyboard. */
+         script->selectOption(keyPressed - 1);
+
          mutex.unlock();
          return true;
       }
    }
+   else
+   {
+      keyPressed = -1;
+   }
+
+   int curSelected = script->getSelectedOption();
+   if(curSelected >= 0)
+   {
+      owner->getConversation()->proccessAction(curSelected);
+   }
+
 
    mutex.unlock();
-   return false;
+   return curSelected > 0;
 }
 
 /**************************************************************************
@@ -251,8 +267,15 @@ bool DialogWindow::checkEvents()
 bool DialogWindow::isOpened()
 {
    mutex.lock();
-   bool res = (window != NULL);
+
+   bool res = false;
+   if(!rootId.empty())
+   {
+      res = Farso::Controller::getWidgetById(rootId) != NULL;
+   } 
+   
    mutex.unlock();
+   
    return res;
 }
 
@@ -264,9 +287,10 @@ bool DialogWindow::isOpened(Thing* owner)
    bool res = false;
 
    mutex.lock();
-   if(window)
+   if(!rootId.empty())
    {
-      res = (DialogWindow::owner == owner);
+      res = (Farso::Controller::getWidgetById(rootId) != NULL) && 
+         (DialogWindow::owner == owner);
    }
    mutex.unlock();
 
@@ -288,9 +312,13 @@ void DialogWindow::close()
  **************************************************************************/
 void DialogWindow::closeNow()
 {
-   if(window)
+   if(!rootId.empty())
    {
-      window->close();
+      Farso::Widget* widget = Farso::Controller::getWidgetById(rootId);
+      if(widget)
+      {
+         Farso::Controller::markToRemoveWidget(widget);
+      }
    }
 }
 
@@ -299,10 +327,9 @@ void DialogWindow::closeNow()
  **************************************************************************/
 void DialogWindow::clear()
 {
-   if(window)
+   if(script)
    {
-      ownerText->clear();
-      pcOptions->clearOptions();
+      script->clear();
    }
 }
 
@@ -311,9 +338,9 @@ void DialogWindow::clear()
  **************************************************************************/
 void DialogWindow::setOwnerText(const Kobold::String& text)
 {
-   if(window)
+   if(script)
    {
-      ownerText->setText(text);
+      script->setOwnerText(text);
    }
 }
 
@@ -322,9 +349,9 @@ void DialogWindow::setOwnerText(const Kobold::String& text)
  **************************************************************************/
 void DialogWindow::addOption(const Kobold::String& text, int index)
 {
-   if(window)
+   if(script)
    {
-      pcOptions->addOption(text, index);
+      script->addOption(text, index);
    }
 }
 
@@ -343,3 +370,6 @@ Kobold::Mutex DialogWindow::mutex;
 Thing* DialogWindow::toOpenOwner = NULL; 
 PlayableCharacter* DialogWindow::toOpenPC = NULL;
 bool DialogWindow::shouldClose = false;
+Kobold::String DialogWindow::rootId= "";
+DialogWidgetScriptInstance* DialogWindow::script = NULL;
+

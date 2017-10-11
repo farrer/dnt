@@ -149,6 +149,8 @@ ScriptManager::ScriptManager()
    assert(r >= 0);
    r = asEngine->RegisterInterface("WidgetController");
    assert(r >= 0);
+   r = asEngine->RegisterInterface("DialogWidgetController");
+   assert(r >= 0);
    
    /* Start our thread */
    createThread();
@@ -496,6 +498,9 @@ ScriptController* ScriptManager::getOrLoadController(
       case ScriptController::SCRIPT_TYPE_WIDGET:
          ctrl = new WidgetScript(this);
       break;
+      case ScriptController::SCRIPT_TYPE_DIALOG_WIDGET:
+         ctrl = new DialogWidgetScript(this);
+      break;
       default:
          ctrl = NULL;
       break;
@@ -638,6 +643,26 @@ WidgetScriptInstance* ScriptManager::createWidgetScriptInstance(
    }
 
    WidgetScriptInstance* res = ctrl->createInstance(widget);
+   insertInstance(res);
+
+   return res;
+}
+
+/**************************************************************************
+ *                    createDialogWidgetScriptInstance                    *
+ **************************************************************************/
+DialogWidgetScriptInstance* ScriptManager::createDialogWidgetScriptInstance(
+      const Kobold::String& filename)
+{
+   DialogWidgetScript* ctrl = static_cast<DialogWidgetScript*>(
+         getOrLoadController(ScriptController::SCRIPT_TYPE_DIALOG_WIDGET, 
+            filename));
+   if(!ctrl)
+   {
+      return NULL;
+   }
+
+   DialogWidgetScriptInstance* res = ctrl->createInstance();
    insertInstance(res);
 
    return res;

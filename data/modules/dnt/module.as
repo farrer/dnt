@@ -40,6 +40,12 @@ class DNTModule : ModuleController
       return "tyrol/house1.map";
    }
 
+   /*! \return dialog widget to use */
+   string getDialogWidget()
+   {
+      return "widgets/dialog.as";
+   }
+
    bool characterCreationStep()
    {
       return false;

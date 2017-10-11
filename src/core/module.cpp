@@ -24,6 +24,7 @@
 #include "../rules/ruledef.h"
 #include "../gui/skin.h"
 #include "../gui/briefing.h"
+#include "../gui/dialogwindow.h"
 #include <farso/controller.h>
 #include <kobold/log.h>
 using namespace DNT;
@@ -65,6 +66,7 @@ Module::~Module()
    if(curLoad > 0)
    {
       DNT::Rules::finish();
+      DNT::DialogWindow::finish();
    }
 }
 
@@ -109,6 +111,8 @@ bool Module::doCycleInit(bool changeSkin, const Kobold::String& dataPath,
    {
       /* Load our rules */
       DNT::Rules::init(script->getRulesFilename());
+      /* Init our DIalog widget */
+      DNT::DialogWindow::init(script->getDialogWidget());
 
       return true;
    }

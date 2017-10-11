@@ -48,6 +48,8 @@ namespace DNT
          Kobold::String getRulesFilename();
          /*! \return filename of the initial map to load */
          Kobold::String getInitialMap();
+         /*! \return filename of the dialog widget to use on dialogs */
+         Kobold::String getDialogWidget();
 
          /*! Function called when init the game, just after call to load 
           * a map. */
@@ -75,6 +77,7 @@ namespace DNT
          asIScriptFunction* getSkinFilenameFunction();
          asIScriptFunction* getRulesFilenameFunction();
          asIScriptFunction* getInitialMapFunction();
+         asIScriptFunction* getDialogWidgetFunction();
          asIScriptFunction* getOnInitGameFunction();
          asIScriptFunction* getOnExitGameFunction();
 
@@ -94,6 +97,7 @@ namespace DNT
          asIScriptFunction* rulesFilenameFunction;
          asIScriptFunction* skinFilenameFunction;
          asIScriptFunction* initialMapFunction;
+         asIScriptFunction* dialogWidgetFunction;
          asIScriptFunction* onInitGameFunction;
          asIScriptFunction* onExitGameFunction;
    };

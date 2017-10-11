@@ -43,7 +43,10 @@ WidgetScriptInstance::WidgetScriptInstance(asIScriptObject* obj,
  **************************************************************************/
 WidgetScriptInstance::~WidgetScriptInstance()
 {
-   this->widget->setPointer(NULL);
+   if(this->widget)
+   {
+      this->widget->setPointer(NULL);
+   }
 }
 
 /**************************************************************************
@@ -138,8 +141,9 @@ bool WidgetScriptInstance::shouldQuit()
 /**************************************************************************
  *                              Constructor                               *
  **************************************************************************/
-WidgetScript::WidgetScript(ScriptManager* manager)
-           :ScriptController(SCRIPT_TYPE_SKIN, manager),
+WidgetScript::WidgetScript(ScriptManager* manager,
+               ScriptController::ScriptType scriptType)
+           :ScriptController(scriptType, manager),
             factoryFunction(NULL),
             stepFunction(NULL),
             widgetFilenameFunction(NULL),

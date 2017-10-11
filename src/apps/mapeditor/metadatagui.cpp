@@ -137,7 +137,7 @@ void MetadataGui::openSelectWindow(bool music)
 bool MetadataGui::checkEvents()
 {
    Farso::Event event = Farso::Controller::getLastEvent();
-   if(event.getType() == Farso::EVENT_BUTTON_RELEASE)
+   if(event.getType() == Farso::EVENT_BUTTON_RELEASED)
    {
       if(event.getWidget() == buttonSelectMusic)
       {

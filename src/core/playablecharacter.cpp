@@ -24,6 +24,7 @@
 #include "../collision/collision.h"
 #include "../ai/astar.h"
 #include "../gui/briefing.h"
+#include "../gui/dialogwindow.h"
 
 #include <goblin/camera.h>
 
@@ -417,6 +418,11 @@ bool PlayableCharacter::checkInputForMovement(const Ogre::Vector3& floorMouse)
                         (getCurrentAnimation() == CHARACTER_ANIMATION_RUN)) )
    {
       setAnimation(CHARACTER_ANIMATION_IDLE, true);
+   }
+
+   if(triedToMove && DialogWindow::isOpened())
+   {
+      DialogWindow::close();
    }
 
    return triedToMove;

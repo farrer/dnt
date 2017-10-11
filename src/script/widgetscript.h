@@ -39,7 +39,7 @@ namespace DNT
                WidgetScript* script, ScriptManager* manager, 
                ScriptObjectWidget* widget);
          /*! Destructor */
-         ~WidgetScriptInstance();
+         virtual ~WidgetScriptInstance();
 
          /*! \return the json definition filename representing 
           * the widget(s) to load */
@@ -68,8 +68,9 @@ namespace DNT
    class WidgetScript : public ScriptController
    {
       public:
-         WidgetScript(ScriptManager* manager);
-         ~WidgetScript();
+         WidgetScript(ScriptManager* manager,
+               ScriptController::ScriptType scriptType = SCRIPT_TYPE_WIDGET);
+         virtual ~WidgetScript();
 
          /*! \return a new instance of the script */
          WidgetScriptInstance* createInstance(ScriptObjectWidget* widget);
@@ -88,14 +89,14 @@ namespace DNT
          asIScriptFunction* getCloseFunction();
 
       protected:
-         void setFunctionPointers();
-         const Ogre::String getMainTypeInterface() const 
+         virtual void setFunctionPointers();
+         virtual const Kobold::String getMainTypeInterface() const 
          { 
             return "WidgetController";
          };
+         Kobold::String loadFile(const Kobold::String& filename);
 
       private:
-         Kobold::String loadFile(const Kobold::String& filename);
          asIScriptFunction* factoryFunction;
          asIScriptFunction* stepFunction;
          asIScriptFunction* widgetFilenameFunction;
