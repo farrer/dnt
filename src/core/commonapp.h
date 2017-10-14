@@ -50,6 +50,8 @@ class CommonApp : public Goblin::BaseApp
       virtual bool specialSelect(Ogre::SceneNode* sceneNode) = 0;
 
       /* From Goblin::BaseApp */
+      /*! \return false, as DNT won't use overlay */
+      const bool getUseOverlay() const { return false; };
       /*! \return current width to use */
       const int getDefaultWindowWidth() const { return DEFAULT_WINDOW_WIDTH; };
       /*! \return current height to use */
