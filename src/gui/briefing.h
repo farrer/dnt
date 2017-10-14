@@ -69,7 +69,10 @@ class Briefing
       static bool addText(int R, int G, int B, Kobold::String text, 
             bool forceRep=false);
 
-      /*! Add an warning to the briefing */
+      /*! Add a line break to current briefing. */
+      static void addLineBreak();
+
+      /*! Add an warning to the briefing (with line break after). */
       static bool addWarning(Kobold::String text);
 
       /*! Clear the briefing text */

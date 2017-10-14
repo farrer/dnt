@@ -38,17 +38,16 @@ class DNTRules : RuleController
    void briefCheckText(string testName, int testRoll, int againstRoll)
    {
       bool res = testRoll >= againstRoll;
-      string briefText = testName + ": " + testRoll + " x " + 
-         againstRoll + ": ";
+      brief(testName + ": " + testRoll + " x " + againstRoll + ": ");
       if(res)
       {
-         briefText = briefText + gettext("Success.");
+         brief(gettext("Success."), 0, 250, 0);
       }
       else
       {
-         briefText = briefText + gettext("Failure.");
+         brief(gettext("Failure."), 250, 0, 0);
       }
-      brief(briefText);
+      briefLineBreak();
    }
 
    /*! Roll a test of a RuleDefinition against another one */

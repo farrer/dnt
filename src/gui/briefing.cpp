@@ -132,7 +132,6 @@ bool Briefing::addText(int R, int G, int B, Kobold::String text, bool forceRep)
       if(briefTxt)
       {
          briefTxt->addText(text, Farso::Color(R, G, B, 255));
-         briefTxt->addLineBreak();
       }
 
       Kobold::Log::add(text);
@@ -141,6 +140,18 @@ bool Briefing::addText(int R, int G, int B, Kobold::String text, bool forceRep)
    }
 
    return false;
+}
+
+/***********************************************************************
+ *                           addLineBreak                              *
+ ***********************************************************************/
+void Briefing::addLineBreak()
+{
+   Farso::ScrollText* briefTxt = getScrollText();
+   if(briefTxt)
+   {
+      briefTxt->addLineBreak();
+   }
 }
 
 /***********************************************************************

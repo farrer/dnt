@@ -95,8 +95,12 @@ ScriptManager::ScriptManager()
          asMETHOD(ScriptManager, brief), asCALL_THISCALL_ASGLOBAL, this);
    assert(r >= 0);
    r = asEngine->RegisterGlobalFunction(
-         "void brief(int r, int g, int b, string s)",
+         "void brief(string s, int r, int g, int b)",
          asMETHOD(ScriptManager, briefColor), asCALL_THISCALL_ASGLOBAL, this);
+   assert(r >= 0);
+   r = asEngine->RegisterGlobalFunction(
+         "void briefLineBreak()",
+         asMETHOD(ScriptManager, briefBreak), asCALL_THISCALL_ASGLOBAL, this);
    assert(r >= 0);
    r = asEngine->RegisterGlobalFunction(
          "string gettext(string s)",
@@ -828,6 +832,14 @@ void ScriptManager::brief(Kobold::String s)
 void ScriptManager::briefColor(Kobold::String s, int r, int g, int b)
 {
    Briefing::addText(r, g, b, s);
+}
+
+/**************************************************************************
+ *                            briefBreak                                  *
+ **************************************************************************/
+void ScriptManager::briefBreak()
+{
+   Briefing::addLineBreak();
 }
 
 /**************************************************************************

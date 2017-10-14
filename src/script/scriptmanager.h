@@ -184,6 +184,8 @@ namespace DNT
          void brief(Kobold::String s);
          /*! Add text of an specific color to the briefing */
          void briefColor(Kobold::String s, int r, int g, int b);
+         /*! Add a line break to the briefing */
+         void briefBreak();
          /*! Translate (i18) an string */
          Kobold::String translate(Kobold::String s);
          /*! \return a character by its name and position */
