@@ -2,8 +2,8 @@
 #ifndef _OgreTerrainCell_H_
 #define _OgreTerrainCell_H_
 
-#include "OgrePrerequisites.h"
-#include "OgreRenderable.h"
+#include <OGRE/OgrePrerequisites.h>
+#include <OGRE/OgreRenderable.h>
 
 namespace Ogre
 {

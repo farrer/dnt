@@ -38,7 +38,7 @@ THE SOFTWARE.
 #include <OGRE/OgreLwString.h>
 #include <OGRE/OgreStringConverter.h>
 
-#include "rapidjson/document.h"
+#include <rapidjson/document.h>
 
 namespace Ogre
 {
@@ -53,12 +53,16 @@ namespace Ogre
             return TerraBrdf::Default;
         if( !strcmp( value, "cook_torrance" ) )
             return TerraBrdf::CookTorrance;
+        if( !strcmp( value, "blinn_phong" ) )
+            return TerraBrdf::BlinnPhong;
         if( !strcmp( value, "default_uncorrelated" ) )
             return TerraBrdf::DefaultUncorrelated;
         if( !strcmp( value, "default_separate_diffuse_fresnel" ) )
             return TerraBrdf::DefaultSeparateDiffuseFresnel;
         if( !strcmp( value, "cook_torrance_separate_diffuse_fresnel" ) )
             return TerraBrdf::CookTorranceSeparateDiffuseFresnel;
+        if( !strcmp( value, "blinn_phong_separate_diffuse_fresnel" ) )
+            return TerraBrdf::BlinnPhongSeparateDiffuseFresnel;
 
         return TerraBrdf::Default;
     }
@@ -85,7 +89,7 @@ namespace Ogre
     //-----------------------------------------------------------------------------------
     void HlmsJsonTerra::loadTexture( const rapidjson::Value &json, const char *keyName,
                                      TerraTextureTypes textureType, HlmsTerraDatablock *datablock,
-                                     PackedTexture textures[NUM_TERRA_TEXTURE_TYPES] )
+                                     TerraPackedTexture textures[NUM_TERRA_TEXTURE_TYPES] )
     {
         assert( textureType != TERRA_REFLECTION );
 
@@ -93,6 +97,7 @@ namespace Ogre
         {
             HlmsTextureManager::TEXTURE_TYPE_DIFFUSE,
             HlmsTextureManager::TEXTURE_TYPE_DIFFUSE,
+#ifdef OGRE_TEXTURE_ATLAS
             HlmsTextureManager::TEXTURE_TYPE_DETAIL,
             HlmsTextureManager::TEXTURE_TYPE_DETAIL,
             HlmsTextureManager::TEXTURE_TYPE_DETAIL,
@@ -101,6 +106,16 @@ namespace Ogre
             HlmsTextureManager::TEXTURE_TYPE_DETAIL_NORMAL_MAP,
             HlmsTextureManager::TEXTURE_TYPE_DETAIL_NORMAL_MAP,
             HlmsTextureManager::TEXTURE_TYPE_DETAIL_NORMAL_MAP,
+#else
+            HlmsTextureManager::TEXTURE_TYPE_DIFFUSE,
+            HlmsTextureManager::TEXTURE_TYPE_DIFFUSE,
+            HlmsTextureManager::TEXTURE_TYPE_DIFFUSE,
+            HlmsTextureManager::TEXTURE_TYPE_DIFFUSE,
+            HlmsTextureManager::TEXTURE_TYPE_NORMALS,
+            HlmsTextureManager::TEXTURE_TYPE_NORMALS,
+            HlmsTextureManager::TEXTURE_TYPE_NORMALS,
+            HlmsTextureManager::TEXTURE_TYPE_NORMALS,
+#endif
             HlmsTextureManager::TEXTURE_TYPE_MONOCHROME,
             HlmsTextureManager::TEXTURE_TYPE_MONOCHROME,
             HlmsTextureManager::TEXTURE_TYPE_MONOCHROME,
@@ -131,12 +146,13 @@ namespace Ogre
     //-----------------------------------------------------------------------------------
     void HlmsJsonTerra::loadTexture( const rapidjson::Value &json, const HlmsJson::NamedBlocks &blocks,
                                      TerraTextureTypes textureType, HlmsTerraDatablock *datablock,
-                                     PackedTexture textures[] )
+                                     TerraPackedTexture textures[] )
     {
         const HlmsTextureManager::TextureMapType texMapTypes[NUM_TERRA_TEXTURE_TYPES] =
         {
             HlmsTextureManager::TEXTURE_TYPE_DIFFUSE,
             HlmsTextureManager::TEXTURE_TYPE_DIFFUSE,
+#ifdef OGRE_TEXTURE_ATLAS
             HlmsTextureManager::TEXTURE_TYPE_DETAIL,
             HlmsTextureManager::TEXTURE_TYPE_DETAIL,
             HlmsTextureManager::TEXTURE_TYPE_DETAIL,
@@ -145,6 +161,16 @@ namespace Ogre
             HlmsTextureManager::TEXTURE_TYPE_DETAIL_NORMAL_MAP,
             HlmsTextureManager::TEXTURE_TYPE_DETAIL_NORMAL_MAP,
             HlmsTextureManager::TEXTURE_TYPE_DETAIL_NORMAL_MAP,
+#else
+            HlmsTextureManager::TEXTURE_TYPE_DIFFUSE,
+            HlmsTextureManager::TEXTURE_TYPE_DIFFUSE,
+            HlmsTextureManager::TEXTURE_TYPE_DIFFUSE,
+            HlmsTextureManager::TEXTURE_TYPE_DIFFUSE,
+            HlmsTextureManager::TEXTURE_TYPE_NORMALS,
+            HlmsTextureManager::TEXTURE_TYPE_NORMALS,
+            HlmsTextureManager::TEXTURE_TYPE_NORMALS,
+            HlmsTextureManager::TEXTURE_TYPE_NORMALS,
+#endif
             HlmsTextureManager::TEXTURE_TYPE_MONOCHROME,
             HlmsTextureManager::TEXTURE_TYPE_MONOCHROME,
             HlmsTextureManager::TEXTURE_TYPE_MONOCHROME,
@@ -225,7 +251,7 @@ namespace Ogre
         if (itor != json.MemberEnd() && itor->value.IsString())
             terraDatablock->setBrdf(parseBrdf(itor->value.GetString()));
 
-        PackedTexture packedTextures[NUM_TERRA_TEXTURE_TYPES];
+        TerraPackedTexture packedTextures[NUM_TERRA_TEXTURE_TYPES];
 
         itor = json.FindMember("diffuse");
         if( itor != json.MemberEnd() && itor->value.IsObject() )
