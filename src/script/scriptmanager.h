@@ -165,9 +165,17 @@ namespace DNT
  
          /*! Search for a already create ScriptObject with filename and 
           * position and set its related game pointer.
-          * \return pointer to the ScriptObject found, if any */
+          * \param filename ScriptObject related filename
+          * \param pos ScriptObject initial position
+          * \param newPtr pointer to the related game-thing
+          * \param type the ScriptObjectType
+          * \param createIfNotFound to create the ScriptObject if not found.
+          * \return pointer to the ScriptObject found (or created) or NULL
+          *         if not found and should not create. */
          ScriptObject* getAndDefinePointer(Kobold::String filename,
-               const Ogre::Vector3 pos, void* newPtr);
+               const Ogre::Vector3 pos, void* newPtr,
+               const ScriptObject::ScriptObjectType type, 
+               bool createIfNotFound);
 
          /*! Insert a script object on the objects list */
          void insertScriptObject(ScriptObject* obj);

@@ -361,10 +361,20 @@ void Thing::populateWithRules()
  **************************************************************************/
 void Thing::setInitialPosition(Ogre::Vector3 pos)
 {
+   /* Set model's */
    initialPos = pos;
    model->setPositionNow(pos);
+
+   /* Define the type of ScriptObject we should use */
+   ScriptObject::ScriptObjectType scriptObjType = ScriptObject::TYPE_OBJECT;
+   if(thingType == THING_TYPE_CHARACTER)
+   {
+      scriptObjType = ScriptObject::TYPE_CHARACTER;
+   }
+
+   /* Get our object, defining its game-pointer to us. */
    scriptObject = Game::getScriptManager()->getAndDefinePointer(filename, 
-      pos, this);
+      pos, this, scriptObjType, canInteract());
 }
 
 /**************************************************************************

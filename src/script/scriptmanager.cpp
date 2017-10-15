@@ -864,10 +864,14 @@ void ScriptManager::insertScriptObject(ScriptObject* obj)
  *                         getAndDefinePointer                            *
  **************************************************************************/
 ScriptObject* ScriptManager::getAndDefinePointer(Kobold::String filename,
-      const Ogre::Vector3 pos, void* newPtr)
+      const Ogre::Vector3 pos, void* newPtr, 
+      const ScriptObject::ScriptObjectType type, bool createIfNotFound)
 {
    ScriptObject* res = NULL;
+
    managerMutex.lock();
+
+   /* Search for an already created one. */ 
    ScriptObject* cur = static_cast<ScriptObject*>(objects.getFirst());
    for(int i = 0; i < objects.getTotal(); i++)
    {
@@ -879,7 +883,40 @@ ScriptObject* ScriptManager::getAndDefinePointer(Kobold::String filename,
       }
       cur = static_cast<ScriptObject*>(cur->getNext());
    }
+
+
+   if((res == NULL) && (createIfNotFound))
+   {
+      /* Not found, must create one */
+      switch(type)
+      {
+         case ScriptObject::TYPE_CHARACTER:
+         {
+            res = new ScriptObjectCharacter(filename, pos, 
+                  static_cast<Character*>(newPtr));
+            insertScriptObject(res);
+         }
+
+         break;
+         case ScriptObject::TYPE_OBJECT:
+         {
+            res = new ScriptObjectObject(filename, pos, 
+                  static_cast<Object*>(newPtr));
+            insertScriptObject(res);
+         }
+         break;
+         default:
+         {
+            Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 
+                  "Error: Unexpected type for scriptObject retrieve: %d\n",
+                  type);
+         }
+         break;
+      }
+   }
+
    managerMutex.unlock();
+
    return res;
 }
 
@@ -943,7 +980,7 @@ ScriptObjectCharacter* ScriptManager::getCharacter(Kobold::String filename,
    if(res == NULL)
    {
       /* Not found, must create one */
-      res = new ScriptObjectCharacter(filename, Ogre::Vector3(x, y, z));
+      res = new ScriptObjectCharacter(filename, Ogre::Vector3(x, y, z), NULL);
       insertScriptObject(res);
    }
    return res;
@@ -1023,7 +1060,7 @@ ScriptObjectObject* ScriptManager::getObject(Kobold::String filename,
    if(res == NULL)
    {
       /* Not found, must create one */
-      res = new ScriptObjectObject(filename, Ogre::Vector3(x, y, z));
+      res = new ScriptObjectObject(filename, Ogre::Vector3(x, y, z), NULL);
       insertScriptObject(res);
    }
    return res;

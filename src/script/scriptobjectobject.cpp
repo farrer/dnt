@@ -32,23 +32,31 @@ using namespace DNT;
  *                              Constructor                               *
  **************************************************************************/
 ScriptObjectObject::ScriptObjectObject(Kobold::String filename, 
-      Ogre::Vector3 originalPos)
+      Ogre::Vector3 originalPos, Object* obj)
                       :ScriptObject(ScriptObject::TYPE_OBJECT, filename, 
                             originalPos)
 {
    mutex.lock();
-   assert(Game::getCurrentMap());
-   object = Game::getCurrentMap()->getObject(filename, originalPos);
 
-   if(object)
+   if(obj)
    {
-      object->defineScriptObject(this);
+      object = obj;
    }
    else
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
-            "Warning: script: Couldn't find object '%s' (%.3f %.3f %.3f)\n",
-            filename.c_str(), originalPos.x, originalPos.y, originalPos.z);
+      assert(Game::getCurrentMap());
+      object = Game::getCurrentMap()->getObject(filename, originalPos);
+
+      if(object)
+      {
+         object->defineScriptObject(this);
+      }
+      else
+      {
+         Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
+               "Warning: script: Couldn't find object '%s' (%.3f %.3f %.3f)\n",
+               filename.c_str(), originalPos.x, originalPos.y, originalPos.z);
+      }
    }
    mutex.unlock();
 }

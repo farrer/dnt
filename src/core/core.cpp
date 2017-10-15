@@ -202,7 +202,6 @@ void Core::doAfterRender()
          if(Farso::Cursor::checkButtonRelease(0))
          {
             // TODO: Check action range; 
-            // TODO: Check if have actions when on battle mode.
             if(thingUnderCursor->canInteract())
             {
                Object::InteractResult res = thingUnderCursor->interact(curPc);

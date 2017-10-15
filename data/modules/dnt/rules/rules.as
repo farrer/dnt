@@ -72,6 +72,7 @@ class DNTRules : RuleController
     * before calling this function. */
    bool canInteract(Character@ actor, Object@ target)
    {
+      //TODO: check if at battle mode.
       return actor.distance(target) <= actor.getDisplacement();
    }
 

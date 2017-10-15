@@ -35,22 +35,30 @@ using namespace DNT;
  *                              Constructor                               *
  **************************************************************************/
 ScriptObjectCharacter::ScriptObjectCharacter(Kobold::String filename, 
-      Ogre::Vector3 originalPos)
+      Ogre::Vector3 originalPos, Character* c)
                       :ScriptObject(ScriptObject::TYPE_CHARACTER, filename, 
                             originalPos)
 {
    mutex.lock();
-   character = Game::getCharacter(filename, originalPos);
 
-   if(character)
+   if(c)
    {
-      character->defineScriptObject(this);
+      character = c;
    }
    else
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
+      character = Game::getCharacter(filename, originalPos);
+
+      if(character)
+      {
+         character->defineScriptObject(this);
+      }
+      else
+      {
+         Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
             "Warning: script: Couldn't find character '%s' (%.3f %.3f %.3f)\n",
             filename.c_str(), originalPos.x, originalPos.y, originalPos.z);
+      }
    }
    mutex.unlock();
 }

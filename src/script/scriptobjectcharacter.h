@@ -40,9 +40,12 @@ namespace DNT
          /*! Register the related functions */
          static void registerFunctions(asIScriptEngine* asEngine);
 
-         /*! Constructor */
+         /*! Constructor 
+          * \param filename of the character
+          * \param originalPos its initial position
+          * \param c its pointer. NULL to search for it. */
          ScriptObjectCharacter(Kobold::String filename, 
-               Ogre::Vector3 originalPos);
+               Ogre::Vector3 originalPos, Character* c);
          /*! Constructor */
          ScriptObjectCharacter(Kobold::String filename);
          /*! Constructor */

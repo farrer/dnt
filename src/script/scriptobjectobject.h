@@ -41,10 +41,14 @@ namespace DNT
          /*! Register the related functions */
          static void registerFunctions(asIScriptEngine* asEngine);
 
-         /*! Constructor */
+         /*! Constructor 
+          * \param filename filename of the object
+          * \param originalPos initial position of the object
+          * \param obj pointer to the object. If NULL will try to search
+          *        for the object at the defined position. */
          ScriptObjectObject(Kobold::String filename, 
-               Ogre::Vector3 originalPos);
-         /*! Constructor */
+               Ogre::Vector3 originalPos, Object* obj);
+         /*! Constructor, for non-position reference. */
          ScriptObjectObject(Kobold::String filename);
          /*! Destructor */
          ~ScriptObjectObject();
