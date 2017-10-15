@@ -111,8 +111,11 @@ bool Module::doCycleInit(bool changeSkin, const Kobold::String& dataPath,
    {
       /* Load our rules */
       DNT::Rules::init(script->getRulesFilename());
-      /* Init our DIalog widget */
-      DNT::DialogWindow::init(script->getDialogWidget());
+      if(changeSkin)
+      {
+         /* Init our Dialog widget */
+         DNT::DialogWindow::init(script->getDialogWidget());
+      }
 
       return true;
    }
