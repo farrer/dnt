@@ -188,7 +188,7 @@ Object::InteractResult Item::interact(Character* actor)
       Kosound::Sound::addSoundEffect(pos.x, pos.y, pos.z,
             SOUND_NO_LOOP, "sndfx/objects/take_item.ogg");
       /* Log text on briefing */
-      Briefing::addText(gettext("%s taken."), getName().c_str());
+      Briefing::addTextWithBreak(gettext("%s taken."), getName().c_str());
 
       /* Tell ModState */
       ModState::addMapObjectAction(MODSTATE_ACTION_OBJECT_REMOVE,

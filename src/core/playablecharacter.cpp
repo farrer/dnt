@@ -233,7 +233,7 @@ bool PlayableCharacter::checkMouseInputForMovement(
          /* Path isn't avaiable, so do not run. */
          walkState = WALK_KEYBOARD;
          Briefing::addText(220, 20, 220, gettext("A* could not find a path!"),
-            true);
+            true, true);
       }
    }
    else if(walkState == WALK_ASTAR_MOVING)

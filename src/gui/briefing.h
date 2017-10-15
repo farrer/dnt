@@ -55,26 +55,33 @@ class Briefing
       static bool isDisplayed();
 
        /*! Add the string to the briefing (with default font and colors) 
-       * \param text -> text to add */
-      static bool addText(Kobold::String text);
+       * \param text -> text to add */ 
+      static bool addText(const Kobold::String& text);
+      /*! Add the strint to the briefint, with default font and colors, and
+       * breaking the line after it */
+      static bool addTextWithBreak(const Kobold::String& text);
 
-      /*! Add formated text to the briefing (with default font and colors) */
+      /*! Add formated text to the briefing (with default font and colors)
+       * and breaking the line after it. */
       static bool addText(const char* format, ...);
+      /*! Same as the overload, but adding a break line after the text */
+      static bool addTextWithBreak(const char* format, ...);
 
        /*! Add the string to the briefing 
        * \param text -> text to add
        * \param R -> red color of the font
        * \param G -> green color of the font
-       * \param B -> blue color of the font 
+       * \param B -> blue color of the font
+       * \param breakAfter -> if should add line break after the text
        * \param forceRep -> if you force repetition or not */
-      static bool addText(int R, int G, int B, Kobold::String text, 
-            bool forceRep=false);
+      static bool addText(int R, int G, int B, const Kobold::String& text, 
+            bool breakAfter=false, bool forceRep=false);
 
       /*! Add a line break to current briefing. */
       static void addLineBreak();
 
       /*! Add an warning to the briefing (with line break after). */
-      static bool addWarning(Kobold::String text);
+      static bool addWarning(const Kobold::String& text);
 
       /*! Clear the briefing text */
       static void clear();

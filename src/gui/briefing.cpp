@@ -128,16 +128,28 @@ void Briefing::hide()
 /***********************************************************************
  *                              addText                                *
  ***********************************************************************/
-bool Briefing::addText(Kobold::String text)
+bool Briefing::addText(const Kobold::String& text)
 {
    return addText(Farso::Colors::colorText.red, 
-         Farso::Colors::colorText.green, Farso::Colors::colorText.blue, text);
+         Farso::Colors::colorText.green, Farso::Colors::colorText.blue, 
+         text, false);
 }
 
 /***********************************************************************
  *                              addText                                *
  ***********************************************************************/
-bool Briefing::addText(int R, int G, int B, Kobold::String text, bool forceRep)
+bool Briefing::addTextWithBreak(const Kobold::String& text)
+{
+   return addText(Farso::Colors::colorText.red, 
+         Farso::Colors::colorText.green, Farso::Colors::colorText.blue, 
+         text, true);
+}
+
+/***********************************************************************
+ *                              addText                                *
+ ***********************************************************************/
+bool Briefing::addText(int R, int G, int B, const Kobold::String& text, 
+      bool breakAfter, bool forceRep)
 {
    bool res = false;
 
@@ -152,6 +164,10 @@ bool Briefing::addText(int R, int G, int B, Kobold::String text, bool forceRep)
       if(briefTxt)
       {
          briefTxt->addText(text, Farso::Color(R, G, B, 255));
+         if(breakAfter)
+         {
+            briefTxt->addLineBreak();
+         }
       }
 
       Kobold::Log::add(text);
@@ -182,9 +198,9 @@ void Briefing::addLineBreak()
 /***********************************************************************
  *                             addWarning                              *
  ***********************************************************************/
-bool Briefing::addWarning(Kobold::String text)
+bool Briefing::addWarning(const Kobold::String& text)
 {
-   if(addText(220, 20, 20, text))
+   if(addText(220, 20, 20, text, true))
    {
       /* Play a sound on warnings. */
       Kosound::Sound::addSoundEffect(SOUND_NO_LOOP, 
@@ -210,6 +226,23 @@ bool Briefing::addText(const char* format, ...)
 
    /* Add the formated text */
    return addText(buf);
+}
+
+/***********************************************************************
+ *                              addText                                *
+ ***********************************************************************/
+bool Briefing::addTextWithBreak(const char* format, ...)
+{
+   va_list arg;
+   char buf[512];
+
+   /* Parse the arguments  */
+   va_start(arg, format);
+   vsnprintf(&buf[0], 512, format, arg);
+   va_end(arg);
+
+   /* Add the formated text */
+   return addTextWithBreak(buf);
 }
 
 /***********************************************************************

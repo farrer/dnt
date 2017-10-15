@@ -308,7 +308,8 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
 
                /* NOTE: The NPC inventory is always saved at modstate when 
                 * the PC leaves the map, and reloaded when it come back */
-               Briefing::addText(gettext("%s lost."), item->getName().c_str());
+               Briefing::addTextWithBreak(gettext("%s lost."), 
+                     item->getName().c_str());
             }
             else
             {
@@ -340,8 +341,8 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
 
                /* NOTE: The NPC inventory is always saved at modstate when 
                 * the PC leaves the map, and reloaded when it come back */
-               Briefing::addText(gettext("Received %s"), 
-               item->getName().c_str());
+               Briefing::addTextWithBreak(gettext("Received %s"), 
+                     item->getName().c_str());
             }
          }
          /* Else, show no error, as the character could 'lost' the item on 
@@ -353,7 +354,7 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
       case TALK_ACTION_RECEIVE_MONEY:
       {
          pc->getInventory()->addMoney(value);
-         Briefing::addText(gettext("Received $%d."), value);
+         Briefing::addTextWithBreak(gettext("Received $%d."), value);
       }
       break;
 
@@ -361,7 +362,7 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
       case TALK_ACTION_GIVE_MONEY:
       {
          pc->getInventory()->decMoney(value);
-         Briefing::addText(gettext("Lost $%d."), value);
+         Briefing::addTextWithBreak(gettext("Lost $%d."), value);
       }
       break;
 
