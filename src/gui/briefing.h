@@ -27,6 +27,7 @@
 #include <farso/scrolltext.h>
 #include <kobold/kstring.h>
 #include <kobold/timer.h>
+#include <kobold/mutex.h>
 
 namespace DNT
 {
@@ -78,14 +79,14 @@ class Briefing
       /*! Clear the briefing text */
       static void clear();
 
-   protected:
+   private:
       /*! \return ScrollText defined by scrollId, if any */
       static Farso::ScrollText* getScrollText(); 
 
-   private:
       static Kobold::String scrollId; /**< Id of the ScrollText to use */
       static Kobold::String lastText; /**< last text added */
       static Kobold::Timer lastAddTimer;  /**< Timer to avoid same text added */
+      static Kobold::Mutex mutex; /**< our access mutex */
 };
 
 }

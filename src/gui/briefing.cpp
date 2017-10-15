@@ -47,12 +47,17 @@ void Briefing::init()
 void Briefing::finish()
 {
 }
+
 /***********************************************************************
  *                         setScrollTextId                             *
  ***********************************************************************/
 void Briefing::setScrollTextId(const Kobold::String& id)
 {
+   mutex.lock();
+
    scrollId = id;
+
+   mutex.unlock();
 }
 
 /***********************************************************************
@@ -75,13 +80,17 @@ Farso::ScrollText* Briefing::getScrollText()
  ***********************************************************************/
 bool Briefing::isDisplayed()
 {
+   bool res = false;
+
+   mutex.lock();
    Farso::ScrollText* briefTxt = getScrollText();
    if(briefTxt)
    {
-      return briefTxt->isVisible();
+      res = briefTxt->isVisible();
    }
+   mutex.unlock();
 
-   return false;
+   return res;
 }
 
 /***********************************************************************
@@ -89,11 +98,15 @@ bool Briefing::isDisplayed()
  ***********************************************************************/
 void Briefing::show()
 {
+   mutex.lock();
+
    Farso::ScrollText* briefTxt = getScrollText();
    if(briefTxt)
    {
       briefTxt->show();
    }
+
+   mutex.unlock();
 }
 
 /***********************************************************************
@@ -101,11 +114,15 @@ void Briefing::show()
  ***********************************************************************/
 void Briefing::hide()
 {
+   mutex.lock();
+
    Farso::ScrollText* briefTxt = getScrollText();
    if(briefTxt)
    {
       briefTxt->hide();
    }
+
+   mutex.unlock();
 }
 
 /***********************************************************************
@@ -122,6 +139,9 @@ bool Briefing::addText(Kobold::String text)
  ***********************************************************************/
 bool Briefing::addText(int R, int G, int B, Kobold::String text, bool forceRep)
 {
+   bool res = false;
+
+   mutex.lock();
    if((text != lastText) || 
       (lastAddTimer.getMilliseconds() > DNT_BRIEFING_RATE))
    {
@@ -136,10 +156,11 @@ bool Briefing::addText(int R, int G, int B, Kobold::String text, bool forceRep)
 
       Kobold::Log::add(text);
 
-      return true;
+      res = true;
    }
+   mutex.unlock();
 
-   return false;
+   return res;
 }
 
 /***********************************************************************
@@ -147,11 +168,15 @@ bool Briefing::addText(int R, int G, int B, Kobold::String text, bool forceRep)
  ***********************************************************************/
 void Briefing::addLineBreak()
 {
+   mutex.lock();
+
    Farso::ScrollText* briefTxt = getScrollText();
    if(briefTxt)
    {
       briefTxt->addLineBreak();
    }
+
+   mutex.unlock();
 }
 
 /***********************************************************************
@@ -193,4 +218,5 @@ bool Briefing::addText(const char* format, ...)
 Kobold::String Briefing::scrollId = "";
 Kobold::Timer Briefing::lastAddTimer;
 Kobold::String Briefing::lastText = "";
+Kobold::Mutex Briefing::mutex;
 
