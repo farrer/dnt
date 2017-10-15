@@ -25,7 +25,7 @@
 #include "../core/game.h"
 #include "../core/util.h"
 #include "../core/playablecharacter.h"
-#include "../gui/dialogwindow.h"
+#include "../gui/dialogwidget.h"
 #include <kobold/log.h>
 #include <stdlib.h>
 using namespace DNT;
@@ -346,7 +346,7 @@ void ScriptObjectCharacter::openDialog()
    mutex.lock();
    if(character)
    {
-      DialogWindow::open(character, 
+      DialogWidget::open(character, 
             static_cast<PlayableCharacter*>(
                Game::getPcs()->getActiveCharacter()));
    }

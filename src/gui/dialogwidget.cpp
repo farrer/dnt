@@ -18,7 +18,7 @@
   along with DNT.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "dialogwindow.h"
+#include "dialogwidget.h"
 #include "../rules/thing.h"
 #include "../core/playablecharacter.h"
 #include "../core/dialog.h"
@@ -32,7 +32,7 @@ using namespace DNT;
 /**************************************************************************
  *                                    init                                *
  **************************************************************************/
-void DialogWindow::init(const Kobold::String& widgetFilename)
+void DialogWidget::init(const Kobold::String& widgetFilename)
 {
    mutex.lock();
 
@@ -54,7 +54,7 @@ void DialogWindow::init(const Kobold::String& widgetFilename)
 /**************************************************************************
  *                                  finish                                *
  **************************************************************************/
-void DialogWindow::finish()
+void DialogWidget::finish()
 {
    mutex.lock();
    closeNow();
@@ -70,7 +70,7 @@ void DialogWindow::finish()
 /**************************************************************************
  *                                    open                                *
  **************************************************************************/
-void DialogWindow::open(Thing* owner, PlayableCharacter* pc)
+void DialogWidget::open(Thing* owner, PlayableCharacter* pc)
 {
    assert(owner != NULL);
    assert(owner->getConversation() != NULL);
@@ -90,7 +90,7 @@ void DialogWindow::open(Thing* owner, PlayableCharacter* pc)
 /**************************************************************************
  *                                 openNow                                *
  **************************************************************************/
-void DialogWindow::openNow(Thing* owner, PlayableCharacter* pc)
+void DialogWidget::openNow(Thing* owner, PlayableCharacter* pc)
 {
    assert(owner != NULL);
    assert(owner->getConversation() != NULL);
@@ -128,7 +128,7 @@ void DialogWindow::openNow(Thing* owner, PlayableCharacter* pc)
    }
 
    /* Define our pointers and set conversation */
-   DialogWindow::owner = owner;
+   DialogWidget::owner = owner;
    owner->getConversation()->setPlayableCharacter(pc);
    script->setOwner(owner);
 
@@ -139,7 +139,7 @@ void DialogWindow::openNow(Thing* owner, PlayableCharacter* pc)
 /**************************************************************************
  *                                checkEvents                             *
  **************************************************************************/
-bool DialogWindow::checkEvents()
+bool DialogWidget::checkEvents()
 {
    mutex.lock();
 
@@ -260,7 +260,7 @@ bool DialogWindow::checkEvents()
 /**************************************************************************
  *                                  isOpened                              *
  **************************************************************************/
-bool DialogWindow::isOpened()
+bool DialogWidget::isOpened()
 {
    mutex.lock();
 
@@ -278,7 +278,7 @@ bool DialogWindow::isOpened()
 /**************************************************************************
  *                                  isOpened                              *
  **************************************************************************/
-bool DialogWindow::isOpened(Thing* owner)
+bool DialogWidget::isOpened(Thing* owner)
 {
    bool res = false;
 
@@ -286,7 +286,7 @@ bool DialogWindow::isOpened(Thing* owner)
    if(!rootId.empty())
    {
       res = (Farso::Controller::getWidgetById(rootId) != NULL) && 
-         (DialogWindow::owner == owner);
+         (DialogWidget::owner == owner);
    }
    mutex.unlock();
 
@@ -296,7 +296,7 @@ bool DialogWindow::isOpened(Thing* owner)
 /**************************************************************************
  *                                    close                               *
  **************************************************************************/
-void DialogWindow::close()
+void DialogWidget::close()
 {
    mutex.lock();
    shouldClose = true;
@@ -306,7 +306,7 @@ void DialogWindow::close()
 /**************************************************************************
  *                                  closeNow                              *
  **************************************************************************/
-void DialogWindow::closeNow()
+void DialogWidget::closeNow()
 {
    if(!rootId.empty())
    {
@@ -321,7 +321,7 @@ void DialogWindow::closeNow()
 /**************************************************************************
  *                                   clear                                *
  **************************************************************************/
-void DialogWindow::clear()
+void DialogWidget::clear()
 {
    if(script)
    {
@@ -332,7 +332,7 @@ void DialogWindow::clear()
 /**************************************************************************
  *                               setOwnerText                             *
  **************************************************************************/
-void DialogWindow::setOwnerText(const Kobold::String& text)
+void DialogWidget::setOwnerText(const Kobold::String& text)
 {
    if(script)
    {
@@ -343,7 +343,7 @@ void DialogWindow::setOwnerText(const Kobold::String& text)
 /**************************************************************************
  *                                 addOption                              *
  **************************************************************************/
-void DialogWindow::addOption(const Kobold::String& text, int index)
+void DialogWidget::addOption(const Kobold::String& text, int index)
 {
    if(script)
    {
@@ -354,14 +354,14 @@ void DialogWindow::addOption(const Kobold::String& text, int index)
 /**************************************************************************
  *                               Static Members                           *
  **************************************************************************/
-Thing* DialogWindow::owner = NULL;
-int DialogWindow::keyPressed = -1;
-int DialogWindow::lastPosX = -1;
-int DialogWindow::lastPosY = -1;
-Kobold::Mutex DialogWindow::mutex;
-Thing* DialogWindow::toOpenOwner = NULL; 
-PlayableCharacter* DialogWindow::toOpenPC = NULL;
-bool DialogWindow::shouldClose = false;
-Kobold::String DialogWindow::rootId= "";
-DialogWidgetScriptInstance* DialogWindow::script = NULL;
+Thing* DialogWidget::owner = NULL;
+int DialogWidget::keyPressed = -1;
+int DialogWidget::lastPosX = -1;
+int DialogWidget::lastPosY = -1;
+Kobold::Mutex DialogWidget::mutex;
+Thing* DialogWidget::toOpenOwner = NULL; 
+PlayableCharacter* DialogWidget::toOpenPC = NULL;
+bool DialogWidget::shouldClose = false;
+Kobold::String DialogWidget::rootId= "";
+DialogWidgetScriptInstance* DialogWidget::script = NULL;
 

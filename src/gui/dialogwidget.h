@@ -18,8 +18,8 @@
   along with DNT.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _dnt_dialog_window_h
-#define _dnt_dialog_window_h
+#ifndef _dnt_dialog_widget_h
+#define _dnt_dialog_widget_h
 
 #include "dntconfig.h"
 #include <farso/controller.h>
@@ -27,8 +27,9 @@
 
 namespace DNT
 {
-   /*! A window to show an interactive Conversation of a Thing. */
-   class DialogWindow
+   /*! A script controlled widget to show an interactive Conversation 
+    * of a Thing with the playable character. */
+   class DialogWidget
    {
       public:
          /*! Init the dialog window to use, usually at module's init */
@@ -41,10 +42,10 @@ namespace DNT
           * \param pc pointer to current active character */
          static void open(Thing* owner, PlayableCharacter* pc);
 
-         /*! Close the current opened DialogWindow */
+         /*! Close the current opened DialogWidget */
          static void close();
 
-         /*! Check Farso events happening on the DialogWindow.
+         /*! Check Farso events happening on the DialogWidget.
           * \return true if treated some event, false otherwise */
          static bool checkEvents();
 
@@ -71,7 +72,7 @@ namespace DNT
           * \param pc pointer to current active character */
          static void openNow(Thing* owner, PlayableCharacter* pc);
 
-         /*! Close the current opened DialogWindow */
+         /*! Close the current opened DialogWidget */
          static void closeNow();
 
          static Kobold::String rootId; /**< Identifier of the root widget */

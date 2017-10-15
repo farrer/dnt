@@ -32,7 +32,7 @@
 #include "../map/npcfile.h"
 
 #include "../gui/briefing.h"
-#include "../gui/dialogwindow.h"
+#include "../gui/dialogwidget.h"
 
 #include <kobold/log.h>
 #include <kosound/sound.h>
@@ -186,7 +186,7 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
       break;
       /* Close the Dialog */
       case TALK_ACTION_FINISH_DIALOG:
-         DialogWindow::close();
+         DialogWidget::close();
       break;
       case TALK_ACTION_MOD_PC:
          //TODO
@@ -1619,7 +1619,7 @@ void Conversation::changeDialog(int numDialog)
 
    Dialog* dlg;
    
-   if( (numDialog == current) || (!DialogWindow::isOpened()) )
+   if( (numDialog == current) || (!DialogWidget::isOpened()) )
    {
       /* No change at the same Dialog! */
       return;
@@ -1634,13 +1634,13 @@ void Conversation::changeDialog(int numDialog)
       return;
    }
 
-   DialogWindow::clear();
+   DialogWidget::clear();
 
    /* Define the current Dialog number */
    current = numDialog;
 
    /* Define the NPC Text */
-   DialogWindow::setOwnerText(dlg->getOwnerText());
+   DialogWidget::setOwnerText(dlg->getOwnerText());
 
    /* Define the options */
    int curOpt = 0;
@@ -1674,7 +1674,7 @@ void Conversation::changeDialog(int numDialog)
             /* Add the text*/
             text += opt->getText();
 
-            DialogWindow::addOption(text, i);
+            DialogWidget::addOption(text, i);
             curOpt++;
          }
       }

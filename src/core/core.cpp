@@ -28,7 +28,7 @@
 #include "../map/map.h"
 
 #include "../gui/briefing.h"
-#include "../gui/dialogwindow.h"
+#include "../gui/dialogwidget.h"
 
 #include "../core/playablecharacter.h"
 #include "../collision/collision.h"
@@ -158,7 +158,7 @@ void Core::doBeforeRender()
 
    treatedGui = Farso::Controller::verifyEvents(leftButtonPressed, false, 
          mouseX, mouseY);
-   treatedGui |= DialogWindow::checkEvents();
+   treatedGui |= DialogWidget::checkEvents();
 }
 
 /***********************************************************************
@@ -208,7 +208,7 @@ void Core::doAfterRender()
                Object::InteractResult res = thingUnderCursor->interact(curPc);
                if(res == Object::INTERACTION_OPEN_CONVERSATION)
                {
-                  DialogWindow::open(thingUnderCursor, curPc);
+                  DialogWidget::open(thingUnderCursor, curPc);
                }
             }
          }

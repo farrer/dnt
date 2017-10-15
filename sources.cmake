@@ -71,12 +71,12 @@ set(FIGHT_HEADERS
 )
 set(GUI_SOURCES
    src/gui/briefing.cpp
-   src/gui/dialogwindow.cpp
+   src/gui/dialogwidget.cpp
    src/gui/skin.cpp
 )
 set(GUI_HEADERS
    src/gui/briefing.h
-   src/gui/dialogwindow.h
+   src/gui/dialogwidget.h
    src/gui/skin.h
 )
 set(AI_HEADERS
