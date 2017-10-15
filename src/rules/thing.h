@@ -196,7 +196,7 @@ class Thing : public Kobold::ListElement
       const Kobold::String getPortraitFilename() const { return portraitFile;};
 
       /*! \return current displacement */
-      const int getDisplacement() const { return displacement; };
+      const float getDisplacement() const { return displacement; };
 
       /*! \return if should do a depth collision check with Thing's model 
        * triangles or just bounding box check is sufficient */
@@ -287,7 +287,7 @@ class Thing : public Kobold::ListElement
       Thing* currentEnemy; /**< Pointer to current target enemy, if any */
       PsychoState psychoState; /**< State to Playable Characters */
 
-      int displacement;       /**< Thing's Displacement (in meters) */
+      float displacement;       /**< Thing's Displacement (in meters) */
       float walkInterval; /**< Distance can move each frame */
       float turnAroundInterval; /**< Distance can rotate each frame */
 

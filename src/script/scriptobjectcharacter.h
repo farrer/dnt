@@ -76,14 +76,19 @@ namespace DNT
          void setOrientation(const float ori);
 
          /*! \return current displacement */
-         const int getDisplacement();
+         const float getDisplacement();
+
+         /*! Get character distance to the target character */
+         const float distanceToCharacter(ScriptObjectCharacter& target);
+         /*! Get character distance to the target object */
+         const float distanceToObject(ScriptObjectObject& target);
 
          /*! \return walkable bounding box of the model */
          Ogre::Aabb getWalkableBounds();
 
          /*! Move to a position */
          void moveToPosition(float posX, float posZ);
-         /*! Mote near to a character */
+         /*! Move near to a character */
          void moveToCharacter(ScriptObjectCharacter* target);
          /*! Move away from a character */
          void moveFromCharacter(ScriptObjectCharacter* target);

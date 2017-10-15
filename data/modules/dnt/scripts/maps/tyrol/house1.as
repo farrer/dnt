@@ -11,7 +11,7 @@ class House1Ctrl : MapController
       playSound(0, 0, 0, "other/battleMode-yourTurn.ogg");
       sleep(1);
       Character@ c = getCharacter("humans/padre.npc");
-      c.moveToPosition(4.6, 20.95);
+      c.moveTo(4.6, 20.95);
    }
 
    void step()

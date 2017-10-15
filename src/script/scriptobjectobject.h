@@ -56,7 +56,9 @@ namespace DNT
          
          /*! \return if the related pointer is valid */
          const bool isValid();
-
+         
+         /*! Get the current position */
+         const Ogre::Vector3 getPosition();
          /*! Set position of the object on next frame */
          void setPosition(float x, float y, float z);
 

@@ -19,6 +19,7 @@
 */
 
 #include "scriptobjectcharacter.h"
+#include "scriptobjectobject.h"
 #include "scriptmanager.h"
 #include "pendingaction.h"
 #include "../rules/character.h"
@@ -186,9 +187,9 @@ const float ScriptObjectCharacter::getOrientation()
 /**************************************************************************
  *                           getDisplacement                              *
  **************************************************************************/
-const int ScriptObjectCharacter::getDisplacement()
+const float ScriptObjectCharacter::getDisplacement()
 {
-   int res = 0;
+   float res = 0;
    mutex.lock();
    if(character)
    {
@@ -196,6 +197,27 @@ const int ScriptObjectCharacter::getDisplacement()
    }
    mutex.unlock();
    return res;
+}
+
+/**************************************************************************
+ *                              getDistance                               *
+ **************************************************************************/
+const float ScriptObjectCharacter::distanceToCharacter(
+      ScriptObjectCharacter& target)
+{
+   Ogre::Vector3 myPos = getPosition();
+   Ogre::Vector3 tgtPos = target.getPosition();
+   return myPos.distance(tgtPos);
+}
+
+/**************************************************************************
+ *                              getDistance                               *
+ **************************************************************************/
+const float ScriptObjectCharacter::distanceToObject(ScriptObjectObject& target)
+{
+   Ogre::Vector3 myPos = getPosition();
+   Ogre::Vector3 tgtPos = target.getPosition();
+   return myPos.distance(tgtPos);
 }
 
 /**************************************************************************
@@ -380,32 +402,43 @@ ScriptObjectRuleDefinition* ScriptObjectCharacter::getRuleDefinition(
 void ScriptObjectCharacter::registerFunctions(asIScriptEngine* asEngine)
 {
    int r = asEngine->RegisterObjectMethod("Character", 
-         "void moveToPosition(float posX, float posZ)", 
+         "void moveTo(float posX, float posZ)", 
          asMETHOD(ScriptObjectCharacter, moveToPosition), asCALL_THISCALL);
-   assert(r >=0 );
+   assert(r >= 0);
    r = asEngine->RegisterObjectMethod("Character", 
-         "void moveToCharacter(Character@+ character)",
+         "void moveTo(Character@+ character)",
          asMETHOD(ScriptObjectCharacter, moveToCharacter), asCALL_THISCALL);
-   assert(r >=0 );
+   assert(r >= 0);
    r = asEngine->RegisterObjectMethod("Character", 
-         "void moveFromCharacter(Character@+ character)",
+         "void moveFrom(Character@+ character)",
          asMETHOD(ScriptObjectCharacter, moveFromCharacter), asCALL_THISCALL);
-   assert(r >=0 );
+   assert(r >= 0);
    r = asEngine->RegisterObjectMethod("Character", 
          "void callAnimation(int index)",
          asMETHOD(ScriptObjectCharacter, callAnimation), asCALL_THISCALL);
-   assert(r >=0 );
+   assert(r >= 0);
    r = asEngine->RegisterObjectMethod("Character", 
          "void setAnimation(int index)",
          asMETHOD(ScriptObjectCharacter, setAnimation), asCALL_THISCALL);
-   assert(r >=0 );
+   assert(r >= 0);
    r = asEngine->RegisterObjectMethod("Character", "void openDialog()",
          asMETHOD(ScriptObjectCharacter, openDialog), asCALL_THISCALL);
-   assert(r >=0 );
+   assert(r >= 0);
    r = asEngine->RegisterObjectMethod("Character", 
          "RuleDefinition@+ getRuleDefinition(string group, string id)",
          asMETHOD(ScriptObjectCharacter, getRuleDefinition), asCALL_THISCALL);
-   assert(r >=0 );
+   assert(r >= 0);
+   r = asEngine->RegisterObjectMethod("Character", "float getDisplacement()",
+         asMETHOD(ScriptObjectCharacter, getDisplacement), asCALL_THISCALL);
+   assert(r >= 0);
+   r = asEngine->RegisterObjectMethod("Character", 
+         "float distance(Character@+ target)",
+         asMETHOD(ScriptObjectCharacter, distanceToCharacter), asCALL_THISCALL);
+   assert(r >= 0);
+   r = asEngine->RegisterObjectMethod("Character", 
+         "float distance(Object@+ target)",
+         asMETHOD(ScriptObjectCharacter, distanceToObject), asCALL_THISCALL);
+   assert(r >= 0);
 }
 
 /**************************************************************************

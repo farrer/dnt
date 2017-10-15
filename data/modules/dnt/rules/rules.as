@@ -67,5 +67,13 @@ class DNTRules : RuleController
       return testRoll >= against;
    }
 
+   /*! Check if a Character can interact with a target Object.
+    * Note that the 'at sight' verification is already made by the engine
+    * before calling this function. */
+   bool canInteract(Character@ actor, Object@ target)
+   {
+      return actor.distance(target) <= actor.getDisplacement();
+   }
+
 }
 

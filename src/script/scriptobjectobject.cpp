@@ -113,6 +113,23 @@ const bool ScriptObjectObject::isValid()
 }
 
 /**************************************************************************
+ *                              getPosition                               *
+ **************************************************************************/
+const Ogre::Vector3 ScriptObjectObject::getPosition()
+{
+   Ogre::Vector3 pos = Ogre::Vector3(0, 0, 0);
+   mutex.lock();
+   if(object)
+   {
+      pos = object->getModel()->getPosition();
+   }
+   mutex.unlock();
+
+   return pos;
+}
+
+
+/**************************************************************************
  *                              setPosition                               *
  **************************************************************************/
 void ScriptObjectObject::setPosition(float x, float y, float z)
