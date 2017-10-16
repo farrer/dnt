@@ -74,6 +74,8 @@ class DNTRules : RuleController
    {
       return canInteract(actor.distance(target), actor.getDisplacement());
    }
+
+   /*! Same as above, but for Character-Character interaction */
    bool canInteract(Character@ actor, Character@ target)
    {
       return canInteract(actor.distance(target), actor.getDisplacement());

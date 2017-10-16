@@ -225,7 +225,9 @@ bool Briefing::addText(const char* format, ...)
    va_end(arg);
 
    /* Add the formated text */
-   return addText(buf);
+   return addText(Farso::Colors::colorText.red,
+         Farso::Colors::colorText.green, Farso::Colors::colorText.blue,
+         buf, false);
 }
 
 /***********************************************************************
@@ -242,7 +244,9 @@ bool Briefing::addTextWithBreak(const char* format, ...)
    va_end(arg);
 
    /* Add the formated text */
-   return addTextWithBreak(buf);
+   return addText(Farso::Colors::colorText.red,
+         Farso::Colors::colorText.green, Farso::Colors::colorText.blue,
+         buf, true);
 }
 
 /***********************************************************************

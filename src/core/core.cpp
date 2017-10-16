@@ -201,14 +201,21 @@ void Core::doAfterRender()
          Farso::Cursor::setTextualTip(thingUnderCursor->getName());
          if(Farso::Cursor::checkButtonRelease(0))
          {
-            if((thingUnderCursor->canInteract()) && 
-               (Rules::canInteract(curPc, thingUnderCursor)))
+            if(thingUnderCursor->canInteract())
             {
-               Object::InteractResult res = thingUnderCursor->interact(curPc);
-               if(res == Object::INTERACTION_OPEN_CONVERSATION)
+               if(Rules::canInteract(curPc, thingUnderCursor))
                {
-                  DialogWidget::open(thingUnderCursor, curPc);
+                  Object::InteractResult res = 
+                     thingUnderCursor->interact(curPc);
+                  if(res == Object::INTERACTION_OPEN_CONVERSATION)
+                  {
+                     DialogWidget::open(thingUnderCursor, curPc);
+                  }
                }
+            }
+            else
+            {
+               Briefing::addTextWithBreak(thingUnderCursor->getDescription());
             }
          }
       }
