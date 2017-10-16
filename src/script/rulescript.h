@@ -45,6 +45,10 @@ class RuleScriptInstance: public ScriptInstance
 
       /*! Call its rollValue function */
       bool callRollValue(RuleDefinitionValue* testRule, int againstValue);
+
+      /*! Call canInteract for a character and a target object */
+      bool callCanInteract(ScriptObjectCharacter* actor,
+            ScriptObjectObject* target);
 };
 
 /*! Script specific for the general Rules of the game. */
@@ -63,12 +67,17 @@ class RuleScript : public ScriptController
       asIScriptFunction* getFactoryFunction();
       /*! \return pointer to the function called on every cycle */
       asIScriptFunction* getStepFunction();
+
       /*! \return pointer to the function called when needed to roll a
        * RuleDefinition against another one. */
       asIScriptFunction* getRollFunction();
-      /*! \return pointer to the function called when neede to roll a
+      /*! \return pointer to the function called when needed to roll a
        * RuleDefinition against a value. */
       asIScriptFunction* getRollValueFunction();
+
+      /*! \return pointer to the function called to check if a character
+       * can interact with an specific object */
+      asIScriptFunction* getCanInteractWithObjectFunction();
 
    protected:
       void setFunctionPointers();
@@ -83,6 +92,8 @@ class RuleScript : public ScriptController
       asIScriptFunction* stepFunction;    /**< Pointer to the step() */
       asIScriptFunction* rollFunction;  /**< Pointer to roll */
       asIScriptFunction* rollValueFunction; /**< Pointer to rollValue */
+      /*! Pointer to canInteract(Character, Object) */
+      asIScriptFunction* canInteractWithObjectFunction; 
 };
 
 }

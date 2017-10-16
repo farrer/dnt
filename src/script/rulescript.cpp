@@ -101,15 +101,46 @@ bool RuleScriptInstance::callRollValue(RuleDefinitionValue* testRule,
 }
 
 /**************************************************************************
+ *                           callCanInteract                              *
+ **************************************************************************/
+bool RuleScriptInstance::callCanInteract(ScriptObjectCharacter* actor,
+            ScriptObjectObject* target)
+{
+   assert(actor != NULL);
+   assert(target != NULL);
+
+   bool res = false;
+   RuleScript* ruleScript = static_cast<RuleScript*>(script);
+   if(ruleScript->getCanInteractWithObjectFunction())
+   {
+      asIScriptContext* ctx = manager->prepareContextFromPool(
+            ruleScript->getCanInteractWithObjectFunction());
+      ctx->SetObject(getObject());
+      ctx->SetArgObject(0, actor);
+      ctx->SetArgObject(1, target);
+      int r = manager->executeCall(ctx, this);
+      assert(r == asEXECUTION_FINISHED);
+      if(r == asEXECUTION_FINISHED)
+      {
+         res = ctx->GetReturnByte(); 
+      }
+      manager->returnContextToPool(ctx);
+   }
+
+   return res;
+}
+
+/**************************************************************************
  *                              Constructor                               *
  **************************************************************************/
 RuleScript::RuleScript(ScriptManager* manager)
-          :ScriptController(SCRIPT_TYPE_RULE, manager)
+          :ScriptController(SCRIPT_TYPE_RULE, manager),
+           factoryFunction(NULL),
+           stepFunction(NULL),
+           rollFunction(NULL),
+           rollValueFunction(NULL),
+           canInteractWithObjectFunction(NULL)
 {
-   this->factoryFunction = NULL;
-   this->stepFunction = NULL;
-   this->rollFunction = NULL;
-   this->rollValueFunction = NULL;
 }
 
 /**************************************************************************
@@ -163,6 +194,9 @@ void RuleScript::setFunctionPointers()
    this->rollValueFunction = mainType->GetMethodByDecl(
          "bool roll(RuleDefinition @+, int)");
    assert(this->rollValueFunction);
+   this->canInteractWithObjectFunction = mainType->GetMethodByDecl(
+         "bool canInteract(Character @+, Object @+)");
+   assert(this->canInteractWithObjectFunction);
 }
 
 /**************************************************************************
@@ -195,5 +229,13 @@ asIScriptFunction* RuleScript::getRollFunction()
 asIScriptFunction* RuleScript::getRollValueFunction()
 {
    return rollValueFunction;
+}
+
+/**************************************************************************
+ *                     getCanInteractWithObjectFunction                   *
+ **************************************************************************/
+asIScriptFunction* RuleScript::getCanInteractWithObjectFunction()
+{
+   return canInteractWithObjectFunction;
 }
 

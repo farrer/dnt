@@ -201,8 +201,8 @@ void Core::doAfterRender()
          Farso::Cursor::setTextualTip(thingUnderCursor->getName());
          if(Farso::Cursor::checkButtonRelease(0))
          {
-            // TODO: Check action range; 
-            if(thingUnderCursor->canInteract())
+            if((thingUnderCursor->canInteract()) && 
+               (Rules::canInteract(curPc, thingUnderCursor)))
             {
                Object::InteractResult res = thingUnderCursor->interact(curPc);
                if(res == Object::INTERACTION_OPEN_CONVERSATION)

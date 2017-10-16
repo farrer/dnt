@@ -73,7 +73,14 @@ class DNTRules : RuleController
    bool canInteract(Character@ actor, Object@ target)
    {
       //TODO: check if at battle mode.
-      return actor.distance(target) <= actor.getDisplacement();
+      if(actor.distance(target) > actor.getDisplacement())
+      {
+         brief(gettext("The object is too far away!"), 250, 0, 0);
+         briefLineBreak();
+         return false;
+      }
+
+      return true;
    }
 
 }

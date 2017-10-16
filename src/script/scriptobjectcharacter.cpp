@@ -201,7 +201,7 @@ const float ScriptObjectCharacter::getDisplacement()
    mutex.lock();
    if(character)
    {
-      character->getDisplacement();
+      res = character->getDisplacement();
    }
    mutex.unlock();
    return res;

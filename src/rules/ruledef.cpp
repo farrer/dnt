@@ -25,6 +25,7 @@
 #include "../script/scriptobjectruledef.h"
 #include "../script/scriptobjectrulegroup.h"
 #include "../script/scriptobjectcharacter.h"
+#include "../script/scriptobjectobject.h"
 #include "../script/scriptmanager.h"
 #include "../script/rulescript.h"
 #include "../script/ruledefscript.h"
@@ -768,11 +769,41 @@ void Rules::populate(Kobold::List* groupInfoList)
 }
 
 /******************************************************************
- *                        getScriptInstance                       *
+ *                               roll                             *
  ******************************************************************/
-RuleScriptInstance* Rules::getScriptInstance()
+bool Rules::roll(RuleDefinitionValue* testRule, RuleDefinitionValue* against)
 {
-   return scriptInstance;
+   return scriptInstance->callRoll(testRule, against);
+}
+
+/******************************************************************
+ *                               roll                             *
+ ******************************************************************/
+bool Rules::roll(RuleDefinitionValue* testRule, int againstValue)
+{
+   return scriptInstance->callRollValue(testRule, againstValue);
+}
+
+/******************************************************************
+ *                           canInteract                          *
+ ******************************************************************/
+bool Rules::canInteract(Character* actor, Thing* target)
+{
+   assert(actor != NULL);
+   assert(actor->getScriptObject() != NULL);
+   assert(target != NULL);
+   assert(target->getScriptObject() != NULL);
+   assert(target->getScriptObject()->getType() == ScriptObject::TYPE_OBJECT ||
+         target->getScriptObject()->getType() == ScriptObject::TYPE_CHARACTER);
+
+   if(target->getScriptObject()->getType() == ScriptObject::TYPE_OBJECT)
+   {
+      return scriptInstance->callCanInteract(
+            static_cast<ScriptObjectCharacter*>(actor->getScriptObject()),
+            static_cast<ScriptObjectObject*>(target->getScriptObject()));
+   }
+
+   return false;
 }
 
 /******************************************************************

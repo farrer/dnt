@@ -329,8 +329,17 @@ class Rules
       /*! Find a Rule Definition without knowing its group */
       static RuleDefinition* getDefinition(Kobold::String id);
 
-      /*! \return the RuleScriptInstance used for the Rules */
-      static RuleScriptInstance* getScriptInstance();
+      /*! Roll a RuleDefinition test against another RuleDefinition
+       * \return true if passed, false if not */
+      static bool roll(RuleDefinitionValue* testRule, 
+            RuleDefinitionValue* against);
+
+      /*! Roll a RuleDefinition test against a fixed difficulty
+       * \return true if passed, false if not */
+      static bool roll(RuleDefinitionValue* testRule, int againstValue);
+
+      /*! Check if the actor can interact with a target */
+      static bool canInteract(Character* actor, Thing* target);
 
    private:
       /*! Check if the info if not null */

@@ -587,7 +587,7 @@ bool Thing::doCheck(RuleDefinition* ruleDef, int difficulty)
    RuleDefinitionValue* defVal = getRuleDefinition(ruleDef);
    if(defVal)
    {
-      return Rules::getScriptInstance()->callRollValue(defVal, difficulty);
+      return Rules::roll(defVal, difficulty);
    }
    return false;
 }
@@ -600,7 +600,7 @@ bool Thing::doCheck(RuleDefinition* ruleDef, RuleDefinitionValue* against)
    RuleDefinitionValue* defVal = getRuleDefinition(ruleDef);
    if(defVal)
    {
-      return Rules::getScriptInstance()->callRoll(defVal, against);
+      return Rules::roll(defVal, against);
    }
 
    return false;
