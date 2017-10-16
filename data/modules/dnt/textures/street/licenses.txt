@@ -1,0 +1,10 @@
+barrel1.png
+   author: UFO-AI
+   license: GPLv2
+   source: http://ufoai.sf.net
+
+====
+
+Other specular (*_s.png) and normal (*_n.png) maps were created by DNTeam and
+should be using the same license as its original diffuse texture (*.png).
+

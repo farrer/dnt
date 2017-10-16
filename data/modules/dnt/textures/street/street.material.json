@@ -1,0 +1,54 @@
+{
+   "samplers" :
+   {
+      "SamplerBlock_street1" :
+      {
+         "min" : "linear",
+         "mag" : "linear",
+         "u" : "wrap",
+         "v" : "wrap"
+      }
+   },
+   "macroblocks" :
+   {
+      "MacroBlock_street1" :
+      {
+         "depth_check" : true,
+         "depth_write" : true,
+         "polygon_mode" : "solid"
+      }
+   },
+   "blendblocks" : 
+   {
+      "Blendblock_street1" :
+      {
+      }
+   },
+   "pbs" :
+   {
+      "barrel1":
+      {
+         "macroblock" : "Macroblock_street1",
+         "blendblock" : "Blendblock_street1",
+         "shadow_const_bias" : 0.01,
+         "workflow" : "specular_ogre",
+         "diffuse":
+         {
+            "value" : [1.0, 1.0, 1.0],
+            "texture" : "barrel1.png",
+            "sampler" : "SamplerBlock_street1"
+         },
+         "normal":
+         {
+            "texture" : "barrel1_n.png",
+            "sampler" : "SamplerBlock_street1"
+         },
+         "specular":
+         {
+            "texture" : "barrel1_s.png",
+            "sampler" : "SamplerBlock_street1"
+         }
+      }
+   }
+}
+

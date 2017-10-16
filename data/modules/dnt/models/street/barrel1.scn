@@ -1,0 +1,5 @@
+name = gettext("Barrel")
+description = gettext("A wooden barrel for keeping alcoholic liquids.")
+model = street/barrel1.mesh
+walkable = false
+scale=0.05

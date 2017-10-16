@@ -11,8 +11,8 @@ class DNTModule : ModuleController
    {
       string res = "textures/doors;textures/other;textures/furniture;";
       res += "textures/general;textures/humans;textures/portraits;";
-      res += "textures/junk;textures/indoor;maps;models;rules;skeletons;";
-      res += "sndfx;dialogs;scripts";
+      res += "textures/junk;textures/indoor;textures/street;maps;models;";
+      res += "rules;skeletons;sndfx;dialogs;scripts";
       return res;
    }
 
