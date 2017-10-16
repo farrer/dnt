@@ -88,10 +88,57 @@ class Thing : public Kobold::ListElement
       bool save(Kobold::String filename, bool fullPath=false);
  
       /*! Do the per-frame thing's update */
-      virtual void update();
+      virtual bool update();
 
-      /*! \return 3d representation of the thing, if any, or NULL. */
-      Goblin::Model3d* getModel();
+      /*! \return Model's position on world. */
+      const Ogre::Vector3 getPosition() const { return model->getPosition(); };
+      /*! \return Model's orientation (yaw). */
+      const float getOrientation() const { return model->getOrientation(); };
+      const float getRoll() const { return model->getRoll(); };
+      const float getYaw() const { return model->getYaw(); };
+      const float getPitch() const { return model->getPitch(); };
+      /*! \return model's scale */
+      const Ogre::Vector3 getScale() { return model->getScale(); };
+      /*! Hide our model */
+      void hide() { model->hide(); };
+      /*! Show our model */
+      void show() { model->show(); };
+
+      /*! \return the scene node use by Model */
+      Ogre::SceneNode* getSceneNode() { return model->getSceneNode(); };
+      /*! \return Ogre::Item WorldAabb */
+      Ogre::Aabb getWorldAabb() { return model->getItem()->getWorldAabb(); };
+      /*! \return Ogre::Item updated WorldAabb */
+      Ogre::Aabb getWorldAabbUpdated() 
+      { return model->getItem()->getWorldAabbUpdated(); };
+      /*! \return if is a static model */
+      bool isStatic() { return model->isStatic(); };
+      /*! Notify that its static model changed its position.
+       * \note Only used at editors */
+      void notifyStaticDirty() { model->notifyStaticDirty(); };
+
+      /*! Get cached mesh from Goblin::Model */
+      void getCachedMesh(size_t &vertexCount, Ogre::Vector3* &vertices,
+            size_t &indexCount, Ogre::uint32* &indices)
+      { model->getCachedMesh(vertexCount, vertices, indexCount, indices); };
+
+
+      /*! Set model's position (at next frame update) */
+      void setPosition(const Ogre::Vector3& pos);
+      /*! Set model's position (for current frame) */
+      void setPositionNow(const Ogre::Vector3& pos);
+      /*! Set model's target orientation */
+      void setTargetOrientation(float ori, int steps);
+      /*! Set model's target orienation */
+      void setTargetOrientation(const Ogre::Vector3& ori, int steps);
+      /*! Clear current model orientation (all components) */
+      void clearOrientation() { model->clearOrientation(); };
+      /*! Set model's orientation (for next frame) */
+      void setOrientation(float ori);
+      /*! Set model's orientation (for current frame) */
+      void setOrientationNow(const Ogre::Vector3& ori);
+      /*! Set scale of the model (for current frame) */
+      void setScaleNow(const Ogre::Vector3& scale);
 
       /*! \return filename of the file used to load the thing */
       Kobold::String getFilename();
@@ -232,6 +279,11 @@ class Thing : public Kobold::ListElement
       RuleGroupAvailableInfo* getRuleGroup(const Kobold::String id);
 
    protected:
+
+      /*! Set current animation of the animated model */
+      void setAnimatedModelAnimation(int animation, bool loop); 
+      /*! \return current animation of the animated model */
+      int getAnimatedModelAnimation();
 
       /*! Parse specifc key/value pair readed from definition's file that
        * doesn't belong to the generic thing specification.

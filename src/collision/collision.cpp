@@ -89,7 +89,7 @@ bool Collision::canMove(Thing* actor, const Ogre::Vector3& varPos,
 
    /* Apply position change */
    Ogre::Aabb walkableAabb = actor->getWalkableBounds();
-   walkableAabb.mCenter = actor->getModel()->getPosition() + varPos;
+   walkableAabb.mCenter = actor->getPosition() + varPos;
 
    return canBeAt(walkableAabb.getMinimum(), walkableAabb.getMaximum(), actor,
          newHeight);
@@ -258,7 +258,7 @@ bool Collision::isAtSight(Thing* actor, Thing* target, const Ogre::Ray& ray,
 /***********************************************************************
  *                              isAtSight                              *
  ***********************************************************************/
-bool Collision::isAtSight(Thing* actor, Thing* target)
+bool Collision::isAtSight(Thing* actor, Thing* target, bool reverseCheck)
 {
    assert(actor != NULL);
    assert(target != NULL);
@@ -266,9 +266,9 @@ bool Collision::isAtSight(Thing* actor, Thing* target)
 
    /* Define positions and direction */
    Ogre::Aabb aabb = actor->getWalkableBounds();
-   Ogre::Vector3 actorPos = actor->getModel()->getPosition();
-   Ogre::Vector3 targetPos = 
-      target->getModel()->getItem()->getWorldAabb().mCenter;
+
+   Ogre::Vector3 actorPos = actor->getPosition();
+   Ogre::Vector3 targetPos = target->getWorldAabb().mCenter;
    Ogre::Vector3 diffPos = targetPos - actorPos;
    float dist = diffPos.length();
    diffPos.normalise();
@@ -300,15 +300,34 @@ bool Collision::isAtSight(Thing* actor, Thing* target)
       /* Already got is at sight */
       return true;
    }
+
    /* Must check upper actor to object's center */
    Ogre::Vector3 upperActor(actorPos.x, 
-         actorPos.y + aabb.mCenter.y + aabb.mHalfSize.y, actorPos.z);
+         aabb.mCenter.y + aabb.mHalfSize.y, actorPos.z);
    diffPos = targetPos - upperActor;
+   dist = diffPos.length();
    diffPos.normalise();
    ray = Ogre::Ray(upperActor, diffPos);
    if(isAtSight(actor, target, ray, dist, initSqX, initSqZ, endSqX, endSqZ))
    {
       return true;
+   }
+
+   /* Must check upper actor to object's up center */
+   targetPos.y += target->getWorldAabb().mHalfSize.y;
+   diffPos = targetPos - upperActor;
+   dist = diffPos.length();
+   diffPos.normalise();
+   ray = Ogre::Ray(upperActor, diffPos);
+   if(isAtSight(actor, target, ray, dist, initSqX, initSqZ, endSqX, endSqZ))
+   {
+      return true;
+   }
+
+   /* Must check the reverse */
+   if(reverseCheck)
+   {
+      return isAtSight(target, actor, false);
    }
 
    return false;
@@ -328,7 +347,7 @@ void Collision::addElement(const Ogre::Vector3& min, const Ogre::Vector3& max)
 void Collision::addElement(Thing* thing)
 {
    assert(thing != NULL);
-   Ogre::Aabb aabb = thing->getModel()->getItem()->getWorldAabbUpdated();
+   Ogre::Aabb aabb = thing->getWorldAabbUpdated();
    addElement(aabb.getMinimum(), aabb.getMaximum(), thing);
 }
 

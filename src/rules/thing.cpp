@@ -338,6 +338,7 @@ bool Thing::load(Kobold::String fileName,
       {
          walkableBounds.mHalfSize.x = walkableBounds.mHalfSize.z;
       }
+      walkableBounds.mCenter = model->getPosition();
       /* And cache our vertices for depth collision check. */
       model->updateCachedMeshInformation();
       /* Uncomment for bounding box debug. XXX: Note that will leak (lazy!). */
@@ -357,13 +358,71 @@ void Thing::populateWithRules()
 }
 
 /**************************************************************************
+ *                          setTargetOrienation                           *
+ **************************************************************************/
+void Thing::setTargetOrientation(float ori, int steps)
+{
+   model->setTargetOrientation(0.0f, ori, 0.0f, steps);
+}
+
+/**************************************************************************
+ *                          setTargetOrienation                           *
+ **************************************************************************/
+void Thing::setTargetOrientation(const Ogre::Vector3& ori, int steps)
+{
+   model->setTargetOrientation(ori.x, ori.y, ori.z, steps);
+}
+
+/**************************************************************************
+ *                          setOrientation                                *
+ **************************************************************************/
+void Thing::setOrientation(float ori)
+{
+   model->setOrientation(0.0f, ori, 0.0f);
+}
+
+/**************************************************************************
+ *                          setOrientation                                *
+ **************************************************************************/
+void Thing::setOrientationNow(const Ogre::Vector3& ori)
+{
+   model->setOrientationNow(ori.x, ori.y, ori.z);
+}
+
+/**************************************************************************
+ *                              setScaleNow                               *
+ **************************************************************************/
+void Thing::setScaleNow(const Ogre::Vector3& scale)
+{
+   model->setScaleNow(scale.x, scale.y, scale.z);
+}
+
+/**************************************************************************
+ *                              setPosition                               *
+ **************************************************************************/
+void Thing::setPosition(const Ogre::Vector3& pos)
+{
+   model->setPosition(pos);
+   walkableBounds.mCenter = pos;
+}
+
+/**************************************************************************
+ *                            setPositionNow                              *
+ **************************************************************************/
+void Thing::setPositionNow(const Ogre::Vector3& pos)
+{
+   model->setPositionNow(pos);
+   walkableBounds.mCenter = pos;
+}
+
+/**************************************************************************
  *                           setInitialPosition                           *
  **************************************************************************/
 void Thing::setInitialPosition(Ogre::Vector3 pos)
 {
    /* Set model's */
    initialPos = pos;
-   model->setPositionNow(pos);
+   setPositionNow(pos);
 
    /* Define the type of ScriptObject we should use */
    ScriptObject::ScriptObjectType scriptObjType = ScriptObject::TYPE_OBJECT;
@@ -375,6 +434,26 @@ void Thing::setInitialPosition(Ogre::Vector3 pos)
    /* Get our object, defining its game-pointer to us. */
    scriptObject = Game::getScriptManager()->getAndDefinePointer(filename, 
       pos, this, scriptObjType, canInteract());
+}
+
+/***********************************************************************
+ *                              setAnimation                           *
+ ***********************************************************************/
+void Thing::setAnimatedModelAnimation(int animation, bool loop)
+{
+   assert(dynamic_cast<Goblin::AnimatedModel3d*>(model));
+   Goblin::AnimatedModel3d* mdl = static_cast<Goblin::AnimatedModel3d*>(model);
+   mdl->setBaseAnimation(animation, loop, true);
+}
+
+/***********************************************************************
+ *                              getAnimation                           *
+ ***********************************************************************/
+int Thing::getAnimatedModelAnimation()
+{
+   assert(dynamic_cast<Goblin::AnimatedModel3d*>(model));
+   Goblin::AnimatedModel3d* mdl = static_cast<Goblin::AnimatedModel3d*>(model);
+   return mdl->getCurrentAnimation();
 }
 
 /**************************************************************************
@@ -436,20 +515,9 @@ bool Thing::save(Kobold::String filename, bool fullPath)
 /**************************************************************************
  *                               update                                   *
  **************************************************************************/
-void Thing::update()
+bool Thing::update()
 {
-   if(model)
-   {
-      model->update();
-   }
-}
-
-/**************************************************************************
- *                             getModel3d                                 *
- **************************************************************************/
-Goblin::Model3d* Thing::getModel()
-{
-   return model;
+   return model->update();
 }
 
 /**************************************************************************

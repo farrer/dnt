@@ -130,7 +130,7 @@ namespace DNT
          const bool isMovingByPath() const { return aStar != NULL; };
          
          /*! Update character */
-         virtual void update();
+         virtual bool update();
 
       protected:
          /*! \return default character's animation names */

@@ -1146,8 +1146,8 @@ void ModMap::doMapModifications()
                   ch->instantKill();
                   pos = charAct->getPosition();
 
-                  ch->getModel()->setPosition(pos);
-                  ch->getModel()->setOrientation(charAct->getOrientation());
+                  ch->setPosition(pos);
+                  ch->setOrientation(charAct->getOrientation());
 //TODO: character occupy square
 #if 0                  
                   ch->defineOcSquare(actualMap);

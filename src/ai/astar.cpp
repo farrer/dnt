@@ -162,8 +162,8 @@ void AStar::findPath(Character* actor, float x, float z, float stepSize,
       curStepSize = stepSize;
 
       /* Verify the distance to the target. If too near, no need to walk. */
-      float actualX = actor->getModel()->getPosition().x;
-      float actualZ = actor->getModel()->getPosition().z;
+      float actualX = actor->getPosition().x;
+      float actualZ = actor->getPosition().z;
       dX = (x - actualX);
       dZ = (z - actualZ);
       float dist = Ogre::Math::Sqrt( (dX*dX) + (dZ*dZ) );
@@ -341,7 +341,7 @@ void AStar::doCycle()
          patt = new PatternAgent(true);
          patt->defineDestiny(node->x, node->z);
          patt->defineStepSize(curStepSize);
-         patt->defineOrientation(curActor->getModel()->getOrientation());
+         patt->defineOrientation(curActor->getOrientation());
 
          /* Make sure our position is the destiny (as we are rounded by pass)*/
          node->x = destinyX;
@@ -354,10 +354,10 @@ void AStar::doCycle()
             node = closed->find(node->parentX, node->parentZ);
          }
          patt->removeLinearWayPoints();
-         patt->setOrigin(curActor->getModel()->getPosition().x, 
-               curActor->getModel()->getPosition().z);
-         patt->definePosition(curActor->getModel()->getPosition().x, 
-               curActor->getModel()->getPosition().z);
+         patt->setOrigin(curActor->getPosition().x, 
+               curActor->getPosition().z);
+         patt->definePosition(curActor->getPosition().x, 
+               curActor->getPosition().z);
 
          /* We're done */
          clearSearch();

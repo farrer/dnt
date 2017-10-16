@@ -97,11 +97,11 @@ void TransformWindow::setEnabled(bool enable)
  ************************************************************************/
 void TransformWindow::updateTexts(DNT::Thing* thing)
 {
-   position->setValue(thing->getModel()->getPosition());
-   rotation->setValue(thing->getModel()->getPitch(), 
-                      thing->getModel()->getYaw(),
-                      thing->getModel()->getRoll());
-   scale->setValue(thing->getModel()->getScale());
+   position->setValue(thing->getPosition());
+   rotation->setValue(thing->getPitch(), 
+                      thing->getYaw(),
+                      thing->getRoll());
+   scale->setValue(thing->getScale());
 }
 
 /************************************************************************
@@ -135,22 +135,22 @@ bool TransformWindow::checkEvents(PositionEditor* positionEditor)
          /* Check positions */
          if(event.getWidget() == position)
          {
-            thing->getModel()->setPositionNow(position->getValue());
+            thing->setPositionNow(position->getValue());
             positionEditor->updateAxisPosition();
          }
          /* Check rotations */
          else if(event.getWidget() == rotation)
          {
             const Ogre::Vector3& rot = rotation->getValue();
-            thing->getModel()->clearOrientation();
-            thing->getModel()->setOrientationNow(rot.x, rot.y, rot.z);
+            thing->clearOrientation();
+            thing->setOrientationNow(rot);
             positionEditor->updateAxisPosition();
          }
          /* Check scale */
          else if(event.getWidget() == scale)
          {
             const Ogre::Vector3& sc = scale->getValue();
-            thing->getModel()->setScaleNow(sc.x, sc.y, sc.z);
+            thing->setScaleNow(sc);
          }
       }
    }

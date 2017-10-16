@@ -176,9 +176,12 @@ namespace DNT
          /*! Check if a Thing is at sight of another one.
           * \param actor to check if target is at its sight
           * \param target to check if is at actor's sight
+          * \param reverseCheck if should check the reverse too (used for
+          *         recursion control).
           * \return true if target is at actor sight, and false if something
           *         is between them. */
-         static bool isAtSight(Thing* actor, Thing* target);
+         static bool isAtSight(Thing* actor, Thing* target, 
+               bool reverseCheck=true);
 
          /*! Add an element, without a related Thing.
           * \param min minumum corner values

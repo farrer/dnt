@@ -82,7 +82,7 @@ class Door : public Object
       Object::InteractResult interact(Character* actor);
 
       /*! Overriden from Thing. */
-      void update();
+      bool update();
 
    protected:
       /*! Parse specific door attributes */

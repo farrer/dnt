@@ -144,7 +144,7 @@ const Ogre::Vector3 ScriptObjectCharacter::getPosition()
    mutex.lock();
    if(character)
    {
-      pos = character->getModel()->getPosition();
+      pos = character->getPosition();
    }
    mutex.unlock();
 
@@ -159,7 +159,7 @@ void ScriptObjectCharacter::setPosition(const Ogre::Vector3& pos)
    mutex.lock();
    if(character)
    {
-      character->getModel()->setPosition(pos);
+      character->setPosition(pos);
    }
    mutex.unlock();
 }
@@ -172,7 +172,7 @@ void ScriptObjectCharacter::setOrientation(const float ori)
    mutex.lock();
    if(character)
    {
-      character->getModel()->setTargetOrientation(0.0f, ori, 0.0f, 4);
+      character->setTargetOrientation(ori, 4);
    }
    mutex.unlock();
 }
@@ -186,7 +186,7 @@ const float ScriptObjectCharacter::getOrientation()
    mutex.lock();
    if(character)
    {
-      res = character->getModel()->getOrientation();
+      res = character->getOrientation();
    }
    mutex.unlock();
    return res;

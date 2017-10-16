@@ -248,8 +248,8 @@ Thing* Map::insertThing(Kobold::String filename, bool forceDynamic)
    if(thing)
    {
       /* Insert it at our SceneNodes x Thing map */
-      nodesPerThingMap[thing->getModel()->getSceneNode()] = thing;
-      if(thing->getModel()->isStatic())
+      nodesPerThingMap[thing->getSceneNode()] = thing;
+      if(thing->isStatic())
       {
          staticThings->insert(thing);
       }
@@ -271,8 +271,8 @@ Thing* Map::insertThing(Kobold::String filename, bool forceDynamic,
    Thing* thing = insertThing(filename, forceDynamic);
    if(thing)
    {
-      thing->getModel()->setPositionNow(pos);
-      thing->getModel()->setOrientationNow(ori.x, ori.y, ori.z);
+      thing->setPositionNow(pos);
+      thing->setOrientationNow(ori);
       Collision::addElement(thing);
    }
 
@@ -471,9 +471,9 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool editMode)
          if(thing)
          {
             /* Notify last thing dirty state, if needed. */
-            if((lastThing) && (lastThing->getModel()->isStatic()))
+            if((lastThing) && (lastThing->isStatic()))
             {
-               lastThing->getModel()->notifyStaticDirty();
+               lastThing->notifyStaticDirty();
             }
             
             /* Set new lastThing */
@@ -498,7 +498,7 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool editMode)
          {
             Ogre::Real oX=0.0f, oY=0.0f, oZ=0.0f;
             sscanf(value.c_str(), "%f,%f,%f", &oX, &oY, &oZ);
-            lastThing->getModel()->setOrientationNow(oX, oY, oZ);
+            lastThing->setOrientationNow(Ogre::Vector3(oX, oY, oZ));
             /* Note: thingOri must be the last parameter to define a thing,
              * and should be mandatory to all thing declarations on map. */
             Collision::addElement(lastThing);
@@ -520,7 +520,7 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool editMode)
          {
             Ogre::Real oY=0.0f;
             sscanf(value.c_str(), "%f", &oY);
-            last->getModel()->setOrientationNow(0.0f, oY, 0.0f);
+            last->setOrientationNow(Ogre::Vector3(0.0f, oY, 0.0f));
             last->setClosedAngle(oY);
             Collision::addElement(last);
          }
@@ -670,9 +670,9 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool editMode)
    }
 
    /* Notify last thing dirty state, if needed. */
-   if((lastThing) && (lastThing->getModel()->isStatic()))
+   if((lastThing) && (lastThing->isStatic()))
    {
-      lastThing->getModel()->notifyStaticDirty();
+      lastThing->notifyStaticDirty();
    }
 
    /* Update our floor and walls */
@@ -836,7 +836,7 @@ bool Map::save(Kobold::String filename)
                  << door->getInitialPosition().y << ","
                  << door->getInitialPosition().z << std::endl;
             file << MAP_TOKEN_DOOR_ORIENTATION << " = " 
-                 << door->getModel()->getOrientation() << std::endl;
+                 << door->getOrientation() << std::endl;
             if(door->getOpenStatus() == Door::DOOR_LOCKED)
             {
                file << MAP_TOKEN_DOOR_LOCK << " = " 
@@ -856,9 +856,9 @@ bool Map::save(Kobold::String filename)
                  << curThing->getInitialPosition().y << ","
                  << curThing->getInitialPosition().z << std::endl;
             file << MAP_TOKEN_THING_ORIENTATION << " = " 
-                 << curThing->getModel()->getPitch() << ","
-                 << curThing->getModel()->getYaw() << ","
-                 << curThing->getModel()->getRoll() << std::endl;
+                 << curThing->getPitch() << ","
+                 << curThing->getYaw() << ","
+                 << curThing->getRoll() << std::endl;
             if(curThing->isWalkable())
             {
                file << MAP_TOKEN_THING_WALKABLE << " = " 
@@ -897,7 +897,7 @@ Thing* Map::getThing(Ogre::SceneNode* sceneNode)
 void Map::removeThing(Thing* thing)
 {
    /* Remove from nodesPerThing */
-   nodesPerThingMap[thing->getModel()->getSceneNode()] = NULL;
+   nodesPerThingMap[thing->getSceneNode()] = NULL;
 
    /* Remove from respective list */
    if(dynamicThings->hasElement(thing))

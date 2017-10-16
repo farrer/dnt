@@ -477,14 +477,13 @@ void MainGui::duplicateSelection(PositionEditor* positionEditor)
    if(positionEditor->getSelectedThing())
    {
       DNT::Thing* thing = positionEditor->getSelectedThing();
-      Ogre::Vector3 pos = thing->getModel()->getPosition();
+      Ogre::Vector3 pos = thing->getPosition();
       pos.x += 0.5f;
       //TODO: check if new position is inner the map!
       DNT::Thing* newThing = DNT::Game::getCurrentMap()->insertThing(
             thing->getFilename(), true, pos, 
-            Ogre::Vector3(thing->getModel()->getPitch(),
-               thing->getModel()->getYaw(),
-               thing->getModel()->getRoll()));
+            Ogre::Vector3(
+               thing->getPitch(), thing->getYaw(), thing->getRoll()));
       /* Add to node's tree, if opened */
       if(nodesWindow.isOpened())
       {

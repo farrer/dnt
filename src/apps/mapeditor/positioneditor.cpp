@@ -100,7 +100,7 @@ void PositionEditor::selectThing(DNT::Thing* thing)
    selectedThing = thing;
    if(thing)
    {
-      setPosition(thing->getModel()->getPosition());
+      setPosition(thing->getPosition());
       showTranslationAxis();
       showRotationAxis();
       lightDirAxis.hide();
@@ -357,10 +357,10 @@ bool PositionEditor::update(bool leftButtonPressed,
          Ogre::Vector3 ori;
          if(selectedThing)
          {
-            curPos = selectedThing->getModel()->getPosition();
-            ori.x = selectedThing->getModel()->getPitch();
-            ori.y = selectedThing->getModel()->getYaw();
-            ori.z = selectedThing->getModel()->getRoll();
+            curPos = selectedThing->getPosition();
+            ori.x = selectedThing->getPitch();
+            ori.y = selectedThing->getYaw();
+            ori.z = selectedThing->getRoll();
          }
          else if(selectedLight)
          {
@@ -400,9 +400,10 @@ bool PositionEditor::update(bool leftButtonPressed,
          /* Define new position */
          if(selectedThing)
          {
-            selectedThing->getModel()->setPositionNow(curPos);
-            selectedThing->getModel()->clearOrientation();
-            selectedThing->getModel()->setOrientationNow(ori.x, ori.y, ori.z);
+            selectedThing->setPositionNow(curPos);
+            selectedThing->clearOrientation();
+            selectedThing->setOrientationNow(
+                  Ogre::Vector3(ori.x, ori.y, ori.z));
          }
          else if(selectedLight)
          {
@@ -435,7 +436,7 @@ void PositionEditor::updateAxisPosition()
    Ogre::Vector3 curPos;
    if(selectedThing)
    {
-      curPos = selectedThing->getModel()->getPosition();
+      curPos = selectedThing->getPosition();
    }
    else if(selectedLight)
    {

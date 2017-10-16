@@ -75,7 +75,7 @@ void Door::setOpenStatus(OpenStatus openStatus)
 bool Door::flip()
 {
    assert(getOpenStatus() != DOOR_LOCKED);
-   Ogre::Vector3 pos = getModel()->getPosition();
+   Ogre::Vector3 pos = getPosition();
 
    if(getOpenStatus() == DOOR_CLOSED)
    {
@@ -84,7 +84,7 @@ bool Door::flip()
       shouldResetCollision = true;
 
       /* Set opening animation */
-      getModel()->setTargetOrientation(0.0f, closedAngle + 90.0f, 0.0f);
+      setTargetOrientation(closedAngle + 90.0f, 10);
 
       /* Call opening sound */
       Kosound::Sound::addSoundEffect(pos.x, pos.y, pos.z, SOUND_NO_LOOP,
@@ -99,7 +99,7 @@ bool Door::flip()
       shouldResetCollision = true;
 
       /* Opened, we can always close the door */
-      getModel()->setTargetOrientation(0.0f, closedAngle, 0.0f);
+      setTargetOrientation(closedAngle, 10);
 
       /* Call closing sound */
       Kosound::Sound::addSoundEffect(pos.x, pos.y, pos.z, SOUND_NO_LOOP,
@@ -183,14 +183,17 @@ Object::InteractResult Door::interact(Character* actor)
 /**************************************************************************
  *                                update                                  *
  **************************************************************************/
-void Door::update()
+bool Door::update()
 {
-   if((!getModel()->update()) && (shouldResetCollision))
+   bool updated = Thing::update();
+   if((!updated) && (shouldResetCollision))
    {
       Collision::removeElement(this);
       Collision::addElement(this);
       shouldResetCollision = false;
    }
+
+   return updated;
 }
 
 /**************************************************************************

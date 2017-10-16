@@ -105,7 +105,7 @@ bool Inventory::addItem(Item* item, int x, int y, int curInv)
    if(res)
    {
       /* Added to Inventory: no more need to render at scene! */
-      item->getModel()->hide();
+      item->hide();
    }
 
    return res;
@@ -280,7 +280,7 @@ bool Inventory::addItem(Item* item)
    if(inv < INVENTORY_PER_CHARACTER)
    {
       /* Added to inventory, must hide its 3d model. */
-      item->getModel()->hide(); 
+      item->hide(); 
    }
 
    return (inv < INVENTORY_PER_CHARACTER);

@@ -184,7 +184,7 @@ Object::InteractResult Item::interact(Character* actor)
    if(picked)
    {
       /* Play 'pick' sound */
-      Ogre::Vector3 pos = getModel()->getPosition();
+      Ogre::Vector3 pos = getPosition();
       Kosound::Sound::addSoundEffect(pos.x, pos.y, pos.z,
             SOUND_NO_LOOP, "sndfx/objects/take_item.ogg");
       /* Log text on briefing */

@@ -121,9 +121,7 @@ Inventory* Character::getInventory()
  ***********************************************************************/
 void Character::setAnimation(CharacterAnimation animation, bool loop)
 {
-   Goblin::AnimatedModel3d* model = static_cast<Goblin::AnimatedModel3d*>(
-         getModel());
-   model->setBaseAnimation(animation, loop, true);
+   setAnimatedModelAnimation(animation, loop);
 }
 
 /***********************************************************************
@@ -131,10 +129,7 @@ void Character::setAnimation(CharacterAnimation animation, bool loop)
  ***********************************************************************/
 Character::CharacterAnimation Character::getCurrentAnimation()
 {
-   Goblin::AnimatedModel3d* model = static_cast<Goblin::AnimatedModel3d*>(
-         getModel());
-
-   int curAnim = model->getCurrentAnimation();
+   int curAnim = getAnimatedModelAnimation();
    if((curAnim >= 0) && (curAnim < CHARACTER_TOTAL_ANIMATIONS))
    {
       return static_cast<CharacterAnimation>(curAnim);
@@ -246,18 +241,19 @@ void Character::setToMoveByFoundPath(AStar* aStar)
 /*********************************************************************
  *                              update                               *
  *********************************************************************/
-void Character::update()
+bool Character::update()
 {
+   bool res = false;
+
    if(aStar)
    {
       /* Must follow its path */
-      Ogre::Vector3 pos = getModel()->getPosition();
-      float ori = getModel()->getOrientation();
+      Ogre::Vector3 pos = getPosition();
+      float ori = getOrientation();
       if(aStar->getNewPosition(pos, ori, false, 1.0f))
       {
-         getModel()->setPosition(pos);
-         getModel()->setTargetOrientation(getModel()->getPitch(), 
-               ori, getModel()->getRoll(), 4);
+         setPosition(pos);
+         setTargetOrientation(Ogre::Vector3(getPitch(), ori, getRoll()), 4);
          if(getCurrentAnimation() != CHARACTER_ANIMATION_WALK)
          {
             setAnimation(CHARACTER_ANIMATION_WALK, true);
@@ -279,8 +275,10 @@ void Character::update()
       }
    }
 
-   Thing::update();
+   res |= Thing::update();
    effects.doStep();
+
+   return res;
 }
 
 /***************************************************************************
@@ -389,12 +387,13 @@ Character* CharacterList::getCharacter(Kobold::String filename)
  *********************************************************************/
 Character* CharacterList::getCharacter(Ogre::SceneNode* scNode)
 {
+   //FIXME: really necessary? We have a direct way to get it from map...
    Character* ch = static_cast<Character*>(getFirst());
 
    /* Search the list for it */
    for(int i = 0; i < getTotal(); i++)
    {
-      if((ch->getModel()) && (ch->getModel()->ownSceneNode(scNode)))
+      if(ch->getSceneNode() == scNode)
       {
          return ch;
       }

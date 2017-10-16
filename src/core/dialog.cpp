@@ -218,7 +218,7 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
       case TALK_ACTION_PLAY_SOUND:
       {
          /* Play a sound at owner's position */
-         Ogre::Vector3 pos = owner->getModel()->getPosition();
+         Ogre::Vector3 pos = owner->getPosition();
          Kosound::Sound::addSoundEffect(pos.x, pos.y, pos.z,
                SOUND_NO_LOOP, strValue);
       }
@@ -375,7 +375,7 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
          /* Tell ModState about the change */
          ModState::addMapObjectAction(MODSTATE_ACTION_OBJECT_CHANGE_STATE,
                obj->getFilename(), ownerMap,
-               obj->getModel()->getPosition(), obj->getState());
+               obj->getPosition(), obj->getState());
       }
       break;
 

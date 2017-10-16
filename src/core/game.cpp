@@ -85,7 +85,7 @@ void Game::update()
    
    if(curPc)
    {
-      getCurrentMap()->update(curPc->getModel()->getPosition());
+      getCurrentMap()->update(curPc->getPosition());
    }
    pcs->update();
    npcs->update();
@@ -242,7 +242,7 @@ Ogre::SceneManager* Game::getSceneManager()
  ************************************************************************/
 void Game::updateCameraPosition(Character* pc)
 {
-   Ogre::Vector3 pos = pc->getModel()->getPosition();
+   Ogre::Vector3 pos = pc->getPosition();
    pos.y += 1.0f;
    Goblin::Camera::setPosition(pos);
 }

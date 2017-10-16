@@ -46,7 +46,7 @@ Element::Element(Square* square,
  ***********************************************************************/
 bool Element::isWalkable(Thing* actor)
 {
-   return (bounds.getMaximum().y - actor->getModel()->getPosition().y) 
+   return (bounds.getMaximum().y - actor->getPosition().y) 
                   <= MAX_WALKABLE_DIFF_HEIGHT;
 }
 
@@ -57,21 +57,17 @@ bool Element::depthCollide(const Ogre::AxisAlignedBox& actorBox)
 {
    assert(thing != NULL);
 
-   Ogre::Vector3 pos = thing->getModel()->getPosition();
+   Ogre::Vector3 pos = thing->getPosition();
    size_t vertexCount = 0;
    size_t indexCount = 0;
    Ogre::Vector3* vertices;
    Ogre::uint32* indices;
 
-   thing->getModel()->getCachedMesh(vertexCount, vertices, 
-         indexCount, indices);
+   thing->getCachedMesh(vertexCount, vertices, indexCount, indices);
 
-   Ogre::Radian angleX = Ogre::Radian(Ogre::Degree(
-            thing->getModel()->getPitch()));
-   Ogre::Radian angleY = Ogre::Radian(Ogre::Degree(
-            thing->getModel()->getOrientation()));
-   Ogre::Radian angleZ = Ogre::Radian(Ogre::Degree(
-            thing->getModel()->getRoll()));
+   Ogre::Radian angleX = Ogre::Radian(Ogre::Degree(thing->getPitch()));
+   Ogre::Radian angleY = Ogre::Radian(Ogre::Degree(thing->getOrientation()));
+   Ogre::Radian angleZ = Ogre::Radian(Ogre::Degree(thing->getRoll()));
 
    /* Precalculate the sin and cos of the angles, to do less calculations */
    float sinAngleX = Ogre::Math::Sin(angleX);

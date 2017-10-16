@@ -106,7 +106,7 @@ bool PlayableCharacter::doCharacterSpecializationSave(std::ofstream& file)
 bool PlayableCharacter::doMovementByMouse(const Ogre::Vector3& floorMouse,
       bool& run)
 {
-   Ogre::Vector3 curPos = getModel()->getPosition();
+   Ogre::Vector3 curPos = getPosition();
    Ogre::Vector2 dir(floorMouse.x - curPos.x, floorMouse.z - curPos.z);
    /* Set character orientation (if mouse is far from character,
     * because if it is too near, some weird angles appears) */
@@ -118,12 +118,12 @@ bool PlayableCharacter::doMovementByMouse(const Ogre::Vector3& floorMouse,
    if(dist > MIN_DISTANCE_TO_CHANGE_ANGLE)
    {
       /* Change the angle */
-      this->getModel()->setOrientation(walkAngle);
+      this->setOrientation(walkAngle);
    }
    else
    {
       /* Keep the direction angle */
-      walkAngle = this->getModel()->getOrientation();
+      walkAngle = this->getOrientation();
       Ogre::Vector3 cDir = this->direction->getPosition() - curPos; 
       dir = Ogre::Vector2(cDir.x, cDir.z);
       dir.normalise();
@@ -239,12 +239,12 @@ bool PlayableCharacter::checkMouseInputForMovement(
    else if(walkState == WALK_ASTAR_MOVING)
    {
       /* Try to update to the new positon */
-      Ogre::Vector3 pos = getModel()->getPosition();
-      float ori = getModel()->getOrientation();
+      Ogre::Vector3 pos = getPosition();
+      float ori = getOrientation();
       if(pathFind->getNewPosition(pos, ori, false, 1.0f))
       {
-         getModel()->setPosition(pos);
-         getModel()->setTargetOrientation(0.0f, ori, 0.0f, 4);
+         setPosition(pos);
+         setTargetOrientation(ori, 4);
          Game::updateCameraPosition(this);
          moved = true;
          return true;
@@ -266,7 +266,7 @@ bool PlayableCharacter::checkMouseInputForMovement(
 bool PlayableCharacter::tryWalk(float varX, float varZ)
 {
    bool moved = false;
-   Ogre::Vector3 curPos = getModel()->getPosition();
+   Ogre::Vector3 curPos = getPosition();
 
    float newHeight = 0.0f;
    
@@ -297,7 +297,7 @@ bool PlayableCharacter::tryWalk(float varX, float varZ)
    if(moved)
    {
       curPos.y = newHeight;
-      getModel()->setPosition(curPos);
+      setPosition(curPos);
       Game::updateCameraPosition(this);
    }
 
@@ -311,7 +311,7 @@ bool PlayableCharacter::checkKeyboardInputForMovement(bool& moved, bool& run)
 {
    //TODO: get keys from options!
    bool triedToMove = false;
-   float curYaw = getModel()->getYaw();
+   float curYaw = getOrientation();
    float curWalk = getWalkInterval();
    float curTurnAround = getTurnAroundInterval();
    float varX, varZ, varOri;
@@ -376,7 +376,7 @@ bool PlayableCharacter::checkKeyboardInputForMovement(bool& moved, bool& run)
       moved = true;
 
       /* Apply new yaw */
-      getModel()->setOrientation(curYaw);
+      setOrientation(curYaw);
    }
 
    return triedToMove;
