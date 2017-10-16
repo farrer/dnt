@@ -49,6 +49,9 @@ class RuleScriptInstance: public ScriptInstance
       /*! Call canInteract for a character and a target object */
       bool callCanInteract(ScriptObjectCharacter* actor,
             ScriptObjectObject* target);
+      /*! Call canInteract for a character and a target character */
+      bool callCanInteract(ScriptObjectCharacter* actor,
+            ScriptObjectCharacter* target);
 };
 
 /*! Script specific for the general Rules of the game. */
@@ -78,6 +81,9 @@ class RuleScript : public ScriptController
       /*! \return pointer to the function called to check if a character
        * can interact with an specific object */
       asIScriptFunction* getCanInteractWithObjectFunction();
+      /*! \return pointer to the function called to check if a character
+       * can interact with another character */
+      asIScriptFunction* getCanInteractWithCharacterFunction();
 
    protected:
       void setFunctionPointers();
@@ -94,6 +100,8 @@ class RuleScript : public ScriptController
       asIScriptFunction* rollValueFunction; /**< Pointer to rollValue */
       /*! Pointer to canInteract(Character, Object) */
       asIScriptFunction* canInteractWithObjectFunction; 
+      /*! Pointer to canInteract(Character, Character) */
+      asIScriptFunction* canInteractWithCharacterFunction;
 };
 
 }

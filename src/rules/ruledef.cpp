@@ -795,12 +795,21 @@ bool Rules::canInteract(Character* actor, Thing* target)
    assert(target->getScriptObject() != NULL);
    assert(target->getScriptObject()->getType() == ScriptObject::TYPE_OBJECT ||
          target->getScriptObject()->getType() == ScriptObject::TYPE_CHARACTER);
+   assert(dynamic_cast<ScriptObjectCharacter*>(actor->getScriptObject()));
 
    if(target->getScriptObject()->getType() == ScriptObject::TYPE_OBJECT)
    {
+      assert(dynamic_cast<ScriptObjectObject*>(target->getScriptObject()));
       return scriptInstance->callCanInteract(
             static_cast<ScriptObjectCharacter*>(actor->getScriptObject()),
             static_cast<ScriptObjectObject*>(target->getScriptObject()));
+   }
+   if(target->getScriptObject()->getType() == ScriptObject::TYPE_CHARACTER)
+   {
+      assert(dynamic_cast<ScriptObjectCharacter*>(target->getScriptObject()));
+      return scriptInstance->callCanInteract(
+            static_cast<ScriptObjectCharacter*>(actor->getScriptObject()),
+            static_cast<ScriptObjectCharacter*>(target->getScriptObject()));
    }
 
    return false;
