@@ -187,6 +187,15 @@ void CommonApp::getDataDirectories(Ogre::String** dataDirectories,
 }
 
 /***********************************************************************
+ *                       shouldDoCameraInput                           *
+ ***********************************************************************/
+const bool CommonApp::shouldDoCameraInput()
+{
+   return (Farso::Controller::getLastEvent().getType() == Farso::EVENT_NONE) &&
+          Goblin::BaseApp::shouldDoCameraInput();
+}
+
+/***********************************************************************
  *                        updateMouseWorld                             *
  ***********************************************************************/
 void CommonApp::updateMouseWorld(bool updateThingUnderMouse)

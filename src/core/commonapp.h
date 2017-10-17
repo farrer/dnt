@@ -70,6 +70,8 @@ class CommonApp : public Goblin::BaseApp
       /*! Get the data directories for immediate load */
       void getDataDirectories(Ogre::String** dataDirectories,
             Ogre::String** dataGroups, int& total);
+      /*! If should do camera input at this step */
+      const bool shouldDoCameraInput();
       /* Done with Goblin::BaseApp */
 
       /*! Init, cycled, the engine */
