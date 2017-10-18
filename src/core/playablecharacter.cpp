@@ -147,11 +147,10 @@ bool PlayableCharacter::doMovementByMouse(const Ogre::Vector3& floorMouse,
    /* define direction model angle and position */
    float deltaRadius = (run) ? 1.5f : 0.8f;
    direction->setOrientationNow(-90.0f, 0.0f, walkAngle - 180);
-   Ogre::Aabb aabb = getWalkableBounds();
    direction->setPositionNow(
-         curPos.x + (aabb.mCenter.x + deltaRadius) * dir[0], 
+         curPos.x + (deltaRadius) * dir[0], 
          curPos.y + 0.5f, 
-         curPos.z + (aabb.mCenter.z + deltaRadius) * dir[1]);
+         curPos.z + (deltaRadius) * dir[1]);
    
    /* Reset, now for the continuous walk, the interval */
    float curWalk = getWalkInterval();
