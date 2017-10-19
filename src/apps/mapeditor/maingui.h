@@ -110,6 +110,9 @@ namespace DNTMapEditor
          /*! Set current camera to be within map area */
          void setCameraOnMap();
 
+         /*! Populate with all datablocks, for selection */
+         void populateWithDatablocks();
+
          Farso::ProgressBar* progressBar; /**< A multiple-use progress bar */
 
          Farso::Container* cont; /**< Top bar menu container */

@@ -408,6 +408,7 @@ void MainGui::openLoadOrSaveWindow(bool loading, bool map)
    loadSaveSelector = new Farso::FileSelector(loading, dir, true, 
          loadSaveWindow);
    loadSaveSelector->setFilter(filter);
+   loadSaveSelector->setGoUpRoot(false);
    loadSaveWindow->setExternPointer(&loadSaveWindow);
    loadSaveWindow->open();
    loadSaveWindow->setPosition(40, 40);
@@ -764,5 +765,27 @@ void MainGui::setCameraOnMap()
 bool MainGui::isLightEnabled()
 {
    return lightEnabled;
+}
+
+/***********************************************************************
+ *                        populateWithDatablocks                       *
+ ***********************************************************************/
+void MainGui::populateWithDatablocks()
+{
+   //TODO We should render to texture all datablocks (applied on a sphere),
+   //and use that image on a widget for datablock (material) selection.
+#if 0
+   Ogre::HlmsManager* hlmsManager = ogreRoot->getHlmsManager();
+   Ogre::HlmsManager::HlmsDatablockMap data = hlmsManager->getDatablocks();
+   for(Ogre::HlmsManager::HlmsDatablockMap::iterator hlmsIt = data.begin();
+         hlmsIt != data.end(); hlmsIt++)
+   {
+      Ogre::HlmsDatablock* datablock = (hlmsIt->second);
+      const Ogre::String* str = datablock->getNameStr();
+      if((str) && (!"widgetRenderer" on it))
+      {
+      }
+   }
+#endif
 }
 
