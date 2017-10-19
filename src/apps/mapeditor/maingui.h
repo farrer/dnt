@@ -37,16 +37,16 @@ namespace DNTMapEditor
    {
       public:
          /*! Constructor */
-         MainGui();
+         MainGui(PositionEditor* positionEditor);
          /*! Destructor */
          ~MainGui();
 
          /*! Check current Farso::Events for main gui 
           * \return true if should quit the editor. */
-         bool checkEvents(PositionEditor* positionEditor);
+         bool checkEvents();
 
          /*! Update any needed gui with current values */
-         void update(PositionEditor* positionEditor);
+         void update();
 
          /*! \return if light is enabled or not */
          bool isLightEnabled();
@@ -70,17 +70,22 @@ namespace DNTMapEditor
 
          /*! Close all map relative opened windows.
           * \note usually called when a new map will be loaded / created */
-         void closeMapRelatedWindows(PositionEditor* positionEditor);
+         void closeMapRelatedWindows();
 
          /*! \return nodes window pointer */
          NodesWindow* getNodesWindow() { return &nodesWindow; };
 
+
+         /*! Tell that we created a new light. (will select it to edit
+          * and update our widgets) */
+         void addedNewLight(DNT::LightInfo* newLight);
+
          /*! Duplicate current selected node, if any. */
-         void duplicateSelection(PositionEditor* positionEditor);
+         void duplicateSelection();
          /*! Remove current selection, if any, from both editor and map */
-         void removeSelection(PositionEditor* positionEditor);
+         void removeSelection();
          /*! Unselect current selection, if any. */
-         void unselect(PositionEditor* positionEditor);
+         void unselect();
 
          /*! Open/Close the Node Window */
          void toggleNodeWindow();
@@ -166,6 +171,7 @@ namespace DNTMapEditor
          LightWindow lightWindow; /**< Light edit window */
          DNT::Module* module; /**< Module to use */
          bool loadingModule; /**< If loading module */
+         PositionEditor* positionEditor; /**< Pointer to our editor */
    };
 
 

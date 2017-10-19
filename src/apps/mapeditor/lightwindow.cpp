@@ -19,14 +19,18 @@
 */
 
 #include "lightwindow.h"
+#include "maingui.h"
+#include "../../core/game.h"
+#include "../../map/map.h"
 using namespace DNTMapEditor;
 
 /************************************************************************
  *                              Constructor                             *
  ************************************************************************/
-LightWindow::LightWindow()
+LightWindow::LightWindow(MainGui* mainGui)
 {
-   window = NULL;
+   this->window = NULL;
+   this->mainGui = mainGui;
 }
 
 /************************************************************************
@@ -43,24 +47,35 @@ void LightWindow::open()
 {
    if(!window)
    {
-      window = new Farso::Window(320, 224, "Light");
+      window = new Farso::Window(320, 248, "Light");
       window->setExternPointer(&window);
 
+      int posY = 0;
+      /* Add light new/delete buttons */
+      Farso::Container* cont = new Farso::Container(
+            Farso::Container::TYPE_TOP_CENTERED, window);
+      addNewLight = new Farso::Button(41, 1, 80, 21, "Add new", cont);
+      deleteLight = new Farso::Button(-41, 1, 80, 21, "Delete", cont);
+
       /* Create light color texts */
-      new Farso::Label(0, 0, 75, 21, "Power Scale", window);
-      powerScale = new Farso::TextEntry(74, 0, 60, 21, window);
-      hdr = new Farso::CheckBox(145, 0, 50, "HDR", false, window); 
-      castShadows = new Farso::CheckBox(200, 0, 100, "Cast Shadows", 
+      posY += 24;
+      new Farso::Label(0, posY, 75, 21, "Power Scale", window);
+      powerScale = new Farso::TextEntry(74, posY, 60, 21, window);
+      hdr = new Farso::CheckBox(145, posY, 50, "HDR", false, window); 
+      castShadows = new Farso::CheckBox(200, posY, 100, "Cast Shadows", 
             true, window); 
-      diffuse = new Vector3TextEntry(0, 22, Vector3TextEntry::TYPE_RGB,
+      posY += 22;
+      diffuse = new Vector3TextEntry(0, posY, Vector3TextEntry::TYPE_RGB,
             "Diffuse", window);
-      specular = new Vector3TextEntry(0, 44, Vector3TextEntry::TYPE_RGB,
+      posY += 22;
+      specular = new Vector3TextEntry(0, posY, Vector3TextEntry::TYPE_RGB,
             "Specular", window);
 
       /* Create the light type stack tab */
+      posY += 22;
       Farso::Container* tabCont = new Farso::Container(
             Farso::Container::TYPE_TOP_LEFT, 
-            Farso::Rect(0, 66, 0, 1), window);
+            Farso::Rect(0, posY, 0, 1), window);
       tab = new Farso::StackTab(tabCont);
       
       /* Point light */
@@ -123,6 +138,7 @@ void LightWindow::setEnabled(bool enable)
       enableSpot();
       useDirec->enable();
       enableDirectional();
+      deleteLight->enable();
    }
    else if((!enable) && (diffuse->isAvailable()))
    {
@@ -138,6 +154,7 @@ void LightWindow::setEnabled(bool enable)
       disableSpot();
       useDirec->disable();
       disableDirectional();
+      deleteLight->disable();
    }
 }
 
@@ -204,6 +221,25 @@ void LightWindow::enableDirectional()
    direcDirection->enable();
    powerScale->disable();
    hdr->disable();
+}
+
+/************************************************************************
+ *                             createLight                              *
+ ************************************************************************/
+void LightWindow::createLight()
+{
+    DNT::LightInfo* newLight = DNT::Game::getCurrentMap()->
+            getLights()->createLightInfo(Ogre::Light::LT_POINT);
+
+    newLight->setPosition(Ogre::Vector3(0.0f, 3.45f, 0.0f));
+    newLight->setDiffuse(0.8f, 0.8f, 0.8f);
+    newLight->setSpecular(0.8f, 0.8f, 0.8f);
+    newLight->setPowerScale(4.0f);
+    newLight->setHdr(false);
+    newLight->setCastShadows(false);
+
+    mainGui->addedNewLight(newLight);
+    newLight->flush();
 }
 
 /************************************************************************
@@ -274,7 +310,7 @@ void LightWindow::update(PositionEditor* positionEditor)
  ************************************************************************/
 bool LightWindow::checkEvents(PositionEditor* positionEditor)
 {
-   if((window) && (window->isActive()) && (positionEditor->getSelectedLight()))
+   if((window) && (window->isActive()))
    {
       DNT::LightInfo* light = positionEditor->getSelectedLight();
       Farso::Event event = Farso::Controller::getLastEvent();
@@ -397,6 +433,17 @@ bool LightWindow::checkEvents(PositionEditor* positionEditor)
          {
             light->setDirection(direcDirection->getValue());
             light->flush();
+         }
+      }
+      else if(event.getType() == Farso::EVENT_BUTTON_RELEASED)
+      {
+         if(event.getWidget() == deleteLight)
+         {
+            mainGui->removeSelection();
+         }
+         else if(event.getWidget() == addNewLight)
+         {
+            createLight();
          }
       }
    }

@@ -29,12 +29,14 @@
 
 namespace DNTMapEditor
 { 
+   class MainGui;
+
    /*! A window to direct define light attributes. */
    class LightWindow
    {
       public:
          /*! Constructor */
-         LightWindow();
+         LightWindow(MainGui* mainGui);
          /*! Destructor */
          ~LightWindow();
 
@@ -74,6 +76,8 @@ namespace DNTMapEditor
          void disableDirectional();
          /*! Enable directional light */
          void enableDirectional();
+         /*! Create a new light and select it for editing */
+         void createLight();
 
          Farso::Window* window; /**< The window */
          Vector3TextEntry* diffuse; /**< Light diffuse color */
@@ -81,6 +85,8 @@ namespace DNTMapEditor
          Farso::TextEntry* powerScale; /**< Light power scale */
          Farso::CheckBox* hdr; /**< If light is in HDR or LDR */
          Farso::CheckBox* castShadows; /**< If light should cast shadows */
+         Farso::Button* addNewLight; /**< Button for add a new light */
+         Farso::Button* deleteLight; /**< Button to delete a light */
 
          Farso::StackTab* tab; /**< The light-type tab */
 
@@ -102,6 +108,8 @@ namespace DNTMapEditor
          Farso::Container* direcCont; /**< directional light param container */
          Farso::CheckBox* useDirec; /**< if the light is a directional one */
          Vector3TextEntry* direcDirection; /**< directional light dir */
+
+         MainGui* mainGui;
    };
 
 }

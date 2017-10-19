@@ -29,7 +29,8 @@ using namespace DNTMapEditor;
 /***********************************************************************
  *                               MainGui                               *
  ***********************************************************************/
-MainGui::MainGui()
+MainGui::MainGui(PositionEditor* positionEditor)
+       :lightWindow(this)
 {
    /* Nullify Load/Save window things */
    loadSaveWindow = NULL;
@@ -40,6 +41,7 @@ MainGui::MainGui()
    buttonNewMapCreate = NULL;
    module = NULL;
    loadingModule = false;
+   this->positionEditor = positionEditor;
 
    /* Create the progress bar */
    progressBar = new Farso::ProgressBar(412, 374, 200, 20, NULL);
@@ -112,7 +114,7 @@ MainGui::MainGui()
  ***********************************************************************/
 MainGui::~MainGui()
 {
-   closeMapRelatedWindows(NULL);
+   closeMapRelatedWindows();
    if(loadSaveWindow)
    {
       loadSaveWindow->close();
@@ -286,7 +288,7 @@ void MainGui::setLight()
 /***********************************************************************
  *                       closeMapRelatedWindows                        *
  ***********************************************************************/
-void MainGui::closeMapRelatedWindows(PositionEditor* positionEditor)
+void MainGui::closeMapRelatedWindows()
 {
    metadataGui.close();
    nodesWindow.close();
@@ -448,7 +450,7 @@ void MainGui::openNewMapWindow()
 /***********************************************************************
  *                               update                                *
  ***********************************************************************/
-void MainGui::update(PositionEditor* positionEditor)
+void MainGui::update()
 {
    transformWindow.update(positionEditor);
    lightWindow.update(positionEditor);
@@ -473,7 +475,7 @@ void MainGui::update(PositionEditor* positionEditor)
 /***********************************************************************
  *                        duplicateSelection                           *
  ***********************************************************************/
-void MainGui::duplicateSelection(PositionEditor* positionEditor)
+void MainGui::duplicateSelection()
 {
    if(positionEditor->getSelectedThing())
    {
@@ -504,21 +506,29 @@ void MainGui::duplicateSelection(PositionEditor* positionEditor)
       newLight->set(lightInfo);
       newLight->setPosition(pos);
 
-      /* Add to node's tree, if opened */
-      if(nodesWindow.isOpened())
-      {
-         nodesWindow.addLight(newLight);
-         nodesWindow.setSelectedNodeByData(newLight);
-      }
-      positionEditor->selectLight(newLight);
+      addedNewLight(newLight);
       newLight->flush();
    }
 }
 
 /***********************************************************************
+ *                           addedNewLight                             *
+ ***********************************************************************/
+void MainGui::addedNewLight(DNT::LightInfo* newLight)
+{
+   /* Add to node's tree, if opened */
+   if(nodesWindow.isOpened())
+   {
+      nodesWindow.addLight(newLight);
+      nodesWindow.setSelectedNodeByData(newLight);
+   }
+   positionEditor->selectLight(newLight);
+}
+
+/***********************************************************************
  *                          removeSelection                            *
  ***********************************************************************/
-void MainGui::removeSelection(PositionEditor* positionEditor)
+void MainGui::removeSelection()
 {
    if(positionEditor->getSelectedThing())
    {
@@ -541,7 +551,7 @@ void MainGui::removeSelection(PositionEditor* positionEditor)
 /***********************************************************************
  *                              unselect                               *
  ***********************************************************************/
-void MainGui::unselect(PositionEditor* positionEditor)
+void MainGui::unselect()
 {
    positionEditor->selectThing(NULL);
    nodesWindow.unselect();
@@ -550,7 +560,7 @@ void MainGui::unselect(PositionEditor* positionEditor)
 /***********************************************************************
  *                            checkEvents                              *
  ***********************************************************************/
-bool MainGui::checkEvents(PositionEditor* positionEditor)
+bool MainGui::checkEvents()
 {
    if(loadingModule)
    {
@@ -614,17 +624,17 @@ bool MainGui::checkEvents(PositionEditor* positionEditor)
          if(editMenu->getCurrentItem() == menuItemUnselect)
          {
             /* Unselect current selection */
-            unselect(positionEditor);
+            unselect();
          } 
          else if(editMenu->getCurrentItem() == menuItemDuplicate)
          {
             /* Duplicate selection */
-            duplicateSelection(positionEditor);
+            duplicateSelection();
          }
          else if(editMenu->getCurrentItem() == menuItemRemove)
          {
             /* Remove current selection (both from nodeWindow and map) */
-            removeSelection(positionEditor);
+            removeSelection();
          }
       }
       else if(event.getWidget() == viewMenu)
@@ -660,7 +670,7 @@ bool MainGui::checkEvents(PositionEditor* positionEditor)
       /* Check creation of a new map */
       if(event.getWidget() == buttonNewMapCreate)
       {
-         closeMapRelatedWindows(positionEditor);
+         closeMapRelatedWindows();
          /* Force deletion of any already loaded map */
          DNT::Game::setCurrentMap(NULL);
          /* Create a new map and set it to be the active one */
@@ -679,7 +689,7 @@ bool MainGui::checkEvents(PositionEditor* positionEditor)
       {
          if(loadSaveSelector->isLoadType())
          {
-            closeMapRelatedWindows(positionEditor);
+            closeMapRelatedWindows();
 
             if(module != NULL)
             {

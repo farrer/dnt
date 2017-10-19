@@ -39,7 +39,7 @@
 using namespace DNTMapEditor;
 
 /***********************************************************************
- *                                  MapEditor                               *
+ *                                MapEditor                            *
  ***********************************************************************/
 MapEditor::MapEditor()
 {
@@ -51,7 +51,7 @@ MapEditor::MapEditor()
 }
 
 /***********************************************************************
- *                                 ~MapEditor                               *
+ *                               ~MapEditor                            *
  ***********************************************************************/
 MapEditor::~MapEditor()
 {
@@ -93,14 +93,14 @@ bool MapEditor::doCycleInit(int callCounter, bool& shouldAbort)
       Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(
             "mapeditor_modules", true);
 
+      /* define our position editor */
+      positionEditor = new PositionEditor(getSceneManager());
+
       /* Create Map Editor's GUI */
-      mainGui = new MainGui();
+      mainGui = new MainGui(positionEditor);
       mainGui->hideProgressBar();
       mainGui->showTopBar();
       mainGui->setLight();
-
-      /* define our position editor */
-      positionEditor = new PositionEditor(getSceneManager());
 
       return true;
    }
@@ -143,7 +143,7 @@ bool MapEditor::checkKeyboardInput()
          (Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_D)))
       {
          /* Should duplicate current selection */
-         mainGui->duplicateSelection(positionEditor);
+         mainGui->duplicateSelection();
          lastKey = Kobold::KOBOLD_KEY_D;
          res = true;
       }
@@ -151,7 +151,7 @@ bool MapEditor::checkKeyboardInput()
               (Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_BACKSPACE)))
       {
          /* Should unselect current selection */
-         mainGui->removeSelection(positionEditor);
+         mainGui->removeSelection();
          lastKey = Kobold::KOBOLD_KEY_BACKSPACE;
          thingUnderCursor = NULL;
          res = true;
@@ -160,7 +160,7 @@ bool MapEditor::checkKeyboardInput()
               (Kobold::Keyboard::isKeyPressed(Kobold::KOBOLD_KEY_U)))
       {
          /* Should unselect current selection */
-         mainGui->unselect(positionEditor);
+         mainGui->unselect();
          lastKey = Kobold::KOBOLD_KEY_U;
          res = true;
       }
@@ -239,7 +239,7 @@ void MapEditor::doBeforeRender()
    if(Farso::Controller::verifyEvents(leftButtonPressed, false, mouseX, mouseY))
    {
       treatedGui = true;
-      shouldExit |= mainGui->checkEvents(positionEditor);
+      shouldExit |= mainGui->checkEvents();
    }
    else
    {
@@ -254,7 +254,7 @@ void MapEditor::doAfterRender()
 {
    if(!treatedGui)
    {
-      mainGui->update(positionEditor);
+      mainGui->update();
 
       /* Let's check keyboard input for selections */
       if(!checkKeyboardInput())
