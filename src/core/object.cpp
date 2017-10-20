@@ -94,7 +94,8 @@ float Object::getWeight()
 /**************************************************************************
  *                             doSpecificParse                            *
  **************************************************************************/
-bool Object::doSpecificParse(Ogre::String key, Ogre::String value)
+bool Object::doSpecificParse(const Kobold::String& key, 
+      const Kobold::String& value)
 {
    if(key == OBJECT_KEY_IMAGE)
    {

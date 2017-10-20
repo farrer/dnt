@@ -144,7 +144,7 @@ Kobold::String* Thing::getAnimationList()
 /**************************************************************************
  *                                  load                                  *
  **************************************************************************/
-bool Thing::load(Kobold::String fileName,
+bool Thing::load(const Kobold::String& fileName,
       Goblin::Model3d::Model3dType modelType, bool fullPath)
 {
    Kobold::DefParser defParser;
@@ -459,7 +459,7 @@ int Thing::getAnimatedModelAnimation()
 /**************************************************************************
  *                                   save                                 *
  **************************************************************************/
-bool Thing::save(Kobold::String filename, bool fullPath)
+bool Thing::save(const Kobold::String& filename, bool fullPath)
 {
    bool success = true;
    Kobold::String filePath;
@@ -523,7 +523,7 @@ bool Thing::update()
 /**************************************************************************
  *                             getFileName                                *
  **************************************************************************/
-Kobold::String Thing::getFilename()
+const Kobold::String& Thing::getFilename() const
 {
    return filename;
 }
@@ -531,7 +531,7 @@ Kobold::String Thing::getFilename()
 /**************************************************************************
  *                               getName                                  *
  **************************************************************************/
-Kobold::String Thing::getName()
+const Kobold::String& Thing::getName() const
 {
    return name;
 }
@@ -539,7 +539,7 @@ Kobold::String Thing::getName()
 /**************************************************************************
  *                               getDescription                           *
  **************************************************************************/
-Kobold::String Thing::getDescription()
+const Kobold::String& Thing::getDescription() const
 {
    return description;
 }
@@ -642,7 +642,7 @@ bool Thing::hasConversationFile()
 /**************************************************************************
  *                            setConversationFile                         *
  **************************************************************************/
-void Thing::setConversationFile(Kobold::String fileName)
+void Thing::setConversationFile(const Kobold::String& fileName)
 {
    conversationFile = fileName;
 }
@@ -677,7 +677,7 @@ bool Thing::doCheck(RuleDefinition* ruleDef, RuleDefinitionValue* against)
 /**************************************************************************
  *                          getRuleDefinition                             *
  **************************************************************************/
-RuleDefinitionValue* Thing::getRuleDefinition(const Kobold::String id)
+RuleDefinitionValue* Thing::getRuleDefinition(const Kobold::String& id)
 {
    RuleGroupAvailableInfo* cur = static_cast<RuleGroupAvailableInfo*>(
          ruleGroups.getFirst());
@@ -696,8 +696,8 @@ RuleDefinitionValue* Thing::getRuleDefinition(const Kobold::String id)
 /**************************************************************************
  *                          getRuleDefinition                             *
  **************************************************************************/
-RuleDefinitionValue* Thing::getRuleDefinition(const Kobold::String groupId, 
-      const Kobold::String id)
+RuleDefinitionValue* Thing::getRuleDefinition(const Kobold::String& groupId, 
+      const Kobold::String& id)
 {
    RuleGroupAvailableInfo* group = getRuleGroup(groupId);
    if(group)
@@ -728,7 +728,7 @@ RuleDefinitionValue* Thing::getRuleDefinition(RuleDefinition* def)
 /**************************************************************************
  *                            getRuleGroup                                *
  **************************************************************************/
-RuleGroupAvailableInfo* Thing::getRuleGroup(const Kobold::String id)
+RuleGroupAvailableInfo* Thing::getRuleGroup(const Kobold::String& id)
 {
    RuleGroupAvailableInfo* cur = static_cast<RuleGroupAvailableInfo*>(
          ruleGroups.getFirst());

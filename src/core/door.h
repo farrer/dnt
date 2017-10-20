@@ -86,7 +86,8 @@ class Door : public Object
 
    protected:
       /*! Parse specific door attributes */
-      bool doObjectSpecializationParse(Ogre::String key, Ogre::String value);
+      bool doObjectSpecializationParse(const Kobold::String& key, 
+            const Kobold::String& value);
       /*! Save specific door attributes */
       bool doObjectSpecializationSave(std::ofstream& file);
 

@@ -15,6 +15,7 @@ set(CORE_SOURCES
    src/core/modstate.cpp
    src/core/module.cpp
    src/core/money.cpp
+   src/core/nonplayablecharacter.cpp
    src/core/object.cpp
    src/core/playablecharacter.cpp
    src/core/scenery.cpp

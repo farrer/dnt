@@ -87,8 +87,8 @@ void PlayableCharacter::doAfterLoad()
    direction->hide();
 }
 
-bool PlayableCharacter::doCharacterSpecializationParse(Ogre::String key, 
-      Ogre::String value)
+bool PlayableCharacter::doCharacterSpecializationParse(
+      const Kobold::String& key, const Kobold::String& value)
 {
    //TODO
    return false;

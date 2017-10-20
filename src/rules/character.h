@@ -84,7 +84,7 @@ namespace DNT
          void instantKill();
 
          /*! Load a character model */
-         bool load(Kobold::String filename);
+         bool load(const Kobold::String& filename);
          
          /*! Called after loaded the character, to set some of its 
           * definitions */ 
@@ -138,7 +138,8 @@ namespace DNT
 
          /*! Parse key/value pairs specific to the character thing's 
           * specialization */
-         bool doSpecificParse(Kobold::String key, Kobold::String value);
+         bool doSpecificParse(const Kobold::String& key, 
+               const Kobold::String& value);
 
          /*! Output to file character specific definitions */
          bool doSpecificSave(std::ofstream& file);
@@ -151,8 +152,8 @@ namespace DNT
          /*! Parse specifc key/value pair readed from definition's file that
           * doesn't belong to the generic character specification (but to its
           * specialization). */
-         virtual bool doCharacterSpecializationParse(Kobold::String key, 
-               Kobold::String value) = 0;
+         virtual bool doCharacterSpecializationParse(const Kobold::String& key, 
+               const Kobold::String& value) = 0;
 
          Kobold::Mutex mutex; /**< Mutex for access control */
 
@@ -201,7 +202,7 @@ namespace DNT
          /*! Get the first Character with filename on the list
           * \param filename -> filename of the Character to get
           * \return -> character pointer or NULL (if not found) */
-         Character* getCharacter(Kobold::String filename);
+         Character* getCharacter(const Kobold::String& filename);
 
          /*! Get the Character related to the SceneNode
           * \return Character pointer or NULL */

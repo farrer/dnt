@@ -20,7 +20,8 @@ Scenery::~Scenery()
 /**************************************************************************
  *                       doObjectSpecializationParse                      *
  **************************************************************************/
-bool Scenery::doObjectSpecializationParse(Ogre::String key, Ogre::String value)
+bool Scenery::doObjectSpecializationParse(const Kobold::String& key, 
+      const Kobold::String& value)
 {
    return false;
 }

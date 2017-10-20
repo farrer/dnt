@@ -67,7 +67,7 @@ Ogre::Vector2 Item::getInventorySize()
 /**************************************************************************
  *                            getRelatedInfo                              *
  **************************************************************************/
-Kobold::String Item::getRelatedInfo()
+const Kobold::String& Item::getRelatedInfo() const
 {
    return relatedInfo;
 }
@@ -97,7 +97,7 @@ bool Item::isUsable()
 /**************************************************************************
  *                          setTypeByString                               *
  **************************************************************************/
-void Item::setTypeByString(Kobold::String typeStr)
+void Item::setTypeByString(const Kobold::String& typeStr)
 {
    for(int i = 0; i < ITEM_TOTAL_TYPES; i++)
    {
@@ -116,7 +116,7 @@ void Item::setTypeByString(Kobold::String typeStr)
 /**************************************************************************
  *                          getTypeAsString                               *
  **************************************************************************/
-Kobold::String Item::getTypeAsString()
+const Kobold::String& Item::getTypeAsString() const
 {
    return typeStrings[type];
 }
@@ -124,7 +124,8 @@ Kobold::String Item::getTypeAsString()
 /**************************************************************************
  *                     doObjectSpecializationParse                        *
  **************************************************************************/
-bool Item::doObjectSpecializationParse(Ogre::String key, Ogre::String value)
+bool Item::doObjectSpecializationParse(const Kobold::String& key, 
+      const Kobold::String& value)
 {
    if(key == ITEM_KEY_INVENTORY_SIZE)
    {

@@ -50,7 +50,8 @@ class PlayableCharacter : public Character
    protected:
 
       /*! Parse key/value pairs related to the PlayableCharacter */
-      bool doCharacterSpecializationParse(Ogre::String key, Ogre::String value);
+      bool doCharacterSpecializationParse(const Kobold::String& key, 
+            const Kobold::String& value);
       bool doCharacterSpecializationSave(std::ofstream& file);
 
       /*! Do the check for character movement with keyboard.

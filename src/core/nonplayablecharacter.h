@@ -40,11 +40,20 @@ class NonPlayableCharacter : public Character
          PS_FRIENDLY = 2
       };
 
+      /*! Constructor. Default PsychoState: neutral. 
+       * \param filename of the .npc to load */
+      NonPlayableCharacter(const Kobold::String& filename);
+      /*! Destructor */
+      ~NonPlayableCharacter();
 
    protected:
 
       /*! Parse key/value pairs related to the NonPlayableCharacter */
-      bool doCharacterSpecializationParse(Ogre::String key, Ogre::String value);
+      bool doCharacterSpecializationParse(const Kobold::String& key, 
+            const Kobold::String& value);
+
+      /*! Save specific information of NonPlayableCharacters */
+      bool doCharacterSpecializationSave(std::ofstream& file);
 
       PsychoState psychoState; /**< Psycho state of the thing relative to
                                     current PCs */

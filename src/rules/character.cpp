@@ -161,7 +161,8 @@ void Character::setCanMove(bool value)
 /***********************************************************************
  *                           doSpecificParse                           *
  ***********************************************************************/
-bool Character::doSpecificParse(Kobold::String key, Kobold::String value)
+bool Character::doSpecificParse(const Kobold::String& key, 
+      const Kobold::String& value)
 {
    /* Walk Interval */
    if(key == CHARACTER_KEY_WALK_INTERVAL)
@@ -188,7 +189,7 @@ bool Character::doSpecificParse(Kobold::String key, Kobold::String value)
 /***********************************************************************
  *                                load                                 *
  ***********************************************************************/
-bool Character::load(Kobold::String filename)
+bool Character::load(const Kobold::String& filename)
 {
    if(Thing::load(filename, Goblin::Model3d::MODEL_DYNAMIC))
    {
@@ -365,7 +366,7 @@ Character* CharacterList::getActiveCharacter()
 /*********************************************************************
  *                              getCharacter                         *
  *********************************************************************/
-Character* CharacterList::getCharacter(Kobold::String filename)
+Character* CharacterList::getCharacter(const Kobold::String& filename)
 {
    Character* ch = static_cast<Character*>(getFirst());
 

@@ -56,7 +56,7 @@ class Item : public Object
       Ogre::Vector2 getInventorySize();
 
       /*! \return related information about the Item */
-      Kobold::String getRelatedInfo();
+      const Kobold::String& getRelatedInfo() const;
 
       /*! \return item type */
       ItemType getType();
@@ -73,16 +73,17 @@ class Item : public Object
    protected:
      
       /*! Parse specific Item definitions from file */
-      bool doObjectSpecializationParse(Ogre::String key, Ogre::String value);
+      bool doObjectSpecializationParse(const Kobold::String& key, 
+            const Kobold::String& value);
       /*! Add specific Item definitions to file */
       bool doObjectSpecializationSave(std::ofstream& file);
       
    private:
 
       /*! Set current  ItemType based on a string */
-      void setTypeByString(Kobold::String typeStr);
+      void setTypeByString(const Kobold::String& typeStr);
       /*! \return String representation of current item type */
-      Kobold::String getTypeAsString();
+      const Kobold::String& getTypeAsString() const;
 
       Ogre::Vector2 inventorySize; /**< Total size needed when on inventory */
       Kobold::String relatedInfo; /**< Related Item information */

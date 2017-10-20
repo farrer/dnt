@@ -57,14 +57,15 @@ class Object : public Thing
    protected:
 
       /*! Parse common Object key/values pairs. */
-      bool doSpecificParse(Ogre::String key, Ogre::String value);
+      bool doSpecificParse(const Kobold::String& key, 
+            const Kobold::String& value);
       /*! Save common Object key/values pairs */
       bool doSpecificSave(std::ofstream& file);
 
       /*! Must implement the parse of key/values related to the specialized
        * class (not threated by the Object itself). */
-      virtual bool doObjectSpecializationParse(Ogre::String key, 
-            Ogre::String value) = 0;
+      virtual bool doObjectSpecializationParse(const Kobold::String& key, 
+            const Kobold::String& value) = 0;
 
       /*! Must implement the save of key/values specific related to the
        * specialized class  */

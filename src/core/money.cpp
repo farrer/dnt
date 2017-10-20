@@ -91,7 +91,8 @@ void Money::calculateWeight()
 /***********************************************************************
  *                      doObjectSpecializationParse                    *
  ***********************************************************************/
-bool Money::doObjectSpecializationParse(Ogre::String key, Ogre::String value)
+bool Money::doObjectSpecializationParse(const Kobold::String& key, 
+      const Kobold::String& value)
 {
    /* Nothing specific to load */
    return false;

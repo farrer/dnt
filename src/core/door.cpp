@@ -199,7 +199,8 @@ bool Door::update()
 /**************************************************************************
  *                      doObjectSpecializationParse                       *
  **************************************************************************/
-bool Door::doObjectSpecializationParse(Ogre::String key, Ogre::String value)
+bool Door::doObjectSpecializationParse(const Kobold::String& key, 
+      const Kobold::String& value)
 {
    /* Nothing to do: locked status is defined at each map. */
    return false;

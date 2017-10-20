@@ -77,7 +77,7 @@ class Thing : public Kobold::ListElement
        * \param modelType if will use static or dynamic model
        * \param fullPath if fileName is defined with fullPath (true)
        *                 or inner resources directory (false). */
-      bool load(Kobold::String fileName, 
+      bool load(const Kobold::String& fileName, 
             Goblin::Model3d::Model3dType modelType, bool fullPath=false);
 
       /*! Save the thing specification.
@@ -85,7 +85,7 @@ class Thing : public Kobold::ListElement
        * \param fullPath if true, will use filename as a full path file
        *        definition, if false, will save filename to DNT user's
        *        home as root. */
-      bool save(Kobold::String filename, bool fullPath=false);
+      bool save(const Kobold::String& filename, bool fullPath=false);
  
       /*! Do the per-frame thing's update */
       virtual bool update();
@@ -141,13 +141,13 @@ class Thing : public Kobold::ListElement
       void setScaleNow(const Ogre::Vector3& scale);
 
       /*! \return filename of the file used to load the thing */
-      Kobold::String getFilename();
+      const Kobold::String& getFilename() const;
 
       /*! \return #name */
-      Kobold::String getName();
+      const Kobold::String& getName() const;
 
       /*! \return #description */
-      Kobold::String getDescription();
+      const Kobold::String& getDescription() const;
 
       /*! Set difficulty */
       void setDifficulty(int value);
@@ -192,7 +192,7 @@ class Thing : public Kobold::ListElement
 
       /*! Set conversation file.
        * \param fileName name of the conversation file */
-      void setConversationFile(Kobold::String fileName);
+      void setConversationFile(const Kobold::String& fileName);
 
       /*! \return the conversation filename */
       const Kobold::String& getConversationFile() const 
@@ -240,7 +240,7 @@ class Thing : public Kobold::ListElement
       Kobold::List* getColElements() { return colElements; };
 
       /*! \return Thing's portrait filename, if any */
-      const Kobold::String getPortraitFilename() const { return portraitFile;};
+      const Kobold::String& getPortraitFilename() const { return portraitFile;};
 
       /*! \return current displacement */
       const float getDisplacement() const { return displacement; };
@@ -269,14 +269,14 @@ class Thing : public Kobold::ListElement
       float getTurnAroundInterval();
 
       /*! \return RuleDefinitionValue for given identifier */
-      RuleDefinitionValue* getRuleDefinition(const Kobold::String id);
+      RuleDefinitionValue* getRuleDefinition(const Kobold::String& id);
       /*! \return RuleDefinition Value for given group and identifier */
-      RuleDefinitionValue* getRuleDefinition(const Kobold::String groupId, 
-            const Kobold::String id);
+      RuleDefinitionValue* getRuleDefinition(const Kobold::String& groupId, 
+            const Kobold::String& id);
       /*! \return RuleDefinitionValue or NULL if don't have it */
       RuleDefinitionValue* getRuleDefinition(RuleDefinition* def);
       /*! \return RuleGroupAvailbleInfo for given group identifier */
-      RuleGroupAvailableInfo* getRuleGroup(const Kobold::String id);
+      RuleGroupAvailableInfo* getRuleGroup(const Kobold::String& id);
 
    protected:
 
@@ -288,8 +288,8 @@ class Thing : public Kobold::ListElement
       /*! Parse specifc key/value pair readed from definition's file that
        * doesn't belong to the generic thing specification.
        * \return if treated key/value pair or not. */
-      virtual bool doSpecificParse(Kobold::String key, 
-            Kobold::String value) = 0;
+      virtual bool doSpecificParse(const Kobold::String& key, 
+            const Kobold::String& value) = 0;
       /*! Add any specific specialization information to be 
        * saved at a thing's file
        * \param file ofstream with the file to save

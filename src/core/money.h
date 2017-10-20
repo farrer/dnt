@@ -26,6 +26,7 @@
 namespace DNT
 {
 
+//FIXME: this should be defined by the Module!
 #define DNT_MONEY_OBJECT "pickable/other/money.dcc"
 
 /*! Monetary objecy representation. Money is a distinct type of object, due
@@ -58,7 +59,8 @@ class Money: public Item
 
    protected:
       
-      bool doObjectSpecializationParse(Ogre::String key, Ogre::String value);
+      bool doObjectSpecializationParse(const Kobold::String& key, 
+            const Kobold::String& value);
       bool doObjectSpecializationSave(std::ofstream& file);
 
    private:

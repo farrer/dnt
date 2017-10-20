@@ -46,7 +46,8 @@ class Scenery : public Object
    protected:
 
       /*! Parse scenery specific values from file */
-      bool doObjectSpecializationParse(Ogre::String key, Ogre::String value);
+      bool doObjectSpecializationParse(const Kobold::String& key, 
+            const Kobold::String& value);
       /*! write scenery specific values to file */
       bool doObjectSpecializationSave(std::ofstream& file);
 
