@@ -50,6 +50,21 @@ Character::Character(bool playable)
 
    /* Create its inventory */
    inventory = new Inventory();
+
+   if(playable)
+   {
+      if(Game::getPcs())
+      {
+         Game::getPcs()->insertCharacter(this);
+      }
+   }
+   else
+   {
+      if(Game::getNpcs())
+      {
+         Game::getNpcs()->insertCharacter(this);
+      }
+   }
 }
 
 /***********************************************************************

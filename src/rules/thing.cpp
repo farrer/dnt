@@ -634,7 +634,7 @@ Conversation* Thing::getConversation()
 /**************************************************************************
  *                            hasConversationFile                         *
  **************************************************************************/
-bool Thing::hasConversationFile()
+const bool Thing::hasConversationFile() const
 {
    return !conversationFile.empty();
 }

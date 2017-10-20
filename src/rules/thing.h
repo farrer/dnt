@@ -188,7 +188,7 @@ class Thing : public Kobold::ListElement
       Conversation* getConversation();
 
       /*! \return if the thing has a conversation dialog file */
-      bool hasConversationFile();
+      const bool hasConversationFile() const;
 
       /*! Set conversation file.
        * \param fileName name of the conversation file */

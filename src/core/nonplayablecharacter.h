@@ -46,6 +46,15 @@ class NonPlayableCharacter : public Character
       /*! Destructor */
       ~NonPlayableCharacter();
 
+      /*! Set NPC psycho state */
+      void setPsychoState(PsychoState psycho);
+
+      /*! \return NPC PsychoState */
+      const PsychoState& getPsychoState() const { return psychoState; };
+
+      /*! Interact with an actor */
+      InteractResult interact(Character* actor);
+
    protected:
 
       /*! Parse key/value pairs related to the NonPlayableCharacter */

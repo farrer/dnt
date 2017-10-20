@@ -57,7 +57,10 @@ namespace DNT
             CHARACTER_ANIMATION_NONE
          };
 
-         /*! Constructor */
+         /*! Constructor 
+          * \param playable if it's a playable character or not
+          * \note will insert the Character at its respective Game::pcs or
+          *       Game::npcs list. */
          Character(bool playable);
          /*! Destructor */
          virtual ~Character();

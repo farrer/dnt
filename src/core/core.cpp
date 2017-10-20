@@ -91,11 +91,10 @@ bool Core::doCycleInit(int callCounter, bool& shouldAbort)
       Goblin::Camera::disableTranslations();
 
       /* Load a PC */
+      //FIXME: this should be done for character creation, by module!
       PlayableCharacter* pc = new PlayableCharacter();
       pc->load("humans/padre.npc");
       pc->setAnimation(Character::CHARACTER_ANIMATION_IDLE, true);
-
-      Game::getPcs()->insertCharacter(pc);
 
       progressBar->hide();
 

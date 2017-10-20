@@ -27,6 +27,7 @@
 #include "../core/scenery.h"
 #include "../core/door.h"
 #include "../core/game.h"
+#include "../core/nonplayablecharacter.h"
 #include "../lang/translate.h"
 #include "../collision/collision.h"
 #include "../script/mapscript.h"
@@ -66,6 +67,12 @@ using namespace DNT;
 #define MAP_TOKEN_DOOR_ORIENTATION      "doorOri"
 #define MAP_TOKEN_DOOR_LOCK             "doorLock"
 #define MAP_TOKEN_DOOR_LOCK_DIALOG      "doorLockDialog"
+
+#define MAP_TOKEN_NPC                   "npc"
+#define MAP_TOKEN_NPC_POSITION          "npcPos"
+#define MAP_TOKEN_NPC_ORIENTATION       "npcOri"
+#define MAP_TOKEN_NPC_DIALOG            "npcDialog"
+#define MAP_TOKEN_NPC_PSYCHO_STATE      "npcPsycho"
 
 #define MAP_TOKEN_LIGHT                 "light"
 #define MAP_TOKEN_LIGHT_POS             "lightPos"
@@ -302,6 +309,7 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool editMode)
    Ogre::String key, value;
    LightInfo* lastLight = NULL;
    Thing* lastThing = NULL;
+   NonPlayableCharacter* lastNpc = NULL;
    Wall* lastWall = NULL;
 
    this->filename = mapFileName;
@@ -463,6 +471,58 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool editMode)
          assert(lastWall != NULL);
          lastWall->addFace(value, wX2, wY1, wZ1, wX2, wY2, wZ2,
                1.0f, 0.0f, 0.0f);
+      }
+      /* Define a NPC on map */
+      else if(key == MAP_TOKEN_NPC)
+      {
+         NonPlayableCharacter* npc = new NonPlayableCharacter(value);
+         if(npc)
+         {
+            lastNpc = npc;
+         }
+      }
+      else if(key == MAP_TOKEN_NPC_POSITION)
+      {
+         if(lastNpc)
+         {
+            Ogre::Real pX=0.0f, pY=0.0f, pZ=0.0f;
+            sscanf(value.c_str(), "%f,%f,%f", &pX, &pY, &pZ);
+            lastNpc->setInitialPosition(Ogre::Vector3(pX, pY, pZ));
+         }
+      }
+      else if(key == MAP_TOKEN_NPC_ORIENTATION)
+      {
+         if(lastNpc)
+         {
+            Ogre::Real oY=0.0f;
+            sscanf(value.c_str(), "%f", &oY);
+            lastNpc->setOrientationNow(Ogre::Vector3(0.0f, oY, 0.0f));
+         }
+      }
+      else if(key == MAP_TOKEN_NPC_PSYCHO_STATE)
+      {
+         if(lastNpc)
+         {
+            if(value == "hostile")
+            {
+               lastNpc->setPsychoState(NonPlayableCharacter::PS_HOSTILE);
+            }
+            else if(value == "friendly")
+            {
+               lastNpc->setPsychoState(NonPlayableCharacter::PS_FRIENDLY);
+            }
+            else
+            {
+               lastNpc->setPsychoState(NonPlayableCharacter::PS_NEUTRAL);
+            }
+         }
+      }
+      else if(key == MAP_TOKEN_NPC_DIALOG)
+      {
+         if(lastNpc)
+         {
+            lastNpc->setConversationFile(value);
+         }
       }
       /* Define a thing (object, item, scenery, etc) on the map */
       else if((key == MAP_TOKEN_THING) || (key == MAP_TOKEN_DOOR))
@@ -870,6 +930,35 @@ bool Map::save(Kobold::String filename)
 
       /* now save the static ones */
       curList = staticThings;
+   }
+
+   /* Save all NPCs */
+   NonPlayableCharacter* npc = static_cast<NonPlayableCharacter*>(
+         Game::getNpcs()->getFirst());
+   for(int i=0; i < Game::getNpcs()->getTotal(); i++)
+   {
+      file << MAP_TOKEN_NPC << " = " << npc->getFilename() << std::endl;
+      file << MAP_TOKEN_NPC_POSITION << " = "
+           << npc->getInitialPosition().x << ","
+           << npc->getInitialPosition().y << ","
+           << npc->getInitialPosition().z << std::endl;
+      file << MAP_TOKEN_NPC_ORIENTATION << " = " 
+           << npc->getOrientation() << std::endl;
+      if(npc->getPsychoState() == NonPlayableCharacter::PS_HOSTILE)
+      {
+         file << MAP_TOKEN_NPC_PSYCHO_STATE << " = hostile" << std::endl;
+      }
+      else if(npc->getPsychoState() == NonPlayableCharacter::PS_FRIENDLY)
+      {
+         file << MAP_TOKEN_NPC_PSYCHO_STATE << " = friendly" << std::endl;
+      }
+      if(npc->hasConversationFile())
+      {
+         file << MAP_TOKEN_NPC_DIALOG << " = "
+              << npc->getConversationFile() << std::endl;
+      }
+
+      npc = static_cast<NonPlayableCharacter*>(npc->getNext());
    }
    
    file.close();

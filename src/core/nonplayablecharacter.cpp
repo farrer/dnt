@@ -25,9 +25,10 @@ using namespace DNT;
  *                             Constructor                             *
  ***********************************************************************/
 NonPlayableCharacter::NonPlayableCharacter(const Kobold::String& filename)
-   :Character(false)
+                     :Character(false),
+                      psychoState(PS_NEUTRAL)
 {
-   psychoState = PS_NEUTRAL;
+   load(filename);
 }
 
 /***********************************************************************
@@ -35,6 +36,14 @@ NonPlayableCharacter::NonPlayableCharacter(const Kobold::String& filename)
  ***********************************************************************/
 NonPlayableCharacter::~NonPlayableCharacter()
 {
+}
+
+/***********************************************************************
+ *                            setPsychoState                           *
+ ***********************************************************************/
+void NonPlayableCharacter::setPsychoState(PsychoState psycho)
+{
+   this->psychoState = psycho;
 }
 
 /***********************************************************************
@@ -54,5 +63,18 @@ bool NonPlayableCharacter::doCharacterSpecializationSave(std::ofstream& file)
 {
    //TODO
    return false;
+}
+
+/***********************************************************************
+ *                              interact                               *
+ ***********************************************************************/
+Thing::InteractResult NonPlayableCharacter::interact(Character* actor)
+{
+   if((psychoState != PS_HOSTILE) && (hasConversationFile()))
+   {
+      return Thing::INTERACTION_OPEN_CONVERSATION;
+   }
+
+   return Thing::INTERACTION_DONE;
 }
 
