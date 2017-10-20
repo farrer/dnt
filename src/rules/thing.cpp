@@ -323,11 +323,10 @@ bool Thing::load(const Kobold::String& fileName,
       }
    }
 
-
    if(model != NULL)
    {
       /* Apply our scale */
-      model->setScale(scale, scale, scale);
+      model->setScaleNow(scale, scale, scale);
       /* Define our 'playable character walking bounding box' */
       walkableBounds = model->getItem()->getLocalAabb();
       if(walkableBounds.mHalfSize.x > walkableBounds.mHalfSize.z)

@@ -20,3 +20,4 @@ INTELLIGENCE = 12
 WISDOM = 10
 CHARISMA = 16
 redefineBounds = 1.8
+scale = 0.05

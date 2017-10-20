@@ -1,6 +1,6 @@
 # Created with DNT MapEditor, 0.13
 size = 6x8
-initial = 12.15,21.95
+initial = 8.15,21.95
 name = gettext("Logan's Occupation")
 script = maps/tyrol/house1.as
 musicFile = music/emptycity.ogg
@@ -530,3 +530,8 @@ thingOri = 0,-90,0
 thing = furniture/privada.scn
 thingPos = 0.92,0,0.825
 thingOri = 0,179,0
+npc = humans/padre.npc
+npcPos = 12.15,0.0,21.95
+npcOri = 270.0
+
+

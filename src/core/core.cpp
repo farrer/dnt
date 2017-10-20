@@ -93,7 +93,7 @@ bool Core::doCycleInit(int callCounter, bool& shouldAbort)
       /* Load a PC */
       //FIXME: this should be done for character creation, by module!
       PlayableCharacter* pc = new PlayableCharacter();
-      pc->load("humans/padre.npc");
+      pc->load("humans/chico.npc");
       pc->setAnimation(Character::CHARACTER_ANIMATION_IDLE, true);
 
       progressBar->hide();

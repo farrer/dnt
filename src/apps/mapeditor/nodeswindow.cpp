@@ -26,6 +26,7 @@
 #include "../../map/map.h"
 #include "../../map/light.h"
 #include "../../rules/thing.h"
+#include "../../rules/character.h"
 
 using namespace DNTMapEditor;
 
@@ -62,6 +63,7 @@ void NodesWindow::open()
       sceneryNode = nodesTree->addRootElement("Scenery");
       doorsNode = sceneryNode->addChild("Doors");
       wallsNode = sceneryNode->addChild("Walls");
+      npcsNode = nodesTree->addRootElement("NPCs");
       pickableNode = nodesTree->addRootElement("Pickables");
 
       populateNodes();
@@ -143,6 +145,10 @@ void NodesWindow::addThing(DNT::Thing* thing)
    {
       sceneryNode->addChild(getNodeName(thing->getName()), thing);
    }
+   else if(thing->getThingType() == DNT::Thing::THING_TYPE_CHARACTER)
+   {
+      npcsNode->addChild(getNodeName(thing->getName()), thing);
+   }
 }
 
 /************************************************************************
@@ -157,7 +163,7 @@ void NodesWindow::addLight(DNT::LightInfo* light)
 }
 
 /************************************************************************
- *                            populateEvents                            *
+ *                            populateNodes                             *
  ************************************************************************/
 void NodesWindow::populateNodes()
 {
@@ -184,6 +190,15 @@ void NodesWindow::populateNodes()
    {
       addThing(thing);
       thing = static_cast<DNT::Thing*>(thing->getNext());
+   }
+
+   /* Add our NPCs */
+   DNT::Character* npc = static_cast<DNT::Character*>(
+         DNT::Game::getNpcs()->getFirst());
+   for(int i = 0; i < DNT::Game::getNpcs()->getTotal(); i++)
+   {
+      addThing(npc);
+      npc = static_cast<DNT::Character*>(npc->getNext());
    }
 }
 

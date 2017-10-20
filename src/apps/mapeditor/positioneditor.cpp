@@ -102,7 +102,19 @@ void PositionEditor::selectThing(DNT::Thing* thing)
    {
       setPosition(thing->getPosition());
       showTranslationAxis();
-      showRotationAxis();
+      if((thing->getThingType() != DNT::Thing::THING_TYPE_CHARACTER) && 
+         (thing->getThingType() != DNT::Thing::THING_TYPE_DOOR))
+      {
+         /* Use all axis */
+         showRotationAxis();
+      }
+      else
+      {
+         /* Only use Y rot */
+         xRot.hide();
+         yRot.show();
+         zRot.hide();
+      }
       lightDirAxis.hide();
    }
    else

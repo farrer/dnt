@@ -479,6 +479,7 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool editMode)
          if(npc)
          {
             lastNpc = npc;
+            nodesPerThingMap[npc->getSceneNode()] = npc;
          }
       }
       else if(key == MAP_TOKEN_NPC_POSITION)

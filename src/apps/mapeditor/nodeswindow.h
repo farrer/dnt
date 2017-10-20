@@ -82,6 +82,7 @@ namespace DNTMapEditor
          Farso::TreeView::TreeViewElement* doorsNode; /**< Door subtree */
          Farso::TreeView::TreeViewElement* wallsNode; /**< Wall subtree */
          Farso::TreeView::TreeViewElement* pickableNode; /**< Pickable tree */
+         Farso::TreeView::TreeViewElement* npcsNode; /**< Npcs tree */
 
          std::map<Kobold::String, int> namesCount; /**< Map for same name */
 
