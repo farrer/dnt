@@ -160,9 +160,9 @@ void PositionEditor::selectLight(DNT::LightInfo* light)
  ***********************************************************************/
 bool PositionEditor::selectAxis(Ogre::SceneNode* sceneNode)
 {
-   if(selectedAxis)
+   if(isMoving())
    {
-     /* Axis is currently selected. Must ignore new selections until
+     /* Axis is currently selected and moving. Must ignore new selections until
       * mouse button is released */
      return false;
    }

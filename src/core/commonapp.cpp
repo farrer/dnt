@@ -250,7 +250,13 @@ void CommonApp::updateMouseWorld(bool updateThingUnderMouse)
                            sceneNode);
                   }
 
-                  if(itr->movable->getName().substr(0,4) == "wall")
+                  if(specialSelect(sceneNode))
+                  {
+                     /* We are now editing a position! */
+                     thingUnderCursor = NULL;
+                     break;
+                  }
+                  else if(itr->movable->getName().substr(0,4) == "wall")
                   {
                      /* Pointing at wall. Must end. */
                      //TODO: select wall
@@ -261,12 +267,6 @@ void CommonApp::updateMouseWorld(bool updateThingUnderMouse)
                       * the real intersecton point (probably due to the 
                       * it being a great mesh) */
                   }
-                  else if(specialSelect(sceneNode))
-                  {
-                     /* We are now editing a position! */
-                     thingUnderCursor = NULL;
-                     break;
-                  }
                }
             }
          }
@@ -276,6 +276,7 @@ void CommonApp::updateMouseWorld(bool updateThingUnderMouse)
    {
       /* Mouse is over a widget, so shouldn't have any thing under it */
       thingUnderCursor = NULL;
+      specialSelect(NULL);
    }
 }
 
