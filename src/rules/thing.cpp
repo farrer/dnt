@@ -150,6 +150,8 @@ bool Thing::load(const Kobold::String& fileName,
    Kobold::DefParser defParser;
    Kobold::String key, value, modelName;
    float scale = 1.0f;
+   bool redefineBounds = false;
+   float redefineFactor = 1.0f;
 
    if(!defParser.load(fileName, fullPath))
    {
@@ -221,27 +223,13 @@ bool Thing::load(const Kobold::String& fileName,
           * the one for walking or idle (due to arms opened on pose, and down
           * or idle and walk). */
          assert(model != NULL);
-         float factor=0.0f;
-         sscanf(value.c_str(), "%f", &factor);
-         Ogre::Aabb aabb = model->getItem()->getLocalAabb();
-         if(aabb.mHalfSize.x < aabb.mHalfSize.z)
-         {
-            aabb.mHalfSize.z = aabb.mHalfSize.x * factor;
-         }
-         else
-         {
-            aabb.mHalfSize.x = aabb.mHalfSize.z * factor;
-         }
-         model->getItem()->setLocalAabb(aabb);
+         redefineBounds = true;
+         sscanf(value.c_str(), "%f", &redefineFactor);
       }
       else if(key == THING_KEY_SCALE)
       {
          /* Let's load its scale (to apply later) */
          sscanf(value.c_str(), "%f", &scale);
-         /* Must redefine its bounds applying the scale factor */
-         Ogre::Aabb aabb = model->getItem()->getLocalAabb();
-         aabb.mHalfSize *= scale;
-         model->getItem()->setLocalAabb(aabb);
       }
       else if(key == THING_KEY_STATE)
       {
@@ -326,7 +314,26 @@ bool Thing::load(const Kobold::String& fileName,
    if(model != NULL)
    {
       /* Apply our scale */
-      model->setScaleNow(scale, scale, scale);
+      if(scale != 1.0f)
+      {
+         model->setScaleNow(scale, scale, scale);
+      }
+
+      /* Redefine our bounds, it target to change it */
+      if(redefineBounds)
+      {
+         Ogre::Aabb aabb = model->getItem()->getLocalAabb();
+         if(aabb.mHalfSize.x < aabb.mHalfSize.z)
+         {
+            aabb.mHalfSize.z = aabb.mHalfSize.x * redefineFactor;
+         }
+         else
+         {
+            aabb.mHalfSize.x = aabb.mHalfSize.z * redefineFactor;
+         }
+         model->getItem()->setLocalAabb(aabb);
+      }
+
       /* Define our 'playable character walking bounding box' */
       walkableBounds = model->getItem()->getLocalAabb();
       if(walkableBounds.mHalfSize.x > walkableBounds.mHalfSize.z)
@@ -338,8 +345,10 @@ bool Thing::load(const Kobold::String& fileName,
          walkableBounds.mHalfSize.x = walkableBounds.mHalfSize.z;
       }
       walkableBounds.mCenter = model->getPosition();
+      
       /* And cache our vertices for depth collision check. */
       model->updateCachedMeshInformation();
+      
       /* Uncomment for bounding box debug. XXX: Note that will leak (lazy!). */
       //Ogre::WireAabb* wire = Game::getSceneManager()->createWireAabb();
       //wire->track(model->getItem());
