@@ -344,6 +344,7 @@ bool Thing::load(const Kobold::String& fileName,
       {
          walkableBounds.mHalfSize.x = walkableBounds.mHalfSize.z;
       }
+      walkableBounds.mHalfSize *= scale;
       walkableBounds.mCenter = model->getPosition();
       
       /* And cache our vertices for depth collision check. */
