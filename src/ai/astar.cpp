@@ -247,6 +247,7 @@ void AStar::clear()
    {
       endThread();
    }
+   clearSearch();
    delete patt;
    patt = new PatternAgent(true);
    state = ASTAR_STATE_OTHER;

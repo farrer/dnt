@@ -25,6 +25,8 @@
 
 #include "../ai/astar.h"
 
+#include "../collision/collision.h"
+
 #include <kobold/log.h>
 #include <goblin/camera.h>
 
@@ -268,16 +270,36 @@ bool Character::update()
       float ori = getOrientation();
       if(aStar->getNewPosition(pos, ori, false, 1.0f))
       {
-         setPosition(pos);
-         setTargetOrientation(Ogre::Vector3(getPitch(), ori, getRoll()), 4);
-         if(getCurrentAnimation() != CHARACTER_ANIMATION_WALK)
+         /* Check if we can move to the position (some character could
+          *  moved on our define path */
+         float newHeight = getPosition().y;
+         if(Collision::canOccupy(this, pos, newHeight))
          {
-            setAnimation(CHARACTER_ANIMATION_WALK, true);
+            setPosition(pos);
+            setTargetOrientation(Ogre::Vector3(getPitch(), ori, getRoll()), 4);
+            if(getCurrentAnimation() != CHARACTER_ANIMATION_WALK)
+            {
+               setAnimation(CHARACTER_ANIMATION_WALK, true);
+            }
+            /* Move the camera, if we are the active playable character */
+            if(Game::getPcs()->getActiveCharacter() == this)
+            {
+               Game::updateCameraPosition(this);
+            }
          }
-         /* Move the camera, if we are the active playable character */
-         if(Game::getPcs()->getActiveCharacter() == this)
+         else
          {
-            Game::updateCameraPosition(this);
+            /* Couldn't move, must try to search a new path */
+            if(getCurrentAnimation() == CHARACTER_ANIMATION_WALK)
+            {
+               setAnimation(CHARACTER_ANIMATION_IDLE, true);
+            }
+            float destX=0.0f, destZ=0.0f;
+            aStar->getDestiny(destX, destZ);
+            aStar->clear();
+            aStar->findPath(this, destX, destZ, getWalkInterval(), true);
+            /* Remove our reference to stop update trying to move with it */
+            aStar = NULL;
          }
       }
       else

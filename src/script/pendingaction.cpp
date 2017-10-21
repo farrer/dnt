@@ -86,24 +86,29 @@ bool PendingActionMove::update()
       return true;
    }
 
-   if(state == STATE_SEARCHING)
+   AStar::AStarState astate = pathFind->getState();
+   if(astate == AStar::ASTAR_STATE_FOUND)
    {
-      AStar::AStarState astate = pathFind->getState();
-      if(astate == AStar::ASTAR_STATE_FOUND)
-      {
-         /* Found a path, must start moving */
-         state = STATE_MOVING;
-         actor->setToMoveByFoundPath(pathFind);
-      }
-      else if(astate == AStar::ASTAR_STATE_NOT_FOUND)
-      {
-         /* Couldn't find a path, the pending action is finished, but
-          * with the 'failed' way. */
-         return true;
-      }
+      /* Found a path, must start moving */
+      state = STATE_MOVING;
+      actor->setToMoveByFoundPath(pathFind);
    }
-   else if(state == STATE_MOVING)
+   else if(astate == AStar::ASTAR_STATE_NOT_FOUND)
    {
+      /* Couldn't find a path, the pending action is finished, but
+       * with the 'failed' way. */
+      return true;
+   }
+
+   if(state == STATE_MOVING)
+   {
+      if(astate == AStar::ASTAR_STATE_RUNNING)
+      {
+         /* Probably is doing the search again after a failed move,
+          * must reset our current state. */
+         state = STATE_SEARCHING;
+         return false;
+      }
       /* Check if character done with movement */
       return !actor->isMovingByPath();
    }
