@@ -53,6 +53,20 @@ namespace DNTMapEditor
          /*! disable the widget (and its children) */
          void disable();
 
+         /*! Disable the X axys editor */
+         void disableX();
+         /*! Disable the Y axys editor */
+         void disableY();
+         /*! Disable the Z axys editor */
+         void disableZ();
+
+         /*! Enable the X axys editor */
+         void enableX();
+         /*! Enable the Y axys editor */
+         void enableY();
+         /*! Enable the Z axys editor */
+         void enableZ();
+
          /*! Set current value */
          void setValue(const Ogre::Vector3& val);
          /*! Set current value */

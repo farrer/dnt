@@ -101,6 +101,18 @@ void TransformWindow::updateTexts(DNT::Thing* thing)
    rotation->setValue(thing->getPitch(), 
                       thing->getYaw(),
                       thing->getRoll());
+   if((thing->getThingType() == DNT::Thing::THING_TYPE_CHARACTER) ||
+      (thing->getThingType() == DNT::Thing::THING_TYPE_DOOR))
+   {
+      /* Doors and characters shouldn't have X or Z rotations */
+      rotation->disableX();
+      rotation->disableZ();
+   }
+   else
+   {
+      rotation->enableX();
+      rotation->enableZ();
+   }
    scale->setValue(thing->getScale());
 }
 
