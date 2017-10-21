@@ -244,7 +244,6 @@ bool PlayableCharacter::checkMouseInputForMovement(
       {
          setPosition(pos);
          setTargetOrientation(ori, 4);
-         Game::updateCameraPosition(this);
          moved = true;
          return true;
       }
@@ -297,7 +296,6 @@ bool PlayableCharacter::tryWalk(float varX, float varZ)
    {
       curPos.y = newHeight;
       setPosition(curPos);
-      Game::updateCameraPosition(this);
    }
 
    return moved;
@@ -422,6 +420,11 @@ bool PlayableCharacter::checkInputForMovement(const Ogre::Vector3& floorMouse)
    if(triedToMove && DialogWidget::isOpened())
    {
       DialogWidget::close();
+   }
+
+   if(moved)
+   {
+      flushAfterMove();
    }
 
    return triedToMove;

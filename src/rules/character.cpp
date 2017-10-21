@@ -281,11 +281,7 @@ bool Character::update()
             {
                setAnimation(CHARACTER_ANIMATION_WALK, true);
             }
-            /* Move the camera, if we are the active playable character */
-            if(Game::getPcs()->getActiveCharacter() == this)
-            {
-               Game::updateCameraPosition(this);
-            }
+            flushAfterMove();
          }
          else
          {
@@ -317,6 +313,20 @@ bool Character::update()
    effects.doStep();
 
    return res;
+}
+
+/*********************************************************************
+ *                          flushAfterMove                           *
+ *********************************************************************/
+void Character::flushAfterMove()
+{
+   Collision::removeElement(this);
+   Collision::addElement(this);
+   /* Move the camera, if we are the active playable character */
+   if(Game::getPcs()->getActiveCharacter() == this)
+   {
+      Game::updateCameraPosition(this);
+   }
 }
 
 /***************************************************************************

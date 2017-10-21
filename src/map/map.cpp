@@ -498,6 +498,9 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool editMode)
             Ogre::Real oY=0.0f;
             sscanf(value.c_str(), "%f", &oY);
             lastNpc->setOrientationNow(Ogre::Vector3(0.0f, oY, 0.0f));
+            /* Orientation is the last 'world-location' element of a npc,
+             * we can insert it for collision now. */
+            Collision::addElement(lastNpc);
          }
       }
       else if(key == MAP_TOKEN_NPC_PSYCHO_STATE)

@@ -105,7 +105,12 @@ bool Core::doCycleInit(int callCounter, bool& shouldAbort)
          shouldAbort = true;
          return true;
       }
+      //FIXME: the update by camera and the character insertion should be
+      //at each map load.
+      Collision::addElement(pc);
       Game::updateCameraPosition(pc);
+
+      /* Some randomize seed */
       srand(SDL_GetTicks() + (int)(1 + 1000 * (rand() / (RAND_MAX + 1.0))));
 
       return true;

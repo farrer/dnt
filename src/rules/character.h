@@ -158,6 +158,10 @@ namespace DNT
          virtual bool doCharacterSpecializationParse(const Kobold::String& key, 
                const Kobold::String& value) = 0;
 
+         /*! This function should be called after a successfull character move,
+          * to update its collision representation */
+         void flushAfterMove();
+
          Kobold::Mutex mutex; /**< Mutex for access control */
 
       private:

@@ -145,32 +145,6 @@ bool Collision::canBeAt(const Ogre::Vector3& min, const Ogre::Vector3& max,
 
    rwLock->unlockForRead();
 
-   /* Check collision with Characters */
-   for(int l = 0; l < 2; l++)
-   {
-      CharacterList* list;
-      if(l == 1)
-      {
-         list = Game::getPcs();
-      }
-      else
-      {
-         list = Game::getNpcs();
-      }
-      Thing* ch = static_cast<Thing*>(list->getFirst());
-      for(int i = 0; i < list->getTotal(); i++)
-      {
-         Ogre::Aabb aabb = ch->getWalkableBounds();
-         Ogre::AxisAlignedBox thingBox(aabb.mCenter - aabb.mHalfSize,
-               aabb.mCenter + aabb.mHalfSize);
-         if((ch != actor) && (actorBox.intersects(thingBox)))
-         {
-            return false;
-         }
-         ch = static_cast<Thing*>(ch->getNext());
-      }
-   }
-
    /* No collisions with any square */
    return true;
 }
