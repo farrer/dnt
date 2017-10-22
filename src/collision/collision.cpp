@@ -263,7 +263,12 @@ bool Collision::isAtSight(Thing* actor, Thing* target, bool reverseCheck)
 {
    assert(actor != NULL);
    assert(target != NULL);
-   assert(actor != target);
+   
+   if(actor == target)
+   {
+      /* One is always visible to itself */
+      return true;
+   }
 
    /* Define positions and direction */
    Ogre::Aabb aabb = actor->getWalkableBounds();

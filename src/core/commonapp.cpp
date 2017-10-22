@@ -248,6 +248,11 @@ void CommonApp::updateMouseWorld(bool updateThingUnderMouse)
                      /* Get the thing related to the sceneNode, if any */
                      thingUnderCursor = DNT::Game::getCurrentMap()->getThing(
                            sceneNode);
+                     if(thingUnderCursor == NULL)
+                     {
+                        thingUnderCursor = DNT::Game::getPcs()->getCharacter(
+                              sceneNode);
+                     }
                   }
 
                   if(specialSelect(sceneNode))
