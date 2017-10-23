@@ -31,7 +31,7 @@
 using namespace DNT;
 
 /*! Delay before defining if is an A* or continous mouse move */
-#define WALK_ACTION_DELAY   250
+#define WALK_ACTION_DELAY   150
 /*! How faster run is than walk */
 #define RUN_MULTIPLIER 2.8f 
 /*! Distance to toggle walk/run in constinous mouse move */
