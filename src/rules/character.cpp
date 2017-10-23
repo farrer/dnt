@@ -271,9 +271,13 @@ bool Character::update()
       if(aStar->getNewPosition(pos, ori, false, 1.0f))
       {
          /* Check if we can move to the position (some character could
-          *  moved on our define path */
+          *  moved on our define path. Note that on 'pure-angle' change
+          *  (where we only change the character orientation and kept
+          *   the position, there's no need for a collision check, avoiding
+          *   some awfull 'stuck' situations. */
          float newHeight = getPosition().y;
-         if(Collision::canOccupy(this, pos, newHeight))
+         if((pos == getPosition()) || 
+            (Collision::canOccupy(this, pos, newHeight)))
          {
             setPosition(pos);
             setTargetOrientation(Ogre::Vector3(getPitch(), ori, getRoll()), 4);

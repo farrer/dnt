@@ -270,7 +270,7 @@ bool PlayableCharacter::tryWalk(float varX, float varZ)
    
    /* Check if can walk to the new position */
    if(Collision::canMove(this, Ogre::Vector3(varX, 0.0f, varZ), 0.0f, 
-            newHeight))
+            newHeight, false))
    {
       moved = true;
       curPos.x += varX;
@@ -279,14 +279,14 @@ bool PlayableCharacter::tryWalk(float varX, float varZ)
    /* If can't move, let's try with only a single component */
    else if((Ogre::Math::Abs(varX) >= 0.1f) && 
            (Collision::canMove(this, Ogre::Vector3(varX, 0.0f, 0.0f), 
-                               0.0f, newHeight)))
+                               0.0f, newHeight, false)))
    {
       moved = true;
       curPos.x += varX;
    }
    else if((Ogre::Math::Abs(varZ) >= 0.1f) && 
            (Collision::canMove(this, Ogre::Vector3(0.0f, 0.0f, varZ), 
-                               0.0f, newHeight)))
+                               0.0f, newHeight, false)))
    {
       moved = true;
       curPos.z += varZ;

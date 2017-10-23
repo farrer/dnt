@@ -148,10 +148,11 @@ namespace DNT
           * \param varOri delta to move on its orientation
           * \param newHeight -> will receive the new height for the actor be 
           *                     at the desired position.
+          * \param aStarCall -> if was called by A* search or not.
           * \return true if can move, false if will collide with something
           *         else and can't */
          static bool canMove(Thing* actor, const Ogre::Vector3& varPos,
-               const float varOri, float& newHeight);
+               const float varOri, float& newHeight, bool aStarCall);
 
          /*! Check if a Thing can move from a defined position to another
           * one. This check will be made by using rays from and to 
@@ -160,9 +161,10 @@ namespace DNT
           * \param actor Thing to check its movement
           * \param origin origin of the movement
           * \param destiny destiny of the movement 
+          * \param aStarCall -> if was called by A* search or not.
           * \return true if can move, false if can't. */
          static bool canMove(Thing* actor, const Ogre::Vector3& origin,
-                             const Ogre::Vector3& destiny);
+               const Ogre::Vector3& destiny, bool aStarCall);
 
          /*! Check if a thing can occupy an specific position on the map.
           * \param actor to check if can occupy

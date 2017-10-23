@@ -446,7 +446,7 @@ void AStar::doCycle()
          * destiny. */
         if( (curDist <= maxDist) &&  
             (Collision::canMove(curActor, Ogre::Vector3(posX, 0, posZ), 
-                                Ogre::Vector3(node->x, 0, node->z))) )
+                                Ogre::Vector3(node->x, 0, node->z), true)) )
         {
            /* New Gone is the current gone + distance to this one */
            newg = node->gone + 

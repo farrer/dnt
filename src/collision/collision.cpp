@@ -24,6 +24,8 @@
 #include "../core/game.h"
 #include "../map/map.h"
 
+#define ASTAR_CALL_FACTOR 1.3f
+
 #include <assert.h>
 
 using namespace DNT;
@@ -84,13 +86,19 @@ void Collision::finish()
  *                                canMove                              *
  ***********************************************************************/
 bool Collision::canMove(Thing* actor, const Ogre::Vector3& varPos,
-      const float varOri, float& newHeight)
+      const float varOri, float& newHeight, bool aStarCall)
 {
    assert(actor != NULL);
 
    /* Apply position change */
    Ogre::Aabb walkableAabb = actor->getWalkableBounds();
    walkableAabb.mCenter = actor->getPosition() + varPos;
+
+   if(aStarCall)
+   {
+      /* When searching with A*, we use a bit larger bounding box */
+      walkableAabb.mHalfSize *= ASTAR_CALL_FACTOR;
+   }
 
    return canBeAt(walkableAabb.getMinimum(), walkableAabb.getMaximum(), actor,
          newHeight);
@@ -153,12 +161,17 @@ bool Collision::canBeAt(const Ogre::Vector3& min, const Ogre::Vector3& max,
  *                                canMove                              *
  ***********************************************************************/
 bool Collision::canMove(Thing* actor, const Ogre::Vector3& origin,
-      const Ogre::Vector3& destiny)
+      const Ogre::Vector3& destiny, bool aStarCall)
 {
    assert(actor != NULL);
 
    float dist = (destiny - origin).length();
    Ogre::Aabb aabb = actor->getWalkableBounds();
+   if(aStarCall)
+   {
+      /* When searching with A*, we use a bit larger bounding box */
+      aabb.mHalfSize *= ASTAR_CALL_FACTOR;
+   }
 
    /* Do a ray intersection between positions.
     * It'll use two rays, each from origin character's top to destiny floor,
