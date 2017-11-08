@@ -22,10 +22,25 @@
 #include "../rules/thing.h"
 
 #include <assert.h>
-
 using namespace DNT;
+
 /***********************************************************************
  *                            Constructor                              *
+ ***********************************************************************/
+Square::Square()
+       :walkable(false)
+{
+}
+
+/***********************************************************************
+ *                             Destructor                              *
+ ***********************************************************************/
+Square::~Square()
+{
+}
+
+/***********************************************************************
+ *                           setBoundingBox                            *
  ***********************************************************************/
 void Square::setBoundingBox(const Ogre::Vector3& min,
       const Ogre::Vector3& max)
@@ -60,6 +75,11 @@ std::pair<bool, Element*> Square::hasCollisions(
    if(!actorBox.intersects(bounds))
    {
       return std::pair<bool, Element*>(false, NULL);
+   }
+
+   if(!walkable)
+   {
+      return std::pair<bool, Element*>(true, NULL);
    }
 
    /* Check each element for collision */
@@ -197,5 +217,13 @@ bool Square::hasCollisions(const Ogre::Ray& ray, const float dist,
    }
 
    return false;
+}
+
+/***********************************************************************
+ *                              setWalkable                            *
+ ***********************************************************************/
+void Square::setWalkable(bool value)
+{
+   this->walkable = value;
 }
 

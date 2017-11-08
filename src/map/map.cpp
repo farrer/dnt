@@ -395,6 +395,7 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool editMode)
                          (squareX + 1) * MAP_SQUARE_SIZE, 0.0f,
                          (squareZ + 1) * MAP_SQUARE_SIZE,
                          0.0f, 1.0f, 0.0f);
+         Collision::setSquareWalkable(squareX, squareZ, true);
       }
       /* Wall definition */
       else if(key == MAP_TOKEN_WALL)

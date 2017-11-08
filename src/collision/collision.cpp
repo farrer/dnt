@@ -447,6 +447,18 @@ Square* Collision::getRelativeSquare(float x, float z)
 }
 
 /***********************************************************************
+ *                          setSquareWalkable                          *
+ ***********************************************************************/
+void Collision::setSquareWalkable(int x, int z, bool value)
+{
+   Square* square = getSquare(x, z);
+   if(square)
+   {
+      square->setWalkable(value);
+   }
+}
+
+/***********************************************************************
  *                          static attributes                          *
  ***********************************************************************/
 Square** Collision::grid = NULL;

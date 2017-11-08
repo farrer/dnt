@@ -64,6 +64,11 @@ namespace DNT
    class Square
    {
       public:
+         /*! Constructor */
+         Square();
+         /*! Destructor */
+         ~Square();
+
          /*! Set square bounding box, to early intersect checks. */
          void setBoundingBox(const Ogre::Vector3& min,
                const Ogre::Vector3& max);
@@ -115,9 +120,20 @@ namespace DNT
          /*! Remove a collision element from the square */
          void remove(Element* element);
 
+         /*! Set if the square is walkable or not (default: false).
+          * A map is defined as a grid of nXm squares, but some could
+          * be unused, allowing maps of distinct shapes. This is useful
+          * for indoor maps, like houses do not look always as rectangles. 
+          * \param value if walkable or not */
+         void setWalkable(bool value);
+
+         /*! \return if the square is walkable or not */
+         const bool getWalkable() const { return walkable; };
+
       private:
          Kobold::List elements; /**< Current CollisionElements */
          Ogre::AxisAlignedBox bounds; /**< Square bounding box */
+         bool walkable; /**< If could walk on this square or not */
 
    };
 
@@ -196,6 +212,14 @@ namespace DNT
 
          /*! Remove all elements related to a Thing from the collisions */
          static void removeElement(Thing* thing);
+
+         /*! Set if a collision square is walkable or not. If not, it will
+          * simplify the collision check, as won't need to verify with each
+          * of its elements 
+          * \param x X coordinate
+          * \param z Z coordinate
+          * \param value if walkable or not */
+         static void setSquareWalkable(int x, int z, bool value);
 
       private:
 
