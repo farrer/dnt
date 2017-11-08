@@ -172,7 +172,8 @@ namespace DNT
 
          /*! Check if a Thing can move from a defined position to another
           * one. This check will be made by using rays from and to 
-          * origin/destiny, and usually are made for A* in-between targets 
+          * origin/destiny, and a occupy bound check at the destiny.
+          * This check is usually made for A* in-between targets 
           * checks (for the targets themselves, a canOccupy check is made) 
           * \param actor Thing to check its movement
           * \param origin origin of the movement
