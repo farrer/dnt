@@ -261,7 +261,7 @@ class Thing : public Kobold::ListElement
       /*! \return initial position on map */
       const Ogre::Vector3& getInitialPosition() const { return initialPos; };
       /*! Set initial position on map */
-      void setInitialPosition(Ogre::Vector3 pos);
+      virtual void setInitialPosition(Ogre::Vector3 pos);
 
       /*! \return distance can move each frame when walking */
       float getWalkInterval(); 

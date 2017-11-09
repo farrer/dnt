@@ -135,6 +135,9 @@ namespace DNT
          /*! Update character */
          virtual bool update();
 
+         /*! Set initial character position */
+         virtual void setInitialPosition(Ogre::Vector3 pos);
+
       protected:
          /*! \return default character's animation names */
          virtual Kobold::String* getAnimationList();
@@ -157,7 +160,7 @@ namespace DNT
           * specialization). */
          virtual bool doCharacterSpecializationParse(const Kobold::String& key, 
                const Kobold::String& value) = 0;
-
+      
          /*! This function should be called after a successfull character move,
           * to update its collision representation */
          void flushAfterMove();

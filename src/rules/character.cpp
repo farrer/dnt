@@ -249,6 +249,15 @@ void Character::instantKill()
 }
 
 /*********************************************************************
+ *                          setInitialPosition                       *
+ *********************************************************************/
+void Character::setInitialPosition(Ogre::Vector3 pos)
+{
+   Thing::setInitialPosition(pos);
+   flushAfterMove();
+}
+
+/*********************************************************************
  *                       setMoveByFoundPath                          *
  *********************************************************************/
 void Character::setToMoveByFoundPath(AStar* aStar)
