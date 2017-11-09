@@ -276,7 +276,7 @@ bool Character::update()
           *   the position, there's no need for a collision check, avoiding
           *   some awfull 'stuck' situations. */
          float newHeight = getPosition().y;
-         if((pos == getPosition()) || 
+         if((pos == getPosition()) ||
             (Collision::canOccupy(this, pos, newHeight)))
          {
             setPosition(pos);

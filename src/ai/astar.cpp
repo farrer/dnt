@@ -26,16 +26,16 @@
 #include "../map/map.h"
 #include <kobold/log.h>
 
-#define SEARCH_LIMIT   5000  /**< Max Nodes the AStar will search */
-#define SEARCH_INTERVAL  40  /**< Interval of Nodes when AStar will sleep */
+#define SEARCH_LIMIT  10000  /**< Max Nodes the AStar will search */
+#define SEARCH_INTERVAL 100  /**< Interval of Nodes when AStar will sleep */
 #define PC_SEARCH_FACTOR  4  /**< Playable Character factor to searchinterval */
-#define MIN_CALL        200  /**< Minimun time interval to call search again */
+#define MIN_CALL        200  /**< Minimum time interval to call search again */
 
 #define STEP_FACTOR        20  /**< Factor to step search */
-#define STEP_FACTOR_INDOOR 10  /**< Indor Factor to step search */
-#define ASTAR_MIN_DIST     0.25f /**< Minimun distance from character to start 
+#define STEP_FACTOR_INDOOR  4  /**< Indor Factor to step search */
+#define ASTAR_MIN_DIST     0.25f /**< Minimum distance from character to start 
                                       a valid search */
-#define MAX_DIST_FACTOR    10  /**< Only visit nodes at max X times 
+#define MAX_DIST_FACTOR    200  /**< Only visit nodes at max X times 
                                     distant to the goal than the current one */
 
 using namespace DNT;

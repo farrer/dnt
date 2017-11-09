@@ -334,5 +334,5 @@ CharacterList* Game::npcs = NULL;
 CharacterList* Game::pcs = NULL;
 bool Game::fightMode = false;
 ScriptManager* Game::scriptManager = NULL;
-bool Game::pcMoveEnable = false;
+bool Game::pcMoveEnable = true;
 

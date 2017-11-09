@@ -24,7 +24,7 @@
 #include "../core/game.h"
 #include "../map/map.h"
 
-#define ASTAR_CALL_FACTOR 1.3f
+#define ASTAR_CALL_FACTOR 1.02f
 
 #include <assert.h>
 
@@ -208,11 +208,23 @@ bool Collision::canMove(Thing* actor, const Ogre::Vector3& origin,
       }
    }
 
-   rwLock->unlockForRead();
-
-   /* Do a bounding box check at the final position */
+   /* Do a bounding box check at final and middle positions */
    float newHeight = 0.0f;
-   return canOccupy(actor, destiny, newHeight);
+   aabb.mCenter = destiny;
+   if(!canBeAt(aabb.getMinimum(), aabb.getMaximum(), actor, newHeight))
+   {
+      rwLock->unlockForRead();
+      return false;
+   }
+   aabb.mCenter = (destiny - origin) / 2.0f + origin;
+   if(!canBeAt(aabb.getMinimum(), aabb.getMaximum(), actor, newHeight))
+   {
+      rwLock->unlockForRead();
+      return false;
+   }
+   
+   rwLock->unlockForRead();
+   return true;
 }
 
 /***********************************************************************
@@ -366,7 +378,15 @@ void Collision::addElement(const Ogre::Vector3& min, const Ogre::Vector3& max)
 void Collision::addElement(Thing* thing)
 {
    assert(thing != NULL);
-   Ogre::Aabb aabb = thing->getWorldAabbUpdated();
+   Ogre::Aabb aabb;
+   if(thing->getThingType() != Thing::THING_TYPE_CHARACTER)
+   {
+      aabb = thing->getWorldAabbUpdated();
+   }
+   else
+   {
+      aabb = thing->getWalkableBounds();
+   }
    addElement(aabb.getMinimum(), aabb.getMaximum(), thing);
 }
 
