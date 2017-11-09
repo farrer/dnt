@@ -228,9 +228,6 @@ namespace DNT
           * \param dude -> pointer to the new active Character */
          void setActiveCharacter(Character* dude);
 
-         /*! Treat Character's general scripts */
-         void treatGeneralScripts();
-
          /*! Verify if a Character is on the list
           * \param ch -> pointer to the Character
           * \return -> true if the Character is on the list */
