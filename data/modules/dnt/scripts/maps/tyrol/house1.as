@@ -8,10 +8,10 @@ class House1Ctrl : MapController
 
    void onLoad()
    {
-      playSound(0, 0, 0, "other/battleMode-yourTurn.ogg");
-      sleep(1);
+      disablePcMoves();
       Character@ c = getCharacter("humans/padre.npc");
       c.moveTo(4.6, 20.95);
+      enablePcMoves();
    }
 
    void step()

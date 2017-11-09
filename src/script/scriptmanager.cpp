@@ -85,6 +85,14 @@ ScriptManager::ScriptManager()
          "void playSound(float x, float y, float z, string file)",
          asMETHOD(ScriptManager, playSound), asCALL_THISCALL_ASGLOBAL, this);
    assert(r >= 0);
+   r= asEngine->RegisterGlobalFunction(
+        "void disablePcMoves()", asMETHOD(ScriptManager, disablePcMoves), 
+        asCALL_THISCALL_ASGLOBAL, this);
+   assert(r >= 0);
+   r= asEngine->RegisterGlobalFunction(
+        "void enablePcMoves()", asMETHOD(ScriptManager, enablePcMoves), 
+        asCALL_THISCALL_ASGLOBAL, this);
+   assert(r >= 0);
    r = asEngine->RegisterGlobalFunction("void sleep(int seconds)",
          asMETHOD(ScriptManager, sleep), asCALL_THISCALL_ASGLOBAL, this);
    assert(r >= 0);
@@ -792,6 +800,22 @@ void ScriptManager::suspendByPendingAction(PendingAction* pendingAction)
    RunningInfo* info = runningInfo.top();
    info->instance->addSuspendedContext(info->context, pendingAction);
    info->context->Suspend();
+}
+
+/**************************************************************************
+ *                             disablePcMoves                             *
+ **************************************************************************/
+void ScriptManager::disablePcMoves()
+{
+   Game::disablePcMoves();
+}
+
+/**************************************************************************
+ *                             enablePcMoves                              *
+ **************************************************************************/
+void ScriptManager::enablePcMoves()
+{
+   Game::enablePcMoves();
 }
 
 /**************************************************************************

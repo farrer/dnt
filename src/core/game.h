@@ -94,6 +94,13 @@ namespace DNT
           * the main PlayableCharacter). */
          static void updateCameraPosition(Character* pc);
 
+         /*! Enable playable character movement */
+         static void enablePcMoves();
+         /*! Disable playable character movement */
+         static void disablePcMoves();
+         /*! \return if playable character movement is enabled or not */
+         static bool canPcMove();
+
       private:
          /*! Get a character from the lists of #pcs and #npcs */
          static Character* getCharacter(Kobold::String filename, 
@@ -113,6 +120,8 @@ namespace DNT
       
          /*! Manager of all DNT scripts */
          static ScriptManager* scriptManager;
+         
+         static bool pcMoveEnable; /**< If player movement is enabled or not */
 
    };
 

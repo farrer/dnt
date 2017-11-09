@@ -182,6 +182,10 @@ namespace DNT
 
          /* Global Functions */
 
+         /*! Disable playable character movement */
+         void disablePcMoves();
+         /*! Enable playable character movement */
+         void enablePcMoves();
          /*! Play a sound */
          void playSound(float x, float y, float z, Kobold::String file);
          /*! Sleep for at least some seconds */

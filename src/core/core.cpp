@@ -180,7 +180,7 @@ void Core::doAfterRender()
       updateMouseWorld(true);
 
       /* Check current PC movement input */
-      if(curPc->checkInputForMovement(floorMouse))
+      if((Game::canPcMove()) && (curPc->checkInputForMovement(floorMouse)))
       {
          /* Must disable thngUnderCursor if trying to move */
          thingUnderCursor = NULL;

@@ -301,6 +301,29 @@ Object* Game::createObject(Kobold::String filename, bool forceDynamic)
    return obj;
 }
 
+/************************************************************************
+ *                               enablePcMove                           *
+ ************************************************************************/
+void Game::enablePcMoves()
+{
+   pcMoveEnable = true;
+}
+
+/************************************************************************
+ *                              disablePcMove                           *
+ ************************************************************************/
+void Game::disablePcMoves()
+{
+   pcMoveEnable = false;
+}
+
+/************************************************************************
+ *                                canPcMove                             *
+ ************************************************************************/
+bool Game::canPcMove()
+{
+   return pcMoveEnable;
+}
 
 /************************************************************************
  *                             static members                           *
@@ -311,4 +334,5 @@ CharacterList* Game::npcs = NULL;
 CharacterList* Game::pcs = NULL;
 bool Game::fightMode = false;
 ScriptManager* Game::scriptManager = NULL;
+bool Game::pcMoveEnable = false;
 
