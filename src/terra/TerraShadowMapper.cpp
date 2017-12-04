@@ -1,5 +1,5 @@
 
-#include "terra/TerraShadowMapper.h"
+#include "TerraShadowMapper.h"
 
 #include <OGRE/OgreTextureManager.h>
 #include <OGRE/OgreHardwarePixelBuffer.h>

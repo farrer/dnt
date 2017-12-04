@@ -183,7 +183,7 @@ bool DialogWidget::checkEvents()
       {
          /* Should only check keyboard if the window is the active one. */
          Farso::Window* window = static_cast<Farso::Window*>(widget);
-         checkKeyboard = Farso::Controller::getActiveWindow() == window;
+         checkKeyboard = Farso::Controller::getActiveWidget() == window;
       }
    }
    else

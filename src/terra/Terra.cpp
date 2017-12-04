@@ -1,6 +1,6 @@
 
-#include "terra/Terra.h"
-#include "terra/TerraShadowMapper.h"
+#include "Terra.h"
+#include "TerraShadowMapper.h"
 
 #include <OGRE/OgreImage.h>
 #include <OGRE/OgreTextureManager.h>

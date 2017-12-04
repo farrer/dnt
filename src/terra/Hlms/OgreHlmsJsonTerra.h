@@ -30,8 +30,8 @@ THE SOFTWARE.
 #ifndef _OgreHlmsJsonTerra_H_
 #define _OgreHlmsJsonTerra_H_
 
-#include "terra/Hlms/OgreHlmsTerraPrerequisites.h"
-#include "terra/Hlms/OgreHlmsTerraDatablock.h"
+#include "OgreHlmsTerraPrerequisites.h"
+#include "OgreHlmsTerraDatablock.h"
 #include <OGRE/OgreHlmsJson.h>
 #include <OGRE/OgreHeaderPrefix.h>
 

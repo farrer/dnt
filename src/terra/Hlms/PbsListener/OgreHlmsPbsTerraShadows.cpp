@@ -26,8 +26,8 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#include "terra/Hlms/PbsListener/OgreHlmsPbsTerraShadows.h"
-#include "terra/Terra.h"
+#include "OgreHlmsPbsTerraShadows.h"
+#include "../../Terra.h"
 
 #include <OGRE/CommandBuffer/OgreCommandBuffer.h>
 #include <OGRE/CommandBuffer/OgreCbTexture.h>

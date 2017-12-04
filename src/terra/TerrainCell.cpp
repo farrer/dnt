@@ -1,6 +1,6 @@
 
-#include "terra/TerrainCell.h"
-#include "terra/Terra.h"
+#include "TerrainCell.h"
+#include "Terra.h"
 
 #include <OGRE/Vao/OgreVaoManager.h>
 #include <OGRE/Vao/OgreVertexArrayObject.h>

@@ -6,7 +6,7 @@
 #include <OGRE/OgreMovableObject.h>
 #include <OGRE/OgreShaderParams.h>
 
-#include "terra/TerrainCell.h"
+#include "TerrainCell.h"
 
 namespace Ogre
 {

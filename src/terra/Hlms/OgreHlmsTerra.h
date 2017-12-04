@@ -28,7 +28,7 @@ THE SOFTWARE.
 #ifndef _OgreHlmsTerra_H_
 #define _OgreHlmsTerra_H_
 
-#include "terra/Hlms/OgreHlmsTerraPrerequisites.h"
+#include "OgreHlmsTerraPrerequisites.h"
 #include <OGRE/Hlms/Common/OgreHlmsBufferManager.h>
 #include <OGRE/OgreConstBufferPool.h>
 #include <OGRE/OgreMatrix4.h>

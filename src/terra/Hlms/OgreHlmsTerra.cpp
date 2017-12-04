@@ -26,13 +26,13 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#include "terra/Hlms/OgreHlmsTerra.h"
-#include "terra/Hlms/OgreHlmsTerraDatablock.h"
+#include "OgreHlmsTerra.h"
+#include "OgreHlmsTerraDatablock.h"
 #include <OGRE/OgreHlmsManager.h>
 #include <OGRE/OgreHlmsListener.h>
 #include <OGRE/OgreLwString.h>
 
-#include "terra/Hlms/OgreHlmsJsonTerra.h"
+#include "OgreHlmsJsonTerra.h"
 
 #include <OGRE/OgreViewport.h>
 #include <OGRE/OgreRenderTarget.h>
@@ -50,7 +50,7 @@ THE SOFTWARE.
 #include <OGRE/CommandBuffer/OgreCbTexture.h>
 #include <OGRE/CommandBuffer/OgreCbShaderBuffer.h>
 
-#include "terra/Terra.h"
+#include "../Terra.h"
 
 namespace Ogre
 {
@@ -588,7 +588,7 @@ namespace Ogre
 
         mapSize = alignToNextMultiple( mapSize, 16 );
 
-        if( shadowNode )
+        if( numShadowMapLights > 0 )
         {
             //Six variables * 4 (padded vec3) * 4 (bytes) * numLights
             mapSize += ( 6 * 4 * 4 ) * numLights;
@@ -891,7 +891,8 @@ namespace Ogre
 
         if( forwardPlus )
         {
-            forwardPlus->fillConstBufferData( renderTarget, passBufferPtr );
+			forwardPlus->fillConstBufferData( sceneManager->getCurrentViewport(), renderTarget,
+											  mShaderSyntax, passBufferPtr );
             passBufferPtr += forwardPlus->getConstBufferSize() >> 2;
         }
 

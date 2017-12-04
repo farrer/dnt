@@ -28,7 +28,7 @@ THE SOFTWARE.
 #ifndef _OgreHlmsTerraDatablock_H_
 #define _OgreHlmsTerraDatablock_H_
 
-#include "terra/Hlms/OgreHlmsTerraPrerequisites.h"
+#include "OgreHlmsTerraPrerequisites.h"
 #include <OGRE/OgreHlmsDatablock.h>
 #include <OGRE/OgreHlmsTextureManager.h>
 #include <OGRE/OgreConstBufferPool.h>

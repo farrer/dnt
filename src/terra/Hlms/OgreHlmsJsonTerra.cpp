@@ -30,7 +30,7 @@ THE SOFTWARE.
 
 #if !OGRE_NO_JSON
 
-#include "terra/Hlms/OgreHlmsJsonTerra.h"
+#include "OgreHlmsJsonTerra.h"
 #include <OGRE/OgreHlmsManager.h>
 #include <OGRE/OgreHlmsTextureManager.h>
 #include <OGRE/OgreTextureManager.h>
