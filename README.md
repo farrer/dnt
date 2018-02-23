@@ -5,7 +5,7 @@ This is the Ogre3d port/rewrite of former DNT (http://dnt.dnteam.org).
 
 ## Dependencies
 
- * Ogre3D 2.1 [http://www.ogre3d.org/]
+ * Ogre3D 2.2 [http://www.ogre3d.org/]
  * SDL2 [https://libsdl.org/download-2.0.php]
  * FreeType 2.x [https://www.freetype.org/]
  * OpenAL [http://kcat.strangesoft.net/openal.html]

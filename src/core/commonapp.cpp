@@ -19,6 +19,7 @@
 */
 
 #include <farso/controller.h>
+#include <farso/ogre3d/ogrejunction.h>
 #include <farso/font.h>
 
 #include "commonapp.h"
@@ -87,15 +88,17 @@ bool CommonApp::doCommonCycleInit(int callCounter, bool& shouldAbort)
             compositorManager->removeWorkspace(ogreWorkspace);
          }
          ogreWorkspace = compositorManager->addWorkspace(ogreSceneManager,
-               ogreWindow, Goblin::Camera::getOgreCamera(), 
+               ogreWindow->getTexture(), Goblin::Camera::getOgreCamera(), 
                "DNTIndoorWorkspace", true);
 
          getSceneManager()->setForward3D(true, 4, 4, 4, 32, 3, 2000);
 
          /* Init Farso */
+         Farso::OgreJunctionInfo info(getSceneManager(), 
+               ogreRoot->getRenderSystem());
          Farso::Controller::init(Farso::RENDERER_TYPE_OGRE3D, 
                DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, 32, "",
-               getSceneManager());
+               &info);
          Farso::FontManager::setDefaultFont("LiberationSans-Regular.ttf");
          Farso::Controller::loadSkin(getSkin());
          Farso::Controller::setCursor("cursor/sel.png");

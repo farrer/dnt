@@ -34,8 +34,8 @@ compositor_node_shadow DNTIndoorShadowNode
 {
 	technique pssm
 
-	texture atlas 2048 7168 PF_D32_FLOAT no_fsaa
-	texture tmpCubemap 1024 1024 PF_FLOAT32_R cubemap no_fsaa
+	texture atlas 2048 7168 PFG_D32_FLOAT
+	texture tmpCubemap 1024 1024 PFG_R32_FLOAT cubemap depth_format PFG_D32_FLOAT
 
 	num_splits		3
 	pssm_lambda		0.95
