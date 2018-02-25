@@ -36,6 +36,7 @@
 
 #include <goblin/camera.h>
 #include <OGRE/Compositor/OgreCompositorManager2.h>
+#include <OGRE/OgreTextureGpuManager.h>
 #include <SDL2/SDL.h>
 #include <stdlib.h>
 
@@ -112,6 +113,9 @@ bool Core::doCycleInit(int callCounter, bool& shouldAbort)
 
       /* Some randomize seed */
       srand(SDL_GetTicks() + (int)(1 + 1000 * (rand() / (RAND_MAX + 1.0))));
+
+      ogreRoot->getRenderSystem()->getTextureGpuManager()->
+         waitForStreamingCompletion();
 
       return true;
    }

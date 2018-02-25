@@ -36,7 +36,6 @@
 #include <goblin/camera.h>
 #include <OGRE/Compositor/OgreCompositorManager2.h>
 
-
 using namespace DNT;
 
 /***********************************************************************
