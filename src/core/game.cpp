@@ -113,6 +113,7 @@ Map* Game::loadMap(Kobold::String filename, bool fullPath,
    if(currentMap)
    {
       delete currentMap;
+      npcs->clear();
       currentMap = NULL;
    }
 
