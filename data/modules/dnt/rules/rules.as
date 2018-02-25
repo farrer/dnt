@@ -82,7 +82,7 @@ class DNTRules : RuleController
    }
 
    /* Common canInteract verification */
-   bool canInteract(int distance, int displacement)
+   bool canInteract(float distance, float displacement)
    {
       //TODO: check if at battle mode.
       if(distance > displacement)
