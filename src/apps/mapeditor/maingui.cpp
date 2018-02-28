@@ -19,6 +19,7 @@
 */
 
 #include "maingui.h"
+#include "selection.h"
 #include "../../core/game.h"
 #include "../../map/map.h"
 
@@ -452,8 +453,8 @@ void MainGui::openNewMapWindow()
  ***********************************************************************/
 void MainGui::update()
 {
-   transformWindow.update(positionEditor);
-   lightWindow.update(positionEditor);
+   transformWindow.update();
+   lightWindow.update();
 
    /* Check if we are on a cycle of loading module. */
    if(loadingModule)
@@ -477,9 +478,9 @@ void MainGui::update()
  ***********************************************************************/
 void MainGui::duplicateSelection()
 {
-   if(positionEditor->getSelectedThing())
+   if(Selection::getSelectedThing())
    {
-      DNT::Thing* thing = positionEditor->getSelectedThing();
+      DNT::Thing* thing = Selection::getSelectedThing();
       Ogre::Vector3 pos = thing->getPosition();
       pos.x += 0.5f;
       //TODO: check if new position is inner the map!
@@ -493,11 +494,11 @@ void MainGui::duplicateSelection()
          nodesWindow.addThing(newThing);
          nodesWindow.setSelectedNodeByData(newThing);
       }
-      positionEditor->selectThing(newThing);
+      Selection::selectThing(newThing);
    }
-   else if(positionEditor->getSelectedLight())
+   else if(Selection::getSelectedLight())
    {
-      DNT::LightInfo* lightInfo = positionEditor->getSelectedLight();
+      DNT::LightInfo* lightInfo = Selection::getSelectedLight();
       Ogre::Vector3 pos = lightInfo->getPosition();
       pos.x += 0.5f;
       //TODO: check if new position is inner the map!
@@ -522,7 +523,7 @@ void MainGui::addedNewLight(DNT::LightInfo* newLight)
       nodesWindow.addLight(newLight);
       nodesWindow.setSelectedNodeByData(newLight);
    }
-   positionEditor->selectLight(newLight);
+   Selection::selectLight(newLight);
 }
 
 /***********************************************************************
@@ -530,22 +531,22 @@ void MainGui::addedNewLight(DNT::LightInfo* newLight)
  ***********************************************************************/
 void MainGui::removeSelection()
 {
-   if(positionEditor->getSelectedThing())
+   if(Selection::getSelectedThing())
    {
       nodesWindow.removeNodeByData(static_cast<void*>(
-               positionEditor->getSelectedThing()));
+               Selection::getSelectedThing()));
       DNT::Game::getCurrentMap()->removeThing(
-            positionEditor->getSelectedThing());
+            Selection::getSelectedThing());
    }
-   else if(positionEditor->getSelectedLight())
+   else if(Selection::getSelectedLight())
    {
       nodesWindow.removeNodeByData(static_cast<void*>(
-               positionEditor->getSelectedLight()));
+               Selection::getSelectedLight()));
       DNT::Game::getCurrentMap()->getLights()->removeLight(
-            positionEditor->getSelectedLight());
+            Selection::getSelectedLight());
    }
    /* And unselect it */
-   positionEditor->selectThing(NULL);
+   Selection::clear();
 }
 
 /***********************************************************************
@@ -553,7 +554,7 @@ void MainGui::removeSelection()
  ***********************************************************************/
 void MainGui::unselect()
 {
-   positionEditor->selectThing(NULL);
+   Selection::clear();
    nodesWindow.unselect();
 }
 
@@ -568,12 +569,12 @@ bool MainGui::checkEvents()
    }
 
    /* Check if need to change EditItems available status */
-   if((menuItemUnselect->isEnabled()) && (!positionEditor->hasSelection()))
+   if((menuItemUnselect->isEnabled()) && (!Selection::hasSelection()))
    {
       disableEditItems();
    }
    else if((!menuItemUnselect->isEnabled()) && 
-           (positionEditor->hasSelection()))
+           (Selection::hasSelection()))
    {
       enableEditItems();
    }

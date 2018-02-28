@@ -19,6 +19,7 @@
 */
 
 #include "nodeswindow.h"
+#include "selection.h"
 
 #include <assert.h>
 
@@ -107,19 +108,19 @@ bool NodesWindow::checkEvents(PositionEditor* positionEditor)
          else if(sel->getParent() == lightNode)
          {
             /* selected a light */
-            positionEditor->selectLight(
+            Selection::selectLight(
                   static_cast<DNT::LightInfo*>(sel->getData()));
          }
          else if(sel->getData())
          {
             /* selected a DNT::Thing */
-            positionEditor->selectThing(
+            Selection::selectThing(
                   static_cast<DNT::Thing*>(sel->getData()));
          }
          else
          {
             /* Unselect any position editor element */
-            positionEditor->selectThing(NULL);
+            Selection::clear();
          }
 
          return true;

@@ -20,6 +20,7 @@
 
 #include "lightwindow.h"
 #include "maingui.h"
+#include "selection.h"
 #include "../../core/game.h"
 #include "../../map/map.h"
 using namespace DNTMapEditor;
@@ -291,16 +292,16 @@ void LightWindow::updateTexts(DNT::LightInfo* light)
 /************************************************************************
  *                               update                                 *
  ************************************************************************/
-void LightWindow::update(PositionEditor* positionEditor)
+void LightWindow::update()
 {
    if(window)
    {
       /* Check if enabled or disabled */
-      setEnabled(positionEditor->getSelectedLight() != NULL);
-      if(positionEditor->getSelectedLight())
+      setEnabled(Selection::getSelectedLight() != NULL);
+      if(Selection::getSelectedLight())
       {
          /* Let's update current transforms */
-         updateTexts(positionEditor->getSelectedLight());
+         updateTexts(Selection::getSelectedLight());
       }
    }
 }
@@ -312,7 +313,7 @@ bool LightWindow::checkEvents(PositionEditor* positionEditor)
 {
    if((window) && (window->isActive()))
    {
-      DNT::LightInfo* light = positionEditor->getSelectedLight();
+      DNT::LightInfo* light = Selection::getSelectedLight();
       Farso::Event event = Farso::Controller::getLastEvent();
       if(event.getType() == Farso::EVENT_TEXTENTRY_EDITION_DONE)
       {
@@ -364,21 +365,21 @@ bool LightWindow::checkEvents(PositionEditor* positionEditor)
             light->flush();
             /* Note: when changed type, must select light again to display
              * the correct axis to manipulate. */
-            positionEditor->selectLight(light);
+            positionEditor->defineAxis();
          }
          else if(event.getWidget() == useSpot)
          {
             light->setType(Ogre::Light::LT_SPOTLIGHT);
             updateTexts(light);
             light->flush();
-            positionEditor->selectLight(light);
+            positionEditor->defineAxis();
          }
          else if(event.getWidget() == useDirec)
          {
             light->setType(Ogre::Light::LT_DIRECTIONAL);
             updateTexts(light);
             light->flush();
-            positionEditor->selectLight(light);
+            positionEditor->defineAxis();
          }
       }
       else if(event.getType() == Farso::EVENT_USER_DEFINED)

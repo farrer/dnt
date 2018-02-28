@@ -19,6 +19,7 @@
 */
 
 #include "transformwindow.h"
+#include "selection.h"
 using namespace DNTMapEditor;
 
 /************************************************************************
@@ -119,16 +120,16 @@ void TransformWindow::updateTexts(DNT::Thing* thing)
 /************************************************************************
  *                               update                                 *
  ************************************************************************/
-void TransformWindow::update(PositionEditor* positionEditor)
+void TransformWindow::update()
 {
    if(window)
    {
       /* Check if enabled or disabled */
-      setEnabled(positionEditor->getSelectedThing() != NULL);
-      if(positionEditor->getSelectedThing())
+      setEnabled(Selection::getSelectedThing() != NULL);
+      if(Selection::getSelectedThing())
       {
          /* Let's update current transforms */
-         updateTexts(positionEditor->getSelectedThing());
+         updateTexts(Selection::getSelectedThing());
       }
    }
 }
@@ -138,9 +139,9 @@ void TransformWindow::update(PositionEditor* positionEditor)
  ************************************************************************/
 bool TransformWindow::checkEvents(PositionEditor* positionEditor)
 {
-   if((window) && (window->isActive()) && (positionEditor->getSelectedThing()))
+   if((window) && (window->isActive()) && (Selection::getSelectedThing()))
    {
-      DNT::Thing* thing = positionEditor->getSelectedThing();
+      DNT::Thing* thing = Selection::getSelectedThing();
       Farso::Event event = Farso::Controller::getLastEvent();
       if(event.getType() == Farso::EVENT_USER_DEFINED)
       {

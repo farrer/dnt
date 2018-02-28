@@ -27,6 +27,8 @@
 #include "vector3textentry.h"
 #include "attenuationtextentry.h"
 
+#include "../../map/light.h"
+
 namespace DNTMapEditor
 { 
    class MainGui;
@@ -55,7 +57,7 @@ namespace DNTMapEditor
          bool checkEvents(PositionEditor* positionEditor);
 
          /*! Update window with the values from current selected */
-         void update(PositionEditor* positionEditor);
+         void update();
 
       private:
          /*! Set enable status.

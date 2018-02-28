@@ -24,6 +24,7 @@
 #include <farso/controller.h>
 #include <map>
 #include "positioneditor.h"
+#include "../../map/light.h"
 
 namespace DNTMapEditor
 {

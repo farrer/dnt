@@ -22,6 +22,7 @@
 #include <farso/font.h>
 
 #include "mapeditor.h"
+#include "selection.h"
 
 #include "../../core/game.h"
 
@@ -230,7 +231,7 @@ bool MapEditor::specialSelect(Ogre::SceneNode* sceneNode)
 void MapEditor::doBeforeRender()
 {
    if((DNT::Game::getCurrentMap()) && (mainGui->isLightEnabled()) &&
-      (!positionEditor->hasSelection()))
+      (!Selection::hasSelection()))
    {
       /* update active light by mouse world position */
       DNT::Game::getCurrentMap()->update(floorMouse);
@@ -276,9 +277,9 @@ void MapEditor::doAfterRender()
       if(Farso::Cursor::checkButtonRelease(0))
       {
          /* Must select it! */
-         if(positionEditor->getSelectedThing() != thingUnderCursor)
+         if(Selection::getSelectedThing() != thingUnderCursor)
          {
-            positionEditor->selectThing(thingUnderCursor);
+            Selection::selectThing(thingUnderCursor);
             mainGui->getNodesWindow()->setSelectedNodeByData(thingUnderCursor);
          }
       }

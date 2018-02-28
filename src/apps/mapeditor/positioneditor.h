@@ -23,8 +23,6 @@
 
 #include <OGRE/OgreSceneManager.h>
 #include <goblin/model3d.h>
-#include "../../rules/thing.h"
-#include "../../map/light.h"
 
 namespace DNTMapEditor
 {
@@ -45,22 +43,6 @@ namespace DNTMapEditor
           * \return if sceneNode is referent to an axis. */
          bool selectAxis(Ogre::SceneNode* sceneNode);
 
-         /*! Select a Thing for position edition */
-         void selectThing(DNT::Thing* thing);
-
-         /*! \return current selected thing pointer, if any */
-         DNT::Thing* getSelectedThing() const { return selectedThing; };
-
-         /*! Select a Light for position edition
-          * \note must not be a directional (ie: without position) light. */
-         void selectLight(DNT::LightInfo* light);
-
-         /*! \return current selected light */
-         DNT::LightInfo* getSelectedLight() const { return selectedLight; };
-
-         /*! \return if a Thing, Wall or Light is selected */
-         bool hasSelection();
-
          /*! \return if is moving the selection */
          bool isMoving();
 
@@ -74,6 +56,12 @@ namespace DNTMapEditor
 
          /*! Update axis position to current selected position */
          void updateAxisPosition();
+
+         /*! Define axis visibility, based on current selection */
+         void defineAxis();
+         
+         /*! Check if any position or rotational axis is visible */
+         bool isAxisVisible();
 
       private:
 
@@ -108,8 +96,9 @@ namespace DNTMapEditor
 
          Goblin::Model3d* selectedAxis; /**< Model for selected axis */
          Goblin::Model3d* coloredAxis;  /**< Model for colored axis */
-         DNT::Thing* selectedThing;  /**< Thing selected */
-         DNT::LightInfo* selectedLight; /**< Light selected */
+
+         void* lastSelected; /**< Last Thing or Light selected, whose our axis
+                                position is relative for */
 
          float reference; /**< Internal reference value */
 

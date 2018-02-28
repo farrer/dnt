@@ -227,6 +227,7 @@ set(DNT_MAP_EDITOR_SOURCES
    src/apps/mapeditor/metadatagui.cpp
    src/apps/mapeditor/nodeswindow.cpp
    src/apps/mapeditor/positioneditor.cpp
+   src/apps/mapeditor/selection.cpp
    src/apps/mapeditor/transformwindow.cpp
    src/apps/mapeditor/attenuationtextentry.cpp
    src/apps/mapeditor/vector3textentry.cpp
@@ -239,6 +240,7 @@ set(DNT_MAP_EDITOR_HEADERS
    src/apps/mapeditor/metadatagui.h
    src/apps/mapeditor/nodeswindow.h
    src/apps/mapeditor/positioneditor.h
+   src/apps/mapeditor/selection.h
    src/apps/mapeditor/transformwindow.h
    src/apps/mapeditor/attenuationtextentry.h
    src/apps/mapeditor/vector3textentry.h

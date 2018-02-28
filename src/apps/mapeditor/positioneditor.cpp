@@ -19,8 +19,11 @@
 */
 
 #include "positioneditor.h"
+#include "selection.h"
 #include "../../core/game.h"
+#include "../../rules/thing.h"
 #include "../../map/map.h"
+#include "../../map/light.h"
 using namespace DNTMapEditor;
 
 /***********************************************************************
@@ -74,10 +77,9 @@ PositionEditor::PositionEditor(Ogre::SceneManager* sceneManager)
    lightDirAxis.getItem()->setCastShadows(false);
 
    reference = -1;
-   selectedThing = NULL;
-   selectedLight = NULL;
    selectedAxis = NULL;
    coloredAxis = NULL;
+   lastSelected = NULL;
 
    hideTranslationAxis();
    hideRotationAxis();
@@ -92,14 +94,13 @@ PositionEditor::~PositionEditor()
 }
 
 /***********************************************************************
- *                           selectThing                               *
+ *                          positionEditor                             *
  ***********************************************************************/
-void PositionEditor::selectThing(DNT::Thing* thing)
+void PositionEditor::defineAxis()
 {
-   selectedLight = NULL;
-   selectedThing = thing;
-   if(thing)
+   if(Selection::getSelectedThing())
    {
+      DNT::Thing* thing = Selection::getSelectedThing();
       setPosition(thing->getPosition());
       showTranslationAxis();
       if((thing->getThingType() != DNT::Thing::THING_TYPE_CHARACTER) && 
@@ -117,23 +118,9 @@ void PositionEditor::selectThing(DNT::Thing* thing)
       }
       lightDirAxis.hide();
    }
-   else
+   else if(Selection::getSelectedLight())
    {
-      hideTranslationAxis();
-      hideRotationAxis();
-      lightDirAxis.hide();
-   }
-}
-
-/***********************************************************************
- *                           selectLight                               *
- ***********************************************************************/
-void PositionEditor::selectLight(DNT::LightInfo* light)
-{
-   selectedThing = NULL;
-   selectedLight = light;
-   if(light)
-   {
+      DNT::LightInfo* light = Selection::getSelectedLight();
       if(light->getType() != Ogre::Light::LT_DIRECTIONAL)
       {
          setPosition(light->getPosition());
@@ -254,19 +241,10 @@ void PositionEditor::clear()
 
    /* Clear selections */
    selectedAxis = NULL;
-   selectedLight = NULL;
-   selectedThing = NULL;
+   lastSelected = NULL;
    reference = -1;
    hideRotationAxis();
    hideTranslationAxis();
-}
-
-/***********************************************************************
- *                           hasSelection                              *
- ***********************************************************************/
-bool PositionEditor::hasSelection()
-{
-   return selectedThing != NULL || selectedLight != NULL;
 }
 
 /***********************************************************************
@@ -284,7 +262,7 @@ Ogre::Real PositionEditor::addOnLimit(Ogre::Real value, Ogre::Real addVal)
 {
    Ogre::Real res = value;
 
-   if(selectedThing)
+   if(Selection::getSelectedThing())
    {
       res += addVal;
       if(res >= 360.0f)
@@ -296,7 +274,7 @@ Ogre::Real PositionEditor::addOnLimit(Ogre::Real value, Ogre::Real addVal)
          res += 360.0f;
       }
    }
-   else if(selectedLight)
+   else if(Selection::getSelectedLight())
    {
       res += (addVal / 360.0f);
       if(res > 1.0f)
@@ -318,6 +296,43 @@ Ogre::Real PositionEditor::addOnLimit(Ogre::Real value, Ogre::Real addVal)
 bool PositionEditor::update(bool leftButtonPressed, 
       const Ogre::Vector3& floorMouse, const int mouseX, const int mouseY)
 {
+   if(Selection::hasSelection())
+   {
+      if(!isAxisVisible())
+      {
+         /* A thing or a light is selected, but no axis is yet visible for it */
+         defineAxis();
+         if(Selection::getSelectedThing())
+         {
+            lastSelected = Selection::getSelectedThing();
+         } 
+         else if(Selection::getSelectedLight())
+         {
+            lastSelected = Selection::getSelectedLight();
+         }
+      }
+      else if((Selection::getSelectedThing() != NULL) && 
+              (Selection::getSelectedThing() != lastSelected))
+      {
+         /* Selection changed to a different Thing */
+         defineAxis();
+         lastSelected = Selection::getSelectedThing();
+      }
+      else if((Selection::getSelectedLight() != NULL) && 
+              (Selection::getSelectedLight() != lastSelected))
+      {
+         /* Selection changed to a different Light */
+         defineAxis();
+         lastSelected = Selection::getSelectedLight();
+      }
+   }
+   else if(isAxisVisible())
+   {
+      lastSelected = NULL;
+      defineAxis();
+   }
+
+
    if((selectedAxis) && (!leftButtonPressed))
    {
       /* Not pressing, should release the axis selection */
@@ -326,7 +341,7 @@ bool PositionEditor::update(bool leftButtonPressed,
       return true;
    }
 
-   if((selectedAxis) && (leftButtonPressed) && (hasSelection()))
+   if((selectedAxis) && (leftButtonPressed) && (Selection::hasSelection()))
    {
       /* define our current value */
       float curValue;
@@ -367,17 +382,19 @@ bool PositionEditor::update(bool leftButtonPressed,
 
          Ogre::Vector3 curPos;
          Ogre::Vector3 ori;
-         if(selectedThing)
+         if(Selection::getSelectedThing())
          {
-            curPos = selectedThing->getPosition();
-            ori.x = selectedThing->getPitch();
-            ori.y = selectedThing->getYaw();
-            ori.z = selectedThing->getRoll();
+            DNT::Thing* thing = Selection::getSelectedThing();
+            curPos = thing->getPosition();
+            ori.x = thing->getPitch();
+            ori.y = thing->getYaw();
+            ori.z = thing->getRoll();
          }
-         else if(selectedLight)
+         else if(Selection::getSelectedLight())
          {
-            curPos = selectedLight->getPosition();
-            ori = selectedLight->getDirection();
+            DNT::LightInfo* light = Selection::getSelectedLight();
+            curPos = light->getPosition();
+            ori = light->getDirection();
          }
 
          if(selectedAxis == &xAxis)
@@ -410,22 +427,24 @@ bool PositionEditor::update(bool leftButtonPressed,
          }
 
          /* Define new position */
-         if(selectedThing)
+         if(Selection::getSelectedThing())
          {
-            selectedThing->setPositionNow(curPos);
-            selectedThing->clearOrientation();
-            selectedThing->setOrientationNow(
+            DNT::Thing* thing = Selection::getSelectedThing();
+            thing->setPositionNow(curPos);
+            thing->clearOrientation();
+            thing->setOrientationNow(
                   Ogre::Vector3(ori.x, ori.y, ori.z));
          }
-         else if(selectedLight)
+         else if(Selection::getSelectedLight())
          {
-            selectedLight->setPosition(curPos);
+            DNT::LightInfo* light = Selection::getSelectedLight();
+            light->setPosition(curPos);
             lightDirAxis.clearOrientation();
             lightDirAxis.getSceneNode()->setDirection(
                ori.normalisedCopy(), Ogre::Node::TS_LOCAL,
                Ogre::Vector3::UNIT_Y);
-            selectedLight->setDirection(ori.normalisedCopy());
-            selectedLight->flushToSceneNode();
+            light->setDirection(ori.normalisedCopy());
+            light->flushToSceneNode();
          }
 
          /* Redefine axis position, based on Thing's. */
@@ -446,13 +465,13 @@ bool PositionEditor::update(bool leftButtonPressed,
 void PositionEditor::updateAxisPosition()
 {
    Ogre::Vector3 curPos;
-   if(selectedThing)
+   if(Selection::getSelectedThing())
    {
-      curPos = selectedThing->getPosition();
+      curPos = Selection::getSelectedThing()->getPosition();
    }
-   else if(selectedLight)
+   else if(Selection::getSelectedLight())
    {
-      curPos = selectedLight->getPosition();
+      curPos = Selection::getSelectedLight()->getPosition();
    }
    setPosition(curPos);
 }
@@ -470,6 +489,16 @@ void PositionEditor::setPosition(Ogre::Vector3 pos)
    zRot.setPositionNow(pos.x, pos.y, pos.z + 0.6f);
 
    lightDirAxis.setPositionNow(pos);
+}
+
+/***********************************************************************
+ *                          isAxisVisible                              *
+ ***********************************************************************/
+bool PositionEditor::isAxisVisible()
+{
+   return xRot.isVisible() || yRot.isVisible() || zRot.isVisible() ||
+      xAxis.isVisible() || yAxis.isVisible() || zAxis.isVisible() ||
+      lightDirAxis.isVisible();
 }
 
 /***********************************************************************

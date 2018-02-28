@@ -25,6 +25,7 @@
 #include <map>
 #include "positioneditor.h"
 #include "vector3textentry.h"
+#include "../../rules/thing.h"
 
 namespace DNTMapEditor
 {
@@ -53,7 +54,7 @@ namespace DNTMapEditor
          bool checkEvents(PositionEditor* positionEditor);
 
          /*! Update window with the values from current selected */
-         void update(PositionEditor* positionEditor);
+         void update();
 
       private:
          /*! Set enable status.
