@@ -20,7 +20,7 @@
 # See the License for more information.
 #=============================================================================
 
-FIND_PATH(FARSO_INCLUDE_DIR NAMES farsoconfig.h farso/farsocofig.h
+FIND_PATH(FARSO_INCLUDE_DIR NAMES farsoconfig.h farso/farsoconfig.h
   HINTS
   $ENV{FARSODIR}
   PATH_SUFFIXES include

@@ -220,6 +220,7 @@ set(DNT_HEADERS
 )
 
 set(DNT_MAP_EDITOR_SOURCES
+   src/apps/mapeditor/infowindow.cpp
    src/apps/mapeditor/lightwindow.cpp
    src/apps/mapeditor/main.cpp
    src/apps/mapeditor/maingui.cpp
@@ -234,6 +235,7 @@ set(DNT_MAP_EDITOR_SOURCES
    ${WIN_SOURCES}
 )
 set(DNT_MAP_EDITOR_HEADERS
+   src/apps/mapeditor/infowindow.h
    src/apps/mapeditor/lightwindow.h
    src/apps/mapeditor/maingui.h
    src/apps/mapeditor/mapeditor.h

@@ -20,10 +20,10 @@
 # See the License for more information.
 #=============================================================================
 
-FIND_PATH(KOBOLD_INCLUDE_DIR NAMES koboldconfig.h kobold/koboldcofig.h
+FIND_PATH(KOBOLD_INCLUDE_DIR NAMES kobold/koboldconfig.h
   HINTS
   $ENV{KOBOLDDIR}
-  PATH_SUFFIXES include
+  PATH_SUFFIXES include include/kobold
   PATHS
   ~/Library/Frameworks
   /Library/Frameworks

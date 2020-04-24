@@ -20,7 +20,7 @@
 # See the License for more information.
 #=============================================================================
 
-FIND_PATH(GOBLIN_INCLUDE_DIR NAMES goblinconfig.h goblin/goblincofig.h
+FIND_PATH(GOBLIN_INCLUDE_DIR NAMES goblinconfig.h goblin/goblinconfig.h
   HINTS
   $ENV{GOBLINDIR}
   PATH_SUFFIXES include

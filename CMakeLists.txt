@@ -19,7 +19,10 @@
 
 cmake_minimum_required(VERSION 2.8)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG=1 -D_DEBUG=1")
+
 set(PACKAGE dnt)
+project(dnt)
 
 # Set Version number
 set(VERSION_MAJOR 0)
@@ -61,6 +64,8 @@ endif(UNIX)
 
 FIND_PACKAGE(OGRE REQUIRED)
 include_directories(${OGRE_INCLUDE_DIR})
+include_directories(${OGRE_INCLUDE_DIR}/Depracated/)
+include_directories(${OGRE_INCLUDE_DIR}/Hlms/Common/)
 
 FIND_PACKAGE(OpenGL REQUIRED)
 include_directories(${OPENGL_INCLUDE_DIR})
@@ -97,6 +102,7 @@ include_directories(${GOBLIN_INCLUDE_DIR})
 
 FIND_PACKAGE(Farso REQUIRED)
 include_directories(${FARSO_INCLUDE_DIR})
+include_directories(${FARSO_INCLUDE_DIR}/farso)
 
 FIND_PACKAGE(AngelScript REQUIRED)
 include_directories(${ANGELSCRIPT_INCLUDE_DIR})
