@@ -48,8 +48,11 @@
 #define ogre_float4x3 mat3x4
 
 #define ushort uint
+#define ushort3 uint3
+#define ushort4 uint4
 
 //Short used for read operations. It's an int in GLSL & HLSL. An ushort in Metal
+#define rshort int
 #define rshort2 int2
 #define rint int
 //Short used for write operations. It's an int in GLSL. An ushort in HLSL & Metal
@@ -92,6 +95,7 @@
 #define outVs_clipDistance0 gl_ClipDistance[0]
 
 #define gl_SampleMaskIn0 gl_SampleMaskIn[0]
+#define reversebits bitfieldReverse
 
 #define outPs_colour0 outColour
 #define OGRE_Sample( tex, sampler, uv ) texture( tex, uv )
@@ -104,6 +108,7 @@
 #define OGRE_ddx( val ) dFdx( val )
 #define OGRE_ddy( val ) dFdy( val )
 #define OGRE_Load2D( tex, iuv, lod ) texelFetch( tex, iuv, lod )
+#define OGRE_LoadArray2D( tex, iuv, arrayIdx, lod ) texelFetch( tex, ivec3( iuv, arrayIdx ), lod )
 #define OGRE_Load2DMS( tex, iuv, subsample ) texelFetch( tex, iuv, subsample )
 
 #define OGRE_Load3D( tex, iuv, lod ) texelFetch( tex, ivec3( iuv ), lod )
@@ -117,7 +122,7 @@
 
 #define CONST_BUFFER( bufferName, bindingPoint ) layout_constbuffer(binding = bindingPoint) uniform bufferName
 #define CONST_BUFFER_STRUCT_BEGIN( structName, bindingPoint ) layout_constbuffer(binding = bindingPoint) uniform structName
-#define CONST_BUFFER_STRUCT_END( variableName, v ) variableName
+#define CONST_BUFFER_STRUCT_END( variableName ) variableName
 
 #define FLAT_INTERPOLANT( decl, bindingPoint ) flat decl
 #define INTERPOLANT( decl, bindingPoint ) decl

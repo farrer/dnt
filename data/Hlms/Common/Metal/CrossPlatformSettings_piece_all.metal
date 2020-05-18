@@ -21,6 +21,7 @@ inline float3x3 toMat3x3( float3x4 m )
 #define ogre_float4x3 float3x4
 
 //Short used for read operations. It's an int in GLSL & HLSL. An ushort in Metal
+#define rshort ushort
 #define rshort2 ushort2
 #define rint uint
 //Short used for write operations. It's an int in GLSL. An ushort in HLSL & Metal
@@ -71,11 +72,14 @@ inline float3x3 toMat3x3( float3x4 m )
 
 #define outVs_Position outVs.gl_Position
 #define outVs_viewportIndex outVs.gl_ViewportIndex
-#define outVs_clipDistance0 outVs.gl_ClipDistance0
+#define outVs_clipDistance0 outVs.gl_ClipDistance[0]
 
 #define gl_SampleMaskIn0 gl_SampleMask
 //#define interpolateAtSample( interp, subsample ) interpolateAtSample( interp, subsample )
-#define findLSB ctz
+#define findLSB clz
+#define findMSB ctz
+#define reversebits reverse_bits
+#define mod( a, b ) (a - b * floor(a / b))
 
 #define outPs_colour0 outPs.colour0
 #define OGRE_Sample( tex, sampler, uv ) tex.sample( sampler, uv )
@@ -88,6 +92,7 @@ inline float3x3 toMat3x3( float3x4 m )
 #define OGRE_ddx( val ) dfdx( val )
 #define OGRE_ddy( val ) dfdy( val )
 #define OGRE_Load2D( tex, iuv, lod ) tex.read( iuv, lod )
+#define OGRE_LoadArray2D( tex, iuv, arrayIdx, lod ) tex.read( iuv, arrayIdx, lod )
 #define OGRE_Load2DMS( tex, iuv, subsample ) tex.read( iuv, subsample )
 
 #define OGRE_Load3D( tex, iuv, lod ) tex.read( ushort3( iuv ), lod )
