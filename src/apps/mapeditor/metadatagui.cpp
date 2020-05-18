@@ -22,6 +22,7 @@
 
 #include "../../core/game.h"
 #include "../../map/map.h"
+#include <sstream>
 
 using namespace DNTMapEditor;
 

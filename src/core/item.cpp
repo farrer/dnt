@@ -33,6 +33,7 @@
 
 #include <kobold/log.h>
 #include <kosound/sound.h>
+#include <fstream>
 
 using namespace DNT;
 

@@ -32,6 +32,7 @@
 
 #include <map>
 #include <iostream>
+#include <fstream>
 
 namespace DNT
 {

@@ -34,6 +34,7 @@
 
 #include <OGRE/OgreWireAabb.h>
 #include <assert.h>
+#include <sstream>
 
 using namespace DNT;
 
