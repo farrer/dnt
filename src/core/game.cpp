@@ -125,7 +125,7 @@ Map* Game::loadMap(Kobold::String filename, bool fullPath,
       delete map;
 
       /* Log error and exit. */
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
          "Error: couldn't load map '%s'", filename.c_str());
       return NULL;
    }
@@ -291,7 +291,7 @@ Object* Game::createObject(Kobold::String filename, bool forceDynamic)
    }
    else
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
             "Could not define type or could not load object '%s'",
             filename.c_str());
       /* Must delete to avoid leaks. */

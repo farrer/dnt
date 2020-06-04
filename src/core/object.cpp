@@ -101,17 +101,17 @@ bool Object::doSpecificParse(const Kobold::String& key,
    {
       if(!image)
       {
-         image = Farso::Controller::loadImageToSurface(value);
+         image = Farso::Controller::getRenderer()->loadImageToSurface(value);
          if(!image)
          {
-            Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+            Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
                   "Error: couldn't load object's image '%s'", value.c_str());
             return false;
          }
       }
       else
       {
-         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+         Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
                  "Warning: object's image redefinition '%s' ignored", 
                  value.c_str());
       }

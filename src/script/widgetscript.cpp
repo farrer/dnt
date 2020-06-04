@@ -200,7 +200,7 @@ void WidgetScript::setFunctionPointers()
    this->factoryFunction = mainType->GetFactoryByDecl(factoryName.c_str());
    if(!factoryFunction)
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR, 
             "Error: Script '%s' couldn't find factory '%s'",
             getFilename().c_str(), factoryName.c_str());
    }
@@ -276,9 +276,9 @@ Kobold::String WidgetScript::loadFile(const Kobold::String& filename)
       fileData = Ogre::ResourceGroupManager::getSingleton().openResource(
             filename);
    }
-   catch(Ogre::FileNotFoundException)
+   catch(Ogre::FileNotFoundException&)
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR, 
             "Error: couldn't open file '%s'", filename.c_str());
       return "";
    }

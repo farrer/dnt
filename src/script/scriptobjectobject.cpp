@@ -53,7 +53,7 @@ ScriptObjectObject::ScriptObjectObject(Kobold::String filename,
       }
       else
       {
-         Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
+         Kobold::Log::add(Kobold::LOG_LEVEL_NORMAL, 
                "Warning: script: Couldn't find object '%s' (%.3f %.3f %.3f)\n",
                filename.c_str(), originalPos.x, originalPos.y, originalPos.z);
       }
@@ -77,7 +77,7 @@ ScriptObjectObject::ScriptObjectObject(Kobold::String filename)
    }
    else
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
+      Kobold::Log::add(Kobold::LOG_LEVEL_NORMAL, 
          "Warning: script: Couldn't find object '%s'\n", filename.c_str());
    }
    mutex.unlock();

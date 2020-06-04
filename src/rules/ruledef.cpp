@@ -29,7 +29,7 @@
 #include "../script/scriptmanager.h"
 #include "../script/rulescript.h"
 #include "../script/ruledefscript.h"
-#include <kobold/defparser.h>
+#include <kobold/ogre3d/ogredefparser.h>
 #include <kobold/log.h>
 #include <assert.h>
 using namespace DNT;
@@ -197,7 +197,7 @@ void RuleDefinition::setRelated(const RuleDefinition* ruleDef)
 void RuleDefinition::loadImage(Kobold::String imageFilename)
 {
    assert(image == NULL);
-   image = Farso::Controller::loadImageToSurface(imageFilename);
+   image = Farso::Controller::getRenderer()->loadImageToSurface(imageFilename);
 }
 
 /******************************************************************
@@ -436,7 +436,7 @@ RuleDefinitionValue* RuleGroupAvailableInfo::insert(RuleDefinition* ruleDef,
                   ruleDef->getRelated()->getId());
             if(!related)
             {
-               Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+               Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
                      "Error: Couldn't found related RuleDefinitionValue '%s'",
                      ruleDef->getRelated()->getId().c_str());
             }
@@ -495,7 +495,7 @@ void Rules::init(const Kobold::String filename)
    groups = new Kobold::List();
    if(!load(filename))
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR, 
             "Error: Couldn't load rules file: '%s'", filename.c_str());
       assert(false);
    }
@@ -579,7 +579,7 @@ void Rules::checkNotNull(void* info, const Kobold::String& filename,
 {
    if(info == NULL)
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR, 
             "Error: '%s': %s without %s!", 
             filename.c_str(), key.c_str(), infoDecl.c_str());
    }
@@ -594,7 +594,7 @@ void Rules::checkIsNullOrHaveGroup(RuleDefinition* curDef,
 {
    if((curDef != NULL) && (curDef->getGroup()  == NULL))
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR, 
             "Error: '%s': RuleDefinition '%s' is without a defined RuleGroup!", 
             filename.c_str(), curDef->getName().c_str());
    }
@@ -606,9 +606,9 @@ void Rules::checkIsNullOrHaveGroup(RuleDefinition* curDef,
  ******************************************************************/
 bool Rules::load(const Kobold::String filename)
 {
-   Kobold::DefParser defParser;
+   Kobold::OgreDefParser defParser;
 
-   if(!defParser.load(filename))
+   if(!defParser.load(filename, false))
    {
       return false;
    }
@@ -632,7 +632,7 @@ bool Rules::load(const Kobold::String filename)
          curDef = NULL;
          curGroup = new RuleGroup(value);
          groups->insertAtEnd(curGroup);
-         Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
+         Kobold::Log::add(Kobold::LOG_LEVEL_NORMAL, 
                "\tAdded group '%s'", curGroup->getId().c_str());
       }
       else if(key == "ruleGroupName")
@@ -666,7 +666,7 @@ bool Rules::load(const Kobold::String filename)
          }
          else
          {
-            Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+            Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
                "Error: '%s': unexpected RuleGroup type '%s'!",
                filename.c_str(), value.c_str());
             assert(false);
@@ -705,7 +705,7 @@ bool Rules::load(const Kobold::String filename)
          RuleDefinition* related = getDefinition(value);
          if(!related)
          {
-            Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+            Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
                   "Error: '%s' couldn't find or not yet declared related '%s'",
                   filename.c_str(), value.c_str());
          }
@@ -720,7 +720,7 @@ bool Rules::load(const Kobold::String filename)
             foundGroup = getGroup(value);
             if(foundGroup == NULL)
             {
-               Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+               Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
                   "Error: '%s': Unknown RuleGroup '%s' used at a RuleDef!",
                   filename.c_str(), value.c_str());
             }
@@ -728,7 +728,7 @@ bool Rules::load(const Kobold::String filename)
          assert(foundGroup != NULL);
          curDef->setGroup(foundGroup);
          foundGroup->insert(curDef);
-         Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
+         Kobold::Log::add(Kobold::LOG_LEVEL_NORMAL, 
                "\tAdded '%s' to group '%s'", curDef->getId().c_str(),
                foundGroup->getId().c_str());
       }
@@ -737,7 +737,7 @@ bool Rules::load(const Kobold::String filename)
    checkIsNullOrHaveGroup(curDef, filename);
    if(!scriptInstance)
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR, 
             "Error: Rules must have a defined script!");
    }
    assert(scriptInstance);

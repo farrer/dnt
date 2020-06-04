@@ -32,6 +32,7 @@
 #include "../gui/briefing.h"
 
 #include <kobold/log.h>
+#include <kobold/ogre3d/ogrefilereader.h>
 #include <kosound/sound.h>
 #include <fstream>
 
@@ -109,7 +110,7 @@ void Item::setTypeByString(const Kobold::String& typeStr)
       }
    }
 
-   Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+   Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
          "Warning: unknown item type '%s' was ignored", typeStr.c_str());
    type = ITEM_TYPE_GENERIC;
 }
@@ -187,8 +188,8 @@ Object::InteractResult Item::interact(Character* actor)
    {
       /* Play 'pick' sound */
       Ogre::Vector3 pos = getPosition();
-      Kosound::Sound::addSoundEffect(pos.x, pos.y, pos.z,
-            SOUND_NO_LOOP, "sndfx/objects/take_item.ogg");
+      Kosound::Sound::addSoundEffect(pos.x, pos.y, pos.z, SOUND_NO_LOOP,
+            "sndfx/objects/take_item.ogg", new Kobold::OgreFileReader());
       /* Log text on briefing */
       Briefing::addTextWithBreak(gettext("%s taken."), getName().c_str());
 

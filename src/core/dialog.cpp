@@ -35,6 +35,7 @@
 #include "../gui/dialogwidget.h"
 
 #include <kobold/log.h>
+#include <kobold/ogre3d/ogrefilereader.h>
 #include <kosound/sound.h>
 
 #include <OGRE/OgreDataStream.h>
@@ -220,7 +221,7 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
          /* Play a sound at owner's position */
          Ogre::Vector3 pos = owner->getPosition();
          Kosound::Sound::addSoundEffect(pos.x, pos.y, pos.z,
-               SOUND_NO_LOOP, strValue);
+               SOUND_NO_LOOP, strValue, new Kobold::OgreFileReader());
       }
       break;
 
@@ -313,7 +314,7 @@ void TalkAction::execute(Conversation* conv, PlayableCharacter* pc,
             }
             else
             {
-               Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+               Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
                   "Error: no object '%s' to give at character's inventory!",
                   strValue.c_str());
             }
@@ -534,13 +535,13 @@ TalkTest::TalkTest(const Kobold::String& token, const Kobold::String& test,
    else
    {
       /* Unknow test function! */
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
             "Warning: unknow test '%s' at dialog!", token.c_str());
    }
 
    if((this->test == NULL) && (shouldCheck))
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR, 
          "Error: Unknown rule definition '%s' on dialog!", test.c_str());
    }
    assert(!shouldCheck || this->test != NULL);
@@ -684,7 +685,7 @@ bool TalkTest::doTest(PlayableCharacter* pc, Thing* owner)
       {
          return pc->getInventory()->getMoneyQuantity() >= value;
       }
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
             "Warning: Unknown money quantity '%s' at dialog test!",
             against.c_str());
        
@@ -735,7 +736,7 @@ bool TalkTest::doTest(PlayableCharacter* pc, Thing* owner)
       if(!getAgainstValue(owner, value))
       {
          /* not a value, warning! */
-         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+         Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
             "Warning: Unexpected compare value '%s' at dialog."
             "Should be a literal", against.c_str());
       }
@@ -820,7 +821,7 @@ void DialogOption::setPostTest(Kobold::String token, Kobold::String test,
    if(postTest)
    {
       delete postTest;
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
          "Warning: redefining post-test for dialog to '%s' '%s' '%s'!",
          token.c_str(), test.c_str(), against.c_str());
    }
@@ -1091,7 +1092,7 @@ Kobold::String Conversation::getString(int& initialPosition,
 void Conversation::printError(Kobold::String fileName, Kobold::String error, 
       int lineNumber)
 {
-   Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+   Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
          "Error '%s' on conversation '%s' at line '%d' ",
          error.c_str(), fileName.c_str(), lineNumber);
 }
@@ -1202,9 +1203,9 @@ bool Conversation::load(Kobold::String filename)
       file = Ogre::ResourceGroupManager::getSingleton().openResource(filename,
             "dialogs");
    }
-   catch(Ogre::FileNotFoundException)
+   catch(Ogre::FileNotFoundException&)
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
             "conversation: Couldn't open inner file: '%s'", filename.c_str());
       return false;
    }
@@ -1575,7 +1576,7 @@ void Conversation::proccessAction(int option)
    Dialog* dlg = getDialog(numDialog);
    if(dlg == NULL)
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
             "Warning: dialog with id '%d' not found!", numDialog);
       return;
    }
@@ -1584,7 +1585,7 @@ void Conversation::proccessAction(int option)
    DialogOption* opt = dlg->getOption(option);
    if(!opt)
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
             "Warning: dialog option with index '%d' not found!", option);
       return;
    }
@@ -1630,7 +1631,7 @@ void Conversation::changeDialog(int numDialog)
    dlg = getDialog(numDialog);
    if(dlg == NULL)
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
             "Warning: couldn't find dialog '%d'", numDialog);
       return;
    }

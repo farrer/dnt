@@ -93,7 +93,7 @@ ScriptObjectDice* ScriptObjectDice::factoryDice(int faces)
          type = Dice::DICE_TYPE_D100;
       break;
       default:
-         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+         Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
             "Script Warn: unknown dice type with %d faces!\nUsing 2 instead.", 
             faces);
          type = Dice::DICE_TYPE_D2;

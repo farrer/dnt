@@ -19,7 +19,6 @@
 */
 
 #include <farso/controller.h>
-#include <farso/ogre3d/ogrejunction.h>
 #include <farso/font.h>
 
 #include "commonapp.h"
@@ -50,6 +49,7 @@ CommonApp::CommonApp()
    floorMouse = Ogre::Vector3(0.0f, 0.0f, 0.0f);
    ogreRaySceneQuery = NULL;
    progressBar = NULL;
+   renderer = NULL;
 }
 
 /***********************************************************************
@@ -62,9 +62,13 @@ CommonApp::~CommonApp()
    DNT::Briefing::finish();
    Farso::Controller::finish();
 
-   if(ogreRaySceneQuery)
+   if(ogreRaySceneQuery != NULL)
    {
       ogreSceneManager->destroyQuery(ogreRaySceneQuery);
+   }
+   if(renderer != NULL)
+   {
+      delete renderer;
    }
 }
 
@@ -93,11 +97,10 @@ bool CommonApp::doCommonCycleInit(int callCounter, bool& shouldAbort)
          getSceneManager()->setForward3D(true, 4, 4, 4, 32, 3, 2000);
 
          /* Init Farso */
-         Farso::OgreJunctionInfo info(getSceneManager(), 
+         renderer = new Farso::OgreRenderer(getSceneManager(), 
                ogreRoot->getRenderSystem());
-         Farso::Controller::init(Farso::RENDERER_TYPE_OGRE3D, 
-               DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, 32, "",
-               &info);
+         Farso::Controller::init(&loader, renderer, 
+               DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, 32, "");
          Farso::FontManager::setDefaultFont("LiberationSans-Regular.ttf");
          Farso::Controller::loadSkin(getSkin());
          Farso::Controller::setCursor("cursor/sel.png");

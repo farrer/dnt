@@ -25,6 +25,8 @@
 #include "dntconfig.h"
 #include <goblin/baseapp.h>
 #include <farso/controller.h>
+#include <farso/ogre3d/ogrerenderer.h>
+#include <farso/ogre3d/ogreloader.h>
 
 namespace DNT
 {
@@ -88,6 +90,8 @@ class CommonApp : public Goblin::BaseApp
       Ogre::RaySceneQuery* ogreRaySceneQuery;/**< To ray cast */
       DNT::Thing* thingUnderCursor; /**< Current Thing under mouse cursor */
       Farso::ProgressBar* progressBar; /**< A multiple-use progress bar */
+      Farso::OgreRenderer* renderer; /**< Farso's renderer to use */
+      Farso::OgreLoader loader; /**< Farso's file loader to use */
 };
 
 }

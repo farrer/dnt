@@ -56,7 +56,7 @@ ScriptController::~ScriptController()
 /**************************************************************************
  *                           loadAndCompile                               *
  **************************************************************************/
-bool ScriptController::loadAndCompile(Ogre::String filename)
+bool ScriptController::loadAndCompile(Kobold::String filename)
 {
    this->filename = filename;
    
@@ -67,15 +67,15 @@ bool ScriptController::loadAndCompile(Ogre::String filename)
       fileData = Ogre::ResourceGroupManager::getSingleton().openResource(
             filename);
    }
-   catch(Ogre::FileNotFoundException)
+   catch(Ogre::FileNotFoundException&)
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
             "Error: Couldn't open inner file: '%s'", filename.c_str());
       return false;
    }
    
    /* Read the whole file */
-   Ogre::String data = fileData->getAsString();
+   Kobold::String data = fileData->getAsString();
    fileData->close();
   
    /* Define the script */
@@ -104,7 +104,7 @@ bool ScriptController::loadAndCompile(Ogre::String filename)
 /**************************************************************************
  *                          getTypeByInterface                            *
  **************************************************************************/
-asITypeInfo* ScriptController::getTypeByInterface(Ogre::String interfaceName)
+asITypeInfo* ScriptController::getTypeByInterface(Kobold::String interfaceName)
 {
    asITypeInfo* type = NULL;
 
@@ -118,7 +118,7 @@ asITypeInfo* ScriptController::getTypeByInterface(Ogre::String interfaceName)
       int ic = type->GetInterfaceCount();
       for(int i = 0; i < ic; i++)
       {
-         if(Ogre::String(type->GetInterface(i)->GetName()) == interfaceName)
+         if(Kobold::String(type->GetInterface(i)->GetName()) == interfaceName)
          {
             /* Found */
             return type;

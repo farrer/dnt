@@ -119,7 +119,7 @@ Kobold::String ModEffect::toReadableText(Character* actor)
 {
    if(actor == NULL)
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
             "Error: ModEffect::toReadableText: NULL actor!");
       return "";
    }
@@ -186,14 +186,14 @@ void ModEffect::doApply(Character* actor, int value)
       }
       else
       {
-         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+         Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
                "Error: ModEffect::doApply: character have no RuleDef '%s'!",
                target->getId().c_str());
       }
    }
    else
    { 
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
             "Error: ModEffect::doApply: NULL Character!");
    }
 }

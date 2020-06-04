@@ -151,7 +151,7 @@ void SkinScript::setFunctionPointers()
    this->factoryFunction = mainType->GetFactoryByDecl(factoryName.c_str());
    if(!factoryFunction)
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR, 
             "Error: Script '%s' couldn't find factory '%s'",
             getFilename().c_str(), factoryName.c_str());
    }

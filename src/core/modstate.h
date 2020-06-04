@@ -25,7 +25,7 @@
 
 #include <kobold/list.h>
 #include <kobold/kstring.h>
-#include <kobold/defparser.h>
+#include <kobold/ogre3d/ogredefparser.h>
 
 #include <OGRE/OgreVector3.h>
 
@@ -314,7 +314,7 @@ class ModMap: public Kobold::ListElement
 
       /*! Load the modMap from the definitions parser
        * \param def -> pointer to the DefParser with info for the modMap */
-      void load(Kobold::DefParser* def);
+      void load(Kobold::OgreDefParser* def);
       
       /*! Add action to the list (or remove some inverse action from)
        * \param action -> action type

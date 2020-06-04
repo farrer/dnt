@@ -36,6 +36,7 @@
 #include "../rules/character.h"
 
 #include <kobold/log.h>
+#include <kobold/ogre3d/ogrefilereader.h>
 #include <kosound/sound.h>
 #include <assert.h>
 using namespace DNT;
@@ -49,7 +50,7 @@ ScriptManager::ScriptManager()
 
    currentOnStep = NULL;
 
-   Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL,
+   Kobold::Log::add(Kobold::LOG_LEVEL_NORMAL,
          "Initing ScriptManager...");
 
    asPrepareMultithread();
@@ -173,29 +174,29 @@ ScriptManager::ScriptManager()
  **************************************************************************/
 ScriptManager::~ScriptManager()
 {
-   Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL,
+   Kobold::Log::add(Kobold::LOG_LEVEL_NORMAL,
          "Finishing ScriptManager...");
 
    /* Stop our thread, if active */
    if(isRunning())
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL,
+      Kobold::Log::add(Kobold::LOG_LEVEL_NORMAL,
          "\tWaiting thread to end...");
       endThread();
    }
 
    /* We should remove all instances and controllers to decrement
     * all references before exiting the AngelScript engine. */
-   Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL,
+   Kobold::Log::add(Kobold::LOG_LEVEL_NORMAL,
          "\tClearing active instances...");
    instances.clear();
    
-   Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL,
+   Kobold::Log::add(Kobold::LOG_LEVEL_NORMAL,
          "\tClearing controllers...");
    controllers.clear();
 
    /* Release all created contexts */
-   Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL,
+   Kobold::Log::add(Kobold::LOG_LEVEL_NORMAL,
          "\tReleasing context pool...");
    while(contexts.size() > 0)
    {
@@ -205,15 +206,15 @@ ScriptManager::~ScriptManager()
       ctx->Release();
    }
 
-   Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL,
+   Kobold::Log::add(Kobold::LOG_LEVEL_NORMAL,
          "\tRunning the garbage collector...");
    asEngine->GarbageCollect(asGC_FULL_CYCLE);
 
-   Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL,
+   Kobold::Log::add(Kobold::LOG_LEVEL_NORMAL,
          "\tClearing ScriptObjects...");
    objects.clear();
 
-   Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL,
+   Kobold::Log::add(Kobold::LOG_LEVEL_NORMAL,
          "\tShuting down AngelScript engine...");
    if(asEngine)
    {
@@ -260,16 +261,16 @@ bool ScriptManager::step()
 void ScriptManager::messageCallback(const asSMessageInfo& msg)
 {
    /* Define log level type */
-   Kobold::Log::LogLevel level = Kobold::Log::LOG_LEVEL_ERROR;
+   Kobold::LogLevel level = Kobold::LOG_LEVEL_ERROR;
    Kobold::String strLevel = "ERROR";
    if(msg.type == asMSGTYPE_WARNING)
    {
-      level = Kobold::Log::LOG_LEVEL_NORMAL;
+      level = Kobold::LOG_LEVEL_NORMAL;
       strLevel = "WARN";
    }
    else if(msg.type == asMSGTYPE_INFORMATION)
    {
-      level = Kobold::Log::LOG_LEVEL_NORMAL;
+      level = Kobold::LOG_LEVEL_NORMAL;
       strLevel = "INFO";
    }
    
@@ -339,7 +340,7 @@ void ScriptManager::lineCallback(asIScriptContext* ctx, Uint8* timeout)
  **************************************************************************/
 void ScriptManager::printVariables(asIScriptContext* ctx, asUINT stackLevel)
 {
-   Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, "\t\tVariables:"); 
+   Kobold::Log::add(Kobold::LOG_LEVEL_NORMAL, "\t\tVariables:"); 
    asIScriptEngine *engine = ctx->GetEngine();
    
    /* First print the this pointer if this is a class method */
@@ -347,7 +348,7 @@ void ScriptManager::printVariables(asIScriptContext* ctx, asUINT stackLevel)
    void *varPointer = ctx->GetThisPointer(stackLevel);
    if(typeId)
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
+      Kobold::Log::add(Kobold::LOG_LEVEL_NORMAL, 
             "\t\t this = 0x%x", varPointer);
    }
 
@@ -359,13 +360,13 @@ void ScriptManager::printVariables(asIScriptContext* ctx, asUINT stackLevel)
       void *varPointer = ctx->GetAddressOfVar(n, stackLevel);
       if(typeId == asTYPEID_INT32)
       {
-         Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
+         Kobold::Log::add(Kobold::LOG_LEVEL_NORMAL, 
                "\t\t %s = %d", ctx->GetVarDeclaration(n, stackLevel), 
                *(int*)varPointer);
       }
       else if(typeId == asTYPEID_FLOAT)
       {
-         Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
+         Kobold::Log::add(Kobold::LOG_LEVEL_NORMAL, 
                "\t\t %s = %f", ctx->GetVarDeclaration(n, stackLevel), 
                *(float*)varPointer);
       }
@@ -374,12 +375,12 @@ void ScriptManager::printVariables(asIScriptContext* ctx, asUINT stackLevel)
          asIScriptObject *obj = (asIScriptObject*)varPointer;
          if(obj)
          {
-            Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
+            Kobold::Log::add(Kobold::LOG_LEVEL_NORMAL, 
                   "\t\t %s = {...}", ctx->GetVarDeclaration(n, stackLevel));
          }
          else
          {
-            Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
+            Kobold::Log::add(Kobold::LOG_LEVEL_NORMAL, 
                   "\t\t %s = <null>", ctx->GetVarDeclaration(n, stackLevel));
          }
       }
@@ -388,19 +389,19 @@ void ScriptManager::printVariables(asIScriptContext* ctx, asUINT stackLevel)
          Kobold::String* str = static_cast<Kobold::String*>(varPointer);
          if(str)
          {
-            Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
+            Kobold::Log::add(Kobold::LOG_LEVEL_NORMAL, 
                   "\t\t %s = '%s'", ctx->GetVarDeclaration(n, stackLevel), 
                   str->c_str());
          }
          else
          {
-            Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
+            Kobold::Log::add(Kobold::LOG_LEVEL_NORMAL, 
                   "\t\t %s = <null>", ctx->GetVarDeclaration(n, stackLevel));
          }
       }
       else
       {
-         Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
+         Kobold::Log::add(Kobold::LOG_LEVEL_NORMAL, 
                "\t\t %s = {...}", ctx->GetVarDeclaration(n, stackLevel));
       }
    }
@@ -438,13 +439,13 @@ int ScriptManager::executeCall(asIScriptContext* ctx,
       if(r == asEXECUTION_EXCEPTION)
       {
          const asIScriptFunction *function = ctx->GetExceptionFunction();
-         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 
+         Kobold::Log::add(Kobold::LOG_LEVEL_ERROR, 
                "ERROR: Script '%s' Exception: '%s' at function '%s' line %d.",
                function->GetModuleName(),
                ctx->GetExceptionString(), 
                function->GetDeclaration(),
                ctx->GetExceptionLineNumber());
-         Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, "\tCallstack:");
+         Kobold::Log::add(Kobold::LOG_LEVEL_NORMAL, "\tCallstack:");
          for( asUINT n = 0; n < ctx->GetCallstackSize(); n++ )
          {
             asIScriptFunction *func;
@@ -452,7 +453,7 @@ int ScriptManager::executeCall(asIScriptContext* ctx,
             int line, column;
             func = ctx->GetFunction(n);
             line = ctx->GetLineNumber(n, &column, &scriptSection);
-            Kobold::Log::add(Kobold::Log::LOG_LEVEL_NORMAL, 
+            Kobold::Log::add(Kobold::LOG_LEVEL_NORMAL, 
                   "\t%s:%d,%d", func->GetDeclaration(),
                   line, column);
             printVariables(ctx, n);
@@ -823,7 +824,8 @@ void ScriptManager::enablePcMoves()
  **************************************************************************/
 void ScriptManager::playSound(float x, float y, float z, Kobold::String file)
 {
-   Kosound::Sound::addSoundEffect(x, y, z, -1, file);
+   Kosound::Sound::addSoundEffect(x, y, z, -1, file, 
+         new Kobold::OgreFileReader());
 }
 
 /**************************************************************************
@@ -931,7 +933,7 @@ ScriptObject* ScriptManager::getAndDefinePointer(Kobold::String filename,
          break;
          default:
          {
-            Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 
+            Kobold::Log::add(Kobold::LOG_LEVEL_ERROR, 
                   "Error: Unexpected type for scriptObject retrieve: %d\n",
                   type);
          }

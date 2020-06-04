@@ -20,6 +20,7 @@
 
 #include "door.h"
 #include "../collision/collision.h"
+#include <kobold/ogre3d/ogrefilereader.h>
 #include <kosound/sound.h>
 #include <assert.h>
 
@@ -88,7 +89,7 @@ bool Door::flip()
 
       /* Call opening sound */
       Kosound::Sound::addSoundEffect(pos.x, pos.y, pos.z, SOUND_NO_LOOP,
-            "objects/door_open.ogg");
+            "objects/door_open.ogg", new Kobold::OgreFileReader());
 
       return true;
    } 
@@ -103,7 +104,7 @@ bool Door::flip()
 
       /* Call closing sound */
       Kosound::Sound::addSoundEffect(pos.x, pos.y, pos.z, SOUND_NO_LOOP,
-            "objects/door_close.ogg");
+            "objects/door_close.ogg", new Kobold::OgreFileReader());
 
       return true;
    }

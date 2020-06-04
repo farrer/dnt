@@ -20,7 +20,7 @@
 
 #include "npcfile.h"
 
-#include <kobold/defparser.h>
+#include <kobold/ogre3d/ogredefparser.h>
 #include <kobold/log.h>
 
 #include <stdio.h>
@@ -57,7 +57,7 @@ NpcFile::~NpcFile()
  ***********************************************************************/
 bool NpcFile::load(Kobold::String filename)
 {
-   Kobold::DefParser def;
+   Kobold::OgreDefParser def;
    Kobold::String key, value;
 
    /* Read values */
@@ -65,9 +65,9 @@ bool NpcFile::load(Kobold::String filename)
 
    this->filename = filename;
 
-   if(!def.load(filename))
+   if(!def.load(filename, false))
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
             "Error: couldn't open NPCs file: '%s'", filename.c_str());
       return false;
    }
@@ -109,14 +109,14 @@ bool NpcFile::load(Kobold::String filename)
       }
       else
       {
-         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+         Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
                "Error: no NPC defined while parsing '%s'", filename.c_str());
       }
    }
 
    if(mapFilename.empty())
    {
-       Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+       Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
              "Warning: map is undefined for npc file '%s'", 
              filename.c_str());
    }
@@ -135,7 +135,7 @@ bool NpcFile::save(Kobold::String filename)
    file.open(filename.c_str(), std::ios::out | std::ios::binary);
    if(!file)
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
             "Couldn't open npc file '%s' for saving it.", filename.c_str());
       return false;
    }

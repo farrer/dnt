@@ -515,7 +515,7 @@ void ModInventory::flush(Inventory* inv)
          
          if(!res)
          {
-            Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+            Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
                   "Error: Couldn't put object '%s' at inventory position '%d"\
                   ",%d' of invNumber: '%d'", invObj->filename.c_str(), 
                   invObj->x, invObj->y, invObj->invNumber);
@@ -524,7 +524,7 @@ void ModInventory::flush(Inventory* inv)
       else
       {
          /* Can't get the object, must show error */
-         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+         Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
                "Error: Couldn't load object '%s'", invObj->filename.c_str());
       }
 
@@ -585,12 +585,12 @@ void ModInventory::create(Inventory* inv)
  ************************************************************/
 bool ModInventory::load(Kobold::String file)
 {
-   Kobold::DefParser def;
+   Kobold::OgreDefParser def;
    Kobold::String key="", value="";
    
-   if(!def.load(file))
+   if(!def.load(file, false))
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
             "Error: Couldn't load inventory file '%s'", file.c_str());
       return false;
    }
@@ -610,7 +610,7 @@ bool ModInventory::load(Kobold::String file)
       }
       else
       {
-         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+         Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
                "Warning: unknow token: '%s' at ModInventory load '%s'",
                key.c_str(), file.c_str());
       }
@@ -715,7 +715,7 @@ void ModMap::clear()
 /************************************************************
  *                            load                          *
  ************************************************************/
-void ModMap::load(Kobold::DefParser* def)
+void ModMap::load(Kobold::OgreDefParser* def)
 {
    Kobold::String key="", value="";
    ModInventory* modInv = NULL;
@@ -760,7 +760,7 @@ void ModMap::load(Kobold::DefParser* def)
          }
          else
          {
-            Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+            Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
                   "Warning: item without ModInventory!");
          }
       }
@@ -851,7 +851,7 @@ void ModMap::addMapObjectAction(ModActionType action, Kobold::String target,
    /* Invalid Action  */
    else
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
             "Error: invalid modification object action: %d", action);
    }
 }
@@ -867,7 +867,7 @@ void ModMap::addMapCharacterAction(ModActionType act, Kobold::String character,
        (act != MODSTATE_ACTION_CHARACTER_MOVE) && 
        (act != MODSTATE_ACTION_CHARACTER_CHANGE_STATE) )
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
             "Error: Invalid modification Character action: %d", act);
    }
 
@@ -916,7 +916,7 @@ void ModMap::addMapTalkAction(ModActionType act, Kobold::String character,
    }
    else
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
             "Error: Invalid Talk Action '%d'", act);
    }
 }
@@ -1182,7 +1182,7 @@ void ModMap::doMapModifications()
 
          if(!done)
          {
-            Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+            Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
                   "Error: couldn't find character '%s'", 
                   charAct->getTarget().c_str());
          }
@@ -1220,7 +1220,7 @@ void ModMap::doMapModifications()
       /* Unknow */
       else
       {
-         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+         Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
                "Error: unknown saved action '%d' at '%d' element!",
                tmpMobj->getAction(), i);
       }
@@ -1321,7 +1321,7 @@ void ModState::finish()
  ************************************************************/
 bool ModState::loadState(Kobold::String file)
 {
-   Kobold::DefParser def;
+   Kobold::OgreDefParser def;
    Kobold::String key, value;
    ModMap* mod = NULL;
 
@@ -1329,9 +1329,9 @@ bool ModState::loadState(Kobold::String file)
    clear();
 
    /* Try to open the ModState file */
-   if(!def.load(file))
+   if(!def.load(file, false))
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
             "Error: couldn't open ModState file '%s'", file.c_str());
       return false;
    }
@@ -1344,7 +1344,7 @@ bool ModState::loadState(Kobold::String file)
    }
    else
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
             "Error: invalid ModState file: '%s'", file.c_str());
       return false;
    }
@@ -1362,7 +1362,7 @@ bool ModState::loadState(Kobold::String file)
       }
       else
       {
-         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+         Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
                "Error: unexpected token '%s' at file '%s'", 
                key.c_str(), file.c_str());
       }
@@ -1383,7 +1383,7 @@ bool ModState::saveState(Kobold::String file)
    f.open(file.c_str(), std::ios::out | std::ios::binary);
    if(!f)
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
             "Error: couldn't save file: '%s'", file.c_str());
       return false;
    }

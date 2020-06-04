@@ -28,7 +28,7 @@
 #include "../script/scriptobject.h"
 #include "../script/scriptmanager.h"
 
-#include <kobold/defparser.h>
+#include <kobold/ogre3d/ogredefparser.h>
 #include <kobold/log.h>
 #include <kobold/userinfo.h>
 
@@ -136,7 +136,7 @@ float Thing::getTurnAroundInterval()
  **************************************************************************/
 Kobold::String* Thing::getAnimationList()
 {
-   Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 
+   Kobold::Log::add(Kobold::LOG_LEVEL_ERROR, 
          "Warning: This thing implementation does not support animations");
    assert(false);
    return NULL;
@@ -148,13 +148,13 @@ Kobold::String* Thing::getAnimationList()
 bool Thing::load(const Kobold::String& fileName,
       Goblin::Model3d::Model3dType modelType, bool fullPath)
 {
-   Kobold::DefParser defParser;
+   Kobold::OgreDefParser defParser;
    Kobold::String key, value, modelName;
    float scale = 1.0f;
    bool redefineBounds = false;
    float redefineFactor = 1.0f;
 
-   if(!defParser.load(fileName, fullPath))
+   if(!defParser.load(fileName, fullPath, false))
    {
       return false;
    }
@@ -304,7 +304,7 @@ bool Thing::load(const Kobold::String& fileName,
             else
             {
                /* Got an unknow key. File definition should be fixed. */
-               Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+               Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
                      "Warning: unknow key '%s' at thing's file '%s'",
                      key.c_str(), fileName.c_str());
             }
@@ -489,7 +489,7 @@ bool Thing::save(const Kobold::String& filename, bool fullPath)
    file.open(filePath.c_str(), std::ios::out | std::ios::binary);
    if(!file)
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
             "Couldn't open thing file '%s' for saving it.", filePath.c_str());
       return false;
    }
@@ -716,7 +716,7 @@ RuleDefinitionValue* Thing::getRuleDefinition(const Kobold::String& groupId,
    }
    else
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR, 
             "Error: no RuleGroup with identifier '%s'", groupId.c_str());
    }
 

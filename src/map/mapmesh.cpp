@@ -435,7 +435,7 @@ void MapSubMesh::update(const Ogre::Vector3 meshMin)
          else
          {
             //TODO
-            Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+            Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
                   "Warning: MapSupMesh update isn't implemented!");
             return;
          }

@@ -34,7 +34,7 @@
 #include "../script/scriptmanager.h"
 #include "../core/dialog.h"
 
-#include <kobold/defparser.h>
+#include <kobold/ogre3d/ogredefparser.h>
 #include <kobold/log.h>
 #include <assert.h>
 
@@ -305,7 +305,7 @@ void Map::createAuxiliarEditStructs()
  **************************************************************************/
 bool Map::load(Ogre::String mapFileName, bool fullPath, bool editMode)
 {
-   Kobold::DefParser parser;
+   Kobold::OgreDefParser parser;
    Ogre::String key, value;
    LightInfo* lastLight = NULL;
    Thing* lastThing = NULL;
@@ -314,7 +314,7 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool editMode)
 
    this->filename = mapFileName;
 
-   if(!parser.load(mapFileName, fullPath))
+   if(!parser.load(mapFileName, fullPath, false))
    {
       return false;
    }
@@ -322,7 +322,7 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool editMode)
    /* Read size of the map */
    if( (!parser.getNextTuple(key, value)) || (key != MAP_TOKEN_SIZE) )
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
             "Error: Map size not defined at '%s', found '%s' instead of 'size'",
             mapFileName.c_str(), key.c_str());
       return false;
@@ -723,7 +723,7 @@ bool Map::load(Ogre::String mapFileName, bool fullPath, bool editMode)
       }
       else 
       {
-         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+         Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
                "Warning: unknow key '%s' at map's definition file '%s'",
                key.c_str(), mapFileName.c_str());
       }
@@ -758,7 +758,7 @@ bool Map::save(Kobold::String filename)
    file.open(filename.c_str(), std::ios::out | std::ios::binary);
    if(!file)
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR,
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR,
             "Couldn't save map file '%s'", filename.c_str());
       return false;
    }

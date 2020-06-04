@@ -23,6 +23,7 @@
 #include "../../core/game.h"
 #include "../../map/map.h"
 #include <sstream>
+#include <OGRE/OgreString.h>
 
 using namespace DNTMapEditor;
 

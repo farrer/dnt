@@ -53,7 +53,7 @@ class ScriptController : public Kobold::ListElement
 
       /*! Load and compile the script 
        * \return true if successfull */
-      bool loadAndCompile(Ogre::String filename);
+      bool loadAndCompile(Kobold::String filename);
 
       /*!\ return pointer to the factory (constructor) function of the
        * controller (which will receive the specific object handler) */
@@ -66,7 +66,7 @@ class ScriptController : public Kobold::ListElement
       const ScriptType getType() const { return this->type; };
 
       /*! \return filename of the script definition */
-      const Ogre::String getFilename() const { return this->filename; };
+      const Kobold::String getFilename() const { return this->filename; };
 
       /*! Increment the number of instances the controller has */
       void incInstanceCount();
@@ -88,7 +88,7 @@ class ScriptController : public Kobold::ListElement
        * on the script.
        * \param interfaceName name of the interface to be implemented
        * \return pointer to the type found or NULL, if not found */
-      asITypeInfo* getTypeByInterface(Ogre::String interfaceName);
+      asITypeInfo* getTypeByInterface(Kobold::String interfaceName);
 
       asIScriptModule* module; /**< The loaded module */
       asITypeInfo* mainType; /**< The principal class of the script */
@@ -97,7 +97,7 @@ class ScriptController : public Kobold::ListElement
 
    private:
       ScriptType type; /**< Script type */
-      Ogre::String filename; /**< Loaded script filename */
+      Kobold::String filename; /**< Loaded script filename */
       int instCount; /**< Number of instances the controller has */
 };
 

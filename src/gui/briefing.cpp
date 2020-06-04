@@ -24,6 +24,7 @@
 
 #include <kosound/sound.h>
 #include <kobold/log.h>
+#include <kobold/ogre3d/ogrefilereader.h>
 #include <stdarg.h>
 #include <farso/controller.h>
 
@@ -204,7 +205,7 @@ bool Briefing::addWarning(const Kobold::String& text)
    {
       /* Play a sound on warnings. */
       Kosound::Sound::addSoundEffect(SOUND_NO_LOOP, 
-            "sndfx/gui/console.ogg");
+            "sndfx/gui/console.ogg", new Kobold::OgreFileReader());
       return true;
    }
 

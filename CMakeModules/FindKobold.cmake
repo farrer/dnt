@@ -1,6 +1,8 @@
 # Locate Kobold library
 # This module defines
+# KOBOLD_LIBRARIES, with all libraries found
 # KOBOLD_LIBRARY, the name of the library to link against
+# KOBOLD_OGRE3D_LIBRARY, the name of particular Ogre3d kobold library
 # KOBOLD_FOUND, if false, do not try to link to KOBOLD
 # 
 # KOBOLD_INCLUDE_DIR, where to find koboldconfig.h
@@ -57,7 +59,28 @@ FIND_LIBRARY(KOBOLD_LIBRARY
   /opt
 )
 
+FIND_LIBRARY(KOBOLD_OGRE3D_LIBRARY 
+  NAMES kobold-ogre3d
+  HINTS
+  $ENV{KOBOLDDIR}
+  PATH_SUFFIXES lib64 lib
+  PATHS
+  ~/Library/Frameworks
+  /Library/Frameworks
+  /usr/local
+  /usr
+  /sw
+  /opt/local
+  /opt/csw
+  /opt
+)
+
 INCLUDE(${CMAKE_CURRENT_LIST_DIR}/FindPackageHandleStandardArgs.cmake)
 
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(KOBOLD
    REQUIRED_VARS KOBOLD_LIBRARY KOBOLD_INCLUDE_DIR)
+
+if(KOBOLD_FOUND)
+   set(KOBOLD_LIBRARIES ${KOBOLD_LIBRARY} ${KOBOLD_OGRE3D_LIBRARY})
+endif()
+

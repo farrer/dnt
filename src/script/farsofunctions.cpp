@@ -363,7 +363,7 @@ void FarsoFunctions::rootWidgetRemove(const Kobold::String& id)
       }
       else
       {
-         Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 
+         Kobold::Log::add(Kobold::LOG_LEVEL_ERROR, 
             "Error: rootWidgetRemove function is only valid for root widgets."
             " '%s' isn't a root one.", id.c_str());
       }
@@ -579,7 +579,7 @@ Farso::Widget* FarsoFunctions::getWidget(const Kobold::String& id,
    if((res != NULL) && (res->getType() != type))
    {
       /* Wrong type, should not return it */
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR, 
             "Warning: Farso::Widget '%s' isn't of the expected type (%d != %d)",
             id.c_str(), type, res->getType());
       res = NULL;
@@ -597,7 +597,7 @@ Farso::Widget* FarsoFunctions::getWidget(const Kobold::String& id)
 
    if(res == NULL)
    {
-      Kobold::Log::add(Kobold::Log::LOG_LEVEL_ERROR, 
+      Kobold::Log::add(Kobold::LOG_LEVEL_ERROR, 
             "Warning: couldn't find Farso::Widget with id '%s'", id.c_str());
    }
 
