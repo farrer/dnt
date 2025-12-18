@@ -3,6 +3,9 @@
 
 This is the Ogre3d port/rewrite of former DNT (http://dnt.dnteam.org).
 
+## The repository here on github is abandonned.
+## New repository available here: https://codeberg.org/farrer/dnt
+
 ## Dependencies
 
  * Ogre3D 2.2 [http://www.ogre3d.org/]
